@@ -7,19 +7,19 @@ const pitchpoints = [
     icon: "3+",
     title: "Practical Use Cases",
     description: "Create New Ticket as Task, Issue or Invoice",
-    color: "darkslateblue"
+    color: "gray"
   },
   {
     icon: <TbStatusChange />,
     title: "Track Ticket Status",
     description: "Track ticket status. Update or assign tickets to TikTask agent, bot or external receipient",
-    color: "crimson",
+    color: "darkorange",
   },
   {
     icon: <MdNotificationsActive />,
     title: "Push Notifications",
     description: "Get ticket updates via Email, SMS or Slack",
-    color: "darkorange",
+    color: "gray",
   },
 ]
 

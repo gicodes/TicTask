@@ -20,7 +20,7 @@ const Hero = () => {
             Start free trial
           </button>
           <button className={styles.btnSecondary}>
-            Watch demo video
+            <span className="custom-white">Watch demo video</span>
           </button>
         </div>
         <p className={styles.trialText}>
