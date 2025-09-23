@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <Box component="footer" bgcolor="#111" color="white" py={6} mt={10}>
       <Container>
-        <Grid container spacing={{ xs: 4, sm: 8, md: 12, lg: 16}} width={'100%'}>
+        <Grid container spacing={{ xs: 4, sm: 8, md: 12, lg: 16, xl: 24}} width={'100%'}>
           {Object.entries(sections).map(([title, items], i) => (
             <Grid key={i}>
               <Typography variant="subtitle1" fontWeight={600} mb={2}>
@@ -32,9 +32,6 @@ const Footer = () => {
             </Grid>
           ))}
         </Grid>
-        <Typography variant="body2" mt={{xs: 6, sm: 8, md: 10}} textAlign="center" color="gray">
-          © {new Date().getFullYear()} TicTask. All rights reserved.
-        </Typography>
       </Container>
     </Box>
   );

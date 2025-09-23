@@ -5,7 +5,7 @@ import { MdNotificationsActive } from "react-icons/md";
 const pitchpoints = [
   {
     icon: "3+",
-    title: "Practical Use Cases",
+    title: "Use Cases",
     description: "Create New Ticket as Task, Issue or Invoice",
     color: "gray"
   },
