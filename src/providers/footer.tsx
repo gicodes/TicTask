@@ -1,12 +1,12 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 
 const GlobalFooter = () => {
   return (
-    <Box mx={'auto'} pt={{ xs: 6, sm: 8, md: 10 }} my={5}>
+    <Grid mx={'auto'} pt={{ xs: 6, sm: 8, md: 10 }} my={5}>
       <Typography variant="body2" textAlign="center" color="gray">
         © {new Date().getFullYear()} TicTask. All rights reserved.
       </Typography>
-    </Box>
+    </Grid>
   )
 }
 
