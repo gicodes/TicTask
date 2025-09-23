@@ -65,6 +65,7 @@ const Features = () => {
             >
               <Grid>
                 <motion.div
+                  style={{ overflow: "hidden" }} 
                   initial={{ opacity: 0, x: isEven ? 60 : -60 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6 }}
@@ -74,8 +75,8 @@ const Features = () => {
                     sx={{
                       borderRadius: 5,
                       minHeight: 300,
-                      width: "fit-content",
-                      minWidth: { xs: 300, sm: 360, md: 420, lg: 500},
+                      width: "100%",              
+                      maxWidth: { xs: 300, sm: 360, md: 420, lg: 500 }, 
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                       backgroundImage: `url(${f.imageUrl})`,
