@@ -32,12 +32,12 @@ const faqs = [
 
 const FAQ = () => {
   return (
-    <Box py={8} maxWidth={1000} mx="auto">
+    <Box py={{ xs: 2, sm: 4, md: 6}} maxWidth={1000} mx="auto">
       <Typography variant="h5" textAlign="center" mb={4} fontWeight={600}>
         Frequently Asked Questions
       </Typography>
       {faqs.map((f, i) => (
-        <Accordion key={i} disableGutters sx={{ p: 1}}>
+        <Accordion key={i} disableGutters sx={{ p: 1,}}>
           <AccordionSummary expandIcon={<MdExpandMore/>}>
             <Typography fontWeight={500}>{f.q}</Typography>
           </AccordionSummary>

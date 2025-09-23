@@ -32,7 +32,7 @@ const Footer = () => {
             </Grid>
           ))}
         </Grid>
-        <Typography variant="body2" mt={6} textAlign="center" color="gray">
+        <Typography variant="body2" mt={{xs: 6, sm: 8, md: 10}} textAlign="center" color="gray">
           © {new Date().getFullYear()} TicTask. All rights reserved.
         </Typography>
       </Container>

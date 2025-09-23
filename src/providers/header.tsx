@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, Box, Button, IconButton, Toolbar, Typography, Stack, Drawer, List, ListItem } from "@mui/material";
+import { CancelRounded } from "@mui/icons-material";
 
 const useAuth = () => {
   const [isLoggedIn] = useState(false);
@@ -46,15 +47,15 @@ const Header = () => {
     <AppBar
       position="fixed"
       elevation={0}
-      sx={{ bgcolor: "rgb(18, 19, 23)", color: "inherit", borderBottom: 1, borderColor: "divider",}}
+      sx={{ bgcolor: "rgb(18, 19, 23)", color: "inherit", borderBottom: 1, borderColor: "divider"}}
     >
-      <Box mx={'auto'} width={'100%'} maxWidth={1500} minHeight={69} alignItems={'center'}>
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between"}}>
+      <Box m={'auto'} py={1} width={'100%'} maxWidth={1500} minHeight={60}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: 'center'}}>
           <Stack direction="row" spacing={10} alignItems="center">
             <Typography variant="h6" fontWeight="bold">
               <Link href="/">TicTask</Link>
             </Typography>
-            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 3 }}>
+            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 5 }}>
               {menuItems.map((item) => (
                 <Link key={item.href} href={item.href}>
                   {item.label}
@@ -85,13 +86,17 @@ const Header = () => {
           </Box>
 
           <IconButton sx={{ display: { xs: "flex", md: "none" } }} onClick={toggleDrawer}>
-            <MenuIcon />
+            <MenuIcon sx={{ color: 'white'}} />
           </IconButton>
         </Toolbar>
 
         <Drawer anchor="right" open={mobileOpen} onClose={toggleDrawer}>
-          <Box sx={{ width: 240, p: 2 }}>
-            <List>
+          <Box sx={{ p: 2, width: '100vw' }}>
+            <Box display={'flex'} justifyContent={'right'}>
+              <CancelRounded fontSize={'large'} onClick={toggleDrawer} />
+            </Box>
+
+            <List sx={{ mt: 5, display: 'grid', justifyContent: 'center', gap: 2}}>
               {menuItems.map((item) => (
                 <ListItem key={item.href}>
                   <Link href={item.href}>{item.label}</Link>
