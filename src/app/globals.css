@@ -74,14 +74,13 @@ h2 { font-size: 3rem;
 h3 { font-size: 2.5rem; }
 h4 { font-size: 2rem; }
 h5 { font-size: 1.75rem; }
-h6{ font-size: 1.5rem; }
+h6 { font-size: 1.5rem; }
 
 .font-xs { font-size: 1rem; }
 .font-sm { font-size: 1.25rem; }
 .font-md { font-size: 1.5rem; }
 .font-lg { font-size: 2rem; }
 .font-xl { font-size: 2.5rem; }
-.font-2xl { font-size: 3rem; }
 
 .justify-center { justify-content: center; }
 .text-center { text-align: center; }
@@ -97,3 +96,5 @@ h6{ font-size: 1.5rem; }
 .mt-2 { margin-top: 0.5rem; }
 .mb-1 { margin-bottom: 0.35rem;}
 .mb-2 { margin-bottom: 0.5rem; }
+
+.text-center { text-align: center;}

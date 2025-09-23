@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import Header from "./header";
+import GlobalFooter from "./footer";
 // import Footer from "./footer";
 
 // import { AlertProvider } from "./alert-context";
@@ -39,7 +40,8 @@ export default function AppWrapper({ children }: AppWrapperProps) {
                   {/* Shared Layout */}
                   <Header />
                   {children}
-                  {/* <Footer />
+                  <GlobalFooter />
+                  {/*
                 </TicketProvider>
               </NotificationProvider>
             </UserProvider>

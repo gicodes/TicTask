@@ -1,9 +1,10 @@
 'use client';
 import Link from "next/link";
 import { useState } from "react";
+import styles from '@/app/page.module.css';
 import MenuIcon from "@mui/icons-material/Menu";
-import { AppBar, Box, Button, IconButton, Toolbar, Typography, Stack, Drawer, List, ListItem } from "@mui/material";
 import { CancelRounded } from "@mui/icons-material";
+import { AppBar, Box, Button, IconButton, Toolbar, Typography, Stack, Drawer, List, ListItem } from "@mui/material";
 
 const useAuth = () => {
   const [isLoggedIn] = useState(false);
@@ -96,15 +97,26 @@ const Header = () => {
               <CancelRounded fontSize={'large'} onClick={toggleDrawer} />
             </Box>
 
-            <List sx={{ mt: 5, display: 'grid', justifyContent: 'center', gap: 2}}>
+            <List sx={{ mt: 5, display: 'grid', justifyContent: 'center', gap: 2,}}>
               {menuItems.map((item) => (
                 <ListItem key={item.href}>
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link 
+                    style={{ width: '100%', textAlign: 'center'}}
+                    href={item.href}
+                  >
+                    {item.label}
+                  </Link>
                 </ListItem>
               ))}
               {authLinks.map((link) => (
                 <ListItem key={link.href}>
-                  <Link href={link.href}>{link.label}</Link>
+                  <Link 
+                    href={link.href}
+                    style={{ width: '100%', textAlign: 'center'}}
+                    className={link.href==='/signup' ? styles.btnPrimary : ''}
+                  >
+                    {link.label}
+                  </Link>
                 </ListItem>
               ))}
             </List>
