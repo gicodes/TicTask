@@ -15,7 +15,7 @@ export default function Home() {
           <Hero />
         </div>
         <div className={styles.demoDisplay}>
-          {/* display a still picture of the dashboard area in clear, responsive HD image */}
+          {/* display animated media of the user flow or onboarding */}
         </div>
         <div className={styles.IndexPitch}>
           <IndexPitch />

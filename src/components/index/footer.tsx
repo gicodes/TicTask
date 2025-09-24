@@ -1,9 +1,9 @@
 import { Box, Container, Grid, Typography, Link } from "@mui/material";
 
 const sections = {
+  PRODUCTS: ["All Products", "Pricing", "Demo", "Integration"],
+  RESOURCES: ["Blog", "Help Center", "Developer", "Free Tools", "Security"],
   COMPANY: ["About", "Careers", "Become a Partner", "Find a Partner", "Contact Us"],
-  PRODUCTS: ["View All Products", "Pricing", "Demo", "Status", "API Docs", "Integrations"],
-  RESOURCES: ["Blog", "Case Studies", "Help Center", "Developers", "Free Tools", "Security"],
   LEGAL: ["Terms of Service", "Privacy Policy", "Cookie Policy", "Data Protection"],
 };
 

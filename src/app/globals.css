@@ -81,20 +81,37 @@ h6 { font-size: 1.5rem; }
 .font-sm { font-size: 1.25rem; }
 .font-lg { font-size: 2rem; }
 .font-xl { font-size: 2.5rem; }
+.font-xxl { font-size: 2.75rem; }
+.font-sxl { font-size: 3rem; }
 
-.justify-center { justify-content: center; }
+.flex { display: flex; }
+.grid { display: grid; }
+.block { display: block; }
+
 .text-center { text-align: center; }
-
-.mx-auto { margin: 0 auto; }
+.align-center { align-items: center;}
+.justify-center { justify-content: center; }
 
 .min-height-100 { min-height: 100px; }
 .min-height-500 { min-height: 500px; }
 
-.my-5 { margin-top: 2rem; margin-bottom: 2rem; }
+.min-width-100 { min-width: 100px; }
+.max-width-500 { max-width: 500px; }
+
+.mx-auto { margin: 0 auto; }
+
+.my-1 { margin: 1rem 0; }
+.my-3 { margin: 1.75rem 0;}
+.my-5 { margin: 2.5rem 0; }
+
+.py-1 { padding: 1rem 0; }
 
 .mt-1 { margin-top: 0.25rem; }
 .mt-2 { margin-top: 0.5rem; }
+
 .mb-1 { margin-bottom: 0.35rem; }
 .mb-2 { margin-bottom: 0.5rem; }
 
 .text-center { text-align: center; }
+
+.text-white { color: white;}

@@ -18,7 +18,7 @@ const ProPlatform = () => {
       py={6}  
       mx={'auto'}
       textAlign={'center'}
-      maxWidth={{ xs: 323, sm: 500, md: 777, lg: 1000, xl: 1200}}
+      maxWidth={{ xs: 333, sm: 500, md: 777, lg: 1000, xl: 1200}}
     >
       <Typography 
         variant="h4" 

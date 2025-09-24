@@ -3,9 +3,10 @@ import {
   AccordionDetails, 
   AccordionSummary, 
   Box, 
+  Stack, 
   Typography 
 } from "@mui/material";
-import { MdExpandMore } from "react-icons/md";
+import { VscDebugBreakpointConditional, VscTriangleDown } from "react-icons/vsc";
 
 const faqs = [
   {
@@ -38,8 +39,11 @@ const FAQ = () => {
       </Typography>
       {faqs.map((f, i) => (
         <Accordion key={i} disableGutters sx={{ p: 1,}}>
-          <AccordionSummary expandIcon={<MdExpandMore/>}>
-            <Typography fontWeight={500}>{f.q}</Typography>
+          <AccordionSummary expandIcon={<VscTriangleDown />}>
+            <Stack display={'flex'} direction={'row'} alignItems={'center'} gap={1}>
+              <VscDebugBreakpointConditional /> 
+              <Typography fontWeight={500}>{f.q}
+            </Typography></Stack>
           </AccordionSummary>
           <AccordionDetails>
             <Typography color="text.secondary">{f.a}</Typography>

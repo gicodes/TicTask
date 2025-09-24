@@ -113,10 +113,10 @@ a.secondary {
   align-items: center;
   gap: 25px;
   padding: 1rem;
-  margin: 5rem auto 0;
+  margin: 4rem auto 0;
 
   @media screen and (max-width: 600px) {
-    margin-top: 4rem;
+    margin-top: 3rem;
     padding: 0.75px;
   }
 }
@@ -183,6 +183,21 @@ a.secondary {
 
 .btnSecondary {
   border: 1px solid var(--gray-alpha-200);
+  border-radius: 9999px;
+  height: 48px;
+  padding: 5px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btnInverted {
+  background: rgb(17, 16, 23);
+  color: var(--foreground);
   border-radius: 9999px;
   height: 48px;
   padding: 5px 20px;

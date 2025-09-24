@@ -11,12 +11,12 @@ import {
   Button, 
   IconButton, 
   Toolbar, 
-  Typography, 
   Stack, 
   Drawer, 
   List, 
   ListItem 
 } from "@mui/material";
+import Logo from "@/components/assets/txtLogo";
 
 const useAuth = () => {
   const [isLoggedIn] = useState(false);
@@ -37,14 +37,14 @@ const Header = () => {
 
   const menuItems = [
     { label: "Product", href: "/product" },
-    { label: "Pricing", href: "/pricing" },
     { label: "Resources", href: "/resources" },
+    { label: "Company", href: "/pricing" },
     { label: "Contact Us", href: "/contact" },
   ];
 
   const guestLinks: LinkItem[] = [
     { label: "Login", href: "/login" },
-    { label: "Try for free", href: "/signup", cta: true },
+    { label: "Join for free", href: "/signup", cta: true },
   ];
 
   const userLinks: LinkItem[] = [
@@ -86,9 +86,7 @@ const Header = () => {
             spacing={10} 
             alignItems="center"
           >
-            <Typography variant="h6" fontWeight="bold">
-              <Link href="/">TicTask</Link>
-            </Typography>
+            <Logo />
             <Box 
               sx={{ 
                 display: { xs: "none", md: "flex" }, 
@@ -178,7 +176,7 @@ const Header = () => {
                   <Link 
                     href={link.href}
                     style={{ width: '100%', textAlign: 'center'}}
-                    className={link.href==='/signup' ? styles.btnPrimary : ''}
+                    className={link.href==='/signup' ? styles.btnInverted : ''}
                   >
                     {link.label}
                   </Link>

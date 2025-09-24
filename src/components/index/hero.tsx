@@ -4,7 +4,7 @@ const Hero = () => {
   return (
     <>
       <div className={styles.heroTitle}>
-        <h2>Ticket <span className="custom-dull font-xl">&</span> Task Management System</h2>
+        <h2>Ticket <span className="font-xl">&</span> Task Management System</h2>
         <h2><span className="custom-bright">Driven by AI</span>, Designed for Everyone</h2>
       </div>
       <div className={styles.heroSubtitle}>
