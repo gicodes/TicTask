@@ -18,21 +18,21 @@ const ProPlatform = () => {
       py={6}  
       mx={'auto'}
       textAlign={'center'}
-      maxWidth={{ xs: 303, sm: 500, md: 777, lg: 1000, xl: 1200}}
+      maxWidth={{ xs: 323, sm: 500, md: 777, lg: 1000, xl: 1200}}
     >
       <Typography 
         variant="h4" 
         fontWeight={600}
         fontSize={{ xs: 35, sm: 40, md: 42, lg: 45}} 
       >
-        Our potential Competitors
+        Got inspired by the right ideas
       </Typography>
       <Typography
         variant="subtitle1"
         color="disabled.main"
         mt={1} mb={4}
       > 
-        Join the train. Don&apos;t get left out
+        Don&apos;t Get Left Out. Join The Moving Train. 
       </Typography>
       <motion.div
         animate={{ x: ["0%", "-100%"] }}

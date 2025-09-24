@@ -6,7 +6,7 @@ const pitchpoints = [
   {
     icon: "3+",
     title: "Use Cases",
-    description: "Create New Ticket as Task, Issue or Invoice",
+    description: "Create Ticket as either Task, Issue or Invoice",
     color: "gray"
   },
   {

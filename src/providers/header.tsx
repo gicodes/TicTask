@@ -114,12 +114,11 @@ const Header = () => {
                 <Button
                   key={link.href}
                   variant="contained"
-                  color="secondary"
                   component={Link}
                   href={link.href}
-                  sx={{ borderRadius: "24px" }}
+                  sx={{ borderRadius: "24px", bgcolor: 'inherit' }}
                 >
-                  {link.label}
+                  <span className={styles.btnPrimary}>{link.label}</span>
                 </Button>
               ) : (
                 <Button 

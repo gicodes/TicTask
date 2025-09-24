@@ -9,12 +9,20 @@ const sections = {
 
 const Footer = () => {
   return (
-    <Box component="footer" bgcolor="#111" color="white" py={6} mt={10}>
+    <Box component="footer" bgcolor="#111" color="white" py={2}>
       <Container>
-        <Grid container spacing={{ xs: 4, sm: 8, md: 12, lg: 16, xl: 24}} width={'100%'}>
+        <Grid container 
+          spacing={{ xs: 4, sm: 8, md: 12, lg: 16, xl: 24}} 
+          width={'100%'}
+        >
           {Object.entries(sections).map(([title, items], i) => (
-            <Grid key={i}>
-              <Typography variant="subtitle1" fontWeight={600} mb={2}>
+            <Grid key={i} mx={'auto'}>
+              <Typography 
+                variant="subtitle1" 
+                fontWeight={600} 
+                mb={2}
+                color="silver"
+              >
                 {title}
               </Typography>
               {items.map((item, idx) => (
