@@ -1,6 +1,6 @@
-import { Badge, Box, Container, Stack, Typography } from '@mui/material';
 import { TbStatusChange } from "react-icons/tb";
 import { MdNotificationsActive } from "react-icons/md";
+import { Badge, Box, Container, Stack, Typography } from '@mui/material';
 
 const pitchpoints = [
   {
@@ -27,7 +27,10 @@ const IndexPitch = () => {
   return (
     <Container>
       <Stack textAlign={'center'} display={'grid'} gap={5}>
-        <Typography fontFamily={'sans'} variant='h5'>Never miss a task, routine or opportunity to get your <span className='custom-dull font-md'><strong>$</strong></span>hit together</Typography>
+        <Typography variant='h5' fontWeight={501}>
+          Never miss a task, routine or opportunity to get your {' '}
+          <span className='custom-dull font-md'><strong>$</strong></span>hit together
+        </Typography>
         <Box 
           display={'flex'}
           justifyContent={'center'}

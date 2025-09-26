@@ -16,7 +16,7 @@ import {
   List, 
   ListItem 
 } from "@mui/material";
-import Logo from "@/components/assets/txtLogo";
+import Logo from "@/assets/txtLogo";
 
 const useAuth = () => {
   const [isLoggedIn] = useState(false);
@@ -38,8 +38,8 @@ const Header = () => {
   const menuItems = [
     { label: "Product", href: "/product" },
     { label: "Resources", href: "/resources" },
-    { label: "Company", href: "/pricing" },
-    { label: "Contact Us", href: "/contact" },
+    { label: "Company", href: "/company" },
+    { label: "Contact Us", href: "/company/#contact-us" },
   ];
 
   const guestLinks: LinkItem[] = [
@@ -50,7 +50,7 @@ const Header = () => {
   const userLinks: LinkItem[] = [
     { label: "Dashboard", href: "/dashboard" },
     { label: "Settings", href: "/settings" },
-    { label: "Partner", href: "/partner" },
+    { label: "Partner", href: "/company/partners/#join" },
     { label: "Logout", href: "/logout" },
   ];
 

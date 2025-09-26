@@ -15,7 +15,6 @@ const Logo = () => {
         <Link href="/">{Txt}</Link>
       </Typography>
     </Box>
-    
   )
 }
 
