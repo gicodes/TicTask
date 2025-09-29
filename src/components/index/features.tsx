@@ -1,8 +1,8 @@
 'use client';
 import { motion } from "framer-motion";
 import { FaCheckCircle } from "react-icons/fa";
-import { MdEditCalendar, MdSecurity, MdSmartToy } from "react-icons/md";
-import { Box, Grid, Typography, Paper, Badge, Stack } from "@mui/material";
+import { MdAdminPanelSettings, MdEditCalendar, MdGroups, MdInsights, MdSecurity, MdSmartToy } from "react-icons/md";
+import { Box, Grid, Typography, Card, Badge, Stack } from "@mui/material";
 
 const features = [
   {
@@ -19,19 +19,6 @@ const features = [
     ],
   },
   {
-    icon: <MdSmartToy />,
-    imageUrl: "/features/ticketing_system.jpg",
-    title: "AI Assistance & Analytics",
-    description:
-      "Leverage AI to speed up or automate routine actions, events and provide insights into your productivity patterns.",
-    bulletPoints: [
-      "AI-powered task suggestions",
-      "Automated scheduling and reminders",
-      "Productivity analytics and reports",
-      "Personalized productivity tips",
-    ],
-  },
-  {
     icon: <MdSecurity />,
     imageUrl: "/features/security.jpeg",
     title: "Security First",
@@ -42,6 +29,45 @@ const features = [
       "Regular security audits",
       "Two-factor authentication",
       "Compliance with data protection regulations",
+    ],
+  },
+  {
+    icon: <MdGroups />,
+    imageUrl: "/features/teams.avif",
+    title: "Built for Teams",
+    description:
+      "Collaborate with your entire team in real time. Share tasks, assign responsibilities, and keep everyone aligned in one workspace.",
+    bulletPoints: [
+      "Assign tickets and tasks to teammates",
+      "Track progress across shared boards",
+      "Leave comments and feedback on tasks",
+      "Stay in sync with team-wide notifications",
+    ],
+  },
+  {
+    icon: <MdAdminPanelSettings />,
+    imageUrl: "/features/ticketing_system.jpg",
+    title: "Role-Based Access Control",
+    description:
+      "Control who can do what. TicTask ensures secure and organized workflows with flexible roles and permissions.",
+    bulletPoints: [
+      "Define roles like Admin, Manager, and Member",
+      "Granular permissions for sensitive actions",
+      "Prevent accidental changes or data loss",
+      "Scale your team with confidence",
+    ],
+  },
+  {
+    icon: <MdInsights />,
+    imageUrl: "/features/analytics.avif",
+    title: "Insights That Drive Action",
+    description:
+      "Go beyond task lists. TicTask gives you visibility into how your team is working, helping you improve efficiency.",
+    bulletPoints: [
+      "Track ticket resolution times",
+      "See team workload distribution",
+      "Spot productivity trends",
+      "Export reports for stakeholders",
     ],
   },
 ];
@@ -90,7 +116,7 @@ const Features = () => {
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 200 }}
                 >
-                  <Paper
+                  <Card
                     elevation={0}
                     sx={{
                       py: 3,
@@ -135,7 +161,7 @@ const Features = () => {
                         </Stack>
                       ))}
                     </Box>
-                  </Paper>
+                  </Card>
                 </motion.div>
               </Grid>
             </Grid>

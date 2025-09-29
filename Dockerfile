@@ -1,23 +1,26 @@
-# Use official Node.js image
-FROM node:18-alpine
+# 1. Base build stage
+FROM node:18-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files first (for better caching)
 COPY package*.json ./
 
-# Install dependencies
 RUN npm install
 
-# Copy rest of the frontend source
 COPY . .
 
-# Build the app (for production builds only)
 RUN npm run build
 
-# Expose the port Next.js runs on
+# 2. Run stage (production)
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+
 EXPOSE 3000
 
-# Start the app
 CMD ["npm", "run", "start"]
