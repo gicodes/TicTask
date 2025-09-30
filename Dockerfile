@@ -9,7 +9,7 @@ RUN npm install
 
 COPY . .
 
-RUN npx prisma generate && npm run build
+RUN npm run build
 
 # 2. Run stage (production)
 FROM node:18-alpine
