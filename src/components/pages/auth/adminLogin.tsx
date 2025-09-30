@@ -1,12 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import styles from "@/app/page.module.css";
 import { useRouter } from 'next/navigation';
+import { Box, Stack, TextField, Typography } from '@mui/material';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
-export const NonUserSignInFields = () => {
+interface RoleProps { role: "ADMIN" | "AGENT" }
+
+export const NonUserSignInFields = ({ role }: RoleProps) => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -81,14 +84,13 @@ export const NonUserSignInFields = () => {
           </Typography>
         )}
 
-        <Button
+        <button
           type="submit"
-          variant="contained"
           disabled={submitting}
-          sx={{ textTransform: 'none' }}
+          className={styles.btnInverted}
         >
-          { submitting ? 'Signing in...' : 'Sign in as Agent/ Admin' }
-        </Button>
+          { submitting ? 'Signing in...' : `Sign in as ${role.toLowerCase()}` }
+        </button>
       </Stack>
     </Box>
   );

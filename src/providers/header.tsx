@@ -43,8 +43,8 @@ const Header = () => {
   ];
 
   const guestLinks: LinkItem[] = [
-    { label: "Login", href: "/auth/user/login" },
-    { label: "Join for free", href: "/auth/user/join", cta: true },
+    { label: "LOGIN", href: "/auth/user/login" },
+    { label: "JOIN FOR FREE", href: "/auth/user/join", cta: true },
   ];
 
   const userLinks: LinkItem[] = [
@@ -109,15 +109,9 @@ const Header = () => {
           >
             {authLinks.map((link) =>
               (link && link?.cta) ? (
-                <Button
-                  key={link.href}
-                  variant="contained"
-                  component={Link}
-                  href={link.href}
-                  sx={{ borderRadius: "24px", bgcolor: 'inherit' }}
-                >
-                  <span className={styles.btnPrimary}>{link.label}</span>
-                </Button>
+                <Link href={link.href} key={link.href}>
+                  <button className={styles.btnPrimary}>{link.label}</button>
+                </Link>
               ) : (
                 <Button 
                   color="inherit"
@@ -176,7 +170,7 @@ const Header = () => {
                   <Link 
                     href={link.href}
                     style={{ width: '100%', textAlign: 'center'}}
-                    className={link.href==='/signup' ? styles.btnInverted : ''}
+                    className={link.cta ? styles.btnInverted : ''}
                   >
                     {link.label}
                   </Link>

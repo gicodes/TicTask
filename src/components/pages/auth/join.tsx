@@ -6,7 +6,7 @@ import styles from "@/app/page.module.css";
 import { useRouter } from 'next/navigation';
 import SignInOptions from './signInOptions';
 import { AuthDivider } from './orAuthDivider';
-import { Box, Stack, TextField, Button, Typography } from '@mui/material';
+import { Box, Stack, TextField, Button, Typography, Badge } from '@mui/material';
 
 interface JoinProps {
   role: 'USER' | 'AGENT' | 'ADMIN';
@@ -69,7 +69,7 @@ export const Join = ({ role }: JoinProps) => {
 
   return (
     <Box minHeight={'75vh'} maxWidth={1200} mx={'auto'}>
-      <Box mt={5} p={2} maxWidth={500} mx={'auto'}>
+      <Box mt={10} p={2} maxWidth={500} mx={'auto'}>
         <Box
           component="form"
           p={{ xs: 1.2, sm: 1.5, md: 2}}
@@ -99,15 +99,21 @@ export const Join = ({ role }: JoinProps) => {
 
             <Box display={'flex'} pt={1} justifyContent={'right'}>
               { error && <Typography my={1} color="error">{error}</Typography>}
-              <Button variant="contained" type="submit" disabled={loading} className={styles.btnPrimary}>
+              <button 
+                type="submit" 
+                disabled={loading} 
+                className={styles.btnTertiary}
+              >
                 {loading ? 'Sending OTP...' : `Get OTP`}
-              </Button>
+              </button>
             </Box>
           </Stack>
         </Box>  
 
-        <AuthDivider />
-        <SignInOptions />
+        {role==="USER" && <>
+          <AuthDivider />
+          <SignInOptions />
+        </>}
       </Box>
     </Box>
   );

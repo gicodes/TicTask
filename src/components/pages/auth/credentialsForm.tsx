@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import styles from '@/app/page.module.css';
 import { useRouter } from 'next/navigation';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Box, Stack, TextField, Typography } from '@mui/material';
 
 export const CredentialsForm = () => {
   const [email, setEmail] = useState('');
@@ -70,15 +70,13 @@ export const CredentialsForm = () => {
           </Typography>
         )}
 
-        <Button
+        <button
           type="submit"
-          variant="contained"
           disabled={submitting}
           className={styles.btnInverted}
-          sx={{ textTransform: 'none' }}
         >
           {submitting ? 'Signing in...' : 'Sign in with Email'}
-        </Button>
+        </button>
       </Stack>
     </Box>
   );

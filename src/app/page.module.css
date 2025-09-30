@@ -209,3 +209,18 @@ a.secondary {
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 }
+
+.btnTertiary {
+  background: rgb(36, 34, 43);
+  color: whitesmoke;
+  border-radius: 9999px;
+  height: 48px;
+  padding: 5px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
