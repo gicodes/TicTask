@@ -56,8 +56,12 @@ export const Join = ({ role }: JoinProps) => {
         localStorage.setItem('token', data.token);
         router.push(`/${role.toLowerCase()}/dashboard`);
       }
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong');
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }

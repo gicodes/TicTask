@@ -1,9 +1,22 @@
 'use client';
 
 import { motion } from "framer-motion";
-import { FaCheckCircle } from "react-icons/fa";
-import { MdAdminPanelSettings, MdEditCalendar, MdGroups, MdInsights, MdSecurity, MdSmartToy } from "react-icons/md";
-import { Box, Grid, Typography, Card, Badge, Stack } from "@mui/material";
+import { 
+  Box, 
+  Grid, 
+  Typography, 
+  Card, 
+  Badge, 
+  Stack 
+} from "@mui/material";
+import { 
+  MdAdminPanelSettings, 
+  MdEditCalendar, 
+  MdGroups, 
+  MdInsights, 
+  MdSecurity,
+  MdCheckCircle,
+} from "react-icons/md";
 
 const features = [
   {
@@ -157,7 +170,7 @@ const Features = () => {
                           mb={1}
                           alignItems="center"
                         >
-                          <FaCheckCircle color="darkslateblue" size={15} />
+                          <MdCheckCircle color="darkslateblue" size={15} />
                           <Typography variant="subtitle2">{point}</Typography>
                         </Stack>
                       ))}
