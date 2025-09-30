@@ -1,4 +1,5 @@
 'use client';
+
 import { motion } from "framer-motion";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdAdminPanelSettings, MdEditCalendar, MdGroups, MdInsights, MdSecurity, MdSmartToy } from "react-icons/md";

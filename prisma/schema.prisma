@@ -1,0 +1,233 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  AGENT
+  USER
+}
+
+enum Plan {
+  FREE
+  STANDARD
+  PRO
+  ENTERPRISE
+}
+
+enum TeamRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum AdminLevel {
+  BASIC
+  FULL
+  SUPER
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+  CANCELLED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketType {
+  GENERAL
+  BUG
+  FEATURE_REQUEST
+  SUPPORT
+  EVENT
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  role     Role   @default(USER)
+
+  emailVerifiedAt DateTime?
+  failedLogins    Int       @default(0)
+  lockedUntil     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  refreshTokens   RefreshToken[]
+  teamMemberships TeamMember[]
+  createdTeams    Team[]         @relation("OwnedTeams")
+  adminProfile    Admin?
+
+  invitationsSent Invitation[] @relation("InvitedByUser")
+
+  tickets   Ticket[]        @relation("CreatedByUser")
+  assigned  Ticket[]        @relation("AssignedTickets")
+  notes     TicketNote[]    @relation("NotesByUser")
+  histories TicketHistory[] @relation("HistoriesByUser")
+}
+
+model Admin {
+  id        Int        @id @default(autoincrement())
+  userId    Int        @unique
+  user      User       @relation(fields: [userId], references: [id])
+  level     AdminLevel @default(BASIC)
+  createdAt DateTime   @default(now())
+}
+
+model Team {
+  id           Int           @id @default(autoincrement())
+  name         String
+  slug         String        @unique @default(uuid())
+  ownerId      Int
+  owner        User          @relation("OwnedTeams", fields: [ownerId], references: [id])
+  members      TeamMember[]
+  invitations  Invitation[]
+  subscription Subscription?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model TeamMember {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  teamId    Int
+  role      TeamRole @default(MEMBER)
+  invitedBy Int?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  team Team @relation(fields: [teamId], references: [id])
+
+  @@unique([userId, teamId])
+}
+
+model Invitation {
+  id        Int      @id @default(autoincrement())
+  email     String
+  token     String   @unique
+  accepted  Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  teamId      Int
+  invitedById Int
+
+  team      Team @relation(fields: [teamId], references: [id])
+  invitedBy User @relation("InvitedByUser", fields: [invitedById], references: [id])
+}
+
+model Subscription {
+  id        Int      @id @default(autoincrement())
+  plan      Plan
+  active    Boolean  @default(true)
+  startedAt DateTime @default(now())
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  teamId Int  @unique
+  team   Team @relation(fields: [teamId], references: [id])
+}
+
+model Client {
+  id      Int     @id @default(autoincrement())
+  name    String
+  email   String? @unique
+  phone   String?
+  company String?
+
+  tickets   Ticket[]        @relation("CreatedByClient")
+  notes     TicketNote[]    @relation("NotesByClient")
+  histories TicketHistory[] @relation("HistoriesByClient")
+
+  createdAt DateTime @default(now())
+}
+
+model Ticket {
+  id          Int            @id @default(autoincrement())
+  title       String
+  description String
+  status      TicketStatus   @default(OPEN)
+  priority    TicketPriority @default(MEDIUM)
+  type        TicketType     @default(GENERAL)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdById Int
+  createdBy   User @relation("CreatedByUser", fields: [createdById], references: [id])
+
+  clientId Int?
+  client   Client? @relation("CreatedByClient", fields: [clientId], references: [id])
+
+  assignedToId Int?
+  assignedTo   User? @relation("AssignedTickets", fields: [assignedToId], references: [id])
+
+  notes   TicketNote[]
+  history TicketHistory[]
+}
+
+model TicketNote {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+
+  ticketId Int
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
+
+  authorId Int?
+  author   User? @relation("NotesByUser", fields: [authorId], references: [id])
+
+  clientId Int?
+  client   Client? @relation("NotesByClient", fields: [clientId], references: [id])
+}
+
+model TicketHistory {
+  id        Int      @id @default(autoincrement())
+  action    String
+  oldValue  String?
+  newValue  String?
+  createdAt DateTime @default(now())
+
+  ticketId Int
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
+
+  performedById Int?
+  performedBy   User? @relation("HistoriesByUser", fields: [performedById], references: [id])
+
+  clientId Int?
+  client   Client? @relation("HistoriesByClient", fields: [clientId], references: [id])
+}
+
+model RefreshToken {
+  id          Int       @id @default(autoincrement())
+  jti         String    @unique
+  hashedToken String
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  usedAt      DateTime?
+  ip          String?
+  userAgent   String?
+  createdAt   DateTime  @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([jti])
+}

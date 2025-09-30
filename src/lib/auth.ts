@@ -1,5 +1,14 @@
-import NextAuth from 'next-auth';
-import authOptions from './authOptions';
+import { authOptions } from './authOptions';
+import { getServerSession } from 'next-auth';
+import { prisma } from '@/lib/prisma';
 
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+export async function getServerSessionUser() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email) return null;
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email }
+  });
+
+  return user;
+}

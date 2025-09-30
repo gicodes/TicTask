@@ -43,8 +43,8 @@ const Header = () => {
   ];
 
   const guestLinks: LinkItem[] = [
-    { label: "Login", href: "/login" },
-    { label: "Join for free", href: "/signup", cta: true },
+    { label: "Login", href: "/auth/user/login" },
+    { label: "Join for free", href: "/auth/user/join", cta: true },
   ];
 
   const userLinks: LinkItem[] = [
