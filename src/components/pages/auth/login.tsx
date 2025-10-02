@@ -4,8 +4,8 @@ import React from 'react';
 import { Role } from '@/types/user';
 import SignInOptions from './signInOptions';
 import { AuthDivider } from './orAuthDivider';
-import { CredentialsForm } from './credentialsForm';
 import { NonUserSignInFields } from './adminLogin';
+import { CredentialsForm } from './credentialsForm';
 import { Box, Stack, Typography } from '@mui/material';
 
 interface LoginProps {
@@ -16,7 +16,6 @@ interface LoginProps {
 export const Login = ({
   name, role
 }: LoginProps) => {
-
   const isUser = role === "USER";
   const isAdmin = role === "ADMIN";
 
@@ -25,7 +24,7 @@ export const Login = ({
       <Box p={2} mx={'auto'} maxWidth={1200}>
         <Stack mt={5} gap={2} mx={'auto'} maxWidth={500}>
           <Stack gap={1} textAlign={'center'} py={1}>
-            <Typography variant='h4'>Welcome Back{name ? `, ${name}` : isUser ? '' : isAdmin ? ", Admin" : ", Top G"}</Typography>
+            <Typography variant='h4'>Welcome Back{name ? `, ${name}` : isUser ? '' : isAdmin ? ", Admin" : ", Boss"}</Typography>
             <Typography variant='subtitle2'>{isUser ? 'Login to view, assign and complete Tickets' : "Login to manage tickets, tasks and remote access"}</Typography>
           </Stack>
 

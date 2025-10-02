@@ -135,14 +135,14 @@ const Features = () => {
                     sx={{
                       py: 3,
                       px: 1,
+                      width: '100%',
+                      color: "inherit",
                       borderRadius: "16px",
                       bgcolor: "transparent",
-                      color: "inherit",
-                      width: '100%',
                       maxWidth: { xs: 'none', sm: 500, md: 360, lg: 420 }
                     }}
                   >
-                    <Stack direction="row" gap={2} mb={2} alignItems="center">
+                    <Stack direction="row" gap={2} mb={2} alignItems="center" px={1}>
                       <Badge
                         sx={{
                           fontSize: 40,
@@ -157,7 +157,7 @@ const Features = () => {
                       <Typography variant="h5">{f.title}</Typography>
                     </Stack>
 
-                    <Typography variant="subtitle2" mb={2}>
+                    <Typography variant="subtitle2" mb={2} px={2}>
                       {f.description}
                     </Typography>
 
@@ -165,9 +165,10 @@ const Features = () => {
                       {f.bulletPoints.map((point, idx) => (
                         <Stack
                           key={idx}
-                          direction="row"
-                          gap={1}
+                          px={1}
                           mb={1}
+                          gap={1}
+                          direction="row"
                           alignItems="center"
                         >
                           <MdCheckCircle color="darkslateblue" size={15} />

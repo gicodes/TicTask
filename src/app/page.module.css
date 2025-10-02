@@ -181,13 +181,37 @@ a.secondary {
   transition: background 0.2s, border-color 0.2s;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .btnPrimary:hover {
+    background:  #383838;
+    color: var(--foreground);
+    border-color: transparent;
+  }
+
+  .btnSecondary:hover {
+    border-color:  var(--background);
+  }
+
+  .btnInverted:hover {
+    background: var(--foreground);
+    color: var(--background);
+    border-color:  var(--background);
+  }
+
+  .btnAction:hover {
+    filter: brightness(0.95);
+    border-color: transparent;
+  }
+}
+
 .btnSecondary {
-  border: 1px solid var(--gray-alpha-200);
+  border: 1px solid white;
   border-radius: 9999px;
   height: 48px;
   padding: 5px 20px;
   font-size: 16px;
   font-weight: 600;
+  background: #111;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -210,7 +234,7 @@ a.secondary {
   transition: background 0.2s, border-color 0.2s;
 }
 
-.btnTertiary {
+.btnAction {
   background: rgb(36, 34, 43);
   color: whitesmoke;
   border-radius: 9999px;

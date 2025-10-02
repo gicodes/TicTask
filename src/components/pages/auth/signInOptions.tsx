@@ -13,7 +13,7 @@ const signInOptions = [
   {
     name: 'Slack',
     provider: 'slack',
-    icon: <FaSlack color="#611F69" />
+    icon: <FaSlack color="darkslateblue" />
   }
 ];
 

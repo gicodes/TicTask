@@ -4,9 +4,9 @@ import React from 'react'
 const Page = () => {
   return (
     <div>
-      <Join role={'ADMIN'} />
+      <Join />
     </div>
   )
 }
 
-export default Page
+export default Page;
