@@ -186,10 +186,12 @@ a.secondary {
     background:  #383838;
     color: var(--foreground);
     border-color: transparent;
+    border-color: darkorange;
   }
 
   .btnSecondary:hover {
     border-color:  var(--background);
+    border-color: darkorange;
   }
 
   .btnInverted:hover {
@@ -201,6 +203,7 @@ a.secondary {
   .btnAction:hover {
     filter: brightness(0.95);
     border-color: transparent;
+    border-color: darkorange;
   }
 }
 

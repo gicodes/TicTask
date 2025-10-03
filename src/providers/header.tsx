@@ -159,6 +159,7 @@ const Header = () => {
                   <Link 
                     style={{ width: '100%', textAlign: 'center'}}
                     href={item.href}
+                    onClick={toggleDrawer}
                   >
                     {item.label}
                   </Link>
@@ -169,6 +170,7 @@ const Header = () => {
                 <ListItem key={link.href}>
                   <Link 
                     href={link.href}
+                    onClick={toggleDrawer}
                     style={{ width: '100%', textAlign: 'center'}}
                     className={link.cta ? styles.btnInverted : ''}
                   >

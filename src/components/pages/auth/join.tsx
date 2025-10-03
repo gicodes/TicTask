@@ -65,9 +65,7 @@ export const Join = () => {
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
-      } else {
-        setError('An unexpected error occurred');
-      }
+      } else setError('An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -86,9 +84,7 @@ export const Join = () => {
         >
           <Stack spacing={2.5}>
             <Stack spacing={1} textAlign="center" pb={3}>
-              <Typography variant="h5" fontWeight={600}>
-                Join TicTask
-              </Typography>
+              <Typography variant="h5" fontWeight={600}> Join TicTask </Typography>
               <Typography variant='body2'>Choose Who You Want to Run As</Typography>
           </Stack>
 
@@ -109,16 +105,18 @@ export const Join = () => {
                   elevation={role === r ? 6 : 2}
                   sx={{
                     borderRadius: 3,
-                    border: role === r ? "2px solid #fff" : "1px solid #ddd",
-                    bgcolor: role === r ? "#111" : "#fafafa",
+                    bgcolor: role === r ? "var(--foreground)" : "rgb(36, 34, 43)",
                     transition: "all 0.25s ease",
-                    width: 140,
+                    width: 125,
+                    height: 'auto',
                     "&:hover": {
                       boxShadow: 6,
-                      border: role === r ? "1px solid transparent" : "2px solid darkslateblue",
+                      border: role === r ? "1px solid darkorange" : "2px solid white",
+                      bgcolor: role === r ? "#383838" : '',
+                      color: role === r ? 'white' : '',
                       transform: "translateY(-2px)",
                     },
-                    color: role === r ? "white" : "black"
+                    color: role === r ? "black" : "white"
                   }}
                 >
                   <CardActionArea>
@@ -127,16 +125,16 @@ export const Join = () => {
                       control={<Radio sx={{ display: "none" }} />}
                       label={
                         <Typography
-                          variant="body1"
+                          variant="body2"
                           sx={{
                             fontWeight: role === r ? 700 : 500,
                             textAlign: "center",
                             py: 2,
                           }}
                         >
-                          {r === "USER" && "☻ User"}
-                          {r === "AGENT" && "♞ Agent"}
-                          {r === "ADMIN" && "♚ Admin"}
+                          {r === "USER" && "USER"}
+                          {r === "AGENT" && "AGENT"}
+                          {r === "ADMIN" && "ADMIN"}
                         </Typography>
                       }
                       sx={{ width: "100%", m: 0, justifyContent: "center" }}
@@ -148,7 +146,7 @@ export const Join = () => {
 
             <Typography
               variant="body2"
-              my={2}
+              my={3}
               textAlign="center"
             >
               {descriptions[role]}
