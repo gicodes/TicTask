@@ -1,5 +1,5 @@
 import { Join } from '@/components/pages/auth/join'
-import React from 'react'
+import React from 'react';
 
 const Page = () => {
   return (

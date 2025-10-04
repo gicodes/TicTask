@@ -17,6 +17,11 @@
 /.next/
 /out/
 
+node_modules
+.prisma
+
+/.prisma
+
 # production
 /build
 

@@ -16,13 +16,14 @@ import {
   Card,
   CardActionArea, 
   TextField,
-  Typography 
+  Typography, 
+  Divider
 } from '@mui/material';
 import Link from 'next/link';
 
 const descriptions: Record<string, string> = {
-  USER: "Create a User account with your personal email",
-  AGENT: "Register as a TicTask Agent. Use your personal email",
+  USER: "Create a standard user account using your personal email",
+  AGENT: "Register as a TicTask Agent with a professional account",
   ADMIN: "Register as TicTask Admin. Verify your email to gain full access",
 };
 
@@ -46,7 +47,7 @@ export const Join = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, role }),
-      }); 
+      });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || 'Registration failed');
@@ -73,7 +74,7 @@ export const Join = () => {
 
   return (
     <Box minHeight={'75vh'} maxWidth={1200} mx={'auto'}>
-      <Box mt={10} p={2} maxWidth={500} mx={'auto'}>
+      <Box mt={5} p={2} maxWidth={500} mx={'auto'}>
         <Box
           component="form"
           p={{ xs: 1.2, sm: 1.5, md: 2}}
@@ -82,76 +83,82 @@ export const Join = () => {
           color='inherit'
           width="100%"
         >
-          <Stack spacing={2.5}>
-            <Stack spacing={1} textAlign="center" pb={3}>
-              <Typography variant="h5" fontWeight={600}> Join TicTask </Typography>
-              <Typography variant='body2'>Choose Who You Want to Run As</Typography>
-          </Stack>
-
-          <Box>
-            <RadioGroup
-              value={role}
-              onChange={(e) => setRole(e.target.value as any)}
-              sx={{
-                display: "flex",
-                gap: 2,
-                flexDirection: "row",
-                justifyContent: "center",
-              }}
+          <Stack spacing={2.5} mx={'auto'}>
+            <Box 
+              py={1} 
+              gap={2}  
+              mx={'auto'} 
+              textAlign={'center'}
+              display={'grid'} 
+              justifyContent={'center'}
             >
-              {["USER", "AGENT", "ADMIN"].map((r) => (
-                <Card
-                  key={r}
-                  elevation={role === r ? 6 : 2}
-                  sx={{
-                    borderRadius: 3,
-                    bgcolor: role === r ? "var(--foreground)" : "rgb(36, 34, 43)",
-                    transition: "all 0.25s ease",
-                    width: 125,
-                    height: 'auto',
-                    "&:hover": {
-                      boxShadow: 6,
-                      border: role === r ? "1px solid darkorange" : "2px solid white",
-                      bgcolor: role === r ? "#383838" : '',
-                      color: role === r ? 'white' : '',
-                      transform: "translateY(-2px)",
-                    },
-                    color: role === r ? "black" : "white"
-                  }}
-                >
-                  <CardActionArea>
-                    <FormControlLabel
-                      value={r}
-                      control={<Radio sx={{ display: "none" }} />}
-                      label={
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            fontWeight: role === r ? 700 : 500,
-                            textAlign: "center",
-                            py: 2,
-                          }}
-                        >
-                          {r === "USER" && "USER"}
-                          {r === "AGENT" && "AGENT"}
-                          {r === "ADMIN" && "ADMIN"}
-                        </Typography>
-                      }
-                      sx={{ width: "100%", m: 0, justifyContent: "center" }}
-                    />
-                  </CardActionArea>
-                </Card>
-              ))}
-            </RadioGroup>
+              <Typography variant="h4" fontWeight={600}> Join TicTask </Typography>
+              <Divider sx={{ bgcolor: 'silver', width: 180, mx: 'auto' }}/>
+              <Typography variant='h6'>Choose A Role</Typography>
+            </Box>
 
-            <Typography
-              variant="body2"
-              my={3}
-              textAlign="center"
-            >
-              {descriptions[role]}
-            </Typography>
-          </Box>
+            <Box>
+              <RadioGroup
+                value={role}
+                onChange={(e) => setRole(e.target.value as Role)}
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  my: 3,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                {["USER", "AGENT"].map((r) => (
+                  <Card
+                    key={r}
+                    elevation={role === r ? 6 : 2}
+                    sx={{
+                      borderRadius: 3,
+                      bgcolor: role === r ? "var(--foreground)" : "rgb(36, 34, 43)",
+                      transition: "all 0.25s ease",
+                      width: 125,
+                      height: 'auto',
+                      color: role === r ? "black" : "white",
+                      "&:hover": {
+                        boxShadow: 6,
+                        border: role === r ? "1px solid darkorange" : "2px solid white",
+                        bgcolor: role === r ? "#383838" : '',
+                        color: role === r ? 'white' : '',
+                        transform: "translateY(-2px)",
+                      },
+                    }}
+                  >
+                    <CardActionArea>
+                      <FormControlLabel
+                        value={r}
+                        control={<Radio sx={{ display: "none" }} />}
+                        label={
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              fontWeight: role === r ? 700 : 500,
+                              textAlign: "center",
+                              py: 2,
+                            }}
+                          >
+                            {r === "USER" && "USER"}
+                            {r === "AGENT" && "AGENT"}
+                          </Typography>
+                        }
+                        sx={{ width: "100%", m: 0, justifyContent: "center" }}
+                      />
+                    </CardActionArea>
+                  </Card>
+                ))}
+              </RadioGroup>
+              <Typography
+                variant="body2"
+                textAlign="center"
+              >
+                {descriptions[role]}
+              </Typography>
+            </Box>
 
             <TextField
               label="Email"
@@ -190,7 +197,7 @@ export const Join = () => {
           alignItems={'center'}
         >
           <Typography variant='subtitle2'>Have an Account? &nbsp; <Link href={'/auth/agent/login'}>Login here</Link></Typography>
-          <Typography variant='subtitle2'><Link href={'/auth/forgot-password'}>Forgot Password?</Link></Typography>
+          <Typography variant='subtitle2'> <Link href={'/auth/forgot-password'}>Forgot Password?</Link></Typography>
         </Stack> 
         }
       </Box>

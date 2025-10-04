@@ -197,7 +197,7 @@ a.secondary {
   .btnInverted:hover {
     background: var(--foreground);
     color: var(--background);
-    border-color:  var(--background);
+    border-color: darkorange;
   }
 
   .btnAction:hover {
