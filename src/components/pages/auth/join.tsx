@@ -1,38 +1,46 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { apiPost } from "@/lib/api";
 import { Role } from '@/types/user';
 import { signIn } from 'next-auth/react';
 import styles from "@/app/page.module.css";
-import { useRouter } from 'next/navigation';
 import SignInOptions from './signInOptions';
 import { AuthDivider } from './orAuthDivider';
 import { 
-  Box, 
-  Stack, 
+   Box,
+  Stack,
+  Fade,
+  Card,
+  CardActionArea,
+  FormControlLabel,
   Radio,
   RadioGroup,
-  FormControlLabel,
-  Card,
-  CardActionArea, 
   TextField,
-  Typography, 
-  Divider
+  Typography,
+  Divider,
 } from '@mui/material';
 import Link from 'next/link';
+import { VerifyEmailResponse, VerifyEmailRequest } from '@/types/axios'
 
-const descriptions: Record<string, string> = {
-  USER: "Create a standard user account using your personal email",
-  AGENT: "Register as a TicTask Agent with a professional account",
-  ADMIN: "Register as TicTask Admin. Verify your email to gain full access",
-};
+type UserType = 'personal' | 'business';
 
-export const Join = () => {
-  const router = useRouter();
+export const Join = ({ roleParam }: { roleParam: Role }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<Role>('USER');
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [userType, setUserType] = useState<UserType>('personal');
+  const [formData, setFormData] = useState({
+    email: '', 
+    password: '', 
+    name: '' 
+  });
+
+  useEffect(() => {
+    if (roleParam === 'ADMIN') setRole('ADMIN');
+    else setRole('USER');
+  }, [roleParam]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,163 +51,195 @@ export const Join = () => {
     setError('');
 
     try {
-      const res = await fetch(`/api/auth/${role.toLowerCase()}/join`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, role }),
-      });
+      const payload: VerifyEmailRequest = {
+        email: formData.email,
+        role,
+        ...(role === "ADMIN" ? { name: formData.name, password: formData.password } : {}),
+      };
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || 'Registration failed');
+      const data = await apiPost<VerifyEmailResponse, VerifyEmailRequest>(
+        "/auth/verify-email",
+        payload
+      );
 
-      if (role === 'AGENT') {
-        localStorage.setItem('token', data.token);
-        router.push(`/api/auth/${role.toLowerCase()}/join/onboarding`);
-      } else {
-        await signIn('credentials', {
+      console.log("Verification mail sent:", data.message);
+
+      if (role === "ADMIN") {
+        await signIn("credentials", {
           email: formData.email,
           password: formData.password,
           redirect: true,
-          callbackUrl: '/dashboard',
+          callbackUrl: "/dashboard/admin",
         });
+      } else {
+        // For USER, redirect or show onboarding instruction
+        window.location.href = "/verify"; 
       }
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else setError('An unexpected error occurred');
+      setError(err instanceof Error ? err.message : "Unexpected error");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Box minHeight={'75vh'} maxWidth={1200} mx={'auto'}>
-      <Box mt={5} p={2} maxWidth={500} mx={'auto'}>
+    <Box minHeight="75vh" maxWidth={1200} mx="auto">
+      <Box mt={5} p={2} maxWidth={500} mx="auto">
         <Box
           component="form"
-          p={{ xs: 1.2, sm: 1.5, md: 2}}
           onSubmit={handleSubmit}
-          bgcolor="inherit"
-          color='inherit'
-          width="100%"
+          p={{ xs: 1.2, sm: 1.5, md: 2 }}
         >
-          <Stack spacing={2.5} mx={'auto'}>
-            <Box 
-              py={1} 
-              gap={2}  
-              mx={'auto'} 
-              textAlign={'center'}
-              display={'grid'} 
-              justifyContent={'center'}
-            >
-              <Typography variant="h4" fontWeight={600}> Join TicTask </Typography>
-              <Divider sx={{ bgcolor: 'silver', width: 180, mx: 'auto' }}/>
-              <Typography variant='h6'>Choose A Role</Typography>
+          <Stack spacing={2.5}>
+            <Box textAlign="center" py={1}>
+              <Typography variant="h4" fontWeight={600}>
+                Join TicTask
+              </Typography>
+              <Divider sx={{ bgcolor: 'silver', width: 180, mx: 'auto', my: 1 }} />
             </Box>
 
-            <Box>
-              <RadioGroup
-                value={role}
-                onChange={(e) => setRole(e.target.value as Role)}
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  my: 3,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
-              >
-                {["USER", "AGENT"].map((r) => (
-                  <Card
-                    key={r}
-                    elevation={role === r ? 6 : 2}
+            {role === 'USER' ? (
+              <Fade in timeout={500}>
+                <Box mt={10}>
+                  <Typography textAlign="center" fontWeight={600}>
+                    Choose Account Type
+                  </Typography>
+                  <RadioGroup
+                    value={userType}
+                    onChange={(e) => setUserType(e.target.value as UserType)}
                     sx={{
-                      borderRadius: 3,
-                      bgcolor: role === r ? "var(--foreground)" : "rgb(36, 34, 43)",
-                      transition: "all 0.25s ease",
-                      width: 125,
-                      height: 'auto',
-                      color: role === r ? "black" : "white",
-                      "&:hover": {
-                        boxShadow: 6,
-                        border: role === r ? "1px solid darkorange" : "2px solid white",
-                        bgcolor: role === r ? "#383838" : '',
-                        color: role === r ? 'white' : '',
-                        transform: "translateY(-2px)",
-                      },
+                      display: 'flex',
+                      justifyContent: 'center',
+                      gap: 2,
+                      flexDirection: 'row',
+                      mt: 2,
                     }}
                   >
-                    <CardActionArea>
-                      <FormControlLabel
-                        value={r}
-                        control={<Radio sx={{ display: "none" }} />}
-                        label={
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              fontWeight: role === r ? 700 : 500,
-                              textAlign: "center",
-                              py: 2,
-                            }}
-                          >
-                            {r === "USER" && "USER"}
-                            {r === "AGENT" && "AGENT"}
-                          </Typography>
-                        }
-                        sx={{ width: "100%", m: 0, justifyContent: "center" }}
-                      />
-                    </CardActionArea>
-                  </Card>
-                ))}
-              </RadioGroup>
-              <Typography
-                variant="body2"
-                textAlign="center"
-              >
-                {descriptions[role]}
-              </Typography>
-            </Box>
+                    {['personal', 'business'].map((type) => (
+                      <Card
+                        key={type}
+                        elevation={userType === type ? 6 : 2}
+                        sx={{
+                          borderRadius: 3,
+                          bgcolor:
+                            userType === type
+                              ? 'var(--foreground)'
+                              : 'rgb(36, 34, 43)',
+                          color: userType === type ? 'black' : 'white',
+                          transition: 'all 0.25s ease',
+                          width: 130,
+                          "&:hover": { 
+                            boxShadow: 6, 
+                            border: userType === type ? "1px solid white" : "2px solid darkorange", 
+                            bgcolor: userType === type ? "#383838" : '', 
+                            color: userType === type ? 'white' : '', 
+                            transform: "translateY(-2px)",
+                          },
+                          display: 'grid',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <CardActionArea>
+                          <FormControlLabel
+                            value={type}
+                            control={<Radio sx={{ display: 'none' }} />}
+                            label={
+                              <Typography
+                                variant="body2"
+                                fontWeight={600}
+                                textAlign="center"
+                                py={2}
+                              >
+                                {type === 'personal'
+                                  ? 'Personal'
+                                  : 'Organization'}
+                              </Typography>
+                            }
+                            sx={{ m: 0 }}
+                          />
+                        </CardActionArea>
+                      </Card>
+                    ))}
+                  </RadioGroup>
+                </Box>
+              </Fade>
+            ): 
+              <Typography fontWeight={600} textAlign={'center'}> Quick Sign up in Seconds</Typography>
+            }
 
-            <TextField
-              label="Email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              sx={{ bgcolor: 'whitesmoke', borderRadius: 2}}
-            />
+            <Fade in timeout={600}>
+              <Box display={'grid'} gap={2}>
+                <TextField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  sx={{ bgcolor: 'whitesmoke', borderRadius: 2 }}
+                  fullWidth required
+                />
 
-            <Box display={'flex'} pt={1} justifyContent={'right'}>
-              { error && <Typography my={1} color="error">{error}</Typography>}
-              <button 
-                type="submit" 
-                disabled={loading} 
-                className={styles.btnAction}
-              >
-                {loading ? 'Sending OTP...' : `Get OTP`}
-              </button>
-            </Box>
+                { role === "ADMIN" && <>
+                  <Typography mt={3}>Let us know your preferred name(s)</Typography>
+                  <TextField
+                    label="Full Name"
+                    name="name"
+                    type="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2 }}
+                    fullWidth required
+                  />
+                  <TextField
+                    label="Password"
+                    type="password"
+                    variant="outlined"
+                    value={formData.password}
+                    onChange={handleChange}
+                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2 }}
+                    fullWidth required
+                  />
+                </>}
+
+                <Box display="flex" gap={2} justifyContent="space-between" pt={2}>
+                  <span>{error && (
+                    <Typography color="error" fontSize="0.9rem">
+                      {error}
+                    </Typography>
+                  )}
+                  </span>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`min-width-100 ${styles.btnAction}`}
+                  >
+                    {loading ? 'Processing...' : 'Verify Email'}
+                  </button>
+                </Box>
+              </Box>
+            </Fade>
           </Stack>
-        </Box>  
+        </Box>
 
-        { role==="USER" ? 
-        <>
-          <AuthDivider />
-          <SignInOptions />
-        </> :
-        <Stack 
-          mt={10} 
-          gap={2}  
-          display={'flex'} 
-          direction={'row'} 
-          justifyContent={'space-around'}
-          alignItems={'center'}
+        {role === 'USER' && (
+          <>
+            <AuthDivider />
+            <SignInOptions />
+          </>
+        )}
+
+        <Stack
+          mt={10}
+          gap={2}
+          direction="row"
+          justifyContent="space-around"
+          alignItems="center"
         >
-          <Typography variant='subtitle2'>Have an Account? &nbsp; <Link href={'/auth/agent/login'}>Login here</Link></Typography>
-          <Typography variant='subtitle2'> <Link href={'/auth/forgot-password'}>Forgot Password?</Link></Typography>
-        </Stack> 
-        }
+          <Typography variant="subtitle2">
+            Have an account? &nbsp;
+            <Link href={`/auth/login`}>Login here</Link>
+          </Typography>
+        </Stack>
       </Box>
     </Box>
   );

@@ -1,4 +1,4 @@
-export type Role = 'ADMIN' | 'AGENT' | 'USER';
+export type Role = 'ADMIN' | 'USER';
 export type TeamRole = 'OWNER' | 'ADMIN' | 'MEMBER';
 export type AdminLevel = 'BASIC' | 'FULL' | 'SUPER';
 export type Plan = 'FREE' | 'STANDARD' | 'PRO' | 'ENTERPRISE';

@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import LoginTemplate from './loginTemplate';
 
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
-
-export const AdminLogin = () => {
+export const CredentialsForm = () => {
   const router = useRouter();
+
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');  
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,28 +18,17 @@ export const AdminLogin = () => {
     setSubmitting(true);
     setError('');
 
-    try {
-      const res = await fetch(`${SERVER_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+    const res = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+    });
 
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data?.message || 'Login failed');
-
-      localStorage.setItem('token', data.token);
-
-      router.push('/dashboard');
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('An unexpected error occurred');
-      }
-    } finally {
+    if (res?.error) {
+      setError(res.error || 'Invalid credentials');
       setSubmitting(false);
+    } else {
+      router.push('/dashboard');
     }
   };
 
