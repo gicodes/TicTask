@@ -17,47 +17,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import styles from '@/app/page.module.css';
-import { UserType } from './page';
-
-interface Props {
-  step: number;
-  stepsTotal: number;
-  progress: number;
-  loading: boolean;
-  error: string | null;
-  handleNext: () => void;
-  handleBack: () => void;
-  handleSubmit: (e: React.FormEvent) => void;
-
-  userType: UserType;
-  setUserType: (v: UserType) => void;
-
-  password: string;
-  setPassword: (v: string) => void;
-  name: string;
-  setName: (v: string) => void;
-  orgName: string;
-  setOrgName: (v: string) => void;
-  country: string;
-  setCountry: (v: string) => void;
-  phone: string;
-  setPhone: (v: string) => void;
-  photo: File | null;
-  setPhoto: (v: File | null) => void;
-
-  industry: string;
-  setIndustry: (v: string) => void;
-  teamSize: string;
-  setTeamSize: (v: string) => void;
-  hqCountry: string;
-  setHqCountry: (v: string) => void;
-  website: string;
-  setWebsite: (v: string) => void;
-  logo: File | null;
-  setLogo: (v: File | null) => void;
-  bio: string;
-  setBio: (v: string) => void;
-}
+import { UserType, OnboardingProps } from '@/types/onboarding';
 
 const industries = [
   'Technology',
@@ -72,7 +32,7 @@ const industries = [
   'Consulting',
 ];
 
-export default function OnboardingUI(props: Props) {
+export default function OnboardingUI(props: OnboardingProps) {
   const {
     step,
     progress,
@@ -198,12 +158,12 @@ export default function OnboardingUI(props: Props) {
               </RadioGroup>
 
               <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}> 
-                {userType === 'business' ? 'Organizations can manage multiple users and projects' : 'Personal accounts are for individual use'} 
+                {userType === 'BUSINESS' ? 'Organizations can manage multiple users and projects' : 'Personal accounts are for individual use'} 
               </Typography> 
               
               <Divider sx={{ bgcolor: 'gray', width: '100%', my: 2, maxWidth: 360}}/>
 
-              {userType === 'personal' ? (
+              {userType === 'PERSONAL' ? (
                 <>
                   <TextField
                     fullWidth
