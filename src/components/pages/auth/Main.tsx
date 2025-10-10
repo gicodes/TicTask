@@ -18,10 +18,7 @@ export const Login = ({role}: LoginProps) => {
       <Box p={2} mx={'auto'} maxWidth={1200}>
         <Stack mt={5} gap={2} mx={'auto'} maxWidth={500}>
           <Stack gap={1} textAlign={'center'} py={1}>
-            <Typography variant='h4'>Welcome Back{isUser ? '' : ", Admin"}</Typography>
-            <Typography variant='subtitle2'> {isUser ? 'Login to view, assign and complete Tickets' : 
-              "Login to manage tickets, tasks and remote access"}
-            </Typography>
+            <Typography variant='h4'>Welcome, Login</Typography>
           </Stack>
 
         { isUser ? 

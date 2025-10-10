@@ -113,10 +113,10 @@ a.secondary {
   align-items: center;
   gap: 25px;
   padding: 1rem;
-  margin: 4rem auto 0;
+  margin-top: 3rem;
 
   @media screen and (max-width: 600px) {
-    margin-top: 3rem;
+    margin-top: 1.8rem;
     padding: 0.75px;
   }
 }
@@ -181,32 +181,6 @@ a.secondary {
   transition: background 0.2s, border-color 0.2s;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .btnPrimary:hover {
-    background:  #383838;
-    color: var(--foreground);
-    border-color: transparent;
-    border-color: darkorange;
-  }
-
-  .btnSecondary:hover {
-    border-color:  var(--background);
-    border-color: darkorange;
-  }
-
-  .btnInverted:hover {
-    background: var(--foreground);
-    color: var(--background);
-    border-color: darkorange;
-  }
-
-  .btnAction:hover {
-    filter: brightness(0.95);
-    border-color: transparent;
-    border-color: darkorange;
-  }
-}
-
 .btnSecondary {
   border: 1px solid white;
   border-radius: 9999px;
@@ -250,4 +224,92 @@ a.secondary {
   justify-content: center;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
+}
+
+.btnRetreat {
+  background: #999;
+  color: rgb(36, 34, 43);
+  border-radius: 9999px;
+  height: 48px;
+  padding: 5px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btnPrimary:hover {
+    background:  #383838;
+    color: var(--foreground);
+    border-color: darkorange;
+  }
+
+  .btnSecondary:hover {
+    filter: brightness(0.95);
+    border-color: darkorange;
+  }
+
+  .btnInverted:hover {
+    background: var(--foreground);
+    color: var(--background);
+    border-color: darkorange;
+  }
+
+  .btnAction:hover {
+    filter: brightness(0.95);
+    border-color: darkorange;
+  }
+
+  .btnRetreat:hover {
+    background: white;
+    border-color: darkorange;
+  }
+}
+
+.defPageColors {
+  color: white;
+  background-color: (var(--background));
+}
+
+.container {
+  max-width: 1200;
+  min-height: 75vh;
+  padding: 1rem;
+  margin: 4rem auto 0;
+}
+
+.mid {
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 500;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.outerCircle {
+  border: 0.1px solid white;
+  padding: 10px;
+  border-radius: 50%;
+  width: fit-content;
+}
+
+.actions {
+  gap: 5rem;
+  width: 100%;
+  display: flex;
+  margin: 2rem 0;
+  flex-direction: row;
+  max-width: 360px;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid whitesmoke;
+  padding: 1rem;
+  border-radius: 1rem;
 }
