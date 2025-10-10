@@ -125,7 +125,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                   mt: 2,
                 }}
               >
-                {['personal', 'business'].map((type) => (
+                {['PERSONAL', 'BUSINESS'].map((type) => (
                   <Card
                     key={type}
                     elevation={userType === type ? 6 : 2}
@@ -147,7 +147,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                         control={<Radio sx={{ display: 'none' }} />}
                         label={
                           <Typography fontWeight={600} py={1.5}>
-                            {type === 'personal' ? 'Personal' : 'Organization'}
+                            {type === 'PERSONAL' ? 'Individual' : 'Organization'}
                           </Typography>
                         }
                         sx={{ m: 0 }}
@@ -158,7 +158,7 @@ export default function OnboardingUI(props: OnboardingProps) {
               </RadioGroup>
 
               <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}> 
-                {userType === 'BUSINESS' ? 'Organizations can manage multiple users and projects' : 'Personal accounts are for individual use'} 
+                {userType === 'BUSINESS' ? 'Organizations can manage multiple users and projects' : 'Individual accounts are for personal use'} 
               </Typography> 
               
               <Divider sx={{ bgcolor: 'gray', width: '100%', my: 2, maxWidth: 360}}/>
@@ -226,7 +226,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                   />
                   <TextField
                     fullWidth
-                    placeholder="Business Website"
+                    placeholder="BUSINESS Website"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
                     sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
