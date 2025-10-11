@@ -262,7 +262,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                     />
                     <TextField
                       fullWidth
-                      placeholder="BUSINESS Website"
+                      placeholder="Business / Company Website"
                       value={website}
                       onChange={(e) => setWebsite(e.target.value)}
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}

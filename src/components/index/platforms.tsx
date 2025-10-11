@@ -25,7 +25,7 @@ const ProPlatform = () => {
         fontWeight={600}
         fontSize={{ xs: 35, sm: 40, md: 42, lg: 45}} 
       >
-        Got inspired by the right ideas
+        The right ideas inspire us all
       </Typography>
       <Typography
         variant="subtitle1"
