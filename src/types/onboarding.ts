@@ -39,3 +39,11 @@ export interface OnboardingProps {
   bio: string;
   setBio: (v: string) => void;
 }
+
+export interface CountrySelectProps {
+  accountType: "PERSONAL" | "BUSINESS";
+  hqCountry: string;
+  setHqCountry: (value: string) => void;
+  country: string;
+  setCountry: (value: string) => void;
+}

@@ -13,7 +13,6 @@ import {
   Stack,
   LinearProgress,
   Alert,
-  Divider,
   MenuItem,
   FormControl,
   InputLabel,
@@ -78,20 +77,44 @@ export default function OnboardingUI(props: OnboardingProps) {
     </Stack>
 
   const CountrySelect = ({ accountType }: { accountType: UserType}) =>
-    <FormControl fullWidth sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}>
-      <InputLabel>{accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}</InputLabel>
-      <Select
-        value={hqCountry}
-        onChange={accountType==="BUSINESS" ? (e) => setHqCountry(e.target.value) : (e) => setCountry(e.target.value)}
-        label={accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}
+    <Box width={"100%"} maxWidth={400} mx={"auto"} my={2}>
+      <FormControl
+        fullWidth
+        variant="outlined"
+        sx={{ 
+          bgcolor: "white",
+          borderRadius: 2,
+          "& .MuiInputLabel-root": {
+            color: "text.secondary",
+          }, "& .MuiOutlinedInput-root": {
+            borderRadius: 2,
+            backgroundColor: "whitesmoke",
+            "& fieldset": {
+              borderColor: "#ddd",
+            }, "&:hover fieldset": {
+              borderColor: "#999",
+            }, "&.Mui-focused fieldset": {
+              borderColor: "#1976d2",
+              borderWidth: 2,
+            },
+          },
+        }}
       >
-        {allCountries.map((country) => (
-          <MenuItem key={country} value={country}>
-            {country}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+        <InputLabel>{accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}</InputLabel>
+        <Select
+          MenuProps={{
+            PaperProps: { sx: { maxHeight: 300, borderRadius: 2,}},
+          }}
+          value={accountType==="BUSINESS" ? hqCountry : country} 
+          label={accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}
+          onChange={accountType==="BUSINESS" ? (e) => setHqCountry(e.target.value) : (e) => setCountry(e.target.value)} 
+        >
+          {allCountries.map((country) => (
+            <MenuItem key={country} value={country}> {country}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
 
   return (
     <Box className={styles.container}>
@@ -106,7 +129,6 @@ export default function OnboardingUI(props: OnboardingProps) {
             {error}
           </Alert>
         )}
-
         {step === 1 && (
           <Fade in timeout={500}>
             <Box className={styles.mid}>
@@ -134,7 +156,6 @@ export default function OnboardingUI(props: OnboardingProps) {
             </Box>
           </Fade>
         )}
-
         {step === 2 && (
           <Fade in timeout={500}>
             <Box className={styles.mid}>
@@ -189,80 +210,79 @@ export default function OnboardingUI(props: OnboardingProps) {
                 {userType === 'BUSINESS' ? 'Organizations can manage multiple users and projects' : 'Individual accounts are for personal use'} 
               </Typography> 
               
-              <Divider sx={{ bgcolor: 'gray', width: '100%', my: 2, maxWidth: 360}}/>
-
-              {userType === 'PERSONAL' ? (
-                <>
-                  <CountrySelect accountType='PERSONAL' />
-                  <TextField
-                    fullWidth
-                    placeholder="Phone Number"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
-                  />
-                  <TextField
-                    fullWidth
-                    placeholder="Full Name(s)"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
-                  />
-                </>
-              ) : (
-                <>
-                  <TextField
-                    fullWidth
-                    placeholder="Organization Name"
-                    value={orgName}
-                    onChange={(e) => setOrgName(e.target.value)}
-                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
-                  />
-                  <CountrySelect accountType='BUSINESS' />
-                  <TextField
-                    select
-                    fullWidth
-                    label="Industry"
-                    value={industry}
-                    onChange={(e) => setIndustry(e.target.value)}
-                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
-                  >
-                    {Industries.map((i) => (
-                      <MenuItem key={i} value={i}>
-                        {i}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField
-                    fullWidth
-                    placeholder="Number of Team Members"
-                    value={teamSize}
-                    onChange={(e) => setTeamSize(e.target.value)}
-                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
-                  />
-                  <TextField
-                    fullWidth
-                    placeholder="BUSINESS Website"
-                    value={website}
-                    onChange={(e) => setWebsite(e.target.value)}
-                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
-                  />
-                  <TextField
-                    fullWidth
-                    placeholder="Short Bio / Description"
-                    value={bio}
-                    onChange={(e) => setBio(e.target.value)}
-                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
-                    multiline
-                    rows={3}
-                  />
-                </>
-              )}
+              <Card sx={{ px: { xs: 1, sm: 1.5, lg: 2}, py: {md: 1}, pb: {xs: 1.5, md: 2}}}>
+                {userType === 'PERSONAL' ? (
+                  <>
+                    <CountrySelect accountType='PERSONAL' />
+                    <TextField
+                      fullWidth
+                      placeholder="Phone Number"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
+                    />
+                    <TextField
+                      fullWidth
+                      placeholder="Full Name(s)"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <TextField
+                      fullWidth
+                      placeholder="Organization Name"
+                      value={orgName}
+                      onChange={(e) => setOrgName(e.target.value)}
+                      sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
+                    />
+                    <CountrySelect accountType='BUSINESS' />
+                    <TextField
+                      select
+                      fullWidth
+                      label="Industry"
+                      value={industry}
+                      onChange={(e) => setIndustry(e.target.value)}
+                      sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
+                    >
+                      {Industries.map((i) => (
+                        <MenuItem key={i} value={i}>
+                          {i}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    <TextField
+                      fullWidth
+                      placeholder="Number of Team Members"
+                      value={teamSize}
+                      onChange={(e) => setTeamSize(e.target.value)}
+                      sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
+                    />
+                    <TextField
+                      fullWidth
+                      placeholder="BUSINESS Website"
+                      value={website}
+                      onChange={(e) => setWebsite(e.target.value)}
+                      sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
+                    />
+                    <TextField
+                      fullWidth
+                      placeholder="Short Bio / Description"
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
+                      multiline
+                      rows={3}
+                    />
+                  </>
+                )}
+              </Card>
               <ActionGroup />
             </Box>
           </Fade>
         )}
-
         {step === 3 && (
           <Fade in timeout={500}>
             <Box className={styles.mid}>

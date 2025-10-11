@@ -65,7 +65,7 @@ export const AuthVerifyPage = () => {
 
   return (
     <Box className={`${styles.container} ${styles.mid}`}>
-      <Stack mb={5}>
+      <Stack mt={10} mb={5}>
         <Typography variant="h4" fontWeight={600}>Verify your email</Typography>
       </Stack>
 
@@ -80,7 +80,7 @@ export const AuthVerifyPage = () => {
           : `Link valid for: ${formatTime(timeLeft)}`}
       </Typography>
 
-      <Stack mt={5} className={styles.actions}>
+      <Stack className={styles.actions}>
         <button
           type="button"
           className={`min-width-180 ${styles.btnAction}`}
