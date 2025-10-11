@@ -1,21 +1,39 @@
 "use client";
 
-import styles from '@/app/page.module.css';
-import { Box, Divider, Stack, Typography } from '@mui/material';
-import { RiCheckboxCircleFill } from 'react-icons/ri';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import { apiPost } from '@/lib/api';
+import { apiPost } from "@/lib/api";
+import styles from "@/app/page.module.css";
+import { useState, useEffect } from "react";
+import { Box, Stack, Typography } from "@mui/material";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const AuthVerifyPage = () => {
   const router = useRouter();
   const params = useSearchParams();
   const email = params.get("email") || "";
   const role = params.get("role") || "USER";
-
   const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
 
   const handleResend = async () => {
     if (!email) return setError("Missing email");
@@ -29,6 +47,7 @@ export const AuthVerifyPage = () => {
         { email, role }
       );
       setInfo(res.message);
+      setTimeLeft(15 * 60);
     } catch (err) {
       if (err && typeof err === "object" && "message" in err) {
         setError((err as { message: string }).message);
@@ -40,29 +59,31 @@ export const AuthVerifyPage = () => {
     }
   };
 
-  const handleChangeEmail = () => {
-    router.push(`/auth/join/${role}`);
-  };
+  const handleChangeEmail = () => router.push(`/auth/join/${role}`);
+
+  const expired = timeLeft <= 0;
 
   return (
     <Box className={`${styles.container} ${styles.mid}`}>
-      <Stack my={5} display={'grid'} gap={2}>
-        <span className={styles.mid}>
-          <RiCheckboxCircleFill color={'lightblue'} size={50} className={styles.outerCircle}/>
-        </span>
-        <Typography variant='h3'>Verify your email</Typography>
-        <Divider />
+      <Stack mb={5}>
+        <Typography variant="h4" fontWeight={600}>Verify your email</Typography>
       </Stack>
 
       <Typography>
-        We&apos;ve sent a verification link to <strong>{email}</strong>.
+        We&apos;ve sent a verification link to <strong>{email || "your inbox"}</strong>.
       </Typography>
       <Typography>Click the link in your inbox to continue.</Typography>
 
-      <Stack className={styles.actions}>
+      <Typography sx={{ mt: 3, fontWeight: "bold" }}>
+        {expired
+          ? "Verification link has expired. Please resend."
+          : `Link valid for: ${formatTime(timeLeft)}`}
+      </Typography>
+
+      <Stack mt={5} className={styles.actions}>
         <button
           type="button"
-          className={`min-width-100 ${styles.btnAction}`}
+          className={`min-width-180 ${styles.btnAction}`}
           onClick={handleResend}
           disabled={loading}
         >
@@ -70,7 +91,7 @@ export const AuthVerifyPage = () => {
         </button>
         <button
           type="button"
-          className={`min-width-100 ${styles.btnRetreat}`}
+          className={`min-width-180 ${styles.btnRetreat}`}
           onClick={handleChangeEmail}
         >
           Change Email
@@ -79,7 +100,7 @@ export const AuthVerifyPage = () => {
 
       {info && <Typography color="green">{info}</Typography>}
       {error && <Typography color="red">{error}</Typography>}
-      <Typography>Didn&apos;t get it yet? Check your spam folder.</Typography>
+      <Typography>Didn&apos;t find an email yet? Check your spam folder.</Typography>
     </Box>
   );
 };

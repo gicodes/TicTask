@@ -116,7 +116,7 @@ a.secondary {
   margin-top: 3rem;
 
   @media screen and (max-width: 600px) {
-    margin-top: 1.8rem;
+    margin-top: 1rem;
     padding: 0.75px;
   }
 }
@@ -304,12 +304,8 @@ a.secondary {
   gap: 5rem;
   width: 100%;
   display: flex;
-  margin: 2rem 0;
+  margin: 5rem 0;
+  flex-wrap: wrap;
   flex-direction: row;
-  max-width: 360px;
   justify-content: center;
-  background: transparent;
-  border: 1px solid whitesmoke;
-  padding: 1rem;
-  border-radius: 1rem;
 }

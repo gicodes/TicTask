@@ -15,22 +15,14 @@ import {
   Alert,
   Divider,
   MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
 } from '@mui/material';
 import styles from '@/app/page.module.css';
+import { Industries } from '@/constants/industries';
+import { allCountries } from '@/constants/allCounties';
 import { UserType, OnboardingProps } from '@/types/onboarding';
-
-const industries = [
-  'Technology',
-  'Finance',
-  'Healthcare',
-  'Education',
-  'Retail',
-  'Manufacturing',
-  'Media',
-  'Real Estate',
-  'Transportation',
-  'Consulting',
-];
 
 export default function OnboardingUI(props: OnboardingProps) {
   const {
@@ -64,6 +56,42 @@ export default function OnboardingUI(props: OnboardingProps) {
     bio,
     setBio,
   } = props;
+
+  const ActionGroup = () => 
+    <Stack className={styles.actions}>
+      <button
+        type="button"
+        onClick={handleBack}
+        className={`min-width-100 ${styles.btnRetreat}`}
+        disabled={loading}
+      >
+        Back
+      </button>
+      <button
+        type="button"
+        onClick={handleNext}
+        className={`min-width-100 ${styles.btnPrimary}`}
+        disabled={loading}
+      >
+        {loading ? 'Saving...' : 'Continue'}
+      </button>
+    </Stack>
+
+  const CountrySelect = ({ accountType }: { accountType: UserType}) =>
+    <FormControl fullWidth sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}>
+      <InputLabel>{accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}</InputLabel>
+      <Select
+        value={hqCountry}
+        onChange={accountType==="BUSINESS" ? (e) => setHqCountry(e.target.value) : (e) => setCountry(e.target.value)}
+        label={accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}
+      >
+        {allCountries.map((country) => (
+          <MenuItem key={country} value={country}>
+            {country}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
 
   return (
     <Box className={styles.container}>
@@ -165,25 +193,19 @@ export default function OnboardingUI(props: OnboardingProps) {
 
               {userType === 'PERSONAL' ? (
                 <>
-                  <TextField
-                    fullWidth
-                    placeholder="Full Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
-                  />
-                  <TextField
-                    fullWidth
-                    placeholder="Country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
-                  />
+                  <CountrySelect accountType='PERSONAL' />
                   <TextField
                     fullWidth
                     placeholder="Phone Number"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
+                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
+                  />
+                  <TextField
+                    fullWidth
+                    placeholder="Full Name(s)"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
                   />
                 </>
@@ -196,6 +218,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                     onChange={(e) => setOrgName(e.target.value)}
                     sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
                   />
+                  <CountrySelect accountType='BUSINESS' />
                   <TextField
                     select
                     fullWidth
@@ -204,7 +227,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                     onChange={(e) => setIndustry(e.target.value)}
                     sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
                   >
-                    {industries.map((i) => (
+                    {Industries.map((i) => (
                       <MenuItem key={i} value={i}>
                         {i}
                       </MenuItem>
@@ -215,13 +238,6 @@ export default function OnboardingUI(props: OnboardingProps) {
                     placeholder="Number of Team Members"
                     value={teamSize}
                     onChange={(e) => setTeamSize(e.target.value)}
-                    sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
-                  />
-                  <TextField
-                    fullWidth
-                    placeholder="HQ Country / Location"
-                    value={hqCountry}
-                    onChange={(e) => setHqCountry(e.target.value)}
                     sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1 }}
                   />
                   <TextField
@@ -242,25 +258,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                   />
                 </>
               )}
-
-              <Stack className={styles.actions}>
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className={styles.btnRetreat}
-                  disabled={loading}
-                >
-                  Back
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className={styles.btnPrimary}
-                  disabled={loading}
-                >
-                  {loading ? 'Saving...' : 'Continue'}
-                </button>
-              </Stack>
+              <ActionGroup />
             </Box>
           </Fade>
         )}
@@ -272,27 +270,10 @@ export default function OnboardingUI(props: OnboardingProps) {
                 Review & Finish
               </Typography>
               <Typography variant="body2" mb={4}>
-                Satisfied with your info? Click finish to continue to your
+                Satisfied with the information provided? Click finish to continue to your
                 dashboard.
               </Typography>
-
-              <Stack className={styles.actions}>
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className={styles.btnRetreat}
-                  disabled={loading}
-                >
-                  Back
-                </button>
-                <button
-                  type="submit"
-                  className={styles.btnPrimary}
-                  disabled={loading}
-                >
-                  {loading ? 'Finalizing...' : 'Finish'}
-                </button>
-              </Stack>
+              <ActionGroup />
             </Box>
           </Fade>
         )}
