@@ -1,11 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Toolbar } from "@mui/material";
 import Header from "@/providers/header";
 import GlobalFooter from "@/providers/footer";
+import { AlertProvider } from "@/providers/alert";
 import { Geist, Geist_Mono } from "next/font/google";
 import ThemeRegistry from "@/providers/emotionCache";
-import { Toolbar } from "@mui/material";
-import { AlertProvider } from "@/providers/alert";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });

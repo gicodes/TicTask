@@ -77,7 +77,7 @@ export default function OnboardingUI(props: OnboardingProps) {
     </Stack>
 
   const CountrySelect = ({ accountType }: { accountType: UserType}) =>
-    <Box width={"100%"} maxWidth={400} mx={"auto"} my={2}>
+    <Box width={"100%"} maxWidth={400} mx={"auto"} my={1}>
       <FormControl
         fullWidth
         variant="outlined"
@@ -210,7 +210,12 @@ export default function OnboardingUI(props: OnboardingProps) {
                 {userType === 'BUSINESS' ? 'Organizations can manage multiple users and projects' : 'Individual accounts are for personal use'} 
               </Typography> 
               
-              <Card sx={{ px: { xs: 1, sm: 1.5, lg: 2}, py: {md: 1}, pb: {xs: 1.5, md: 2}}}>
+              <Card 
+                sx={{
+                  px: 1, py: 0.5,
+                  borderRadius: 3
+                }}
+              >
                 {userType === 'PERSONAL' ? (
                   <>
                     <CountrySelect accountType='PERSONAL' />
