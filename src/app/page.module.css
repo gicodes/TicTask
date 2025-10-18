@@ -166,7 +166,7 @@ a.secondary {
   }
 }
 
-.btnAction, .btnInverted, .btnRetreat, .btnPrimary, .btnSecondary {
+.btnAction, .btnInverted, .btnRetreat, .btnPrimary, .btnSecondary, .btnSharp, .btnWarm {
   border-radius: 9999px;
   height: 48px;
   padding: 5px 20px;
@@ -193,18 +193,37 @@ a.secondary {
 }
 
 .btnInverted {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--accent-contrast);
+  color: var(--bw);
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .btnAction {
-  background: var(--surface-1);
+  background: var(--background);
   color: var(--foreground);
+  border-color: #ccc;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .btnRetreat {
-  background: var(--border-color);
-  color: var(--background);
+  color: var(--bw);
+  background: transparent;
+  border: 1px solid var(--border-color);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btnWarm {
+  background: transparent;
+  color: darkorange;
+  border-color: darkorange;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btnSharp {
+  background: var(--success);
+  color: var(--surface-1);
+  border: 1px solid var(--border-color);
+  transition: background 0.2s, border-color 0.2s;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -221,20 +240,36 @@ a.secondary {
     border-color: darkorange;
   }
 
+  .btnAction:hover {
+    background: var(--background);
+    border-color: darkorange;
+    transform: translateY(2px);
+    opacity: 0.9;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
   .btnInverted:hover {
     background: var(--foreground);
     color: var(--background);
     border-color: darkorange;
   }
 
-  .btnAction:hover {
-    filter: brightness(0.95);
+  .btnRetreat:hover {
+    background: transparent;
     border-color: darkorange;
   }
 
-  .btnRetreat:hover {
-    background: white;
-    border-color: darkorange;
+  .btnWarm:hover {
+    background: var(--accent);
+    color: var(--accent-contrast);
+    border: 1px solid var(--border-color);
+  }
+
+  .btnSharp:hover {
+    background: transparent;
+    color: var(--success);
+    border-color: var(--success);
   }
 }
 

@@ -180,9 +180,9 @@ export default function OnboardingUI(props: OnboardingProps) {
                       borderRadius: 2,
                       width: 130,
                       textAlign: 'center',
-                      bgcolor: userType === type ? 'var(--foreground)'
-                      : 'rgb(36, 34, 43)',
-                      color: userType === type ? 'black' : 'white',
+                      bgcolor: userType === type ? 'white'
+                      : 'var(--surface-2)',
+                      color: userType === type ? 'black' : 'var(--secondary)',
                       transition: '0.25s',
                     }}
                   >

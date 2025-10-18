@@ -128,6 +128,7 @@ const Header = () => {
           anchor="right" 
           open={mobileOpen} 
           onClose={toggleDrawer}
+          sx={{ bgcolor: 'inherit'}}
         >
           <Box sx={{ p: 2, width: '100vw' }}>
             <Box 
@@ -163,7 +164,7 @@ const Header = () => {
                     href={link.href}
                     onClick={toggleDrawer}
                     style={{ width: '100%', textAlign: 'center'}}
-                    className={link.cta ? styles.btnPrimary : ''}
+                    className={link.cta ? styles.btnRetreat : ''}
                   >
                     {link.label}
                   </Link>

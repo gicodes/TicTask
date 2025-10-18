@@ -92,7 +92,7 @@ export const AuthVerifyPage = () => {
         </button>
         <button
           type="button"
-          className={`min-width-180 ${styles.btnRetreat}`}
+          className={`min-width-180 ${styles.btnWarm}`}
           onClick={handleChangeEmail}
         >
           Change Email
