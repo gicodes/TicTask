@@ -1,4 +1,5 @@
 import "./globals.css";
+
 import type { Metadata } from "next";
 import { Toolbar } from "@mui/material";
 import Header from "@/providers/header";
@@ -15,10 +16,15 @@ export const metadata: Metadata = {
   description: "A simple Ticket and Task Management System built with Next.js and TypeScript",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout(
+  { children }: Readonly<{ children: React.ReactNode }>
+) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body 
+        suppressHydrationWarning 
+        className={`${geistSans.variable} ${geistMono.variable}`}
+      >
          <ThemeRegistry>
           <AlertProvider>
             <Header />

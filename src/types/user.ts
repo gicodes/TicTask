@@ -2,6 +2,7 @@ export type Role = 'ADMIN' | 'USER';
 export type TeamRole = 'OWNER' | 'ADMIN' | 'MEMBER';
 export type AdminLevel = 'BASIC' | 'FULL' | 'SUPER';
 export type Plan = 'FREE' | 'STANDARD' | 'PRO' | 'ENTERPRISE';
+export type UserType = 'PERSONAL' | 'BUSINESS';
 
 export type User = {
   id: number;
@@ -11,6 +12,18 @@ export type User = {
   emailVerifiedAt?: string;
   failedLogins: number;
   lockedUntil?: string;
+
+  userType:     UserType;   
+  country:      string;
+  phone:        string;
+  photo?:       string; 
+
+  organization?: string;
+  industry?:    string;
+  teamSize?:    string;
+  website?:      string;
+  logo?:       string; 
+  bio?:          string;
 
   createdAt: string;
   updatedAt: string;

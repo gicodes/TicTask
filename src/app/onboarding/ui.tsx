@@ -102,9 +102,7 @@ export default function OnboardingUI(props: OnboardingProps) {
       >
         <InputLabel>{accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}</InputLabel>
         <Select
-          MenuProps={{
-            PaperProps: { sx: { maxHeight: 300, borderRadius: 2,}},
-          }}
+          MenuProps={{PaperProps: { sx: { maxHeight: 300, borderRadius: 2,}}}}
           value={accountType==="BUSINESS" ? hqCountry : country} 
           label={accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}
           onChange={accountType==="BUSINESS" ? (e) => setHqCountry(e.target.value) : (e) => setCountry(e.target.value)} 
@@ -182,10 +180,8 @@ export default function OnboardingUI(props: OnboardingProps) {
                       borderRadius: 2,
                       width: 130,
                       textAlign: 'center',
-                      bgcolor:
-                        userType === type
-                          ? 'var(--foreground)'
-                          : 'rgb(36, 34, 43)',
+                      bgcolor: userType === type ? 'var(--foreground)'
+                      : 'rgb(36, 34, 43)',
                       color: userType === type ? 'black' : 'white',
                       transition: '0.25s',
                     }}
@@ -194,12 +190,10 @@ export default function OnboardingUI(props: OnboardingProps) {
                       <FormControlLabel
                         value={type}
                         control={<Radio sx={{ display: 'none' }} />}
-                        label={
-                          <Typography fontWeight={600} py={1.5}>
-                            {type === 'PERSONAL' ? 'Individual' : 'Organization'}
-                          </Typography>
-                        }
                         sx={{ m: 0 }}
+                        label={<Typography fontWeight={600} py={1.5}>
+                            {type === 'PERSONAL' ? 'Individual' : 'Organization'}
+                          </Typography>}
                       />
                     </CardActionArea>
                   </Card>
@@ -253,9 +247,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
                     >
                       {Industries.map((i) => (
-                        <MenuItem key={i} value={i}>
-                          {i}
-                        </MenuItem>
+                        <MenuItem key={i} value={i}> {i}</MenuItem>
                       ))}
                     </TextField>
                     <TextField
@@ -278,8 +270,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
-                      multiline
-                      rows={3}
+                      multiline rows={3}
                     />
                   </>
                 )}

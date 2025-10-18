@@ -3,6 +3,7 @@ import { Stack } from '@mui/material';
 import { signIn } from 'next-auth/react';
 import styles from '@/app/page.module.css';
 import { FaGoogle, FaSlack } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 
 const signInOptions = [
   {
@@ -14,7 +15,12 @@ const signInOptions = [
     name: 'Slack',
     provider: 'slack',
     icon: <FaSlack color="darkslateblue" />
-  }
+  },
+  { 
+    name: 'X',
+    provider: 'x',
+    icon: <FaXTwitter />
+  },
 ];
 
 const SignInOptions = () => {
@@ -24,7 +30,7 @@ const SignInOptions = () => {
         <button
           key={key}
           onClick={() => signIn(option.provider)}
-          className={`min-width-250 flex gap-3 ${styles.btnPrimary}`}
+          className={`min-width-250 flex gap-3 ${styles.btnSecondary}`}
         >
           {option.icon}
           <span className='font-weight-l'>Continue with {option.name}</span>

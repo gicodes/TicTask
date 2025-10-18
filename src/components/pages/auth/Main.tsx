@@ -18,17 +18,16 @@ export const Login = ({role}: LoginProps) => {
       <Box p={2} mx={'auto'} maxWidth={1200}>
         <Stack mt={5} gap={2} mx={'auto'} maxWidth={500}>
           <Stack gap={1} textAlign={'center'} py={1}>
-            <Typography variant='h4'>Welcome, Login</Typography>
+            <Typography variant='h4'>Login to continue</Typography>
           </Stack>
-
-        { isUser ? 
-          <>
-            <SignInOptions />
-            <AuthDivider />
-            <CredentialsForm /> 
-          </>
-          : (role === "ADMIN" || role === "AGENT") && <AdminLogin />
-        }
+          { isUser ? 
+            <>
+              <SignInOptions />
+              <AuthDivider />
+              <CredentialsForm /> 
+            </>
+            : (role === "ADMIN" || role === "AGENT") && <AdminLogin />
+          }
         </Stack>
       </Box>
     </Box>

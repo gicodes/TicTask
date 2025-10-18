@@ -3,7 +3,7 @@
 import { apiPost } from "@/lib/api";
 import styles from "@/app/page.module.css";
 import { useState, useEffect } from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export const AuthVerifyPage = () => {
@@ -67,6 +67,7 @@ export const AuthVerifyPage = () => {
     <Box className={`${styles.container} ${styles.mid}`}>
       <Stack mt={10} mb={5}>
         <Typography variant="h4" fontWeight={600}>Verify your email</Typography>
+        <Divider sx={{ width: 234, mx: 'auto', bgcolor: 'white', my: 2}} />
       </Stack>
 
       <Typography>

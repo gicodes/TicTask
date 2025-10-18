@@ -55,7 +55,7 @@ const IndexPitch = () => {
               </Badge>
               <Stack gap={1} py={1}>
                 <h6 style={{margin: '8px 0'}}>{point.title}</h6>
-                <p style={{color: 'silver'}}>{point.description}</p>
+                <p className="custom-bw">{point.description}</p>
               </Stack>
             </Box>
           ))}

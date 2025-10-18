@@ -2,21 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import Logo from "@/assets/txtLogo";
 import styles from '@/app/page.module.css';
 import MenuIcon from "@mui/icons-material/Menu";
 import { CancelRounded } from "@mui/icons-material";
-import { 
-  AppBar, 
-  Box, 
-  Button, 
-  IconButton, 
-  Toolbar, 
-  Stack, 
-  Drawer, 
-  List, 
-  ListItem 
-} from "@mui/material";
-import Logo from "@/assets/txtLogo";
+import { AppBar, Box, Button, IconButton, Toolbar, Stack, Drawer, List, ListItem } from "@mui/material";
 
 const useAuth = () => {
   const [isLoggedIn] = useState(false);
@@ -60,18 +50,18 @@ const Header = () => {
     <AppBar
       elevation={0}
       position="fixed"
-      sx={{ 
+      sx={{
         borderBottom: 1,
-        color: "inherit",  
         borderColor: "divider",
-        bgcolor: "rgb(18, 19, 23)", 
+        bgcolor: "var(--background)",
+        color: "var(--foreground)",
       }}
     >
       <Box 
         py={1} 
         m={'auto'} 
         width={'100%'} 
-        minHeight={60}
+        minHeight={50}
         maxWidth={1500} 
       >
         <Toolbar 

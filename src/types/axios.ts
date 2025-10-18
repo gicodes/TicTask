@@ -21,4 +21,5 @@ export interface ConfirmVerificationResponse {
   redirect?: string;
   role?: "ADMIN" | "USER";
   email?: string;
+  token?: string;
 }
