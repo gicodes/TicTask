@@ -25,7 +25,9 @@ export default function RootLayout(
       >
          <ThemeRegistry>
           <AlertProvider>
-            <ConditionalLayout children={children} />
+            <ConditionalLayout>
+              {children}
+            </ConditionalLayout>
           </AlertProvider>
         </ThemeRegistry>
       </body>

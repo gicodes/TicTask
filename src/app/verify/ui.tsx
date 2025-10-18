@@ -11,8 +11,8 @@ export const VerifyPage = () => {
   const router = useRouter();
   const hasRun = useRef(false);
   const params = useSearchParams();
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
 
   const token = params.get("token");
   const email = params.get("email");
@@ -67,7 +67,7 @@ export const VerifyPage = () => {
     };
 
     verify();
-  }, [token]);
+  }, [token, email, router]);
 
   return (
     <Box 

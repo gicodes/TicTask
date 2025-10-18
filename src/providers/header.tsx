@@ -13,10 +13,11 @@ const useAuth = () => {
   return { isLoggedIn };
 };
 
-type LinkItem = {
+export type LinkItem = {
   label: string;
   href: string;
   cta?: boolean;
+  disabled?: boolean;
 };
 
 const Header = () => {
@@ -119,7 +120,7 @@ const Header = () => {
             sx={{ display: { xs: "flex", md: "none" } }} 
             onClick={toggleDrawer}
           >
-            <MenuIcon color="inherit" />
+            <MenuIcon className="custom-bw" />
           </IconButton>
         </Toolbar>
 
