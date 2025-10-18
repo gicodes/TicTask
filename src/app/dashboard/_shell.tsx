@@ -2,29 +2,12 @@
 
 import Link from 'next/link';
 import Logo from '@/assets/txtLogo';
-import { GiLogging } from 'react-icons/gi';
+import { NAV_ITEMS } from './navItems';
 import { useAuth } from '@/providers/auth';
 import { ReactNode, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { FcOrganization } from 'react-icons/fc';
-import { FaPeopleCarry, FaUsers } from 'react-icons/fa';
-import { CreditCard, Group, Notifications, People, Person, Settings, Menu, Event, Home } from '@mui/icons-material';
-import { AppBar, Toolbar, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Box, IconButton, Typography } from '@mui/material';
-
-const NAV_ITEMS = [
-  { label: 'Tickets', path: '/dashboard/tickets', icon: <Event /> },
-  { label: 'Profile', path: '/dashboard/profile', icon: <Person /> },
-  { label: 'Notifications', path: '/dashboard/notifications', icon: <Notifications /> },
-  { label: 'Settings', path: '/dashboard/settings', icon: <Settings /> },
-  { label: 'Team', path: '/dashboard/team', icon: <Group /> },
-  { label: 'Clients', path: '/dashboard/clients', icon: <People /> },
-  { label: 'Subscription', path: '/dashboard/subscription', icon: <CreditCard /> },
-  { label: 'Home', path: '/', icon: <Home /> },
-  { label: 'All Users', path: '/dashboard/users', icon: <FaUsers /> },
-  { label: 'Partners', path: '/dashboard/partners', icon: <FaPeopleCarry /> },
-  { label: 'Organizations', path: '/dashboard/organizations', icon: <FcOrganization /> },
-  { label: 'System Logs', path: '/dashboard/logs', icon: <GiLogging /> },
-];
+import { Menu } from '@mui/icons-material';
+import { AppBar, Toolbar, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Box, IconButton } from '@mui/material';
 
 export default function DashboardIndex ({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -55,10 +38,9 @@ export default function DashboardIndex ({ children }: { children: ReactNode }) {
         </Toolbar>
       </AppBar>
 
-      <Drawer
+      <Drawer variant="temporary"
         open={open}
         onClose={() => setOpen(false)}
-        variant="temporary"
         sx={{ display: { xs: 'block', md: 'none',}}}
       >
         <Toolbar />
@@ -75,8 +57,7 @@ export default function DashboardIndex ({ children }: { children: ReactNode }) {
         </List>
       </Drawer>
 
-      <Drawer
-        variant="permanent"
+      <Drawer variant="permanent"
         sx={{
           width: 250,
           flexShrink: 0,
@@ -98,7 +79,9 @@ export default function DashboardIndex ({ children }: { children: ReactNode }) {
         </List>
       </Drawer>
 
-      <Box component="main" sx={{ p: 3, height: '100%', flexGrow: 1 }}>
+      <Box component="main" 
+        sx={{ p: 3, height: '100%', flexGrow: 1 }}
+      >
         <Toolbar />
         {children}
       </Box>

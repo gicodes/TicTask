@@ -119,7 +119,7 @@ const Header = () => {
             sx={{ display: { xs: "flex", md: "none" } }} 
             onClick={toggleDrawer}
           >
-            <MenuIcon sx={{ color: 'white'}} />
+            <MenuIcon color="inherit" />
           </IconButton>
         </Toolbar>
 
@@ -162,7 +162,7 @@ const Header = () => {
                     href={link.href}
                     onClick={toggleDrawer}
                     style={{ width: '100%', textAlign: 'center'}}
-                    className={link.cta ? styles.btnInverted : ''}
+                    className={link.cta ? styles.btnPrimary : ''}
                   >
                     {link.label}
                   </Link>
