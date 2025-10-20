@@ -1,7 +1,15 @@
-import { FcOrganization } from 'react-icons/fc';
-import { FaPeopleCarry, FaUsers } from 'react-icons/fa';
 import { GiLogging } from 'react-icons/gi';
-import { CreditCard, Group, Notifications, People, Person, Settings, AssignmentAdd } from '@mui/icons-material';
+import { FcOrganization } from 'react-icons/fc';
+import { FaPeopleCarry, FaUsers, } from 'react-icons/fa';
+import { CreditCard, Group, Notifications, People, Person, Settings, AssignmentAdd, Cottage } from '@mui/icons-material';
+
+export type LinkItem = {
+  label: string | React.ReactNode;
+  href: string;
+  cta?: boolean;
+  disabled?: boolean;
+  onClick?: boolean;
+};
 
 export const NAV_ITEMS = [
   { label: 'Tickets', path: '/dashboard/', icon: <AssignmentAdd /> },
@@ -18,8 +26,7 @@ export const NAV_ITEMS = [
 ];
 
 export const AUTH_ITEMS: LinkItem[] = [
-  { label: "Edit Profile", href: "/dashboard/profile/edit", disabled: false },
-  { label: "Home", href: "/" },
+  { label: <Cottage />, href: "/" },
   { label: "Logout", href: "", cta: true }, 
 ]
 
@@ -36,15 +43,7 @@ export const guestLinks: LinkItem[] = [
 ];
 
 export const userLinks: LinkItem[] = [
-  { label: "Dashboard", href: "/dashboard" },
   { label: "Partner", href: "/company/partners/#join" },
   { label: "Logout", href: "", onClick: true},
+  { label: "Dashboard", href: "/dashboard", cta: true },
 ];
-
-  export type LinkItem = {
-    label: string;
-    href: string;
-    cta?: boolean;
-    disabled?: boolean;
-    onClick?: boolean;
-  };

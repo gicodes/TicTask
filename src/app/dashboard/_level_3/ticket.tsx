@@ -1,56 +1,63 @@
-import React, { useMemo } from 'react';
-import { Box, Container, Stack, Button, Card } from '@mui/material';
-import BoardColumn from '../_level_2/boardColumn';
-import { mockTickets } from '../_level_0/seed';
-import styles from '@/app/page.module.css'; 
-import { Ticket, TicketPriority } from '@/types/ticket';
+import React, { useEffect, useState } from 'react';
+import { Box, Container } from '@mui/material';
+import { Ticket } from '@/types/ticket';
+
+import { api } from '../_level_0/seed';
+import Board from '../_level_2/_board';
+import Toolbar from '../_level_2/toolbar';
+import TicketFormDrawer from '../_level_2/ticketForm';
+import TicketDetailDrawer from '../_level_2/ticketDetail';
+import TicketsList from '../_level_2/_list';
 
 const STATUSES = ['UPCOMING','OPEN','IN_PROGRESS','RESOLVED','CLOSED','CANCELLED'];
 
 const TicketsBoardPage: React.FC = () => {
-  const grouped = useMemo(() => {
-    const map: Record<string, Ticket[]> = {};
-    STATUSES.forEach(s => (map[s] = []));
-    mockTickets.forEach(t => {
-      const s = t.status ?? 'OPEN';
-      if (!map[s]) map[s] = [];
-      map[s].push({
-        ...t,
-        priority: t.priority as TicketPriority,
-      });
-    });
-    return map;
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [grouped, setGrouped] = useState<Record<string,Ticket[]>>({});
+  const [selectedTicket, setSelectedTicket] = useState<string | number |null>(null);
+  const [formOpen, setFormOpen] = useState(false);
+  const [view, setView] = useState<'board'|'list'>('board');
+
+  useEffect(() => {
+    api.getTickets().then(setTickets);
   }, []);
 
-  const openTicket = (id: number) => {
-    console.log('open', id);
+  useEffect(() => {
+    const map: Record<string, Ticket[]> = {};
+    STATUSES.forEach(s => map[s] = []);
+    tickets.forEach(t => (map[t.status] ?? map['OPEN']).push(t));
+    setGrouped(map);
+  }, [tickets]);
+
+  const openDetail = (id: string | number) => setSelectedTicket(id);
+  const closeDetail = () => setSelectedTicket(null);
+
+  const onTicketCreated = (t: Ticket) => {
+    setTickets(prev => [t, ...prev]);
+  };
+
+  const refreshTickets = () => {
+    api.getTickets().then(setTickets);
   };
 
   return (
     <Container maxWidth='xl'>
-      <Box maxWidth={1400} sx={{ py: 3 }}>
-        <Stack pb={3} direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-          <Card sx={{ py: 1, px: 3}}>
-            <h3>Tickets</h3>
-          </Card>
+      <Box maxWidth={1400} sx={{ py: 2 }} width={'100%'}>
+        <Toolbar view={view} setView={setView} onOpenCreate={() => setFormOpen(true)} />
 
-          <Stack direction="row" spacing={1}>
-            <Button className={styles.btnSecondary}>List view</Button>
-            <Button className={styles.btnPrimary}>New Ticket</Button>
-          </Stack>
-        </Stack>
+        {view === 'board'
+        ? <Board grouped={grouped} setGrouped={setGrouped} openDetail={openDetail} />
+        : (
+          <TicketsList tickets={tickets} openDetail={openDetail} />
+        )}
 
-        <Box sx={{
-          display: 'flex',
-          overflowX: 'auto',
-          pb: 2,
-          '&::-webkit-scrollbar': { height: 8 },
-          '&::-webkit-scrollbar-thumb': { background: '#ccc', borderRadius: 8 }
-        }}>
-          {STATUSES.map(s => (
-            <BoardColumn key={s} title={s} tickets={grouped[s]} onOpen={openTicket}/>
-          ))}
-        </Box>
+      <TicketDetailDrawer
+        open={!!selectedTicket}
+        onClose={closeDetail}
+        ticketId={selectedTicket !== null ? String(selectedTicket) : null}
+        onUpdate={refreshTickets}
+      />
+      <TicketFormDrawer open={formOpen} onClose={() => setFormOpen(false)} onCreated={onTicketCreated} />
       </Box>
     </Container>
   );

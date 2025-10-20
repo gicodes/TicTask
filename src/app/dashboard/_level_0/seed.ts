@@ -1,3 +1,6 @@
+import { Ticket, TicketPriority, TicketStatus, TicketType } from '@/types/ticket';
+import { v4 as uuidv4 } from 'uuid';
+
 export const mockTickets = [
   {
     id: 1,
@@ -136,4 +139,306 @@ export const mockTickets = [
     assignedToId: 2,
     tags: ["backend","refactor"],
   },
+  {
+    id: 11,
+    title: "TicTask Dashboard",
+    description: "Start building out TicTask Dashboard with user view.",
+    status: "CLOSED",
+    priority: "HIGH",
+    type: "GENERAL",
+    createdAt: "2025-08-25T08:00:00Z",
+    updatedAt: "2025-09-10T09:00:00Z",
+    createdById: 3,
+    assignedToId: 2,
+    tags: ["frontend","design"],
+  },
 ];
+
+const DB: Ticket[] = [
+  { 
+    id: 't1', 
+    title: 'Kanban board v1 bug', 
+    description: 'Modules not found. Issue is between package and client runtime.', 
+    status: 'OPEN',
+    priority: 'MEDIUM', 
+    type: 'FEATURE_REQUEST', 
+    createdAt: '2025-10-01T09:12:00Z', 
+    updatedAt: '2025-10-02T10:00:00Z', 
+    assignedToId: 4, 
+    tags: ['dnd/core','node_modules', 'react', 'next'], 
+    dueDate: '2025-12-12' 
+  },
+  { id: 't2', 
+    title: 'Admin Dashboard Design', 
+    description: 'Design md, lg and mobile dashboard UI for admin.', 
+    status: 'UPCOMING', 
+    priority: 'HIGH', 
+    type: 'FEATURE_REQUEST', 
+    createdAt: '2025-09-20T12:00:00Z', 
+    updatedAt: '2025-09-20T12:00:00Z', 
+    assignedToId: null, 
+    tags: ['ui','mobile'], 
+    dueDate: '2025-11-11' 
+  },
+  { 
+    id: 't3', 
+    title: 'Tickets: User Dashboard Overview', 
+    description: 'Build ticket page as home with md, lg and mobile responsiveness.', 
+    status: 'IN_PROGRESS', 
+    priority: 'HIGH', 
+    type: 'FEATURE_REQUEST', 
+    createdAt: '2025-09-25T15:22:00Z', 
+    updatedAt: '2025-10-03T08:40:00Z', 
+    assignedToId: 3, 
+    tags: ['payments'], 
+    dueDate: '2025-11-01' 
+  },
+  { 
+    id: 't4', 
+    title: 'Double api call, race conditions', 
+    description: 'client component makes double api calls on (re)render causing error in app-breaking api event.', 
+    status: 'RESOLVED', 
+    priority: 'URGENT', 
+    type: 'BUG', 
+    createdAt: '2025-10-15T10:00:00Z', 
+    updatedAt: '2025-10-17T09:30:00Z', 
+    assignedToId: 6, 
+    tags: ['react', 'useffect', 'express'] 
+  },
+  { 
+    id: 't5', 
+    title: 'Web hooks: Slack and SMS channel selection', 
+    description: 'Select Slack channel per workspace.', 
+    status: 'OPEN', 
+    priority: 'LOW', 
+    type: 'SUPPORT', 
+    createdAt: '2025-10-03T11:01:00Z', 
+    updatedAt: '2025-10-03T11:01:00Z', 
+    tags: ['integration','slack', 'sms'] 
+  },
+  { 
+    id: 't9', 
+    title: 'Dashboard Authbar Avatar', 
+    description: 'Set color variants for Teams, User.organization and Admins.', 
+    status: 'UPCOMING', 
+    priority: 'LOW', 
+    type: 'FEATURE_REQUEST', 
+    createdAt: '2025-09-28T09:00:00Z', 
+    updatedAt: '2025-09-28T09:00:00Z', 
+    assignedToId: 2, 
+    tags: ['ui','avatar'],
+    dueDate: '2025-11-10' 
+  },
+  { 
+    id: 'i2', 
+    title: 'Ticket API controllers', 
+    description: 'Write REST functions for my client-api live stream and data update', 
+    status: 'UPCOMING', 
+    priority: 'URGENT', 
+    type: 'EVENT', 
+    createdAt: '2025-09-28T09:00:00Z', 
+    updatedAt: '2025-09-28T09:00:00Z', 
+    assignedToId: 2, 
+    tags: ['events','api', 'rest', 'express'] ,
+    dueDate: '2025-10-22' 
+  },
+    { 
+    id: 't6', 
+    title: 'Console.log cleanup', 
+    description: 'Clean up all trailing logs and unnecessary console.logs', 
+    status: 'UPCOMING', 
+    priority: 'LOW', 
+    type: 'GENERAL', 
+    createdAt: '2025-09-28T09:00:00Z', 
+    updatedAt: '2025-09-28T09:00:00Z', 
+    assignedToId: 2, 
+    tags: ['events','cron'] 
+  },
+  { 
+    id: 't7',
+    title: 'Resolve Hydration mismatch', 
+    description: 'Trace the source of server vs client HTML render mis-match.', 
+    status: 'OPEN', 
+    priority: 'MEDIUM', 
+    type: 'BUG', 
+    createdAt: '2025-06-01T09:00:00Z', 
+    updatedAt: '2025-07-01T09:00:00Z', 
+    tags: ['hydration', 'react', 'client', 'server', 'next', 'HTML'] 
+  },
+  {
+    id: 11,
+    title: "hello-pangea/dnd",
+    description: "Module not found. Package install error. Resolved by classic 'rm -rf .next node_modules package-lock.json npm i' ",
+    status: "RESOLVED",
+    priority: "HIGH",
+    type: "GENERAL",
+    createdAt: "2025-10-20T08:13:00Z",
+    updatedAt: "2025-10-20T09:14:00Z",
+    createdById: 3,
+    assignedToId: 2,
+    tags: ["frontend","design"],
+  },
+  {
+    id: 12,
+    title: "nextAuth/* flow",
+    description: "Resolve auth flow via nextAuth and fix .",
+    status: "RESOLVED",
+    priority: "URGENT",
+    type: "GENERAL",
+    createdAt: "2025-10-18T08:00:00Z",
+    updatedAt: "2025-10-10T09:00:00Z",
+    createdById: 3,
+    assignedToId: 2,
+    tags: ["frontend","design"],
+  },
+  {
+    id: 13,
+    title: "TicTask, User Dashboard",
+    description: "Start building out TicTask Dashboard with users: personal and team view.",
+    status: "OPEN",
+    priority: "HIGH",
+    type: "GENERAL",
+    createdAt: "2025-08-25T08:00:00Z",
+    updatedAt: "2025-09-10T09:00:00Z",
+    createdById: 3,
+    assignedToId: 2,
+    tags: ["frontend","design"],
+    dueDate: '2025-10-29',
+  },
+  {
+    id: 14,
+    title: "TicTask SWE Expo",
+    description: "Record every thought, reason and bias toward my TicTask bug fixing and learning curve experience.",
+    status: "IN_PROGRESS",
+    priority: "LOW",
+    type: "SUPPORT",
+    createdAt: "2025-08-25T08:00:00Z",
+    updatedAt: "2025-09-10T09:00:00Z",
+    createdById: 3,
+    assignedToId: 2,
+    tags: ["frontend","design"],
+  },
+  {
+    id: 15,
+    title: "DevEx Journal",
+    description: "Document my experience with bug fixes, frustrations and learning curve.",
+    status: "CANCELLED",
+    priority: "MEDIUM",
+    type: "EVENT",
+    createdAt: "2025-08-25T08:00:00Z",
+    updatedAt: "2025-09-10T09:00:00Z",
+    createdById: 3,
+    assignedToId: 2,
+    tags: ["frontend","design"],
+  },
+  {
+    id: 16,
+    title: "Dashboard Pages (12+)",
+    description: "Build out all menu pages, and sections under dashboard.",
+    status: "IN_PROGRESS",
+    priority: "MEDIUM",
+    type: "GENERAL",
+    createdAt: "2025-08-25T08:00:00Z",
+    updatedAt: "2025-09-10T09:00:00Z",
+    createdById: 3,
+    assignedToId: 'Akachukwu.Obiaju',
+    dueDate: '2025-10-30',
+    tags: ["frontend","pages"],
+  },
+  { 
+    id: 't8', 
+    title: 'Dashboard layout and flow tree', 
+    description: 'Design dashboard data structure, layout and flow tree.', 
+    status: 'CLOSED', 
+    priority: 'HIGH', 
+    type: 'GENERAL', 
+    createdAt: '2025-09-18T09:00:00Z', 
+    updatedAt: '2025-10-05T12:30:00Z', 
+    assignedToId: 4, 
+    tags: ['system design','frontend', 'layout'] 
+  },
+  { 
+    id: 18, 
+    title: 'App background, colors and inherit', 
+    description: 'Design app baseline styles with mui and css for inherit colors & bgColors', 
+    status: 'CLOSED', 
+    priority: 'MEDIUM', 
+    type: 'FEATURE_REQUEST', 
+    createdAt: '2025-09-18T09:00:00Z', 
+    updatedAt: '2025-10-05T12:30:00Z', 
+    assignedToId: 4, 
+    tags: ['ui','ux'] 
+  },
+  { 
+    id: 't10', 
+    title: 'App background, colors and inherit', 
+    description: 'Design app baseline styles with mui and css for inherit colors & bgColors', 
+    status: 'CLOSED', 
+    priority: 'MEDIUM', 
+    type: 'FEATURE_REQUEST', 
+    createdAt: '2025-09-18T09:00:00Z', 
+    updatedAt: '2025-10-05T12:30:00Z', 
+    assignedToId: 4, 
+    tags: ['ui','ux'] 
+  },
+  { 
+    id: 'i1', 
+    title: 'Deploy backend to prod', 
+    description: 'Bundle and deploy backend to production via render, railway or AWS', 
+    status: 'UPCOMING', 
+    priority: 'URGENT', 
+    type: 'EVENT', 
+    createdAt: '2025-10-20T21:05:00Z', 
+    updatedAt: '2025-10-20T21:10:00Z', 
+    assignedToId: 4, 
+    tags: ['backend', 'prod', 'aws'] 
+  },
+  { 
+    id: 17, 
+    title: 'Layouts nesting mixup', 
+    description: 'Root layout vs nested layout causing background mismatch and inherit issues', 
+    status: 'RESOLVED', 
+    priority: 'HIGH', 
+    type: 'BUG', 
+    createdAt: '2025-10-18T20:00:00Z', 
+    updatedAt: '2025-10-19T12:30:00Z', 
+    assignedToId: 4, 
+    tags: ['ui','ux', 'next', 'HTML'] 
+  },
+];
+
+const simulate = <T,>(result: T, ms = 200) =>
+  new Promise<T>((res) => setTimeout(() => res(result), ms));
+
+export const api = {
+  async getTickets() { 
+    return simulate(DB.map(t => ({ ...t })), 250); 
+  },
+  async getTicket(id: string | number) { 
+    return simulate(DB.find(t => t.id === id) ?? null, 150); 
+  },
+  async createTicket(payload: Partial<Ticket>) {
+    const now = new Date().toISOString();
+    const ticket: Ticket = {
+      id: uuidv4(),
+      title: payload.title ?? 'Untitled',
+      description: payload.description ?? '',
+      status: (payload.status as TicketStatus) ?? 'OPEN',
+      priority: (payload.priority as TicketPriority) ?? 'MEDIUM',
+      type: (payload.type as TicketType) ?? 'GENERAL',
+      createdAt: now,
+      updatedAt: now,
+      assignedToId: payload.assignedToId ?? null,
+      tags: payload.tags ?? [],
+      dueDate: payload.dueDate ?? null,
+    };
+    DB.unshift(ticket);
+    return simulate(ticket, 250);
+  },
+  async updateTicket(id: string | number, patch: Partial<Ticket>) {
+    const idx = DB.findIndex(t => t.id === id);
+    if (idx === -1) throw new Error('Ticket not found');
+    DB[idx] = { ...DB[idx], ...patch, updatedAt: new Date().toISOString() || ''};
+    return simulate(DB[idx], 150);
+  },
+};

@@ -12,7 +12,7 @@ const CTA = () => {
     <div className={styles.readyToStart}>
       <p className="font-sm max-width-500 mx-auto">Unlock advanced features and enhanced productivity by starting the paid version of TicTask Pro</p>
       <h2 className="my-3 custom-dull">Set{whiteDot} Ready{whiteDot} <span className="custom-warm">Go{whiteDot}</span></h2>
-      <div className={`${styles.btnGroup} mt-2 mx-auto justify-center`}>
+      <div className={`${styles.btnGroup} mt-1 mx-auto justify-center`}>
         <button className={styles.btnPrimary}> Get TicTask Pro</button>
         <button className={styles.btnSecondary}> <span className="custom-white">Schedule Payment</span></button>
       </div>

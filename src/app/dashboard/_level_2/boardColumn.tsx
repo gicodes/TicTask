@@ -1,11 +1,12 @@
 import React from 'react';
+import TicketCard from './ticketCard';
+import { Ticket } from '@/types/ticket';
 import { Box, Typography } from '@mui/material';
-import TicketCard, { Ticket } from './ticketCard';
 
 export const BoardColumn: React.FC<{
   title: string;
   tickets: Ticket[];
-  onOpen?: (id:number)=>void;
+  onOpen?: (id: string | number) => void;
 }> = ({ title, tickets, onOpen }) => {
   return (
     <Box sx={{
@@ -15,7 +16,21 @@ export const BoardColumn: React.FC<{
       p: 1,
       bgcolor: 'transparent',
     }}>
-      <Typography p={1} variant="h6" sx={{ mb: 1, fontWeight: 700 }}>{title} <small style={{ fontWeight: 500, color: 'gray' }}>({tickets.length})</small></Typography>
+      <Typography variant="h6" 
+        sx={{ 
+          p: 1,
+          mb: 1, 
+          gap: 1, 
+          display: 'flex', 
+          fontWeight: 700, 
+          alignContent: 'center' 
+        }}
+      >
+        {title}
+        <small style={{ fontWeight: 500, color: 'gray' }}>
+          ({tickets.length})
+        </small>
+      </Typography>
       <Box>
         {tickets.map(t => <TicketCard key={t.id} ticket={t} onOpen={onOpen} />)}
       </Box>

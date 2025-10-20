@@ -32,9 +32,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
-  const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
 
   const handleClose = () => setAnchorEl(null);
 
@@ -51,11 +49,10 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
     const isDisabled = !isLoggedIn &&
       (item.label === 'Edit Profile' || item.label === 'Settings');
 
-    if (item.label === 'Logout' && !isLoggedIn) {
-      return { ...item, label: 'Login', href: `/auth/login/` };
-    }
-    if (item.label === 'Logout' && isLoggedIn) 
-      return { ...item, href: '', onClick: () => logout() };
+    if (item.label === 'Logout' && !isLoggedIn) return { 
+      ...item, label: 'Login', href: `/auth/login/` };
+    if (item.label === 'Logout' && isLoggedIn) return { 
+      ...item, href: '', onClick: () => logout() };
 
     return { ...item, disabled: isDisabled };
   });
@@ -88,7 +85,8 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                 <Avatar
                   src={user?.photo || ''}
                   sx={{
-                    bgcolor: user ? 'primary.main' : 'grey.500',
+                    // In scale: TEAM_ADMIN='var(--sharp)' ? 'primary.main', ADMIN='var(--surface-1)' 
+                    bgcolor: user ? 'var(--surface-2)' : 'grey.500', 
                     width: 36,
                     height: 36,
                     fontSize: 15,
@@ -106,18 +104,21 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
               transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               sx={{ marginTop: 1 }}
             >
-              <Box minWidth={150}>
+              <Box minWidth={120}>
                 { user && <Box my={1}>
-                  <Stack sx={{ px: 1, pb: 1, textAlign: 'center'}}>
-                    <Typography variant='caption'>{user.name}</Typography>
-                    <Typography className='font-xxs custom-dull'>{user?.email}</Typography>
-                  </Stack>
+                  <Tooltip title={'Edit Profile'}>
+                    <Link href={'/dashboard/profile/edit'}>
+                      <Stack sx={{ px: 1, pb: 1, textAlign: 'center'}}>
+                        <Typography variant='caption'>{user.name}</Typography>
+                        <Typography className='font-xxs custom-dull'>{user?.email}</Typography>
+                      </Stack>
+                    </Link>
+                  </Tooltip>
                   <Divider sx={{ border: '1px solid var(--foreground)'}} />
                   </Box>
-                }
-                {authMenuItems.map((item, index) => (
-                  <Box key={item.label}>
-                    <Link href={item.href}>
+                }{ authMenuItems.map((item, index) => (
+                  <Box key={index}>
+                    <Link href={!isLoggedIn && item.disabled ? '' : item.href}>
                       <MenuItem
                         onClick={handleClose}
                         disabled={item.disabled}
@@ -131,9 +132,8 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                         {item.label}
                       </MenuItem>
                     </Link>
-
                     { index < authMenuItems.length - 1 && (
-                      <Divider sx={{ my: 0.05, mx: 5, opacity: 0.6 }} />
+                      <Divider sx={{ my: 0.05, mx: 'auto', opacity: 0.6, width: '25%' }} />
                     )}
                     </Box>
                   ))}
@@ -185,14 +185,13 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
       </Drawer>
 
       <Box component="main" 
-        sx={{ 
-          flexGrow: 1, 
-          minHeight: '100vh' 
-        }}
+        sx={{ flexGrow: 1, minHeight: '100vh', height: '100%', pb: 5}}
       >
         <Toolbar />
         {children}
-        <Typography  textAlign={'center'}><strong>Powered by Gi Codes 🔥</strong></Typography>
+        <Box textAlign={'center'} display={'grid'} gap={1}>
+          <Typography fontFamily={'serif'} fontWeight={501} variant='caption' className='custom-dull'><i>Mind Is a Tool On It&apos;s Own... With <strong>TicTask</strong>, You&apos;ve Got A Clone</i></Typography>
+        </Box>
       </Box>
     </Box>
   );

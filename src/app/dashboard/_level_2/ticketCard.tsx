@@ -1,15 +1,6 @@
 import React from 'react';
-import { Paper, Typography, Stack, Avatar, Chip, Box } from '@mui/material';
-
-export type Ticket = {
-  id: number;
-  title: string;
-  status: string;
-  priority: string;
-  assignedToId?: number | null;
-  dueDate?: string | null;
-  tags?: string[];
-};
+import { Ticket } from '@/types/ticket';
+import { Paper, Typography, Stack, Avatar, Chip, Box, Tooltip } from '@mui/material';
 
 const priorityColor = (p: string) => {
   switch (p?.toUpperCase()) {
@@ -21,7 +12,13 @@ const priorityColor = (p: string) => {
   }
 };
 
-export const TicketCard: React.FC<{ ticket: Ticket; onOpen?: (id:number)=>void }> = ({ ticket, onOpen }) => {
+export const TicketCard: React.FC<{ 
+    ticket: Ticket; 
+    onOpen?: (id:string | number)=>void }> = ({ ticket, onOpen }
+  ) => {
+  const isString = typeof(ticket?.assignedToId)==='string' && ticket.assignedToId.length && ticket.assignedToId.length > 0;
+  const avatar = ticket?.assignedToId ? (typeof(ticket?.assignedToId)==='string' && ticket.assignedToId.length) ? ticket.assignedToId[0] : ticket.assignedToId : '🤖';
+
   return (
     <Paper
       elevation={1}
@@ -63,10 +60,23 @@ export const TicketCard: React.FC<{ ticket: Ticket; onOpen?: (id:number)=>void }
             alignItems="center"
             justifyContent={'space-between'}
           >
-            <Typography flexWrap={'wrap'} variant="caption" sx={{ color: 'text.secondary' }}>
-              <strong>{ticket.dueDate ? `Due by ${ticket.dueDate}` : ''}</strong>
+            <Typography flexWrap={'wrap'} variant="caption">
+              {ticket.dueDate ? `Due by ${ticket.dueDate}` : ''}
             </Typography>
-            <Avatar  sx={{ width: 28, height: 28, fontSize: 13 }}>A</Avatar>
+            <Tooltip title={`Assigned to ${ticket.assignedToId ? isString ? ticket.assignedToId : `#${ticket.assignedToId}`: 'TicTask Bot'}`}>
+              <Avatar  sx={{ width: 28, height: 28, fontSize: 13 }}>
+                {avatar}
+              </Avatar>
+            </Tooltip>
+          </Box>
+          <Box  
+            p={1}
+            width={'100%'}
+            display={'grid'} 
+          >
+            <Typography flexWrap={'wrap'} fontSize={12} sx={{ color: 'text.disabled' }}>
+              {ticket.updatedAt ? `Last Updated: ${new Date(ticket.updatedAt).toLocaleString()}` : ''}
+            </Typography>
           </Box>
         </Stack>
       </Stack>

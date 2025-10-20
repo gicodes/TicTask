@@ -68,7 +68,7 @@ const Header = () => {
               gap: 2 
             }}
           >
-            {authLinks.map((link) =>
+            { authLinks.map((link) =>
               (link && link?.cta) ? (
                 <Link href={link.href} key={link.href}>
                   <Button className={styles.btnPrimary}>{link.label}</Button>

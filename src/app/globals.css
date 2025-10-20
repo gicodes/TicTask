@@ -9,7 +9,7 @@
   --disabled: #cccccc;
   --accent-contrast: #ffffff;
   --bw: #000;
-  --inverse-bw: #fff;
+  --dull-gray: #999;
   --border-color: #ccc;
   --btn-primary-bg: var(--foreground);
   --btn-primary-color: var(--background);
@@ -28,7 +28,7 @@
     --secondary: #777;
     --disabled: #555;
     --bw: #fff;            
-    --inverse-bw: #000;
+    --dull-gray: #ccc;
     --accent-contrast: #1a1a1a;
     --border-color: #333;
     --btn-primary-bg: var(--foreground);
@@ -44,9 +44,7 @@ body {
   overflow-x: hidden;
 }
 @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+  html { color-scheme: dark; }
 }
 
 body {
@@ -74,10 +72,10 @@ a {
   padding: 0 1rem;
 }
 
-.custom-warm {   color: var(--accent); }
+.custom-bw { color: var(--bw); }
+.custom-warm { color: var(--accent); }
 .custom-sharp { color: var(--success); }
 .custom-dull { color: var(--secondary); }
-.custom-bw { color: var(--bw); }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
@@ -100,7 +98,7 @@ h4 { font-size: 2rem; }
 h5 { font-size: 1.75rem; }
 h6 { font-size: 1.5rem; }
 
-.font-xxs { font-size: 0.75rem;}
+.font-xxs { font-size: 0.75rem; }
 .font-xs { font-size: 1rem; }
 .font-md { font-size: 1.5rem; }
 .font-sm { font-size: 1.25rem; }
@@ -147,7 +145,7 @@ h6 { font-size: 1.5rem; }
 .py-1 { padding: 1rem 0; }
 .px-1 { padding: 0 1rem; }
 
-.mt-1 { margin-top: 0.25rem; }
-.mt-2 { margin-top: 0.5rem; }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
 .mb-1 { margin-bottom: 0.35rem; }
 .mb-2 { margin-bottom: 0.5rem; }
