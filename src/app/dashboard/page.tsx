@@ -7,12 +7,6 @@ import { Box, Divider, Stack, Typography } from '@mui/material';
 
 export default function Page() {
   const { user, loading, isAuthenticated } = useAuth();
-  if (loading) 
-    return <Box textAlign={'center'} p={4}> Loading...</Box>;
-
-  if (!isAuthenticated) 
-    return <Box textAlign={'center'} p={4}> Please log in to access dashboard </Box>;
-
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -22,6 +16,12 @@ export default function Page() {
 
     return () => clearInterval(interval);
   }, []);
+
+  if (loading) 
+    return <Box textAlign={'center'} p={4}> Loading...</Box>;
+
+  if (!isAuthenticated) 
+    return <Box textAlign={'center'} p={4}> Please log in to access dashboard </Box>;
 
   return (
     <Box py={1}>
