@@ -1,4 +1,4 @@
-import { Role } from "./user";
+import { Role } from "./users";
 
 export interface VerifyEmailRequest {
   email: string;

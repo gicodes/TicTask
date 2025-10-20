@@ -2,7 +2,7 @@
 
 import { SessionProvider, useSession, signIn, signOut } from 'next-auth/react';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, Role, UserType } from '@/types/user';
+import { User, Role, UserType } from '@/types/users';
 
 interface AuthUser {
   id: number;

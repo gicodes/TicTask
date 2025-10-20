@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Role } from '@/types/user';
+import { Role } from '@/types/users';
 import { AdminLogin } from './adminLogin';
 import SignInOptions from './signInOptions';
 import { AuthDivider } from './orAuthDivider';

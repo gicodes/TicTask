@@ -1,10 +1,10 @@
 import { FcOrganization } from 'react-icons/fc';
 import { FaPeopleCarry, FaUsers } from 'react-icons/fa';
 import { GiLogging } from 'react-icons/gi';
-import { CreditCard, Group, Notifications, People, Person, Settings, Event } from '@mui/icons-material';
+import { CreditCard, Group, Notifications, People, Person, Settings, AssignmentAdd } from '@mui/icons-material';
 
 export const NAV_ITEMS = [
-  { label: 'Tickets', path: '/dashboard/tickets', icon: <Event /> },
+  { label: 'Tickets', path: '/dashboard/', icon: <AssignmentAdd /> },
   { label: 'Profile', path: '/dashboard/profile', icon: <Person /> },
   { label: 'Notifications', path: '/dashboard/notifications', icon: <Notifications /> },
   { label: 'Settings', path: '/dashboard/settings', icon: <Settings /> },

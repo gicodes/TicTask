@@ -1,4 +1,4 @@
-import { Role } from '@/types/user';
+import { Role } from '@/types/users';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Join } from '@/components/pages/auth/join';

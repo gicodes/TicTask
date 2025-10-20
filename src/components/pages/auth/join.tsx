@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { apiPost } from "@/lib/api";
-import { Role } from '@/types/user';
+import { Role } from '@/types/users';
 import styles from "@/app/page.module.css";
 import { useEffect, useState } from 'react';
 import SignInOptions from './signInOptions';

@@ -5,7 +5,7 @@ import SlackProvider from 'next-auth/providers/slack';
 import XProvider from 'next-auth/providers/twitter';
 import type { NextAuthOptions } from 'next-auth';
 import { nextAuthApiPost } from './api';
-import { User } from '@/types/user';
+import { User } from '@/types/users';
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
