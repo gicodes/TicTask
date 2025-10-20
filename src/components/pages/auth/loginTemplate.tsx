@@ -1,4 +1,5 @@
 import { Box, Stack, TextField, Typography } from '@mui/material';
+import { authErrorMessages } from '@/lib/authOptions';
 import styles from '@/app/page.module.css';
 import React, { useState } from 'react';
 import RememberMe from './rememberMe';
@@ -24,6 +25,7 @@ const LoginTemplate = ({
   setPassword,
 }: LoginTemplateProps) => {
   const [remember, setRemember] = useState(false);
+  const message = (error && authErrorMessages[error]) || authErrorMessages.Default;
 
   return (
     <Box
@@ -64,13 +66,7 @@ const LoginTemplate = ({
 
         {error && (
           <Typography color="error" fontSize="0.9rem">
-            {error}
-          </Typography>
-        )}
-
-        {error && (
-          <Typography color="error" fontSize="0.9rem">
-            {error}
+            {message}
           </Typography>
         )}
 

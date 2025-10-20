@@ -206,7 +206,6 @@ a.secondary {
 }
 
 .btnRetreat {
-  color: var(--bw);
   background: transparent;
   border: 1px solid var(--border-color);
   transition: background 0.2s, border-color 0.2s;
@@ -279,9 +278,9 @@ a.secondary {
 }
 
 .container {
+  padding: 1rem;
   max-width: 1200;
   min-height: 75vh;
-  padding: 1rem;
   margin: 4rem auto 0;
 }
 
@@ -309,7 +308,7 @@ a.secondary {
   display: flex;
   margin: 5rem 0;
   flex-wrap: wrap;
-  flex-direction: row;
   max-width: 500px;
+  flex-direction: row;
   justify-content: space-around;
 }

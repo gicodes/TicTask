@@ -1,3 +1,5 @@
+import { Role } from "./user";
+
 export interface VerifyEmailRequest {
   email: string;
   role: "ADMIN" | "USER";
@@ -22,4 +24,19 @@ export interface ConfirmVerificationResponse {
   role?: "ADMIN" | "USER";
   email?: string;
   token?: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  ok: boolean;
+  accessToken: string;
+  user: {
+    id: string;
+    email: string;
+    role: Role;
+  }
 }

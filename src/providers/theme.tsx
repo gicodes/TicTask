@@ -1,6 +1,6 @@
 'use client';
 
-import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
+import { ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { lightTheme, darkTheme } from '@/lib/theme';
 import { CssBaseline } from '@mui/material';
@@ -9,6 +9,29 @@ type ThemeContextType = {
   mode: 'light' | 'dark';
   toggleTheme: () => void;
 };
+
+const defaultAccent = '#f38600';
+
+function getAccentColor() {
+  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    const value = getComputedStyle(document.documentElement)
+      .getPropertyValue('--accent')
+      .trim();
+    return value || defaultAccent;
+  }
+  return defaultAccent;
+}
+
+export const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: { main: getAccentColor() },
+    background: { default: 'var(--background)' },
+    text: { primary: 'var(--foreground)' },
+  },
+});
+
+export default theme;
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 

@@ -1,11 +1,14 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { LoginRequest, LoginResponse } from '@/types/axios';
 import GoogleProvider from 'next-auth/providers/google';
 import SlackProvider from 'next-auth/providers/slack';
 import XProvider from 'next-auth/providers/twitter';
 import type { NextAuthOptions } from 'next-auth';
+import { nextAuthApiPost } from './api';
 import { User } from '@/types/user';
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.AUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -14,17 +17,20 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(credentials),
-        });
+        let user = null;
 
-        const user = await res.json();
-
-        if (res.ok && user) return user;
-        return null;
-      },
+        try {
+          const res = await nextAuthApiPost<LoginResponse, LoginRequest>(
+            "/auth/login", credentials!
+          );
+          user = res.user;
+          if (res.ok && user) return user;
+        } catch (error) {
+          console.log("Login error at nextAuth Options:", error);
+          return null;
+        }        
+        return user;
+      }
     }),
 
     GoogleProvider({
@@ -62,4 +68,19 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
+
 export default authOptions;
+
+export const authErrorMessages: Record<string, string> = {
+  CredentialsSignin: "Invalid email or password.",
+  OAuthSignin: "Error connecting to the provider.",
+  OAuthCallback: "Error handling the callback from the provider.",
+  OAuthCreateAccount: "Could not create your account via provider.",
+  EmailCreateAccount: "Could not create your account with email.",
+  Callback: "An unexpected error occurred. Please try again.",
+  OAuthAccountNotLinked:
+    "Please sign in with the same method you used to create your account.",
+  EmailSignin: "Error sending sign-in email.",
+  SessionRequired: "Please sign in to access this page.",
+  Default: "Something went wrong. Please try again later.",
+};

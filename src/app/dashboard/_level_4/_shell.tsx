@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import Logo from '@/assets/txtLogo';
-import styles from '@/app/page.module.css';
 import { useAuth } from '@/providers/auth';
 import { ReactNode, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { AUTH_ITEMS, NAV_ITEMS } from './navItems';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import { AUTH_ITEMS, NAV_ITEMS } from '../_level_1/navItems';
 import {
   AppBar,
   Toolbar,
@@ -22,14 +22,15 @@ import {
   MenuItem,
   Divider,
   Tooltip,
+  Stack,
+  Typography,
 } from '@mui/material';
-import { Menu as MenuIcon } from '@mui/icons-material';
 
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -40,19 +41,21 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   const filteredNav = NAV_ITEMS.filter(item => {
     if (user?.role === 'ADMIN') return true;
     if (user?.userType === 'PERSONAL' && item.label === 'Team') return false;
+
     return true;
   });
 
   const isLoggedIn = !!user;
 
   const authMenuItems = AUTH_ITEMS.map(item => {
-    const isDisabled =
-      !isLoggedIn &&
+    const isDisabled = !isLoggedIn &&
       (item.label === 'Edit Profile' || item.label === 'Settings');
 
     if (item.label === 'Logout' && !isLoggedIn) {
       return { ...item, label: 'Login', href: `/auth/login/` };
     }
+    if (item.label === 'Logout' && isLoggedIn) 
+      return { ...item, href: '', onClick: () => logout() };
 
     return { ...item, disabled: isDisabled };
   });
@@ -66,7 +69,11 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         bgcolor: 'background.default',
       }}
     >
-      <AppBar position="fixed" color="default" sx={{ zIndex: 1201 }}>
+      <AppBar 
+        position="fixed" 
+        color="default" 
+        sx={{ zIndex: 1201, minHeight: 60 }}
+      >
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton edge="start" onClick={() => setOpen(!open)}>
@@ -91,7 +98,6 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                 </Avatar>
               </IconButton>
             </Tooltip>
-
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
@@ -100,27 +106,38 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
               transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               sx={{ marginTop: 1 }}
             >
-              {authMenuItems.map((item, index) => (
-                <Box key={item.label}>
-                  <Link href={item.href}>
-                    <MenuItem
-                      onClick={handleClose}
-                      disabled={item.disabled}
-                      sx={{  
-                        px: 3,
-                        fontSize: 15, 
-                        display: 'flex', 
-                        justifyContent: 'center',
-                      }}
-                    >
-                      {item.label}
-                    </MenuItem>
-                  </Link>
-                  {index < authMenuItems.length - 1 && (
-                    <Divider sx={{ my: 0.25, mx: 1.5, opacity: 0.6 }} />
-                  )}
+              <Box minWidth={150}>
+                { user && <Box my={1}>
+                  <Stack sx={{ px: 1, pb: 1, textAlign: 'center'}}>
+                    <Typography variant='caption'>{user.name}</Typography>
+                    <Typography className='font-xxs custom-dull'>{user?.email}</Typography>
+                  </Stack>
+                  <Divider sx={{ border: '1px solid var(--foreground)'}} />
                   </Box>
-                ))}
+                }
+                {authMenuItems.map((item, index) => (
+                  <Box key={item.label}>
+                    <Link href={item.href}>
+                      <MenuItem
+                        onClick={handleClose}
+                        disabled={item.disabled}
+                        sx={{  
+                          px: 3,
+                          fontSize: 14, 
+                          display: 'flex', 
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {item.label}
+                      </MenuItem>
+                    </Link>
+
+                    { index < authMenuItems.length - 1 && (
+                      <Divider sx={{ my: 0.05, mx: 5, opacity: 0.6 }} />
+                    )}
+                    </Box>
+                  ))}
+                </Box>
             </Menu>
           </Box>
         </Toolbar>
@@ -133,8 +150,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         sx={{ display: { xs: 'block', md: 'none' } }}
       >
         <Toolbar />
-        <List>
-          <Toolbar />
+        <List sx={{ pt: 5}}>
           {filteredNav.map(item => (
             <Link href={item.path} key={item.path}>
               <ListItemButton selected={pathname === item.path}>
@@ -156,8 +172,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         }}
       >
         <Toolbar />
-        <List>
-          <Toolbar />
+        <List sx={{ pt: 5}}>
           {filteredNav.map(item => (
             <Link href={item.path} key={item.path}>
               <ListItemButton selected={pathname === item.path}>
@@ -169,10 +184,16 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         </List>
       </Drawer>
 
-      <Box component="main" sx={{ p: 3, height: '100%', flexGrow: 1 }}>
+      <Box component="main" 
+        sx={{ 
+          flexGrow: 1, 
+          minHeight: '100vh' 
+        }}
+      >
         <Toolbar />
         {children}
+        <Typography  textAlign={'center'}><strong>Powered by Gi Codes 🔥</strong></Typography>
       </Box>
     </Box>
   );
-}
+};

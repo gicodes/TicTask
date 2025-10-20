@@ -1,51 +1,21 @@
 'use client';
 
 import Link from "next/link";
+import { useAuth } from "./auth";
 import { useState } from "react";
 import Logo from "@/assets/txtLogo";
 import styles from '@/app/page.module.css';
 import MenuIcon from "@mui/icons-material/Menu";
 import { CancelRounded } from "@mui/icons-material";
+import { userLinks, guestLinks, menuItems } from "@/app/dashboard/_level_1/navItems";
 import { AppBar, Box, Button, IconButton, Toolbar, Stack, Drawer, List, ListItem } from "@mui/material";
 
-const useAuth = () => {
-  const [isLoggedIn] = useState(false);
-  return { isLoggedIn };
-};
-
-export type LinkItem = {
-  label: string;
-  href: string;
-  cta?: boolean;
-  disabled?: boolean;
-};
-
 const Header = () => {
-  const { isLoggedIn } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const toggleDrawer = () => setMobileOpen(!mobileOpen);
-
-  const menuItems = [
-    { label: "Product", href: "/product" },
-    { label: "Resources", href: "/resources" },
-    { label: "Company", href: "/company" },
-    { label: "Contact Us", href: "/company/#contact-us" },
-  ];
-
-  const guestLinks: LinkItem[] = [
-    { label: "LOGIN", href: "/auth/login" },
-    { label: "JOIN FOR FREE", href: "/auth/join/user", cta: true },
-  ];
-
-  const userLinks: LinkItem[] = [
-    { label: "Dashboard", href: "/dashboard" },
-    { label: "Settings", href: "/settings" },
-    { label: "Partner", href: "/company/partners/#join" },
-    { label: "Logout", href: "/logout" },
-  ];
-
-  const authLinks = isLoggedIn ? userLinks : guestLinks;
+  const authLinks = isAuthenticated ? userLinks : guestLinks;
 
   return (
     <AppBar
@@ -101,7 +71,7 @@ const Header = () => {
             {authLinks.map((link) =>
               (link && link?.cta) ? (
                 <Link href={link.href} key={link.href}>
-                  <button className={styles.btnPrimary}>{link.label}</button>
+                  <Button className={styles.btnPrimary}>{link.label}</Button>
                 </Link>
               ) : (
                 <Button 
@@ -157,13 +127,12 @@ const Header = () => {
                   </Link>
                 </ListItem>
               ))}
-
               { authLinks.map((link) => (
                 <ListItem key={link.href}>
                   <Link 
                     href={link.href}
-                    onClick={toggleDrawer}
-                    style={{ width: '100%', textAlign: 'center'}}
+                    onClick={link.onClick ? () => logout : toggleDrawer}
+                    style={{ width: '100%', textAlign: 'center', textTransform: link.cta ? 'uppercase' : 'none'}}
                     className={link.cta ? styles.btnRetreat : ''}
                   >
                     {link.label}

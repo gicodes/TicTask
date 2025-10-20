@@ -7,7 +7,6 @@ import LoginTemplate from './loginTemplate';
 
 export const CredentialsForm = () => {
   const router = useRouter();
-
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [password, setPassword] = useState('');

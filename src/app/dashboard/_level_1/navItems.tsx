@@ -1,7 +1,6 @@
 import { FcOrganization } from 'react-icons/fc';
 import { FaPeopleCarry, FaUsers } from 'react-icons/fa';
 import { GiLogging } from 'react-icons/gi';
-import { LinkItem } from '@/providers/header';
 import { CreditCard, Group, Notifications, People, Person, Settings, Event } from '@mui/icons-material';
 
 export const NAV_ITEMS = [
@@ -21,5 +20,31 @@ export const NAV_ITEMS = [
 export const AUTH_ITEMS: LinkItem[] = [
   { label: "Edit Profile", href: "/dashboard/profile/edit", disabled: false },
   { label: "Home", href: "/" },
-  { label: "Logout", href: "/logout", cta: true }, 
+  { label: "Logout", href: "", cta: true }, 
 ]
+
+export const menuItems = [
+  { label: "Product", href: "/product" },
+  { label: "Resources", href: "/resources" },
+  { label: "Company", href: "/company" },
+  { label: "Contact Us", href: "/company/#contact-us" },
+];
+
+export const guestLinks: LinkItem[] = [
+  { label: "Login", href: "/auth/login" },
+  { label: "Join For Free", href: "/auth/join/user", cta: true },
+];
+
+export const userLinks: LinkItem[] = [
+  { label: "Dashboard", href: "/dashboard" },
+  { label: "Partner", href: "/company/partners/#join" },
+  { label: "Logout", href: "", onClick: true},
+];
+
+  export type LinkItem = {
+    label: string;
+    href: string;
+    cta?: boolean;
+    disabled?: boolean;
+    onClick?: boolean;
+  };

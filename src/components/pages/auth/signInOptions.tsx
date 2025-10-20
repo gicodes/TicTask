@@ -2,8 +2,8 @@ import React from 'react'
 import { Stack } from '@mui/material';
 import { signIn } from 'next-auth/react';
 import styles from '@/app/page.module.css';
-import { FaGoogle, FaSlack } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
+import { FaGoogle, FaSlack } from 'react-icons/fa';
 
 const signInOptions = [
   {

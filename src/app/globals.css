@@ -1,7 +1,6 @@
 :root {
   --background: #ffffff;
   --foreground: rgb(17, 16, 23);
-
   --surface-1: #f2f2f2;
   --surface-2: #eaeaea;
   --accent: #f38600;
@@ -12,7 +11,6 @@
   --bw: #000;
   --inverse-bw: #fff;
   --border-color: #ccc;
-
   --btn-primary-bg: var(--foreground);
   --btn-primary-color: var(--background);
   --btn-secondary-bg: var(--surface-1);
@@ -23,10 +21,8 @@
   :root {
     --background: rgb(17, 16, 23);
     --foreground: #ededed;
-
     --surface-1: rgb(36, 34, 43);
     --surface-2: rgb(28, 28, 33);
-
     --accent: #f38600;
     --success: #4caf50;      
     --secondary: #777;
@@ -35,7 +31,6 @@
     --inverse-bw: #000;
     --accent-contrast: #1a1a1a;
     --border-color: #333;
-
     --btn-primary-bg: var(--foreground);
     --btn-primary-color: var(--background);
     --btn-secondary-bg: var(--surface-1);
@@ -91,14 +86,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 { font-size: 3.5rem; 
-  @media screen and (max-width: 600px) {
-    font-size: 3.3rem;
-  }
+  @media screen and (max-width: 600px) { font-size: 3.3rem; }
 }
 h2 { font-size: 3rem; 
-  @media screen and (min-width: 768px) {
-    font-weight: 750;
-  }
+  @media screen and (min-width: 768px) { font-weight: 750; }
   @media screen and (max-width: 600px) {
     font-weight: 669;
     font-size: 2.75rem;
@@ -109,6 +100,7 @@ h4 { font-size: 2rem; }
 h5 { font-size: 1.75rem; }
 h6 { font-size: 1.5rem; }
 
+.font-xxs { font-size: 0.75rem;}
 .font-xs { font-size: 1rem; }
 .font-md { font-size: 1.5rem; }
 .font-sm { font-size: 1.25rem; }
@@ -116,6 +108,7 @@ h6 { font-size: 1.5rem; }
 .font-xl { font-size: 2.5rem; }
 .font-xxl { font-size: 2.75rem; }
 .font-sxl { font-size: 3rem; }
+
 .font-weight-l { font-weight: 200;}
 
 .flex { display: flex; }
@@ -152,6 +145,7 @@ h6 { font-size: 1.5rem; }
 .my-5 { margin: 2.5rem 0; }
 
 .py-1 { padding: 1rem 0; }
+.px-1 { padding: 0 1rem; }
 
 .mt-1 { margin-top: 0.25rem; }
 .mt-2 { margin-top: 0.5rem; }

@@ -38,13 +38,13 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (session?.user) {
       setUser({
-        id: (session.user as User).id,
+        id: ((session.user as unknown) as User).id,
         name: session.user.name || '',
         email: session.user.email || '',
-        role: (session.user as User).role || 'USER',
-        userType: (session.user as User).userType || 'PERSONAL',
-        photo: (session.user as User).photo,
-        organization: (session.user as User).organization,
+        role: ((session.user as unknown) as User).role || 'USER',
+        userType: ((session.user as unknown) as User).userType || 'PERSONAL',
+        photo: ((session.user as unknown) as User).photo,
+        organization: ((session.user as unknown) as User).organization,
       });
     } else {
       setUser(null);

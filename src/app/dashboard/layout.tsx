@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import DashboardIndex from './_shell';
+import DashboardIndex from './_level_4/_shell';
 import { AuthProvider } from '@/providers/auth';
 import { AlertProvider } from '@/providers/alert';
 import { ThemeProvider } from '@/providers/theme';
@@ -16,24 +16,20 @@ export default function DashboardLayout(
   { children }: Readonly<{ children: React.ReactNode }>
 ) {
   return (
-    <html lang="en">
-      <body suppressHydrationWarning>
-        <ThemeProvider>
-          <AlertProvider>
-            <LoadingProvider>
-              <AuthProvider>
-                <NotificationProvider>
-                  <TicketsProvider>
-                    <DashboardIndex>
-                      {children}
-                    </DashboardIndex>
-                  </TicketsProvider>
-                </NotificationProvider>
-              </AuthProvider>
-            </LoadingProvider>
-          </AlertProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ThemeProvider>
+      <AlertProvider>
+        <LoadingProvider>
+          <AuthProvider>
+            <NotificationProvider>
+              <TicketsProvider>
+                <DashboardIndex>
+                  {children}
+                </DashboardIndex>
+              </TicketsProvider>
+            </NotificationProvider>
+          </AuthProvider>
+        </LoadingProvider>
+      </AlertProvider>
+    </ThemeProvider>
   );
 };
