@@ -1,7 +1,7 @@
 import { Role } from '@/types/users';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Join } from '@/components/pages/auth/join';
+import { Join } from '@/components/_level_3/join';
 
 interface PageProps {
   params: Promise<{ role: string }>;

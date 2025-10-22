@@ -18,6 +18,7 @@ export const TICKET_TYPES = [
   'DEPLOYMENT',
   'PERFORMANCE',
   'DESIGN',
+  'TICKET',
 ];
 
 export const TICKET_PRIORITIES = ['LOW','MEDIUM','HIGH','URGENT']

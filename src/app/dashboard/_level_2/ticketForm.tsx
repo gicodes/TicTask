@@ -16,8 +16,8 @@ import {
   Toolbar,
   Autocomplete,
 } from '@mui/material';
-import { TAG_SUGGESTIONS, TICKET_PRIORITIES, TICKET_TYPES } from '../_level_1/constants';
 import { CreateTicket, Ticket, Ticket_Type, Ticket_Priority } from '@/types/ticket';
+import { TAG_SUGGESTIONS, TICKET_PRIORITIES, TICKET_TYPES } from '../_level_1/constants';
 
 const schema = z.object({
   type: z.nativeEnum(Ticket_Type),

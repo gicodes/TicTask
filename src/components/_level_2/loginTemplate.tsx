@@ -1,8 +1,8 @@
 import { Box, Stack, TextField, Typography } from '@mui/material';
 import { authErrorMessages } from '@/lib/authOptions';
+import RememberMe from '../_level_1/rememberMe';
 import styles from '@/app/page.module.css';
 import React, { useState } from 'react';
-import RememberMe from './rememberMe';
 import Link from 'next/link';
 
 interface LoginTemplateProps {
