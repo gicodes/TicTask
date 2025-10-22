@@ -56,7 +56,10 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    await signOut({ callbackUrl: '/' });
+    await signOut({ 
+      callbackUrl: '/auth/login', 
+      redirect: true 
+    });
   };
 
   const refreshUser = async () => {

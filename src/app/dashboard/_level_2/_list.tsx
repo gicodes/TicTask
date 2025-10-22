@@ -34,7 +34,6 @@ const TicketsList = ({
             backgroundColor: 'var(--secondary)',
             borderRadius: 10,
           },
-
           '@media (max-width: 600px)': {
             display: 'block',
             maxWidth: '90vw',
@@ -56,7 +55,7 @@ const TicketsList = ({
                 <th
                   key={h}
                   style={{
-                    padding: '10px',
+                    padding: '10px 12px',
                     fontWeight: 600,
                     fontSize: '0.9rem',
                     whiteSpace: 'nowrap',
@@ -74,7 +73,7 @@ const TicketsList = ({
           </thead>
 
           <tbody>
-            {tickets.map((t) => (
+            {tickets.map((t, i) => (
               <tr
                 key={t.id}
                 style={{
@@ -83,14 +82,10 @@ const TicketsList = ({
                   transition: 'background 0.2s',
                 }}
                 onClick={() => openDetail(t.id)}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = 'var(--dull-gray)')
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = 'transparent')
-                }
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--dull-gray)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
-                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{t.id}</td>
+                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{i+1}</td>
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{t.title}</td>
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
                   <Chip
@@ -106,10 +101,10 @@ const TicketsList = ({
                   />
                 </td>
 
-                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{t.type}</td>
+                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{t.type==='FEATURE_REQUEST'}</td>
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
                   <Chip
-                    label={t.status}
+                    label={t.status==="IN_PROGRESS" ? "IN PROGRESS" : t.status}
                     size="small"
                     sx={{
                       backgroundColor: getStatusColor(t.status).bg,
@@ -120,7 +115,6 @@ const TicketsList = ({
                     }}
                   />
                 </td>
-
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
                   {t.updatedAt ? new Date(t.updatedAt).toLocaleString() : ''}
                 </td>

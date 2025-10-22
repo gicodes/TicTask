@@ -4,9 +4,9 @@ import { Badge, Box, Container, Stack, Typography } from '@mui/material';
 
 const pitchpoints = [
   {
-    icon: "3+",
+    icon: "15+",
     title: "Use Cases",
-    description: "Create Ticket as either Task, Issue or Invoice",
+    description: "Create Ticket as Task, Issue, Invoice & more",
     color: "gray"
   },
   {

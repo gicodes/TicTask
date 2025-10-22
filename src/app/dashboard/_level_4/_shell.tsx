@@ -29,8 +29,8 @@ import {
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const pathname = usePathname();
   const { user, logout } = useAuth();
+  const pathname = usePathname();
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
 
@@ -51,8 +51,6 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
 
     if (item.label === 'Logout' && !isLoggedIn) return { 
       ...item, label: 'Login', href: `/auth/login/` };
-    if (item.label === 'Logout' && isLoggedIn) return { 
-      ...item, href: '', onClick: () => logout() };
 
     return { ...item, disabled: isDisabled };
   });
@@ -120,7 +118,9 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                   <Box key={index}>
                     <Link href={!isLoggedIn && item.disabled ? '' : item.href}>
                       <MenuItem
-                        onClick={handleClose}
+                        onClick={
+                          item.label === 'Logout' && isLoggedIn ? logout : handleClose
+                        }
                         disabled={item.disabled}
                         sx={{  
                           px: 3,

@@ -11,6 +11,8 @@
   --bw: #000;
   --dull-gray: #999;
   --border-color: #ccc;
+  --danger: #b00020;
+  --special: #3D488B;
   --btn-primary-bg: var(--foreground);
   --btn-primary-color: var(--background);
   --btn-secondary-bg: var(--surface-1);
@@ -23,14 +25,16 @@
     --foreground: #ededed;
     --surface-1: rgb(36, 34, 43);
     --surface-2: rgb(28, 28, 33);
+    --special: #362D68;
+    --danger: #e53935;
     --accent: #f38600;
     --success: #4caf50;      
     --secondary: #777;
     --disabled: #555;
     --bw: #fff;            
     --dull-gray: #ccc;
-    --accent-contrast: #1a1a1a;
     --border-color: #333;
+    --accent-contrast: #1a1a1a;
     --btn-primary-bg: var(--foreground);
     --btn-primary-color: var(--background);
     --btn-secondary-bg: var(--surface-1);

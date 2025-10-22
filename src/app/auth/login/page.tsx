@@ -1,5 +1,5 @@
 import React from 'react';
-import { Login } from '@/components/pages/auth/Main';
+import { Login } from '@/components/_level_3/login';
 
 export default async function Page() {
   return (

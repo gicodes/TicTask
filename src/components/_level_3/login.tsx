@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { Role } from '@/types/users';
-import { AdminLogin } from './adminLogin';
-import SignInOptions from './signInOptions';
-import { AuthDivider } from './orAuthDivider';
-import { CredentialsForm } from './userLogin';
+import { AdminLogin } from '../_level_2/adminLogin';
+import SignInOptions from '../_level_1/signInOptions';
+import { AuthDivider } from '../_level_1/orAuthDivider';
+import { CredentialsForm } from '../_level_2/userLogin';
 import { Box, Stack, Typography } from '@mui/material';
 
 interface LoginProps { role?: Role; }

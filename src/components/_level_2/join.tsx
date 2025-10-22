@@ -5,10 +5,10 @@ import { apiPost } from "@/lib/api";
 import { Role } from '@/types/users';
 import styles from "@/app/page.module.css";
 import { useEffect, useState } from 'react';
-import SignInOptions from './signInOptions';
+import SignInOptions from '../_level_1/signInOptions';
 import { useRouter } from 'next/navigation';
 import { useAlert } from '@/providers/alert';
-import { AuthDivider } from './orAuthDivider';
+import { AuthDivider } from '../_level_1/orAuthDivider';
 import { VerifyEmailResponse, VerifyEmailRequest } from '@/types/axios'
 import { Box, Stack, Fade, TextField, Typography, Divider, Card } from '@mui/material';
 

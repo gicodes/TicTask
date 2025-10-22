@@ -1,11 +1,11 @@
 import styles from "./page.module.css";
-import CTA from "@/components/index/cta";
-import FAQ from "@/components/index/faq";
-import Hero from "@/components/index/hero";
-import Footer from "@/components/index/footer";
-import IndexPitch from "@/components/index/pitch";
-import Features from "@/components/index/features";
-import ProPlatform from "@/components/index/platforms";
+import CTA from "@/components/_landing/cta";
+import FAQ from "@/components/_landing/faq";
+import Hero from "@/components/_landing/hero";
+import Footer from "@/components/_landing/footer";
+import IndexPitch from "@/components/_landing/pitch";
+import Features from "@/components/_landing/features";
+import ProPlatform from "@/components/_landing/platforms";
 
 export default function Home() {
   return (

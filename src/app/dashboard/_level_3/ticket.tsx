@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Container } from '@mui/material';
 import { Ticket } from '@/types/ticket';
 
-import { api } from '../_level_0/seed';
+import { api } from '../_level_1/tApi';
 import Board from '../_level_2/_board';
 import Toolbar from '../_level_2/toolbar';
 import TicketFormDrawer from '../_level_2/ticketForm';

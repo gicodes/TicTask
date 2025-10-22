@@ -1,16 +1,7 @@
 import React from 'react';
 import { Ticket } from '@/types/ticket';
+import { priorityColor } from '../_level_1/tColorVariants';
 import { Paper, Typography, Stack, Avatar, Chip, Box, Tooltip } from '@mui/material';
-
-const priorityColor = (p: string) => {
-  switch (p?.toUpperCase()) {
-    case 'URGENT': return '#b00020';
-    case 'HIGH': return '#e53935';
-    case 'MEDIUM': return '#ff9800';
-    case 'LOW': return '#4caf50';
-    default: return '#9e9e9e';
-  }
-};
 
 export const TicketCard: React.FC<{ 
     ticket: Ticket; 
@@ -61,16 +52,16 @@ export const TicketCard: React.FC<{
             justifyContent={'space-between'}
           >
             <Typography flexWrap={'wrap'} variant="caption">
-              {ticket.dueDate ? `Due by ${ticket.dueDate}` : ''}
+              {ticket.dueDate ? `Due by ${new Date(ticket.dueDate).toDateString()}` : ''}
             </Typography>
             <Tooltip title={`Assigned to ${ticket.assignedToId ? isString ? ticket.assignedToId : `#${ticket.assignedToId}`: 'TicTask Bot'}`}>
-              <Avatar  sx={{ width: 28, height: 28, fontSize: 13 }}>
+              <Avatar sx={{ width: 28, height: 28, fontSize: 13, bgcolor: 'var(--foreground)', color: 'var(--background)' }}>
                 {avatar}
               </Avatar>
             </Tooltip>
           </Box>
           <Box  
-            p={1}
+            px={1}
             width={'100%'}
             display={'grid'} 
           >
