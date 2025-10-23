@@ -26,7 +26,7 @@ export default function PartnerJoinPage() {
     setResponse({});
 
     try {
-      const res = await apiPost("/partner/join", form);
+      await apiPost("/partner/join", form);
       setResponse({ success: true, message: "Application submitted successfully!" });
       setForm({ name: "", company: "", email: "", message: "" });
     } catch (error) {
