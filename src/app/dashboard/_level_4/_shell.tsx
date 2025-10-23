@@ -72,7 +72,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton edge="start" onClick={() => setOpen(!open)}>
-              <MenuIcon sx={{ display: { md: 'none' }, mr: 1 }} />
+              <MenuIcon sx={{ display: { md: 'none' }, mr: 3 }} />
             </IconButton>
             <Logo />
           </Box>
@@ -189,8 +189,8 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
       >
         <Toolbar />
         {children}
-        <Box textAlign={'center'} display={'grid'} gap={1}>
-          <Typography fontFamily={'serif'} fontWeight={501} variant='caption' className='custom-dull'><i>Mind Is a Tool On It&apos;s Own... With <strong>TicTask</strong>, You&apos;ve Got A Clone</i></Typography>
+        <Box textAlign={'center'} mt={10}>
+          <Typography fontFamily={'serif'} fontWeight={501} className='custom-dull'><i>"Unleash the Power of your mind — one task at a time”</i></Typography>
         </Box>
       </Box>
     </Box>

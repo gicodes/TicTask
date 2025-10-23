@@ -47,8 +47,8 @@ export default function SettingsPage() {
 
           <Stack direction="row" spacing={2} alignItems="center">
             {[
-              { label: 'Light', icon: <Sun size={18} />, value: 'light' },
-              { label: 'Dark', icon: <Moon size={18} color='black' />, value: 'dark' },
+              { label: 'Light', icon: <Sun size={18} color='var(--surface-1)' />, value: 'light' },
+              { label: 'Dark', icon: <Moon size={18} color='var(--bw)' />, value: 'dark' },
               { label: 'System', icon: <Laptop size={18} />, value: 'system' },
             ].map(({ label, icon, value }) => (
               <Tooltip key={label} title={`${label} Theme`}>
@@ -80,9 +80,9 @@ export default function SettingsPage() {
             Manage your personal information and credentials.
           </Typography>
           <Stack spacing={2}>
-            <TextField label="Display Name" value="Gideon Iduma" fullWidth />
-            <TextField label="Email" type="email" value="gideon@acme.com" fullWidth disabled />
-            <Stack direction={'row'} spacing={2}>
+            <TextField label="Display Name" value="Your Display Name" fullWidth />
+            <TextField label="Email" type="email" value="yourname@tictask.com" fullWidth disabled />
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
               <button className={styles.btnPrimary}>
                 Go to Profile
               </button>

@@ -1,8 +1,8 @@
 export const TEAM = [
-  { name: "Gideon Iduma", role: "Founder & Product Lead" },
-  { name: "Amira Tayo", role: "Design & Experience" },
-  { name: "Kehinde Okoro", role: "Engineering" },
-  { name: "Mason Lee", role: "Growth & Partnerships" },
+  { name: "Gideon Iduma", role: "Founder & CEO, TicTask" },
+  { name: "Psalm Writes", role: "Design & Experience" },
+  { name: "Akachukwu O.", role: "Product Lead" },
+  { name: "Select Engr.", role: "Growth & Partnerships" },
 ];
 
 export const VALUES = [
