@@ -106,7 +106,7 @@ export default function TicketDetailDrawer({
       {loading && <Typography variant="body2">Loading…</Typography>}
       {ticket && (
         <Box> 
-          <Stack direction={'row'} alignItems={'center'} minHeight={66}>
+          <Stack direction={'row'} alignItems={'center'} minHeight={64}>
             <Tooltip title='More Options'>
               <IconButton onClick={toggleMoreOptions}>
                 {!moreOptions ? <FaEllipsisV size={20} /> : <CloseSharp sx={{ fontSize: 20}} />}
@@ -135,7 +135,7 @@ export default function TicketDetailDrawer({
               display={'flex'} 
               justifyContent={'end'} 
               flexDirection={'column'} 
-              gap={0.5} 
+              gap={1} 
               flexWrap={'wrap'} 
               width={'100%'}
               maxWidth={120}

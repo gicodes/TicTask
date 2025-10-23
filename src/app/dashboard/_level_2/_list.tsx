@@ -61,8 +61,9 @@ const TicketsList = ({
                     whiteSpace: 'nowrap',
                     position: 'sticky',
                     top: 0,
-                    background: 'var(--dull-gray)',
-                    color: 'var(--surface-1)',
+                    background: 'var(--primary)',
+                    color: 'var(--primary)',
+                    borderBottom: '2px solid var(--secondary)',
                     zIndex: 1,
                   }}
                 >
@@ -77,12 +78,12 @@ const TicketsList = ({
               <tr
                 key={t.id}
                 style={{
-                  borderBottom: '1px solid #eee',
+                  borderBottom: '0.1px solid var(--secondary',
                   cursor: 'pointer',
                   transition: 'background 0.2s',
                 }}
                 onClick={() => openDetail(t.id)}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--dull-gray)'}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent)'}
                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{i+1}</td>

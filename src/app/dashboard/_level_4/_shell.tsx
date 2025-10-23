@@ -84,13 +84,13 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                   src={user?.photo || ''}
                   sx={{
                     // In scale: TEAM_ADMIN='var(--sharp)' ? 'primary.main', ADMIN='var(--surface-1)' 
-                    bgcolor: user ? 'var(--surface-2)' : 'grey.500', 
+                    bgcolor: user ? 'var(--surface-1)' : 'var(--surface-2)', 
                     width: 36,
                     height: 36,
                     fontSize: 15,
                   }}
                 >
-                  {user ? user.name?.[0]?.toUpperCase() : 'NA'}
+                  <Typography color={'var(--bw)'}>{user ? user.name?.[0]?.toUpperCase() : 'NA'}</Typography>
                 </Avatar>
               </IconButton>
             </Tooltip>
@@ -112,7 +112,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                       </Stack>
                     </Link>
                   </Tooltip>
-                  <Divider sx={{ border: '1px solid var(--foreground)'}} />
+                  <Divider sx={{ border: '1px solid var(--dull-gray)'}} />
                   </Box>
                 }{ authMenuItems.map((item, index) => (
                   <Box key={index}>

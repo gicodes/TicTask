@@ -64,7 +64,7 @@ export default function Toolbar({
                 className={view==='board' ? `${styles.btnPrimary}`: styles.btnSecondary} 
                 startIcon={<ViewKanbanIcon />}
               >
-                Board
+                BOARD
               </Button>
             </Tooltip>
             <Divider sx={{ border: '1px solid silver'}} />
@@ -75,18 +75,18 @@ export default function Toolbar({
                 className={view==='list' ? styles.btnPrimary : styles.btnSecondary} 
                 startIcon={<ListAltIcon />}
               >
-                List
+                <span>LIST</span>
               </Button>
             </Tooltip>
           </ButtonGroup>
 
           <Tooltip title='Create New Ticket as Task, Invoice or Issue'>
-            <Button 
+            <button 
               className={styles.btnSecondary} 
               onClick={onOpenCreate}
             >
-              <FaPlusCircle />&nbsp; New Ticket
-            </Button>
+              <FaPlusCircle />&nbsp; NEW TICKET
+            </button>
           </Tooltip>
         </Stack>
       </Box>

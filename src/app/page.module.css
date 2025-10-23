@@ -22,7 +22,6 @@
     --gray-rgb: 255, 255, 255;
     --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
     --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
-
     --button-primary-hover: #ccc;
     --button-secondary-hover: #1a1a1a;
   }
@@ -166,7 +165,15 @@ a.secondary {
   }
 }
 
-.btnPrimary, .btnSecondary, .btnInverted, .btnAction, .btnRetreat, .btnSharp, .btnWarm {
+.btnPrimary, 
+.btnSecondary, 
+.btnInverted, 
+.btnAction, 
+.btnRetreat, 
+.btnSharp, 
+.btnWarm, 
+.btnError,
+.btnDanger {
   border-radius: 9999px;
   height: 48px;
   padding: 5px 20px;
@@ -194,12 +201,13 @@ a.secondary {
 
 .btnInverted {
   background: var(--accent-contrast);
-  color: var(--bw);
+  color: var(--foreground);
+  border: 1px solid var(--surface-1);
   transition: background 0.2s, border-color 0.2s;
 }
 
 .btnAction {
-  background: var(--background);
+  background: var(--surface-2);
   color: var(--foreground);
   border-color: #ccc;
   transition: background 0.2s, border-color 0.2s;
@@ -207,6 +215,13 @@ a.secondary {
 
 .btnRetreat {
   background: transparent;
+  border: 1px solid var(--dull-gray);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btnSharp {
+  background: var(--success);
+  color: var(--surface-1);
   border: 1px solid var(--border-color);
   transition: background 0.2s, border-color 0.2s;
 }
@@ -218,10 +233,16 @@ a.secondary {
   transition: background 0.2s, border-color 0.2s;
 }
 
-.btnSharp {
-  background: var(--success);
-  color: var(--surface-1);
-  border: 1px solid var(--border-color);
+.btnError {
+  background: var(--error);
+  color: var(--foreground);
+  transition: background 0.2s, border-color 0.2s;
+  border: 0.1px solid #f4a460;
+}
+
+.btnDanger {
+  background: var(--danger);
+  color: var(--bw);
   transition: background 0.2s, border-color 0.2s;
 }
 
@@ -240,7 +261,7 @@ a.secondary {
   }
 
   .btnAction:hover {
-    background: var(--background);
+    background: var(--surface-1);
     border-color: darkorange;
     transform: translateY(2px);
     opacity: 0.9;
@@ -255,20 +276,33 @@ a.secondary {
   }
 
   .btnRetreat:hover {
+    color: var(--warm);
     background: transparent;
     border-color: darkorange;
-  }
-
-  .btnWarm:hover {
-    background: var(--accent);
-    color: var(--accent-contrast);
-    border: 1px solid var(--border-color);
   }
 
   .btnSharp:hover {
     background: transparent;
     color: var(--success);
     border-color: var(--success);
+  }
+
+  .btnWarm:hover {
+    background: var(--accent);
+    color: var(--accent-contrast);
+    border: 1px solid var(--accent);
+  }
+
+  .btnError:hover {
+    background: transparent;
+    color: var(--error);
+    border: 1px solid var(--error);
+  }
+
+  .btnDanger:hover {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid var(--danger);
   }
 }
 
