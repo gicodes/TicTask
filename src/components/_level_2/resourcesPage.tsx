@@ -9,6 +9,7 @@ export const ResourceHero = () => {
       textAlign="center" 
       color={'var(--background)'}
       bgcolor={'var(--foreground)'}
+      px={1.5}
     >
       <Stack spacing={3} alignItems="center" px={1.5}>
         <Typography variant="h3" fontWeight={700}>
@@ -57,8 +58,8 @@ export const ResourceGrid = () => {
                 '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' },
               }}
             >            
-              <CardContent sx={{ p: 3}}>
-                <Typography variant="h3" fontWeight={501}>{r.title}</Typography>
+              <CardContent sx={{ p: 3, textAlign: 'center'}}>
+                <Typography variant="h4" fontWeight={501}>{r.title}</Typography>
                 <Typography my={2}>{r.desc}</Typography>
                 <Button 
                   href={r.link}

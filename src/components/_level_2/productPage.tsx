@@ -51,6 +51,7 @@ export const ProductShowcase = () => {
         alignItems="center"
         color={'var(--background)'}
         bgcolor={'var(--foreground)'}
+        px={1.5}
       >
         <Typography variant="h4" fontWeight={700}> Everything you need to move faster</Typography>
         <Typography variant="body1" my={2}> TicTask brings tasks, timelines, and teamwork into one seamless flow.</Typography>
@@ -79,7 +80,7 @@ export const ProductShowcase = () => {
                   <Typography variant="h6" fontWeight={600}>
                     {f.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.85 }}>
+                  <Typography variant="body2" sx={{ opacity: 1 }}>
                     {f.desc}
                   </Typography>
                 </Stack>

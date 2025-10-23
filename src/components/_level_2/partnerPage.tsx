@@ -1,9 +1,10 @@
 "use client";
 
-import { Box, Stack, Typography, Grid } from "@mui/material";
-import styles from "@/app/page.module.css";
+import Link from "next/link";
 import { motion } from "framer-motion";
+import styles from "@/app/page.module.css";
 import { BENEFITS } from "@/constants/partners";
+import { Box, Stack, Typography, Grid } from "@mui/material";
 
 export const PartnerHero = () => {
   return (
@@ -39,20 +40,21 @@ export const PartnerHero = () => {
 };
 
 export const PartnerBenefits = () => {
-
   return (
     <section>
-      <Box py={10} textAlign="center">
-        <Typography variant="h4" fontWeight={700} mb={2}>
-          Why Partner with Us
-        </Typography>
-        <Typography variant="body1" sx={{ opacity: 0.85, mb: 8 }}>
-          A partnership built to help you deliver more value to your users.
-        </Typography>
+      <Box 
+        py={10} 
+        textAlign="center"
+        color={'var(--background)'}
+        bgcolor={'var(--foreground)'}
+      >
+        <Typography variant="h4" fontWeight={700}> Why Partner with Us</Typography>
+        <Typography my={2}> A partnership built to help you deliver more value to your users</Typography>
 
         <Grid
           container
           spacing={4}
+          mt={8}
           justifyContent="center"
           sx={{ maxWidth: "lg", mx: "auto" }}
         >
@@ -65,17 +67,13 @@ export const PartnerBenefits = () => {
                 style={{
                   padding: "1.5rem",
                   borderRadius: "12px",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.5)",
                   height: "100%",
                 }}
               >
                 <Stack spacing={1} alignItems="center">
-                  <Typography variant="h6" fontWeight={600}>
-                    {b.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.85 }}>
-                    {b.desc}
-                  </Typography>
+                  <Typography variant="h6" fontWeight={600}> {b.title} </Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.85 }}> {b.desc} </Typography>
                 </Stack>
               </motion.div>
             </Grid>
@@ -101,10 +99,12 @@ export const PartnerCTA = () => {
           <Typography variant="h4" fontWeight={700}>
             Ready to collaborate with us?
           </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.85 }}>
+          <Typography variant="body1" sx={{ opacity: 0.85, pb: 2 }}>
             Join the TicTask Partner Program today and unlock access to tools, insights, and shared growth.
           </Typography>
-          <button className={styles.btnPrimary}>Become a Partner</button>
+          <Link href={'/partner/join'}>
+            <button className={styles.btnPrimary}>Become a Partner</button>
+          </Link>
         </Stack>
       </Box>
     </section>

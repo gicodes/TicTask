@@ -16,7 +16,7 @@ export const CompanyHero = () => {
         >
           We&apos;re building the future of flow.
         </motion.h1>
-        <Typography variant="h6" className="custom-dull">
+        <Typography variant="h6">
           TicTask exists to help people and teams work better together — with clarity and calm.
         </Typography>
       </Box>
@@ -65,7 +65,7 @@ export const TeamSection = () => {
       <Typography variant="h4" fontWeight={700} my={1}>
         Meet the TicTask Team
       </Typography>
-      <Typography color="var(--secondary)">
+      <Typography>
         We&apos;re a small, distributed team passionate about building tools that make collaboration feel effortless
       </Typography>
 

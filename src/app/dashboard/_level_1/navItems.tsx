@@ -43,7 +43,7 @@ export const guestLinks: LinkItem[] = [
 ];
 
 export const userLinks: LinkItem[] = [
-  { label: "Partner", href: "/company/partners/#join" },
+  { label: "Partner", href: "/partner" },
   { label: "Logout", href: "", onClick: true},
   { label: "Dashboard", href: "/dashboard", cta: true },
 ];
