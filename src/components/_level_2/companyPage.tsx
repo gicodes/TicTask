@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ContactUsSection } from "./contactUs";
-import { TEAM, VALUES } from "@/constants/company";
+import { TEAM, TEAM_BIO, VALUES } from "@/constants/company";
 import { Box, Stack, Typography, Avatar, Grid, Divider } from "@mui/material";
 
 export const CompanyHero = () => {
@@ -34,7 +34,7 @@ export const ValuesSection = () => {
     >
       <Typography variant="h4" fontWeight={700} mb={1}>Our Core Values</Typography>
       <Typography mb={2}>The principles that guide how we think, build, and collaborate.</Typography>
-      <Divider sx={{ maxWidth: 200, mx: 'auto'}} />
+      <Divider sx={{ background: 'var(--dull-gray)', maxWidth: 200, mx: 'auto'}} />
       <Grid container 
         spacing={4} 
         maxWidth="lg" 
@@ -65,19 +65,19 @@ export const TeamSection = () => {
       <Typography variant="h4" fontWeight={700} my={1}>
         Meet the TicTask Team
       </Typography>
-      <Typography>
-        We&apos;re a small, distributed team passionate about building tools that make collaboration feel effortless
+      <Typography fontSize={18} maxWidth={669} mx={'auto'}>
+       {TEAM_BIO}
       </Typography>
 
       <Grid container my={10} spacing={5} justifyContent="center">
         {TEAM.map((member) => (
           <Grid key={member.name}>
-            <Stack alignItems="center" spacing={2}>
+            <Stack alignItems="center" spacing={1}>
               <Avatar sx={{ width: 100, height: 100, bgcolor: "primary.main" }}>
                 <Typography variant="h4">{member.name[0]}</Typography>
               </Avatar>
-              <Typography fontWeight={600}>{member.name}</Typography>
-              <Typography className="custom-dull">{member.role}</Typography>
+              <Typography fontWeight={600} pt={2}>{member.name}</Typography>
+              <Typography sx={{ opacity: 0.6}}>{member.role}</Typography>
             </Stack>
           </Grid>
         ))}

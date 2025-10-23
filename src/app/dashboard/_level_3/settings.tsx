@@ -47,8 +47,8 @@ export default function SettingsPage() {
 
           <Stack direction="row" spacing={2} alignItems="center">
             {[
-              { label: 'Light', icon: <Sun size={18} color='var(--surface-1)' />, value: 'light' },
-              { label: 'Dark', icon: <Moon size={18} color='var(--bw)' />, value: 'dark' },
+              { label: 'Light', icon: <Sun size={18} />, value: 'light' },
+              { label: 'Dark', icon: <Moon size={18} />, value: 'dark' },
               { label: 'System', icon: <Laptop size={18} />, value: 'system' },
             ].map(({ label, icon, value }) => (
               <Tooltip key={label} title={`${label} Theme`}>
@@ -59,6 +59,7 @@ export default function SettingsPage() {
                     color: mode === value ? '#fff' : 'inherit',
                     border: '1px solid',
                     borderColor: mode === value ? 'primary.main' : 'divider',
+                    ":hover": { color: 'var(--bw)'}
                   }}
                 >
                   {icon}
@@ -183,8 +184,7 @@ export default function SettingsPage() {
           </Typography>
           <Stack spacing={1} sx={{ mx: 'auto', maxWidth: 360, mt: 5}}>
             {([ 'Slack', 'Github', 'Google-drive']).map((i) =>
-              <INTEGRATION_BUTTON title={i} key={i}/>
-            )}
+              <INTEGRATION_BUTTON title={i} key={i}/>)}
           </Stack>
         </CardContent>
       </Card>

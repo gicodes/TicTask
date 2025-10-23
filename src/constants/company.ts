@@ -19,3 +19,5 @@ export const VALUES = [
     desc: "We’re open, honest, and human in everything we build and share.",
   },
 ];
+
+export const TEAM_BIO = "We are a small, distributed team passionate about building tools that make collaboration feel effortless. \n The idea is to make professional work completely remote — yet retain the most fundamental values of teamwork that has been for hundreds of years achieved within an physical office or workspace location\n — Making Teamwork Absolutely Remote";

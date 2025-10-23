@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import styles from "@/app/page.module.css";
 import { BENEFITS } from "@/constants/partners";
-import { Box, Stack, Typography, Grid } from "@mui/material";
+import { Box, Stack, Typography, Grid, Divider } from "@mui/material";
 
 export const PartnerHero = () => {
   return (
@@ -49,8 +49,8 @@ export const PartnerBenefits = () => {
         bgcolor={'var(--foreground)'}
       >
         <Typography variant="h4" fontWeight={700}> Why Partner with Us</Typography>
-        <Typography my={2}> A partnership built to help you deliver more value to your users</Typography>
-
+        <Typography my={2} sx={{ opacity: 0.8 }}> A partnership built to help you deliver more value to your users</Typography>
+        <Divider sx={{ background: 'var(--dull-gray)', maxWidth: 250, mx: 'auto'}} />
         <Grid
           container
           spacing={4}
@@ -71,9 +71,9 @@ export const PartnerBenefits = () => {
                   height: "100%",
                 }}
               >
-                <Stack spacing={1} alignItems="center">
+                <Stack spacing={1} alignItems="center" maxWidth={360}>
                   <Typography variant="h6" fontWeight={600}> {b.title} </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.85 }}> {b.desc} </Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.65 }}> {b.desc} </Typography>
                 </Stack>
               </motion.div>
             </Grid>

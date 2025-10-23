@@ -54,7 +54,7 @@ export const ProductShowcase = () => {
         px={1.5}
       >
         <Typography variant="h4" fontWeight={700}> Everything you need to move faster</Typography>
-        <Typography variant="body1" my={2}> TicTask brings tasks, timelines, and teamwork into one seamless flow.</Typography>
+        <Typography variant="body1" my={2}> TicTask turns thoughts to tasks. Plans to Projects. Deliverables to Done.</Typography>
 
         <Grid
           mt={5}
@@ -80,7 +80,7 @@ export const ProductShowcase = () => {
                   <Typography variant="h6" fontWeight={600}>
                     {f.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ opacity: 1 }}>
+                  <Typography variant="body2" sx={{ opacity: 0.8 }}>
                     {f.desc}
                   </Typography>
                 </Stack>
@@ -107,7 +107,7 @@ export const ProductCTA = () => {
           <Typography variant="h4" fontWeight={700}>
             Ready to bring your team into flow?
           </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.85 }}>
+          <Typography variant="body1" sx={{ opacity: 0.65 }}>
             Get started with TicTask and experience a calmer, more focused way to collaborate.
           </Typography>
           <button className={styles.btnPrimary}>Get Started</button>

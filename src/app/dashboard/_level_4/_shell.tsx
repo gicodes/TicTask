@@ -88,6 +88,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                     width: 36,
                     height: 36,
                     fontSize: 15,
+                    border: '0.1px solid var(--dull-gray)'
                   }}
                 >
                   <Typography color={'var(--bw)'}>{user ? user.name?.[0]?.toUpperCase() : 'NA'}</Typography>

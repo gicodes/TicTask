@@ -1,4 +1,5 @@
-import { Box, Stack, TextField, Typography } from '@mui/material';
+import { Box, Stack, TextField, Typography, IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { authErrorMessages } from '@/lib/authOptions';
 import RememberMe from '../_level_1/rememberMe';
 import styles from '@/app/page.module.css';
@@ -25,7 +26,11 @@ const LoginTemplate = ({
   setPassword,
 }: LoginTemplateProps) => {
   const [remember, setRemember] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const message = (error && authErrorMessages[error]) || authErrorMessages.Default;
+  const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+  const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement>) => e.preventDefault();
 
   return (
     <Box
@@ -46,34 +51,44 @@ const LoginTemplate = ({
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-
         <TextField
           fullWidth
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           label="Password"
           variant="outlined"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                  aria-label="toggle password visibility"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
-      
-        <Box display={'flex'} justifyContent={'space-between'}>
-          <Typography px={1} variant='caption' color='info.main'>
-            <Link href={'/auth/forgot-password'}>Forgot Password?</Link>
+        <Box display="flex" justifyContent="space-between">
+          <Typography px={1} variant="caption" color="info.main">
+            <Link href="/auth/forgot-password">Forgot Password?</Link>
           </Typography>
           <RememberMe remember={remember} setRemember={setRemember} />
         </Box>
-
         {error && (
           <Typography color="error" fontSize="0.9rem">
             {message}
           </Typography>
         )}
-
         <button
           type="submit"
           disabled={submitting}
-          className={`full-width ${styles.btnInverted}`}
+          className={`full-width ${styles.btnPrimary}`}
         >
           {submitting ? 'Signing in...' : 'Sign in with Email'}
         </button>
