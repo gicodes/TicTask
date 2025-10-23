@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { TEAM, VALUES } from "@/constants/company";
-import { Box, Stack, Typography, Avatar, Grid } from "@mui/material";
 import { ContactUsSection } from "./contactUs";
+import { TEAM, VALUES } from "@/constants/company";
+import { Box, Stack, Typography, Avatar, Grid, Divider } from "@mui/material";
 
 export const CompanyHero = () => {
   return (
@@ -32,14 +32,14 @@ export const ValuesSection = () => {
       color="var(--background)"
       bgcolor={'var(--foreground)'}
     >
-      <Typography variant="h4" fontWeight={700}>Our Core Values</Typography>
-      <Typography my={1}>The principles that guide how we think, build, and collaborate.</Typography>
-
+      <Typography variant="h4" fontWeight={700} mb={1}>Our Core Values</Typography>
+      <Typography mb={2}>The principles that guide how we think, build, and collaborate.</Typography>
+      <Divider sx={{ maxWidth: 200, mx: 'auto'}} />
       <Grid container 
         spacing={4} 
         maxWidth="lg" 
         mx="auto" 
-        mt={8}
+        mt={4}
         display={'flex'} 
         flexWrap={'wrap'}
         justifyContent={'space-around'}
