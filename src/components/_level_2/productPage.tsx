@@ -1,0 +1,127 @@
+"use client";
+
+import { motion } from "framer-motion";
+import styles from "@/app/page.module.css";
+import { FEATURES } from "@/constants/products";
+import { Box, Typography, Grid, Stack } from "@mui/material";
+
+export const ProductHero = () => {
+  return (
+    <section>
+      <Box
+        textAlign="center"
+        maxWidth="xl"
+        mx="auto"
+        py={15}
+        px={1.5}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={{ fontSize: "2.75rem", fontWeight: 700, marginBottom: "1.5rem" }}
+        >
+          Everything your team needs to move faster.
+        </motion.h1>
+
+        <Typography
+          variant="h6"
+          textAlign="center"
+          maxWidth="md"
+          sx={{ opacity: 0.85 }}
+        >
+          TicTask brings tasks, timelines, and teamwork into perfect sync — so ideas turn into impact.
+        </Typography>
+      </Box>
+    </section>
+  );
+};
+
+export const ProductShowcase = () => {
+  return (
+    <section>
+      <Box
+        py={10}
+        textAlign="center"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        color={'var(--background)'}
+        bgcolor={'var(--foreground)'}
+      >
+        <Typography variant="h4" fontWeight={700}> Everything you need to move faster</Typography>
+        <Typography variant="body1" my={2}> TicTask brings tasks, timelines, and teamwork into one seamless flow.</Typography>
+
+        <Grid
+          mt={5}
+          container
+          spacing={4}
+          justifyContent="center"
+          sx={{ maxWidth: "lg", mx: "auto" }}
+        >
+          {FEATURES.map((f, i) => (
+            <Grid key={f.title}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                style={{
+                  maxWidth: 360,
+                  padding: "1.5rem",
+                  borderRadius: "12px",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
+                }}
+              >
+                <Stack spacing={1} alignItems="center">
+                  <Typography variant="h6" fontWeight={600}>
+                    {f.title}
+                  </Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.85 }}>
+                    {f.desc}
+                  </Typography>
+                </Stack>
+              </motion.div>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </section>
+  );
+};
+
+export const ProductCTA = () => {
+  return (
+    <section>
+      <Box
+        py={12}
+        textAlign="center"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <Stack spacing={3} alignItems="center" maxWidth="sm">
+          <Typography variant="h4" fontWeight={700}>
+            Ready to bring your team into flow?
+          </Typography>
+          <Typography variant="body1" sx={{ opacity: 0.85 }}>
+            Get started with TicTask and experience a calmer, more focused way to collaborate.
+          </Typography>
+          <button className={styles.btnPrimary}>Get Started</button>
+        </Stack>
+      </Box>
+    </section>
+  );
+};
+
+export default function ProductsSection() {
+  return (
+    <main>
+      <ProductHero />
+      <ProductShowcase />
+      <ProductCTA />
+    </main>
+  );
+}

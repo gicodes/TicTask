@@ -346,3 +346,7 @@ a.secondary {
   flex-direction: row;
   justify-content: space-around;
 }
+
+.heroContainer {
+  background: linear-gradient(135deg, #e3f2fd, #ffffff);
+}

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styles from '@/app/page.module.css';
 import { useThemeMode } from '@/providers/theme';
 import { Sun, Moon, Laptop, Bell, Shield, User, Globe, PlugZap, Save } from 'lucide-react';
-import { Box, Typography, Stack, Switch, Button, TextField, MenuItem, FormControlLabel, Card, CardContent, IconButton, Tooltip } from '@mui/material';
+import { Box, Typography, Stack, Switch, TextField, MenuItem, FormControlLabel, Card, CardContent, IconButton, Tooltip } from '@mui/material';
 
 export default function SettingsPage() {
   const { mode, setThemeMode } = useThemeMode();
@@ -16,11 +16,12 @@ export default function SettingsPage() {
   const [workspaceName, setWorkspaceName] = useState('Acme Inc.');
 
   const INTEGRATION_BUTTON = ({
-    title, action }: { 
-      title: string, action?: () => void
+    title, action, key }: { 
+      title: string, key: string, action?: () => void
     }) => 
     <span 
       onClick={action}
+      key={key}
       className={`max-width-360 ${styles.btnRetreat}`}
     >
       Connect {title}
@@ -52,7 +53,7 @@ export default function SettingsPage() {
             ].map(({ label, icon, value }) => (
               <Tooltip key={label} title={`${label} Theme`}>
                 <IconButton
-                  onClick={() => setThemeMode(value as any)}
+                  onClick={() => setThemeMode(value as 'dark' | 'light' | 'system')}
                   sx={{
                     bgcolor: mode === value ? 'primary.main' : 'transparent',
                     color: mode === value ? '#fff' : 'inherit',
@@ -182,7 +183,7 @@ export default function SettingsPage() {
           </Typography>
           <Stack spacing={1} sx={{ mx: 'auto', maxWidth: 360, mt: 5}}>
             {([ 'Slack', 'Github', 'Google-drive']).map((i) =>
-              <INTEGRATION_BUTTON title={i} />
+              <INTEGRATION_BUTTON title={i} key={i}/>
             )}
           </Stack>
         </CardContent>
