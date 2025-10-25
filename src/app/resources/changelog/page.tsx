@@ -13,10 +13,10 @@ import Link from "next/link";
 import { useAuth } from "@/providers/auth";
 
 export default function ChangelogList() {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [items, setItems] = useState<ChangeLogProps[]>([]);
   const load = async () => {
-    const res: ChangeLostRes = await apiGet("/api/resources/changelog");
+    const res: ChangeLostRes = await apiGet("/resources/changelog");
     setItems(res.update);
   };
   useEffect(()=>{ load(); }, []);
@@ -39,8 +39,8 @@ export default function ChangelogList() {
         {items.map(item => (
           <Box key={item.id} mb={2}>
             <ChangelogItem version={item.version} date={new Date(item.date).toDateString()} highlights={item.highlights} />
-            {user?.role ==="ADMIN" && <Box display={"flex"} justifyContent="flex-end">
-              <DeleteButton endpoint="/api/resources/changelog" id={item.id} onDeleted={load} />
+            {user && isAdmin && <Box display={"flex"} justifyContent="flex-end">
+              <DeleteButton endpoint="/resources/changelog" id={item.id} onDeleted={load} />
             </Box>}
           </Box>
         ))}

@@ -39,7 +39,7 @@ export default function CreateBlogPage() {
 
   return (
     <Box>
-      <ResourceHero title="Write a blog post" />
+      <ResourceHero title="Write a blog post" subtitle="Write insights and stories that educates and entertain the TicTask Community" />
       <Card 
         sx={{
           mt: 10,

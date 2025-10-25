@@ -19,7 +19,7 @@ export const ResourceHero = ({
           {title || "Learn. Build. Grow with TicTask."}
         </Typography>
         <Typography variant="body1" color="var(--secondary)" maxWidth="md">
-          {subtitle || "Dive into resources, guides, and changelogs to make the most of your TicTask experience."}
+          {subtitle || "Dive into resources, FAQ, and Blogs to make the most of your TicTask experience."}
         </Typography>
         {!title && !subtitle && <button className={styles.btnPrimary}>Explore Resources</button>}
       </Stack>
@@ -32,6 +32,7 @@ const resources = [
   { title: "Templates", desc: "Jumpstart workflows with ready-made templates", link: "/resources/templates" },
   { title: "Changelog", desc: "See what’s new and improved", link: "/resources/changelog" },
   { title: "Blog", desc: "Insights, guides, and stories from the TicTask team", link: "/resources/blog" },
+  { title: "FAQ", desc: "Ask the right questions, get the correct answers", link: 'resources/faq'}
 ];
 
 export const ResourceGrid = () => {

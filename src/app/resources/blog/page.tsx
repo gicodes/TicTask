@@ -41,7 +41,7 @@ export default function BlogListPage() {
             <Grid key={b.id}>
               <BlogCard {...b} />
               <Box mt={1} display="flex" justifyContent="flex-end">
-                <DeleteButton endpoint="/api/resources/blog" id={b.id} onDeleted={load} />
+                <DeleteButton endpoint="/resources/blog" id={b.id} onDeleted={load} />
               </Box>
             </Grid>
           ))}

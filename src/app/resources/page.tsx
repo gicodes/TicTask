@@ -1,7 +1,8 @@
 import ResourcePage from '@/app/resources/_level_3/resourcesPage'
+import type { Metadata } from 'next';
 import React from 'react';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "TicTask Resources — Learn, Build, and Grow",
   description:
     "Guides, tutorials, and insights to help you get the most out of TicTask. Learn faster. Build better. Collaborate smarter.",

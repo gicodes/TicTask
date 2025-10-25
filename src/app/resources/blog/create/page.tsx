@@ -4,7 +4,7 @@ import CreateBlogPage from '../../_level_2/createBlog';
 
 export const metadata: Metadata = {
   title: "TicTask Resources — Learn, Build, and Grow",
-  description: "Join our community in expressing how you feel and enrich our blog",
+  description: "Write insights and stories that educates and entertain the TicTask Community",
 }
 
 const Page = () => {

@@ -1,5 +1,5 @@
 export interface BlogCardProps {
-  id: string;
+  id: string | number;
   title: string;
   slug: string;
   date: string;
@@ -8,14 +8,14 @@ export interface BlogCardProps {
 }
 
 export interface ChangeLogProps {
-  id: string;
+  id: string | number;
   version: string;
   date: Date | string;
   highlights: string[];
 }
 
 export interface FAQProps {
-  id: string;
+  id: number;
   question: string;
-  answer: string;
+  answer?: string;
 }
