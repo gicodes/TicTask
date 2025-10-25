@@ -1,3 +1,4 @@
+import { BlogCardProps, ChangeLogProps, FAQProps } from "./resources";
 import { Role } from "./users";
 
 export interface VerifyEmailRequest {
@@ -39,4 +40,25 @@ export interface LoginResponse {
     email: string;
     role: Role;
   }
+}
+
+export interface ContactUs {
+  message: string;
+  email: string;
+  name?: string;
+}
+
+export interface BlogRes {
+  ok?: boolean;
+  data: BlogCardProps[]
+}
+
+export interface ChangeLostRes {
+  ok?: boolean
+  update: ChangeLogProps[]
+}
+
+export interface FAQRes {
+  ok?: boolean;
+  faq: FAQProps[]
 }

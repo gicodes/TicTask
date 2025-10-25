@@ -33,8 +33,9 @@ export const ValuesSection = () => {
       bgcolor={'var(--foreground)'}
     >
       <Typography variant="h4" fontWeight={700} mb={1}>Our Core Values</Typography>
-      <Typography mb={2}>The principles that guide how we think, build, and collaborate.</Typography>
-      <Divider sx={{ background: 'var(--dull-gray)', maxWidth: 200, mx: 'auto'}} />
+      <Typography sx={{ opacity: 0.85 }}>The principles that guide how we think, build, and collaborate.</Typography>
+
+      <Divider sx={{ background: 'var(--dull-gray)', maxWidth: 200, mx: 'auto', my: 2}} />
       <Grid container 
         spacing={4} 
         maxWidth="lg" 
@@ -50,7 +51,7 @@ export const ValuesSection = () => {
               <Typography variant="h6" fontWeight={600}>
                 {v.title}
               </Typography>
-              <Typography color="custom-dull">{v.desc}</Typography>
+              <Typography sx={{ opacity: 0.8}}>{v.desc}</Typography>
             </Stack>
           </Box>
         ))}
@@ -61,11 +62,11 @@ export const ValuesSection = () => {
 
 export const TeamSection = () => {
   return (
-    <Box py={10} textAlign="center">
+    <Box py={10} px={2} textAlign="center">
       <Typography variant="h4" fontWeight={700} my={1}>
         Meet the TicTask Team
       </Typography>
-      <Typography fontSize={18} maxWidth={669} mx={'auto'}>
+      <Typography fontSize={17} maxWidth={669} mx={'auto'}>
        {TEAM_BIO}
       </Typography>
 

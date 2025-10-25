@@ -1,6 +1,6 @@
 # Summary
 
-Auth type: JWT access + refresh tokens (assumption — update if you use sessions/OAuth).
+Auth type: JWT access + refresh tokens.
 
 Purpose: secure authentication for API and protected dashboard pages.
 
@@ -8,15 +8,55 @@ Implemented: backend routes under auth/*; frontend pages for login/register/rese
 
 Security goals: short lived access tokens, refresh tokens stored in httpOnly secure cookies, password hashing using bcrypt, rate limiting on auth endpoints, email verification and password reset flows.
 
-## Endpoints (example)
+## Endpoints ('/auth/*')
 
 * Replace {BASE_URL} with your backend base URL/config.
 
-- POST /auth/register
+- POST /auth/join
+    -------
+    // USER
+    -------
+    Body: { "email": string }
 
-    Body: { "email": string, "password": string, "name": string }
+    check emailInDB();
+    if (!emailInDB) generate token;
+    redis.set
+    sendEmail with token
 
-    Response 201: { "user": { id, email, name }, "message": "verification sent" }
+    Response 201: { "message": "verification sent" }
+    --------
+    Body: { "token": string }
+
+    if (token===redis.get(token)) signAccess
+    Response 201: { 
+      "message": "User Verified, proceed to onboarding",
+      redirect,
+      role,
+      email
+      token: accessToken
+    }
+    -------
+    // SUPERUSER
+    -------
+    Body: { "email": string, "password": string, name: string }
+
+    check emailInDB();
+    if (!emailInDB) generate token;
+    redis.set
+    sendEmail with token
+
+    Response 201: { "message": "verification sent" }
+    --------
+    Body: { "token": string }
+
+    if (token===redis.get(token)) redis.del, signAccess
+    Response 201: { 
+      "message": "Admin Verified, proceed to login",
+      redirect,
+      role,
+      email
+      token: accessToken
+    }
 
     Notes: sends email verification token (expires 24h)
 
@@ -84,13 +124,17 @@ Security goals: short lived access tokens, refresh tokens stored in httpOnly sec
 
   Email: templated transactional emails; include X-Message-ID header for traceability.
 
-## Frontend notes (auth pages)
+## Frontend notes (auth flow)
 
-  Pages implemented: /login, /register, /reset-password, /verify-email (assumed).
+  Success on Auth flow (USER): /auth/join/user → /auth/verify → (magic link) → /verify → /onboarding → /dashboard | /auth/login → /dashboard → /logout
+
+  Success on Auth flow (SUPERUSER): /auth/join/admin → /auth/verify → (magic link) → /verify → /login → /dashboard | /auth/login → /dashboard → /logout
+
+  Auth Pages: auth/login, auth/join/[role], auth/reset-password, /verify
 
   Auth flow: after successful login, store accessToken in memory (React context / redux), refresh handled by background refresh hook that calls /auth/refresh before expiry. Do not store accessToken in localStorage (XSS risk).
 
-  UX: show MFA / 2FA prompt page if enabled; show verification required screen if is_verified=false.
+  UX (FEATURE_REQUEST): show MFA / 2FA prompt page if enabled; show verification required screen if is_verified=false.
 
 ## Tests
 

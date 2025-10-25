@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import styles from "@/app/page.module.css";
-import { FEATURES } from "@/constants/products";
-import { Box, Typography, Grid, Stack } from "@mui/material";
+import { FEATURES } from "@/constants/product";
+import { Box, Typography, Grid, Stack, Divider } from "@mui/material";
 
 export const ProductHero = () => {
   return (
@@ -26,14 +26,13 @@ export const ProductHero = () => {
         >
           Everything your team needs to move faster.
         </motion.h1>
-
         <Typography
           variant="h6"
           textAlign="center"
           maxWidth="md"
           sx={{ opacity: 0.85 }}
         >
-          TicTask brings tasks, timelines, and teamwork into perfect sync — so ideas turn into impact.
+          TicTask brings tasks, timelines, and teamwork into one seamless flow.
         </Typography>
       </Box>
     </section>
@@ -55,7 +54,7 @@ export const ProductShowcase = () => {
       >
         <Typography variant="h4" fontWeight={700}> Everything you need to move faster</Typography>
         <Typography variant="body1" my={2}> TicTask turns thoughts to tasks. Plans to Projects. Deliverables to Done.</Typography>
-
+        <Divider sx={{  background: 'var(--dull-gray)', width: '100%', maxWidth: 200, my: 1}} />
         <Grid
           mt={5}
           container

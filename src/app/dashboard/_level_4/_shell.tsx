@@ -190,7 +190,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
       >
         <Toolbar />
         {children}
-        <Box textAlign={'center'} mt={10}>
+        <Box textAlign={'center'} mt={5}>
           <Typography fontFamily={'serif'} fontWeight={501} className='custom-dull'><i>Unleash the Power of your mind — one task at a time</i></Typography>
         </Box>
       </Box>

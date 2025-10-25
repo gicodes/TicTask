@@ -1,8 +1,11 @@
 "use client";
+
 import styles from "@/app/page.module.css";
 import { Card, CardContent, Box, Stack, Typography, Button } from "@mui/material";
 
-export const ResourceHero = () => {
+export const ResourceHero = ({
+  title, subtitle
+}: { title?: string, subtitle?: string}) => {
   return (
     <Box 
       py={15} 
@@ -13,22 +16,22 @@ export const ResourceHero = () => {
     >
       <Stack spacing={3} alignItems="center" px={1.5}>
         <Typography variant="h3" fontWeight={700}>
-          Learn. Build. Grow with TicTask.
+          {title || "Learn. Build. Grow with TicTask."}
         </Typography>
         <Typography variant="body1" color="var(--secondary)" maxWidth="md">
-          Dive into resources, guides, and changelogs to make the most of your TicTask experience.
+          {subtitle || "Dive into resources, guides, and changelogs to make the most of your TicTask experience."}
         </Typography>
-        <button className={styles.btnPrimary}>Explore Resources</button>
+        {!title && !subtitle && <button className={styles.btnPrimary}>Explore Resources</button>}
       </Stack>
     </Box>
   );
 }
 
 const resources = [
-  { title: "Getting Started", desc: "Your first 10 minutes with TicTask", link: "/docs" },
-  { title: "Templates", desc: "Jumpstart workflows with ready-made templates", link: "/templates" },
-  { title: "Changelog", desc: "See what’s new and improved", link: "/changelog" },
-  { title: "Blog", desc: "Insights, guides, and stories from the TicTask team", link: "/blog" },
+  { title: "Getting Started", desc: "Your first 10 minutes with TicTask", link: "/resources/docs" },
+  { title: "Templates", desc: "Jumpstart workflows with ready-made templates", link: "/resources/templates" },
+  { title: "Changelog", desc: "See what’s new and improved", link: "/resources/changelog" },
+  { title: "Blog", desc: "Insights, guides, and stories from the TicTask team", link: "/resources/blog" },
 ];
 
 export const ResourceGrid = () => {

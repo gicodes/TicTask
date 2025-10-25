@@ -1,6 +1,6 @@
 import { GiLogging } from 'react-icons/gi';
 import { FcOrganization } from 'react-icons/fc';
-import { FaPeopleCarry, FaUsers, } from 'react-icons/fa';
+import { FaPeopleCarry, FaUsers, FaBlog } from 'react-icons/fa';
 import { CreditCard, Group, Notifications, People, Person, Settings, AssignmentAdd, Cottage } from '@mui/icons-material';
 
 export type LinkItem = {
@@ -22,6 +22,7 @@ export const NAV_ITEMS = [
   { label: 'All Users', path: '/dashboard/users', icon: <FaUsers /> },
   { label: 'Partners', path: '/dashboard/partners', icon: <FaPeopleCarry /> },
   { label: 'Organizations', path: '/dashboard/organizations', icon: <FcOrganization /> },
+  { label: 'Resources', path: '/dashboard/resources', icon: <FaBlog />},
   { label: 'System Logs', path: '/dashboard/logs', icon: <GiLogging /> },
 ];
 

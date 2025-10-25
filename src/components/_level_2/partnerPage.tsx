@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import styles from "@/app/page.module.css";
-import { BENEFITS } from "@/constants/partners";
+import { BENEFITS } from "@/constants/partner";
 import { Box, Stack, Typography, Grid, Divider } from "@mui/material";
 
 export const PartnerHero = () => {

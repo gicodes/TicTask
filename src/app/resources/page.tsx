@@ -1,4 +1,4 @@
-import ResourcePage from '@/components/_level_2/resourcesPage'
+import ResourcePage from '@/app/resources/_level_3/resourcesPage'
 import React from 'react';
 
 export const metadata = {
