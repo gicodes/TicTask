@@ -112,7 +112,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
 
   "Pricing & billing": [
     "We offer a free tier for small teams and paid plans for teams needing advanced features like SSO, audit logs, and longer retention. Billing is per workspace.",
-    { type: 'link', href: '/pricing', content: 'See detailed pricing' }
+    { type: 'link', href: '/product#pricing', content: 'See detailed pricing' }
   ],
 
   "Security & privacy": [

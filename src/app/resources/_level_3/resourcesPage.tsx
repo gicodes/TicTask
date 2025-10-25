@@ -2,6 +2,7 @@
 
 import styles from "@/app/page.module.css";
 import { Card, CardContent, Box, Stack, Typography, Button } from "@mui/material";
+import Link from "next/link";
 
 export const ResourceHero = ({
   title, subtitle
@@ -21,7 +22,8 @@ export const ResourceHero = ({
         <Typography variant="body1" color="var(--secondary)" maxWidth="md">
           {subtitle || "Dive into resources, FAQ, and Blogs to make the most of your TicTask experience."}
         </Typography>
-        {!title && !subtitle && <button className={styles.btnPrimary}>Explore Resources</button>}
+        {!title && !subtitle && <button className={styles.btnPrimary}>
+          <Link href={'/resources/docs'}>Explore Resources</Link></button>}
       </Stack>
     </Box>
   );
@@ -32,7 +34,8 @@ const resources = [
   { title: "Templates", desc: "Jumpstart workflows with ready-made templates", link: "/resources/templates" },
   { title: "Changelog", desc: "See what’s new and improved", link: "/resources/changelog" },
   { title: "Blog", desc: "Insights, guides, and stories from the TicTask team", link: "/resources/blog" },
-  { title: "FAQ", desc: "Ask the right questions, get the correct answers", link: 'resources/faq'}
+  { title: "FAQ", desc: "Ask the right questions, get the correct answers", link: '/resources/faq'},
+  { title: "Developer", desc: "Get access to our technical documentation to contribute or collaborate", link: '/resources/docs/dev'}
 ];
 
 export const ResourceGrid = () => {

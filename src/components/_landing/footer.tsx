@@ -1,11 +1,5 @@
 import { Box, Container, Grid, Typography, Link } from "@mui/material";
-
-const sections = {
-  PRODUCTS: ["All Products", "Pricing", "Demo", "Integration"],
-  RESOURCES: ["Blog", "Help Center", "Developer", "Free Tools", "Security"],
-  COMPANY: ["About", "Careers", "Become a Partner", "Find a Partner", "Contact Us"],
-  LEGAL: ["Terms of Service", "Privacy Policy", "Cookie Policy", "Data Protection"],
-};
+import { FOOTER_LINKS } from "@/constants/footerLinks";
 
 const Footer = () => {
   return (
@@ -16,7 +10,7 @@ const Footer = () => {
           width={'100%'}
         >
           {
-            Object.entries(sections).map(([title, items], i) => (
+            Object.entries(FOOTER_LINKS).map(([title, items], i) => (
               <Grid key={i} mx={'auto'}>
                 <Typography 
                   variant="subtitle1" 
@@ -29,13 +23,13 @@ const Footer = () => {
                 {items.map((item, idx) => (
                   <Link
                     key={idx}
-                    href="#"
+                    href={item.link}
                     color="inherit"
                     underline="hover"
                     display="block"
                     sx={{ mb: 1 }}
                   >
-                    {item}
+                    {item.title}
                   </Link>
                 ))}
               </Grid>
