@@ -1,8 +1,9 @@
 "use client";
 
 import { Card, CardContent, CardActions, Chip, Button, Stack, Typography } from "@mui/material";
-import { motion } from "framer-motion";
+import styles from "@/app/page.module.css";
 import { Download } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface TemplateCardProps {
   title: string;
@@ -48,6 +49,7 @@ export const TemplateCard = ({ title, desc, file, tags = [] }: TemplateCardProps
           startIcon={<Download size={16} />}
           variant="contained"
           sx={{ borderRadius: 2, textTransform: "none" }}
+          className={styles.btnSecondary}
         >
           Download
         </Button>

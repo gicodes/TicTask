@@ -23,13 +23,14 @@ const Page = () => {
         <Stack 
           mx={'auto'}
           spacing={5}
-          px={2}
+          px={1}
+          pl={3}
           maxWidth={1000}
         >
           <Typography variant='h4' fontWeight={600}>Table Of Content</Typography>
           <ol>
             { TABLE_OF_CONTENTS_DEV.map((t, i) => 
-              <li key={i} style={{ paddingLeft: '2rem', paddingBottom: '1rem'}}>
+              <li key={i} style={{ paddingBottom: '1rem'}}>
                 <Link href={`#${t.replace(/\s+/g, '-').toLowerCase()}`}>{t}</Link>             
               </li>
             )}

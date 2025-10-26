@@ -22,7 +22,8 @@ const Page = () => {
       >
         <Stack 
           mx={'auto'}
-          px={2}
+          px={1}
+          pl={3}
           spacing={5}
           maxWidth={1000}
         >

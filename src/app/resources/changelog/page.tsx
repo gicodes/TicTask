@@ -8,9 +8,9 @@ import { ChangelogItem } from "../_level_2/changeLog";
 import DeleteButton from "../_level_1/deleteResource";
 import { ChangeLogProps } from "@/types/resources";
 import { ChangeLostRes } from "@/types/axios";
+import { useAuth } from "@/providers/auth";
 import { apiGet } from "@/lib/api";
 import Link from "next/link";
-import { useAuth } from "@/providers/auth";
 
 export default function ChangelogList() {
   const { user, isAdmin } = useAuth();
