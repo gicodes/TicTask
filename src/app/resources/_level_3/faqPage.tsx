@@ -55,7 +55,7 @@ export default function FaqPage() {
 
   return (
     <Box>
-      <ResourceHero title="FAQ" subtitle="Common questions and community answers" />
+      <ResourceHero title="Frequently Asked Questions" subtitle="Common questions and community answers" />
       <Box maxWidth={1000} mx="auto" px={2} py={8}>
 
         {ASKED_AND_ANSWERED.length > 0 && (

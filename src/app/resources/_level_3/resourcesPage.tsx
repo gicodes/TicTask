@@ -34,7 +34,7 @@ const resources = [
   { title: "Templates", desc: "Jumpstart workflows with ready-made templates", link: "/resources/templates" },
   { title: "Changelog", desc: "See what’s new and improved", link: "/resources/changelog" },
   { title: "Blog", desc: "Insights, guides, and stories from the TicTask team", link: "/resources/blog" },
-  { title: "FAQ", desc: "Ask the right questions, get the correct answers", link: '/resources/faq'},
+  { title: "Frequently Asked Questions", desc: "Find out more from the most common and frequently asked questions", link: '/resources/faq'},
   { title: "Developer", desc: "Get access to our technical documentation to contribute or collaborate", link: '/resources/docs/dev'}
 ];
 
