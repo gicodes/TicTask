@@ -1,9 +1,10 @@
 "use client";
 
-import styles from "@/app/page.module.css";
 import Link from "next/link";
 import { apiGet } from "@/lib/api";
 import { BlogRes } from "@/types/axios";
+import { useAuth } from "@/providers/auth";
+import styles from "@/app/page.module.css";
 import { BlogCardProps } from "@/types/resources";
 import React, { useEffect, useState } from "react";
 import { BlogCard } from "@/app/resources/_level_2/blogCard";
@@ -12,6 +13,7 @@ import DeleteButton from "@/app/resources/_level_1/deleteResource";
 import { ResourceHero } from "@/app/resources/_level_3/resourcesPage";
 
 export default function BlogListPage() {
+  const {isAdmin } = useAuth();
   const [blogs, setBlogs] = useState<BlogCardProps[]>([]);
 
   const load = async () => {
@@ -22,7 +24,7 @@ export default function BlogListPage() {
 
   return (
     <Box>
-      <ResourceHero title="Blog" subtitle="Community insights, product updates, and stories." />
+      <ResourceHero title="Blog" subtitle="Posts on community insights, stories and trending topics." />
       <Box maxWidth={1100} mx="auto" px={2} py={8}>
         <Box display="flex" justifyContent="space-between" mb={4}>
           <Typography variant="h5">Latest posts</Typography>
@@ -40,9 +42,9 @@ export default function BlogListPage() {
           {blogs.map((b) => (
             <Grid key={b.id}>
               <BlogCard {...b} />
-              <Box mt={1} display="flex" justifyContent="flex-end">
+              {isAdmin && <Box mt={1} display="flex" justifyContent="flex-end">
                 <DeleteButton endpoint="/resources/blog" id={b.id} onDeleted={load} />
-              </Box>
+              </Box>}
             </Grid>
           ))}
         </Grid>

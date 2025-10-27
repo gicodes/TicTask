@@ -14,7 +14,7 @@ import Link from "next/link";
 
 export default function ChangelogList() {
   const { user, isAdmin } = useAuth();
-  const [items, setItems] = useState<ChangeLogProps[]>([]);
+  const [items, setItems] = useState<ChangeLogProps[] | null>([]);
   const load = async () => {
     const res: ChangeLostRes = await apiGet("/resources/changelog");
     setItems(res.update);
@@ -36,9 +36,9 @@ export default function ChangelogList() {
             New update
           </Button>
         </Box>
-        {items.map(item => (
+        {items?.map(item => (
           <Box key={item.id} mb={2}>
-            <ChangelogItem version={item.version} date={new Date(item.date).toDateString()} highlights={item.highlights} />
+            <ChangelogItem version={item.version} date={new Date(item.date).toLocaleString()} highlights={item.highlights} />
             {user && isAdmin && <Box display={"flex"} justifyContent="flex-end">
               <DeleteButton endpoint="/resources/changelog" id={item.id} onDeleted={load} />
             </Box>}

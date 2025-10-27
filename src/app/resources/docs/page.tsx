@@ -22,16 +22,19 @@ const Page = () => {
       >
         <Stack 
           mx={'auto'}
-          px={1}
           pl={3}
-          spacing={5}
           maxWidth={1000}
         >
-          <Typography variant='h4' fontWeight={600}>Table Of Content</Typography>
+          <Typography variant='h4' fontWeight={600} mb={3}>Table Of Content</Typography>
           <ul>
-            {TABLE_OF_CONTENTS.map((t, i) => 
-              <li key={i} style={{ paddingBottom: '1rem'}}>
-                <Link href={`#${t.replace(/\s+/g, '-').toLowerCase()}`}>{t}</Link>   
+            { TABLE_OF_CONTENTS.map((t, i) => 
+              <li key={i}>
+                <Typography 
+                  sx={{ maxWidth: 'max-content', p: 1, borderRadius: 1, 
+                  ":hover": { bgcolor: 'var(--background)', color: 'var(--foreground)'}}}
+                >
+                  <Link href={`#${t.replace(/\s+/g, '-').toLowerCase()}`}>{t}</Link>
+                </Typography>   
               </li>
             )}
           </ul>

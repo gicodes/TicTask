@@ -28,12 +28,12 @@ export default function CreateBlogPage() {
       }
 
       const payload = { title, excerpt, content }
-
       await apiPost("/resources/blog", payload);
+      
       router.push("/resources/blog");
     } catch (err) {
       if (err && typeof err==="object" && "message" in err ) 
-        alert("Error: " + err?.message);
+        alert("Client error: " + err?.message);
     } finally { setLoading(false); }
   };
 

@@ -4,7 +4,7 @@ import React from "react";
 import { Trash2 } from "lucide-react";
 import { apiDelete } from "@/lib/api";
 import { useAlert } from "@/providers/alert";
-import { IconButton, Tooltip } from "@mui/material";
+import { Card, IconButton, Tooltip } from "@mui/material";
 
 interface DeleteButtonProps {
   endpoint: string;  
@@ -40,10 +40,11 @@ export default function DeleteButton({
   };
 
   return (
-    <Tooltip title="Delete">
-      <IconButton size="small" color="error" onClick={handleDelete}>
-        <Trash2 size={16} />
-      </IconButton>
+    <Tooltip title="Delete item?">
+      <Card sx={{ borderRadius: '50%', bgcolor: 'var(--surface-2)', boxShadow: 2}}>
+      <IconButton size="medium" color="error" onClick={handleDelete}>
+        <Trash2 size={20} />
+      </IconButton></Card>
     </Tooltip>
   );
 }
