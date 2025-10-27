@@ -136,7 +136,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
 // DEVELOPER DOCS CONTENT
 // -------------------------
 export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
-  'Auth & security (detailed)': [
+  'Auth & security': [
     "Auth model: JWT access tokens (short lived) + refresh tokens (httpOnly, server-rotated). Refresh tokens are stored as hashed values in the DB for safe revocation.",
     {
       type: 'code',
