@@ -1,4 +1,4 @@
-import { ResourceHero } from "@/app/resources/_level_3/resourcesPage";
+import { ResourceHero } from "@/app/resources/_level_3";
 import { TemplateCard } from "@/app/resources/_level_2/templateCard";
 import { TEMPLATES } from "@/constants/resources";
 import { Box, Grid, Typography } from "@mui/material";

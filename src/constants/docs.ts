@@ -57,7 +57,7 @@ export const TABLE_OF_CONTENTS_DEV = [
 // -------------------------
 
 export type DocTextBlock = string | {
-  type: 'link' | 'code' | 'callout' | 'list' | 'strong' | 'badge',
+  type: 'link' | 'code' | 'callout' | 'list' | 'badge' | 'point' | 'paragraph' | 'strong' | 'italic' | 'highlight' | 'disabled' | 'outline' | 'inline',
   title?: string,
   content: string | string[],
   href?: string,
@@ -65,13 +65,15 @@ export type DocTextBlock = string | {
 
 export const CONTENTS: Record<string, DocTextBlock[]> = {
   "What is TicTask": [
-    "TicTask is a lightweight, collaborative task and ticketing platform built for fast, transparent teamwork. It helps individuals and teams capture work, assign ownership, track progress, and ship faster.",
+    "TicTask is a lightweight, collaborative ticketing and task management platform built for fast, transparent teamwork.", 
+    "By leveraging the fundamental concepts and principles of SWE, TicTask runs a system that helps to streamline your workflow and boost productivity.  It helps individuals and teams capture work, assign ownership, track progress, and ship faster.",
     { type: 'callout', title: 'Core idea', content: 'Keep tasks simple, make ownership clear, and make progress visible.' }
   ],
 
-  "Key features & target audience": [
-    "TicTask focuses on a short list of high-value features: tasks & subtasks, assignments, file attachments, activity feed, simple workflows, role-based permissions, and email notifications.",
+  "Key features & Target audience": [
+    "TicTask focuses on a handful of high-value features: Tasks & subtasks, assignments, activity feed, simple workflows, role-based permissions, and email notifications.",
     { type: 'list', content: [
+      'Task and project-orientated individuals',
       'Small teams shipping product features',
       'Customer support teams triaging issues',
       'Freelancers coordinating with clients',
@@ -79,40 +81,51 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     ]}
   ],
 
-  "Quick start — create account & onboarding": [
-    "1) Sign up: Go to the Join page and enter your email. You’ll receive a verification link valid for 15 minutes. Click it to confirm your address and finish onboarding.\n\nSafety tip: TicTask will never request your password in email. Keep your password private.",
-    "2) Create a workspace: Name your workspace and optionally invite teammates by email.",
-    "3) Create a task: Click New Task, add title, due date, assignee, attachments and a short description.",
-    { type: 'callout', title: 'Pro tip', content: 'Use concise task titles and add one accepted outcome — it reduces ambiguity.' }
+  "Quick start — Create account & Onboarding": [
+    { type: 'inline', content: "1) Sign up: Enter your personal or business email. You’ll receive a verification link valid for 15 minutes. Click on the link to confirm your email and continue setup from the onboarding page."}, '',
+    { type: 'inline', content: "2) Onboard: Follow the"}, { type: 'outline', content: "Set your password"}, { type: 'inline', content: "link sent to your email. Setup password → Choose account type: Personal or Business → Save to complete onboarding and continue to Dashboard."}, '', 
+    { type: 'inline', content: "3) Dashboard: Create a task: Click New Task, add title, due date, assignee, attachments and a short description."}, '',
+    { type: 'callout', title: 'Safety tip', content: 'TicTask will never request your password in email. Keep your password private and mind the time constraints' }
   ],
 
-  "Login & account management": [
-    "Password-based login is the default. Password reset uses time-limited links. If you use SSO (Google/Github), we will link the external provider to your account during first login.",
-    { type: 'strong', content: 'Two-factor authentication (optional) — enables extra security for sensitive workspaces.' }
+  "Login & Account management": [
+    "Password-based login is the default. We are constantly working to add and improve our sign-in methods.", 
+    { type: 'point', content: "Email and password"},
+    { type: 'point', content: "SSO/ Auth providers"},
+    { type: 'badge', content: "Google sign-in"},
+    { type: 'badge', content: "Slack sign-in"},
+    { type: 'badge', content: "X (formerly Twitter) sig-in"},
+    '',
+    { type: 'point', content: 'Two-factor authentication (optional) '}, { type: 'inline', content: 'Enables extra security for sensitive workspaces.' }, 
+    { type: 'inline', content: 'To manage, personalize or delete your account, visit '}, { type: 'link', content: ' account management.', href: '/dashboard/settings#account-management' },
+    "Password reset uses time-limited links. If you use SSO (Google/Github), we will link the external provider to your account during first login.",
   ],
 
-  "Quick tour — dashboard": [
+  "Quick Tour — Dashboard": [
     "The dashboard organizes your work into a few high-value cards: Assigned to me, Backlog, Overdue, and Activity Feed. Each card links to filtered lists for quick triage.",
     { type: 'link', href: '/docs/tour', content: 'Read the full dashboard walkthrough' }
   ],
 
-  "Roles & permissions": [
-    "TicTask uses simple RBAC: Admins, Members, and Viewers. Admins manage workspace settings and billing; Members create and act on tasks; Viewers can only read content.",
-    { type: 'callout', title: 'Note', content: 'You can create custom roles if your plan supports it.' }
+  "Roles & Permissions": [
+    "TicTask uses simple RBAC to control a user and viewer's accessibilty. These roles include; User as personal, User as organization/ team, Admin and Viewers.",
+    { type: 'outline', content: "Personal"}, { type: 'inline', content: "create and manage tickets and tasks on free tier. Subscription unlocks extended features."},  "",
+    { type: 'outline', content: "Organization"}, { type: 'inline', content: "create and manage teams with admin features. Subscription is required, while team members can use free tier."}, '',
+    { type: 'outline', content: "Admin"}, { type: 'inline', content: "manage in-app performances, metrics & system logs, Subscriptions, docs and resource requests are co-managed by "}, { type: 'badge', content: 'moderators'}, '',
+    { type: 'callout', title: 'Note', content: 'Custom roles such as moderator are not supported by default. Administrators vet and confirm users for this role' }
   ],
 
-  "Common flows — tasks, comments, attachments": [
+  "Common flows — Tasks, Assignments, Comments": [
     "Create → Assign → Work → Comment → Close. Attach files from local device or cloud storage. Mention teammates using @ to trigger notifications.",
     { type: 'list', content: ['Create task', 'Assign task', 'Accept/Decline task', 'Add comment', 'Attach files'] }
   ],
 
-  "Notifications & activity feed": [
+  "Notifications & Activity feed": [
     "Notifications arrive by email and in-app. Use the bell menu to view recent activity. You can quiet notifications per-task or per-workspace.",
   ],
 
-  "Pricing & billing": [
+  "Pricing & Billing": [
     "We offer a free tier for small teams and paid plans for teams needing advanced features like SSO, audit logs, and longer retention. Billing is per workspace.",
-    { type: 'link', href: '/product#pricing', content: 'See detailed pricing' }
+    { type: 'link', href: '/product/pricing', content: 'See detailed pricing' }
   ],
 
   "Security & privacy": [
@@ -122,7 +135,8 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
 
   "Troubleshooting & FAQ": [
     "If you can’t find a verification email, check your spam folder and ensure your mail provider isn’t blocking messages from our domain. For lost access to your account, contact support with proof of workspace ownership.",
-    { type: 'callout', title: 'FAQ — common', content: 'How do I restore a deleted task? — Deleted tasks can be restored by admins within 30 days.' }
+    { type: 'callout', title: 'FAQ — common', content: 'How do I restore a deleted task? — Deleted tasks can be restored by admins within 30 days.' },
+    { type: 'link', href: '/resoources/faq', content: 'Frequently Asked Questions' },
   ],
 
   "Contact & support": [
@@ -140,8 +154,8 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
     "Auth model: JWT access tokens (short lived) + refresh tokens (httpOnly, server-rotated). Refresh tokens are stored as hashed values in the DB for safe revocation.",
     {
       type: 'code',
-      title: 'Auth endpoints (summary)',
-      content: `POST /auth/join — start join flow (email verification)\nPOST /auth/login — exchange creds for access token and set refresh cookie\nPOST /auth/refresh — use refresh cookie to mint new access token\nPOST /auth/logout — clear cookie + revoke refresh token\nPOST /auth/request-password-reset — send reset email\nPOST /auth/reset-password — finalize reset by token`
+      title: 'Auth endpoints',
+      content: `POST /auth/join — register/ join flow (email verification, set password, setup account)\nPOST /auth/login — exchange creds for access token and set refresh cookie\nPOST /auth/refresh — use refresh cookie to mint new access token\nPOST /auth/logout — clear cookie + revoke refresh token\nPOST /auth/request-password-reset — send reset email\nPOST /auth/reset-password — finalize reset by token`
     },
     {
       type: 'callout',

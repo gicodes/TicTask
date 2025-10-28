@@ -1,7 +1,8 @@
 "use client";
 
-import styles from "@/app/page.module.css";
 import { Card, CardContent, Box, Stack, Typography, Button } from "@mui/material";
+import { RESOURCES } from "@/constants/resources";
+import styles from "@/app/page.module.css";
 import Link from "next/link";
 
 export const ResourceHero = ({
@@ -29,15 +30,6 @@ export const ResourceHero = ({
   );
 }
 
-const resources = [
-  { title: "Getting Started", desc: "Your first 10 minutes with TicTask", link: "/resources/docs" },
-  { title: "Templates", desc: "Jumpstart workflows with ready-made templates", link: "/resources/templates" },
-  { title: "Changelog", desc: "See what’s new and improved", link: "/resources/changelog" },
-  { title: "Blog", desc: "Insights, guides, and stories from the TicTask team", link: "/resources/blog" },
-  { title: "Frequently Asked Questions", desc: "Find out more from the most common and frequently asked questions", link: '/resources/faq'},
-  { title: "Developer", desc: "Get access to our technical documentation to contribute or collaborate", link: '/resources/docs/dev'}
-];
-
 export const ResourceGrid = () => {
   return (
     <section>
@@ -51,7 +43,7 @@ export const ResourceGrid = () => {
         px={1}
         py={10}
       >
-        {resources.map((r) => (
+        {RESOURCES.map((r) => (
           <Card
             key={r.title} 
             elevation={1}

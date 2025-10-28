@@ -1,4 +1,4 @@
-import { DocSection, GenericHeader } from '@/app/resources/_level_3/docs'
+import { DocSection, GenericHeader } from '@/app/resources/_level_3/docsTemplate'
 import { CONTENTS, TABLE_OF_CONTENTS } from '@/constants/docs';
 import { Box, Stack, Typography } from '@mui/material';
 import { Metadata } from 'next';

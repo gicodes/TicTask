@@ -1,8 +1,7 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { UserType } from '@/types/onboarding';
-import { useRouter } from 'next/navigation';
 import { apiPost } from '@/lib/api';
 import { useState } from 'react';
 import OnboardingUI from './ui';
@@ -64,17 +63,15 @@ export default function Onboarding() {
     const data = 
       step === 1 ? { password } 
       : step === 2 ? userType === 'PERSONAL' 
-        ? { userType, name, country, phone }
-        : {
-            userType,
-            orgName,
-            industry,
-            teamSize,
-            hqCountry,
-            website,
-            bio,
-          } : {};
-
+      ? { userType, name, country, phone }: {
+        userType,
+        orgName,
+        industry,
+        teamSize,
+        hqCountry,
+        website,
+        bio,
+      } : {};
     await saveStep(step, data);
     setStep((prev) => prev + 1);
   };
@@ -100,11 +97,9 @@ export default function Onboarding() {
         website,
         bio,
       };
-
+      
       await saveStep(3, finalData);
-
       router.push('/dashboard');
-      router.refresh();
     } catch (err) {
       console.error("❌ Onboarding submit failed:", err);
       setError("Something went wrong. Please try again.");

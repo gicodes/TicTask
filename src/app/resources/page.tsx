@@ -1,4 +1,4 @@
-import ResourcePage from '@/app/resources/_level_3/resourcesPage'
+import ResourcePage from '@/app/resources/_level_3'
 import type { Metadata } from 'next';
 import React from 'react';
 

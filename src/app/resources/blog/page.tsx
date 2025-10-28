@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { BlogCard } from "@/app/resources/_level_2/blogCard";
 import { Box, Grid, Typography, Button } from "@mui/material";
 import DeleteButton from "@/app/resources/_level_1/deleteResource";
-import { ResourceHero } from "@/app/resources/_level_3/resourcesPage";
+import { ResourceHero } from "@/app/resources/_level_3";
 
 export default function BlogListPage() {
   const {isAdmin } = useAuth();

@@ -155,3 +155,20 @@ h6 { font-size: 1.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mb-1 { margin-bottom: 0.35rem; }
 .mb-2 { margin-bottom: 0.5rem; }
+
+.btn {
+  border-radius: 9999px;
+  height: auto;
+  margin: 10;
+  font-size: smaller;
+  padding: 6px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 0.9px solid var(--secondary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    border-color: var(--accent);
+    /* transition: border-color 0.2s ease; */
+  }
+}

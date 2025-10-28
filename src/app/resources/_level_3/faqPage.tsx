@@ -6,7 +6,7 @@ import { useAuth } from "@/providers/auth";
 import { apiGet, apiPost } from "@/lib/api";
 import { useAlert } from "@/providers/alert";
 import { FAQProps } from "@/types/resources";
-import { ResourceHero } from "./resourcesPage";
+import { ResourceHero } from ".";
 import React, { useEffect, useState } from "react";
 import DeleteButton from "../_level_1/deleteResource";
 import { Box, Typography, TextField, Button, Card } from "@mui/material";

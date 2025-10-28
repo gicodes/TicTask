@@ -29,11 +29,12 @@ export default function Page() {
       <Stack 
         p={3}
         gap={1}
-        flexWrap={'wrap'}
+        width={'100%'}
         direction={'row'} 
         alignItems={'center'}
         justifyContent={'space-between'}
-        display={{xs: 'grid', md: 'flex'}}
+
+        display={'flex'}
       >
         <Typography variant="h5" fontWeight={501}>
           Welcome, {user?.name}

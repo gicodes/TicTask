@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { Box, TextField, Button, Typography, Card } from "@mui/material";
-import { ResourceHero } from "@/app/resources/_level_3/resourcesPage";
+import { ResourceHero } from "@/app/resources/_level_3";
 
 export default function CreateBlogPage() {
   const { user, isAuthenticated } = useAuth();

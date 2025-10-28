@@ -2,7 +2,7 @@
 
 import styles from "@/app/page.module.css";
 import React, { useEffect, useState } from "react";
-import { ResourceHero } from "../_level_3/resourcesPage";
+import { ResourceHero } from "../_level_3";
 import { Box, Typography, Button } from "@mui/material";
 import { ChangelogItem } from "../_level_2/changeLog";
 import DeleteButton from "../_level_1/deleteResource";

@@ -1,4 +1,4 @@
-import { DevSection, GenericHeader } from '@/app/resources/_level_3/docs'
+import { DocSection, GenericHeader } from '@/app/resources/_level_3/docsTemplate'
 import { CONTENTS_DEV, TABLE_OF_CONTENTS_DEV } from '@/constants/docs'
 import { Box, Stack, Typography } from '@mui/material'
 import type { Metadata } from 'next';
@@ -42,7 +42,7 @@ const Page = () => {
       </Box>
       <Stack maxWidth={1000} mx='auto' px={2} py={5} spacing={5}>
         {Object.entries(CONTENTS_DEV).map(([title, blocks]) => (
-          <DevSection key={title} title={title} blocks={blocks} />
+          <DocSection key={title} title={title} blocks={blocks} />
         ))}
       </Stack>
     </Box>

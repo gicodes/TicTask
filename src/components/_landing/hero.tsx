@@ -8,10 +8,9 @@ const Hero = () => {
         <h2><span className="custom-warm">Driven by AI</span>, Designed for Everyone</h2>
       </div>
       <div className={styles.heroSubtitle}>
-        TicTask is a ticket and task management system that leverages the application of the true concepts and principles of SWE to streamline your workflow and boost
-        productivity. Whether you&apos;re a small team or a large enterprise, TicTask
-        is designed to meet your needs with its intuitive interface and robust
-        features.
+        TicTask is a lightweight, collaborative ticket and task management platform built for fast, friendly, agile and team work. 
+        Whether you&apos;re a small team or a large enterprise, TicTask
+        is designed to meet your needs with its intuitive interface and robust features.
       </div>
       <div className={styles.heroActions}>
         <div className={styles.btnGroup}>

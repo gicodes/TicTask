@@ -7,7 +7,7 @@ import { apiPost } from "@/lib/api";
 
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
-import { ResourceHero } from "../../_level_3/resourcesPage";
+import { ResourceHero } from "../../_level_3";
 import { Box, TextField, Button, Typography, Card } from "@mui/material";
 
 export default function CreateChangelog() {
