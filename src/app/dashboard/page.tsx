@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/providers/auth';
 import { useEffect, useState } from 'react';
-import TicketsBoardPage from './_level_3/ticket';
+import TicketsPage from './_level_3/ticket';
 import { TicketTimeTooltip } from './_level_1/tooltips';
 import { Box, Divider, Tooltip, Typography } from '@mui/material';
 
@@ -43,7 +43,7 @@ export default function Page() {
         </Box>
       </Box>
       <Divider />
-      <TicketsBoardPage />
+      <TicketsPage />
     </Box>
   );
 }

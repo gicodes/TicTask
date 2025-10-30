@@ -69,7 +69,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton edge="start" onClick={() => setOpen(!open)}>
-              <MenuIcon sx={{ display: { md: 'none' }, mr: 3 }} />
+              <MenuIcon sx={{ display: { md: 'none' }, mr: 2 }} />
             </IconButton>
             <Logo />
           </Box>
@@ -139,7 +139,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             <Link href={item.path} key={item.path}>
               <ListItemButton selected={pathname === item.path}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
+                <ListItemText primary={item.label} style={{ marginLeft: -5, marginRight: 5}} />
               </ListItemButton>
             </Link>
           ))}
@@ -156,8 +156,8 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
       >
         <Toolbar />
         <List sx={{ pt: 5}}>
-          {filteredNav.map(item => (
-            <Link href={item.path} key={item.path}>
+          {filteredNav.map((item, i) => (
+            <Link href={item.path} key={i}>
               <ListItemButton selected={pathname === item.path}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
@@ -171,7 +171,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         <Toolbar />
         {children}
         <Box textAlign={'center'} mt={5}>
-          <Typography fontFamily={'serif'} fontWeight={501} className='custom-dull'><i>Unleash the Power of your mind — one task at a time</i></Typography>
+          <Typography fontFamily={'serif'} fontWeight={501} className='custom-dull'><i>Unleash the power of your mind— one task at a time</i></Typography>
         </Box>
       </Box>
     </Box>

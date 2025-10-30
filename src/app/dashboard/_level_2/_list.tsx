@@ -48,7 +48,7 @@ const TicketsList = ({
         >
           <thead style={{ textAlign: 'left' }}>
             <tr>
-              {['ID', 'Title', 'Priority', 'Type', 'Status', 'Last Updated'].map((h) => (
+              {['No.', 'Title', 'Priority', 'Type', 'Status', 'Last Updated'].map((h) => (
                 <th
                   key={h}
                   style={{

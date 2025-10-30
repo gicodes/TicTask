@@ -9,8 +9,8 @@ import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { Box, useTheme, useMediaQuery, Tabs, Tab, IconButton, Tooltip } from '@mui/material';
 
 export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
-  const [startIndex, setStartIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [startIndex, setStartIndex] = useState(0);
   const STATUSES = Object.keys(grouped);
   const theme = useTheme();
 
@@ -66,10 +66,10 @@ export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
           onChange={(_, v) => setActiveIndex(v)}
           variant="scrollable"
           scrollButtons="auto"
-          sx={{ mb: 2 }}
+          sx={{ marginTop: 2}}
         >
           {STATUSES.map((status, idx) => (
-            <Tab key={status} label={status} value={idx} />
+            <Tab key={status} label={status==='IN_PROGRESS' ? 'IN PROGRESS' : status} value={idx} />
           ))}
         </Tabs>
       )}
@@ -80,20 +80,20 @@ export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
             alignItems: 'flex-start',
             justifyContent: 'space-between',
             width: '100%',
-            pb: 2, gap: 0
+            pb: 2,
           }}
         >
           {!isXs && startIndex > 0 && (
             <Box
               sx={{
-                minWidth: 40,
+                marginTop: 2,
                 display: 'flex',
-                alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
               <Tooltip title={prevStatuses.length ? 
-                `See ${prevStatuses.join(', ').toLowerCase()} tickets` : ''}>
+                `See ${prevStatuses.join(', ').toLowerCase()} tickets` : ''}
+              >
                 <IconButton onClick={handlePrevColumns}>
                   <ChevronLeftIcon fontSize="large" />
                 </IconButton>
@@ -127,15 +127,15 @@ export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
           ))}
           {!isXs && startIndex + visibleCount < STATUSES.length && (
             <Box
-              sx={{
-                minWidth: 40,
+              sx={{                
+                marginTop: 2,
                 display: 'flex',
-                alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
               <Tooltip title={nextStatuses.length ? 
-                `See ${nextStatuses.join(', ').toLowerCase()} tickets` : ''}>
+                `See ${nextStatuses.join(', ').toLowerCase()} tickets` : ''}
+              >
                 <IconButton onClick={handleNextColumns}>
                   <ChevronRightIcon fontSize="large" />
                 </IconButton>

@@ -1,7 +1,7 @@
 import React from 'react';
 import TicketCard from './ticketCard';
 import { Ticket } from '@/types/ticket';
-import { Box, Typography } from '@mui/material';
+import { Badge, Box, Typography } from '@mui/material';
 
 export const BoardColumn: React.FC<{
   title: string;
@@ -16,11 +16,10 @@ export const BoardColumn: React.FC<{
   return (
     <Box 
       sx={{
-        p: 1,
-        mr: 2,
-        minWidth: { xs: 300, sm: 266, md: 270, lg: 320},
+        p: 1, mr: 1,
         maxWidth: 360,
         bgcolor: 'transparent',
+        minWidth: { xs: 300, sm: 266, md: 270, lg: 320},
       }}
     >
       <Typography variant="h6" 
@@ -33,10 +32,12 @@ export const BoardColumn: React.FC<{
           alignContent: 'center' 
         }}
       >
-        {title==='IN_PROGRESS' ? 'IN PROGRESS' : title}
-        <small style={{ fontWeight: 500, color: 'gray' }}>
-          ({tickets?.length})
-        </small>
+        <Badge sx={{ display: { xs: 'none', sm: 'flex' }}}>
+          ▿ {title==='IN_PROGRESS' ? 'IN PROGRESS' : title}
+        </Badge>
+        <span style={{ fontWeight: 500, color: 'gray' }}>
+          ➥ ({tickets?.length})
+        </span>
       </Typography>
       
       <Box>

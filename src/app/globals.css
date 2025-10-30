@@ -126,7 +126,7 @@ h6 { font-size: 1.5rem; }
 .gap-3 { gap: 20px; }
 
 .text-center { text-align: center; }
-.align-center { align-items: center;}
+.items-center { align-items: center;}
 .justify-center { justify-content: center; }
 .space-around { justify-content: space-around; }
 .space-between { justify-content: space-between; }
