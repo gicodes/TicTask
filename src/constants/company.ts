@@ -3,6 +3,7 @@ export const TEAM = [
   { name: "Psalm Writes", role: "Design & Experience" },
   { name: "Akachukwu O.", role: "Product Lead" },
   { name: "Select Engr.", role: "Growth & Partnerships" },
+  { name: "Jane Doe", role: "Marketing & PR" }
 ];
 
 export const VALUES = [

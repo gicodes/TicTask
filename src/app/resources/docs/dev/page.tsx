@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const Page = () => {
   return (
     <Box>
-      <GenericHeader />
+      <GenericHeader dev />
       <Box
         py={15}
         px={1.5}

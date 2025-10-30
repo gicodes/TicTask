@@ -3,12 +3,12 @@ import { RiRobot2Fill } from "react-icons/ri";
 import { SiAwsorganizations } from "react-icons/si";
 import { GrResources, GrUpdate } from "react-icons/gr";
 import { GiHelp, GiThreeFriends } from 'react-icons/gi';
-import { Avatar, Box, Typography } from '@mui/material';
 import { Logout, CorporateFare } from '@mui/icons-material';
+import { Avatar, Box, Typography, Badge } from '@mui/material';
 import { BsFillCreditCard2BackFill, BsCalendar2Date } from "react-icons/bs";
 import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle } from 'react-icons/fa';
 import { FcSerialTasks, FcDocument, FcBearish, FcDataEncryption } from "react-icons/fc";
-import { MdOutlineFamilyRestroom, MdCategory, MdSettings, MdPaid } from "react-icons/md";
+import { MdOutlineFamilyRestroom, MdCategory, MdSettings, MdPaid, MdCampaign } from "react-icons/md";
 
 export type LinkItem = {
   label: string | React.ReactNode;
@@ -28,23 +28,21 @@ export interface AvatarProps {
 
 export const NAV_ITEMS = [
   { label: 'Tickets', path: '/dashboard/', icon: <FcSerialTasks/> },
-  { label: 'AI assistant', path: '', icon: <RiRobot2Fill />}, // new
-  { label: 'Planner', path: '/dashboard/calendar', icon: < BsCalendar2Date/>}, // new
+  { label: 'AI assistant', path: '#', icon: <RiRobot2Fill />, released: false}, // new
+  { label: 'Planner', path: '/dashboard/planner', icon: < BsCalendar2Date/>},
   { label: 'Products', path: '/product', icon: <MdCategory /> },
   { label: 'Refer a friend', path: '/dashboard/refer', icon: <MdOutlineFamilyRestroom /> },
   { label: 'Subscriptions', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
-  { label: 'Documentation', path: '/resources/docs', icon: <FcDocument /> },
-
+  { label: 'Marketing', path: '/dashboard/marketing', icon: <MdCampaign /> },
   { label: 'Teams', path: '/dashboard/teams', icon: <SiAwsorganizations />}, // user.BUSINESS
-
+  { label: 'Legal', path: '/legal', icon: <FcDocument />}, // user.BUSINESS
   { label: "Metrics", path: '/dashboard/metrics', icon: <FcDataEncryption /> },
   { label: 'Settings', path: '/dashboard/settings', icon: <MdSettings /> }, 
-  { label: 'More', path: '', icon: <CgMenuGridR /> }, // more includes FAQ, blog, community and register new account
-
+  { label: 'More', path: '', icon: <CgMenuGridR /> }, // more includes Docs, FAQ, blog, community and register new account
   { label: 'All Users', path: '/dashboard/users', icon: <FaUsers /> },
   { label: 'Partners', path: '/dashboard/partners', icon: <GiThreeFriends />},
   { label: 'Organizations', path: '/dashboard/organizations', icon: <CorporateFare /> },
-  { label: 'Resources', path: '/dashboard/resources', icon: <GrResources />},
+  { label: 'Resources', path: '/resources', icon: <GrResources />},
   { label: 'System Logs', path: '/dashboard/logs', icon: <FcBearish /> },
 ];
 
@@ -55,7 +53,6 @@ export const AUTH_ITEMS: LinkItem[] = [
   { label: <div className='flex gap-2 items-center'><MdPaid/>  See pricing</div>, href: "/product/#pricing"},
   { label: <div className='flex gap-2 items-center'><GiHelp/>  Get support</div>, href: "/company/#contact-us"},
   { label: <div className='flex gap-2 items-center'><FaDonate/>  Donations</div>, href: "#"},
-
   { label: <div className='flex gap-2 items-center'><FaHome/> Back to home </div>, href: "/" },
   { label: <div className='flex gap-2 items-center'><Logout fontSize='inherit'/>&nbsp;Logout</div>, href: "#", cta: true },
 ]
@@ -97,3 +94,21 @@ export const NavbarAvatar = ({ user, size = 36}: AvatarProps) => <Box position={
     <FaCircle size={9} color={user ? 'limegreen' : ''} />
   </Box>
 </Box>
+
+export const NewFeatureBadge = () => 
+  <Badge 
+    sx={{ 
+      p: 1.5, 
+      height: 15, 
+      display: 'flex', 
+      fontWeight: 1000,
+      fontSize: 12, 
+      borderRadius: 20, 
+      alignItems: 'center', 
+      bgcolor: 'orange', 
+      color: 'var(--surface-1)', 
+      fontFamily: 'monospace'
+    }}
+  >
+    NEW
+  </Badge>

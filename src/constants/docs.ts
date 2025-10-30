@@ -13,41 +13,41 @@ import { DocTextBlock } from "@/types/resources"
 // TABLE OF CONTENTS (Public)
 // -------------------------
 export const TABLE_OF_CONTENTS = [
-  "What is TicTask",
-  "Key features & target audience",
-  "Quick start — create account & onboarding",
-  "Login & account management",
-  "Quick tour — dashboard",
-  "Roles & permissions",
-  "Common flows — tasks, comments, attachments",
-  "Notifications & activity feed",
-  "Pricing & billing",
-  "Security & privacy",
+  "What Is TicTask",
+  "Key Features & Target Audience",
+  "Quick start — Create Account & Onboard",
+  "Login & Account Management",
+  "Quick Tour — Dashboard",
+  "Roles & Permissions",
+  "Common Flows — Tasks, Comments, Attachments",
+  "Notifications & Activity Feed",
+  "Pricing & Billing",
+  "Security & Privacy",
   "Troubleshooting & FAQ",
-  "Contact & support"
+  "Contact & Support"
 ]
 
 // -------------------------
 // TABLE OF CONTENTS (Developer)
 // -------------------------
 export const TABLE_OF_CONTENTS_DEV = [
-  "Project overview & goals",
-  "High-level architecture",
-  "Repo layout / folder structure",
-  "Tech stack & versions",
-  "Environment & secrets",
-  "Database design — ER summary + migrations",
-  "Services & endpoints — API conventions",
-  "Auth & security (detailed)",
-  "Backend implementation: patterns & conventions",
-  "Frontend structure: patterns, components & page status",
-  "Testing strategy: unit / integration / e2e",
-  "CI/CD & deployments",
-  "Local dev & debugging (compose, sample data)",
-  "Release notes & versioning policy",
-  "Runbook: common ops & recovery steps",
-  "Tasks & milestone checklist (issue-level)",
-  "Onboarding checklist for new devs",
+  "Project overview",
+  "High-level Architecture",
+  "Repo Layout & Folder Structure",
+  "Tech stack & Versions",
+  "Environment & Secrets",
+  "Database Design — ER summary + Migrations",
+  "Services & Endpoints — API Conventions",
+  "Auth & Security",
+  "Backend Implementation: Patterns & Conventions",
+  "Frontend Structure: Patterns, Components & Pages",
+  "Testing Strategy: Unit / Integration / e2e",
+  "CI/CD & Deployments",
+  "Local dev & Debugging",
+  "Release Notes & Versioning Policy",
+  "Runbook: Common ops & Recovery Steps",
+  "Tasks & Milestone Checklist (issue-level)",
+  "Onboarding Checklist For New Devs",
   "Appendix: OpenAPI / Postman / Useful commands"
 ]
 
@@ -61,13 +61,13 @@ export const TABLE_OF_CONTENTS_DEV = [
 
 
 export const CONTENTS: Record<string, DocTextBlock[]> = {
-  "What is TicTask": [
+  "What Is TicTask": [
     "TicTask is a lightweight, collaborative ticketing and task management platform built for fast, transparent teamwork.", 
     "By leveraging the fundamental concepts and principles of SWE, TicTask runs a system that helps to streamline your workflow and boost productivity.  It helps individuals and teams capture work, assign ownership, track progress, and ship faster.",
     { type: 'callout', title: 'Core idea', content: 'Keep tasks simple, make ownership clear, and make progress visible.' }
   ],
 
-  "Key features & Target audience": [
+  "Key Features & Target Audience": [
     "TicTask focuses on a handful of high-value features: Tasks & subtasks, assignments, activity feed, simple workflows, role-based permissions, and email notifications.",
     { type: 'list', content: [
       'Task and project-orientated individuals',
@@ -78,21 +78,21 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     ]}
   ],
 
-  "Quick start — Create account & Onboarding": [
+  "Quick Start — Create Account & Onboard": [
     { type: 'inline', content: "1) Sign up: Enter your personal or business email. You’ll receive a verification link valid for 15 minutes. Click on the link to confirm your email and continue setup from the onboarding page."}, '',
-    { type: 'inline', content: "2) Onboard: Follow"}, { type: 'outline', content: "Set your password"}, { type: 'inline', content: "link sent to your email."}, 
+    { type: 'inline', content: "2) Onboard: Follow"}, { type: 'outline', content: "Set your password"}, { type: 'inline', content: " link sent to your email."}, 
     "Setup password → Choose account type: Personal or Business → Save to complete onboarding and continue to Dashboard.", 
     { type: 'inline', content: "3) Dashboard: You will be re-directed to your dashboard. You can also visit dashboard from the welcome email sent to your email."}, '',
     { type: 'callout', title: 'Safety tip', content: 'TicTask will never request your password in email. Keep your password private and mind the time constraints' }
   ],
 
-  "Login & Account management": [
+  "Login & Account Management": [
     "Password-based login is the default. We are constantly working to add and improve our sign-in methods.", 
     { type: 'point', content: "Email and password"},
     { type: 'point', content: "SSO/ Auth providers"},
     { type: 'badge', content: "Google sign-in"},
     { type: 'badge', content: "Slack sign-in"},
-    { type: 'badge', content: "X (formerly Twitter) sig-in"},
+    { type: 'badge', content: "X (formerly Twitter) sign-in"},
     '',
     { type: 'point', content: 'Two-factor authentication (optional) '}, { type: 'inline', content: 'Enables extra security for sensitive workspaces.' }, 
     { type: 'inline', content: 'To manage, personalize or delete your account, visit '}, { type: 'link', content: ' account management.', href: '/dashboard/settings#account-management' },
@@ -102,17 +102,17 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
   "Quick Tour — Dashboard": [
     "The dashboard structures your workspace into simple and user-friendly layout, comprising of dashboard header, menu pages and an overview page i.e. Tickets, Settings, etc.", 
     "Tickets offer two (2) standard workspace views: Board and List.", 
-    { type: "outline", content: "BOARD"}, { type: 'inline', content: 'organizes your tickets in rows of ticket status. Each status column showing tickets in detailed card'}, '',
+    { type: "outline", content: "BOARD"}, { type: 'inline', content: ' organizes your tickets in rows of ticket status. Each status column showing tickets in detailed card'}, '',
     { type: "badge", content: "Upcoming"}, { type: "badge", content: "Open"}, { type: "badge", content: "In progress"}, { type: "badge", content: "Resolved"}, { type: "badge", content: "Closed"}, { type: "badge", content: "Cancelled"}, '',
-    { type: "outline", content: "LIST"}, { type: 'inline', content: 'tabulates your tickets in a readable format, with column tabs showing detailed ticket information'}, '',
+    { type: "outline", content: "LIST"}, { type: 'inline', content: ' tabulates your tickets in a readable format, with column tabs showing detailed ticket information'}, '',
     { type: 'link', href: '/docs/tour', content: 'Read the full dashboard walkthrough' }
   ],
 
   "Roles & Permissions": [
     "TicTask uses simple RBAC to control a user and viewer's accessibilty. These roles include; User as personal, User as organization/ team, Admin and Viewers.",
-    { type: 'outline', content: "Personal"}, { type: 'inline', content: "create and manage tickets and tasks on free tier. Subscription unlocks extended features."},  "",
-    { type: 'outline', content: "Organization"}, { type: 'inline', content: "create and manage teams with admin features. Subscription is required, while team members can use free tier."}, '',
-    { type: 'outline', content: "Admin"}, { type: 'inline', content: "manage in-app performances, metrics & system logs, Subscriptions, docs and resource requests are co-managed by "}, { type: 'badge', content: 'moderators'}, '',
+    { type: 'outline', content: "Personal"}, { type: 'inline', content: " create and manage tickets and tasks on free tier. Subscription unlocks extended features."},  "",
+    { type: 'outline', content: "Organization"}, { type: 'inline', content: " create and manage teams with admin features. Subscription is required, while team members can use free tier."}, '',
+    { type: 'outline', content: "Admin"}, { type: 'inline', content: " manage in-app performances, metrics & system logs, Subscriptions, docs and resource requests are co-managed by "}, { type: 'badge', content: 'moderators'}, '',
     { type: 'callout', title: 'Note', content: 'Custom roles i.e. Moderator are not supported by default. Setting up a custom role requires registering as partner.' }
   ],
 
@@ -122,7 +122,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     { type: 'list', content: ['Create task', 'Assign task', 'Accept/ Decline task', 'Add comment', 'Attach files', 'Search ticket', 'Create team', 'Invite member', 'Accept/ Decline invite'] }
   ],
 
-  "Notifications & Activity feed": [
+  "Notifications & Activity Feed": [
     "Notifications arrive by email and in-app alerts. Use the bell menu to view recent activity. You can quiet notifications per-task or per-workspace and configure the notification provider i.e. Email, SMS or Slack.",
     "Your Activity feed shows actions and notifications on activities noticed on your account. The feeds are temporarily stored for your timely viewing, and is not persisted to a database nor accessible after viewing and timeout.",
     { type: 'callout', title: 'Pro tip', content: 'Using notification providers you monitor frequently for tickets and tasks notifications can be an effective approach' }
@@ -207,7 +207,7 @@ export const DocsRenderHelpers = `
 // DEVELOPER DOCS CONTENT (Optimized)
 // -------------------------
 export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
-  "Project overview & goals": [
+  "Project overview": [
     "TicTask is built to unify ticketing and task management through a modern, modular codebase. It aims to deliver a fast, scalable, and intuitive platform that reflects true software engineering principles.",
     { type: 'list', content: [
       'Lightweight and modular architecture — easy to extend and maintain',
@@ -219,7 +219,7 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
     { type: 'callout', title: 'Goal', content: 'Deliver a robust, intuitive system that scales with teams — not against them.' }
   ],
 
-  "High-level architecture": [
+  "High-level Architecture": [
     "TicTask follows a service-oriented architecture (SOA) built on Node.js + TypeScript, with React on the frontend and PostgreSQL as the main datastore.",
     { type: 'list', content: [
       'Frontend — Next.js + React + MUI + Zustand/ Redux (state management)',
@@ -232,13 +232,13 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
     { type: 'callout', title: 'Tip', content: 'Keep each service independently deployable and testable.' }
   ],
 
-  "Repo layout / folder structure": [
+  "Repo layout & Folder structure": [
     "The repository uses a flat modular layout for clarity and maintainability.",
     {
       type: 'code',
       title: 'Folder structure',
       content: `
-        ├──./                     # root
+        ├── /                     # root
         ├── backend/              # Backend service (Express/ Nodejs)
         |   ├── prisma/           # Database schema & migrations
         |   ├── src/
@@ -259,7 +259,7 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
     }
   ],
 
-  "Tech stack & versions": [
+  "Tech stack & Versions": [
     { type: 'list', content: [
       'Node.js v20+',
       'Next.js 15 ',
@@ -274,7 +274,7 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
     { type: 'callout', title: 'Note', content: 'TicTask favors stable LTS versions to ensure reproducible builds.' }
   ],
 
-  "Environment & secrets": [
+  "Environment & Secrets": [
     "All environment variables are validated at runtime using Zod. Secrets are loaded from `.env` or a managed secret provider (e.g., Doppler, Vault, or AWS SSM).",
     { type: 'code', title: '.env.example', content: 
       `DATABASE_URL="postgresql://user:pass@localhost:5432/tictask"
@@ -284,7 +284,7 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
     { type: 'callout', title: 'Tip', content: 'Never commit .env files. Use .env.example for defaults and onboarding.' }
   ],
 
-  "Database design — ER summary + migrations": [
+  "Database Design — ER Summary + Migrations": [
     "The schema follows a normalized relational model to ensure data consistency and fast lookups.",
     { type: 'list', content: [
       'Users ↔ Workspaces ↔ Tickets (many-to-many relationships)',
@@ -296,7 +296,7 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
     { type: 'callout', title: 'Note', content: 'Each migration should be peer-reviewed and run in staging before production.' }
   ],
 
-  "Services & Endpoints — API conventions": [
+  "Services & Endpoints — API Conventions": [
     "All endpoints follow REST conventions with predictable naming and pagination support.",
     { type: 'code', title: 'Service endpoints', content: `
       GET    /api/tickets           # List all tickets
@@ -308,7 +308,7 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
     { type: 'callout', title: 'Tip', content: 'Use OpenAPI specs to document all public endpoints. Each service exports its own Swagger JSON.' }
   ],
 
-  "Auth & security": [
+  "Auth & Security": [
     "Auth model: short-lived JWT access tokens with rotating, HttpOnly refresh tokens stored securely in the DB.",
     { type: 'code', title: 'Auth endpoints', content: `
       POST /auth/join                # Register and verify email
@@ -326,19 +326,21 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
     ]}
   ],
 
-  "Frontend structure: patterns, components & page status": [
+  "Frontend Structure: Patterns, Components & Pages": [
     "Frontend built with Next.js (App Router) and MUI, emphasizing modular and accessible design.",
     { type: 'list', content: [
+      'Type Annotations - reusable types and interfaces',
       'Atomic design principles — components organized by function',
       'Reusable MUI wrappers for consistent branding',
-      'State management via Zustand or Redux Toolkit',
-      'Server actions for mutations (Next 14+)',
+      'State management via Zustand and Redux Toolkit',
+      'Server actions for mutations (Next 15+)',
+      'Emotion caches, framer motions and hookform resolvers',
       'Lazy loading for large modules and code-splitting per route'
     ]},
     { type: 'callout', title: 'Tip', content: 'All shared components should live in packages/ui and be tree-shakeable.' }
   ],
 
-  "Testing strategy: unit / integration / e2e": [
+  "Testing Strategy: Unit / Integration / e2e": [
     "Testing ensures stability across deployments and feature updates.",
     { type: 'list', content: [
       'Unit tests — Jest for backend logic & utilities',
@@ -350,7 +352,7 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
     { type: 'callout', title: 'Tip', content: 'Run tests locally before commits using `npm run test:watch`.' }
   ],
 
-  "CI/CD & deployments": [
+  "CI/CD & Deployments": [
     "GitHub Actions handles linting, testing, building, and deploying. Docker images are versioned and pushed to GHCR.",
     { type: 'code', title: 'Main pipeline', content: `
 on:
@@ -368,7 +370,7 @@ jobs:
     { type: 'callout', title: 'Tip', content: 'Always test migrations and seed scripts on staging before deployment.' }
   ],
 
-  "Runbook: common ops & recovery steps": [
+  "Runbook: Common Ops & Recovery Steps": [
     "Operational best practices for maintaining uptime and recovery during incidents.",
     { type: 'list', content: [
       'Restart containers: `docker compose restart api`',
@@ -380,7 +382,7 @@ jobs:
     { type: 'callout', title: 'Incident recovery', content: 'If DB corruption or downtime occurs, restore from the latest automated backup snapshot stored in S3.' }
   ],
 
-  "Onboarding checklist for new devs": [
+  "Onboarding Checklist For New Devs": [
     'Clone repo: `git clone git@github.com:tictask/app.git`',
     'Run `docker compose up -d`',
     'Copy `.env.example` → `.env` and configure DB credentials',

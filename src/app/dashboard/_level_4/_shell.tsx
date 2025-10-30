@@ -6,7 +6,7 @@ import { useAuth } from '@/providers/auth';
 import { ReactNode, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Login, Menu as MenuIcon, Notifications } from '@mui/icons-material';
-import { AUTH_ITEMS, NAV_ITEMS, NavbarAvatar } from '../_level_1/navItems';
+import { AUTH_ITEMS, NAV_ITEMS, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
 import {
   AppBar,
   Toolbar,
@@ -23,6 +23,7 @@ import {
   Tooltip,
   Stack,
   Typography,
+  Badge,
 } from '@mui/material';
 
 export default function DashboardIndex({ children }: { children: ReactNode }) {
@@ -140,6 +141,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
               <ListItemButton selected={pathname === item.path}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} style={{ marginLeft: -5, marginRight: 5}} />
+                {item?.released===false && <NewFeatureBadge />}
               </ListItemButton>
             </Link>
           ))}
@@ -161,6 +163,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
               <ListItemButton selected={pathname === item.path}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
+                {item?.released===false && <NewFeatureBadge />}
               </ListItemButton>
             </Link>
           ))}

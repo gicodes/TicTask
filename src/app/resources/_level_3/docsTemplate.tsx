@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { DocTextBlock } from "@/types/resources";
 import { Box, Card, CardContent, Chip, Link, Typography } from "@mui/material";
 
-export const GenericHeader = () => (
+export const GenericHeader = ({ dev }: { dev?: boolean}) => (
   <Box textAlign={'center'} py={15} px={1}>
     <motion.h1
       initial={{ opacity: 0 }}
@@ -15,7 +15,7 @@ export const GenericHeader = () => (
       TicTask Documentation
     </motion.h1>
     <Typography variant="h6">
-      Learn how to use TicTask quickly and effectively.
+      {dev ? "Understanding how everything works. System. Design. Source. Code." : "Learn how to use TicTask quickly and effectively."}
     </Typography>
   </Box>
 )
