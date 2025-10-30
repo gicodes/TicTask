@@ -9,6 +9,7 @@
   --disabled: #cccccc;
   --accent-contrast: #ffffff;
   --bw: #000;
+  --info: #0066ff;
   --dull-gray: #999;
   --border-color: #ccc;
   --error: #ff4921;
@@ -33,7 +34,8 @@
     --success: #4caf50;      
     --secondary: #777;
     --disabled: #555;
-    --bw: #fff;            
+    --bw: #fff;    
+    --info: skyblue;        
     --dull-gray: #555;
     --border-color: #333;
     --accent-contrast: #1a1a1a;

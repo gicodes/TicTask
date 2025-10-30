@@ -1,17 +1,17 @@
 export const getStatusColor = (status: string) => {
   switch (status) {
     case 'OPEN':
-      return { bg: 'var(--accent)', color: 'var(--foreground)' };
+      return { bg: 'var(--surface-2)', color: 'var(--foreground)' };
     case 'IN_PROGRESS':
-      return { bg: 'var(--success)', color: 'var(--bw)' };
+      return { bg: 'var(--surface-2)', color: 'var(--success)' };
     case 'RESOLVED':
-      return { bg: 'var(--special)', color: 'var(--bw)' };
+      return { bg: 'var(--surface-2)', color: 'var(--special)' };
     case 'CLOSED':
-      return { bg: 'gray', color: 'white' };
+      return { bg: 'var(--surface-1)', color: 'var(--dull-gray)' };
     case 'CANCELLED':
-      return { bg: '#d32f2f', color: 'white' };
+      return { bg: 'var(--surface-2)', color: 'var(--danger)' };
     case 'UPCOMING':
-      return { bg: '#8884ff', color: 'white' };
+      return { bg: 'var(--surface-2)', color: 'var(--info)', };
     default:
       return { bg: 'var(--secondary)', color: 'var(--accent-contrast)' };
   }
@@ -46,10 +46,14 @@ export const getTypeColor = (type: string) => {
     case 'BUG': return 'var(--danger)';
     case 'FEATURE_REQUEST': return 'var(--special)';
     case 'SUPPORT': return 'var(--success)';
-    case 'EVENT' : return 'var(--surface-1)';
+    case 'EVENT' : return 'var(--dull-gray)';
     case 'TASK' : return 'var(--primary)';
     case 'ISSUE' : return 'var(--accent)';
-    case 'INVOICE': return 'var(--surface-2)';
+    case 'SECURITY': return 'var(--error)';
+    case 'INVOICE': return '#358c29ff';
+    case 'MAINTENANCE': return '#ff7043';
+    case 'RELEASE': return '#8884ff';
+    case 'TEST': return '#fbc02d';
     default: return 'var(--secondary)';
   }
 }

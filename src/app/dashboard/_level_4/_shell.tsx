@@ -5,8 +5,8 @@ import Logo from '@/assets/txtLogo';
 import { useAuth } from '@/providers/auth';
 import { ReactNode, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Menu as MenuIcon } from '@mui/icons-material';
-import { AUTH_ITEMS, NAV_ITEMS } from '../_level_1/navItems';
+import { Login, Menu as MenuIcon, Notifications } from '@mui/icons-material';
+import { AUTH_ITEMS, NAV_ITEMS, NavbarAvatar } from '../_level_1/navItems';
 import {
   AppBar,
   Toolbar,
@@ -17,7 +17,6 @@ import {
   ListItemText,
   Box,
   IconButton,
-  Avatar,
   Menu,
   MenuItem,
   Divider,
@@ -33,13 +32,12 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
-
   const handleClose = () => setAnchorEl(null);
 
   const filteredNav = NAV_ITEMS.filter(item => {
     if (user?.role === 'ADMIN') return true;
-    if (user?.userType === 'PERSONAL' && item.label === 'Team') return false;
-
+    if (user?.userType === 'PERSONAL' && item.label === 'Team') 
+      return false;
     return true;
   });
 
@@ -48,16 +46,15 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   const authMenuItems = AUTH_ITEMS.map(item => {
     const isDisabled = !isLoggedIn &&
       (item.label === 'Edit Profile' || item.label === 'Settings');
-
     if (item.label === 'Logout' && !isLoggedIn) return { 
       ...item, label: 'Login', href: `/auth/login/` };
-
     return { ...item, disabled: isDisabled };
   });
 
   return (
     <Box
       sx={{
+        width: '100%',
         display: 'flex',
         minHeight: '100vh',
         color: 'text.primary',
@@ -77,68 +74,54 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             <Logo />
           </Box>
 
-          <Box>
+          <Box gap={2} display={'flex'}>
+            <Tooltip title={'Notifications'}>
+              <IconButton sx={{ p: 0 }}>
+                <Notifications />
+              </IconButton>
+            </Tooltip>
             <Tooltip title={isLoggedIn ? user?.name || 'Profile' : 'Not logged in'}>
               <IconButton onClick={handleAvatarClick} sx={{ p: 0 }}>
-                <Avatar
-                  src={user?.photo || ''}
-                  sx={{
-                    // In scale: TEAM_ADMIN='var(--sharp)' ? 'primary.main', ADMIN='var(--surface-1)' 
-                    bgcolor: user ? 'var(--surface-1)' : 'var(--surface-2)', 
-                    width: 36,
-                    height: 36,
-                    fontSize: 15,
-                    border: '0.1px solid var(--dull-gray)'
-                  }}
-                >
-                  <Typography color={'var(--bw)'}>{user ? user.name?.[0]?.toUpperCase() : 'NA'}</Typography>
-                </Avatar>
+                <NavbarAvatar user={user} />
               </IconButton>
             </Tooltip>
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleClose}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-              sx={{ marginTop: 1 }}
+              sx={{ marginTop: 1.75, marginLeft: 1.75}}
             >
-              <Box minWidth={120}>
-                { user && <Box my={1}>
-                  <Tooltip title={'Edit Profile'}>
-                    <Link href={'/dashboard/profile/edit'}>
-                      <Stack sx={{ px: 1, pb: 1, textAlign: 'center'}}>
-                        <Typography variant='caption'>{user.name}</Typography>
-                        <Typography className='font-xxs custom-dull'>{user?.email}</Typography>
-                      </Stack>
-                    </Link>
-                  </Tooltip>
-                  <Divider sx={{ border: '1px solid var(--dull-gray)'}} />
-                  </Box>
-                }{ authMenuItems.map((item, index) => (
-                  <Box key={index}>
-                    <Link href={!isLoggedIn && item.disabled ? '' : item.href}>
-                      <MenuItem
-                        onClick={
-                          item.label === 'Logout' && isLoggedIn ? logout : handleClose
-                        }
-                        disabled={item.disabled}
-                        sx={{  
-                          px: 3,
-                          fontSize: 14, 
-                          display: 'flex', 
-                          justifyContent: 'center',
-                        }}
-                      >
-                        {item.label}
-                      </MenuItem>
-                    </Link>
-                    { index < authMenuItems.length - 1 && (
-                      <Divider sx={{ my: 0.05, mx: 'auto', opacity: 0.6, width: '25%' }} />
-                    )}
-                    </Box>
-                  ))}
-                </Box>
+              <Box minWidth={{ xs: 250, sm: 280, md: 300}}>
+                <Stack px={1} gap={1}>
+                  <Stack direction={'row'} gap={1.5} my={1}>
+                    <NavbarAvatar user={user} size={40} />
+                    <Tooltip title={'Go to profile'}>
+                      <Link href={'/dashboard/profile'} style={{ display: 'grid'}}>
+                        <Typography variant='caption'>{user?.name || 'Not Available'}</Typography>
+                        <Typography className='font-xxs custom-dull'>{user?.email || 'please sign in'}</Typography>
+                      </Link>
+                    </Tooltip>
+                  </Stack>
+                  <Link href={'/profile/edit/#status'} style={{ padding: 5, fontSize: 12, borderRadius: 5, border: '1px solid silver'}}>🗿 &nbsp; Set Status</Link>
+                  <Link href={'#'} style={{ padding: 5, fontSize: 12}}>🔕 &nbsp; Mute Notifications</Link>
+                </Stack>
+                <Divider sx={{ my: 1}} />
+                { authMenuItems.slice(0, 6).map((item, i) => (
+                  <Link key={i} href={item.href}>
+                    <MenuItem disabled={item.disabled} style={{ fontSize: 12}}>
+                      {item.label}
+                    </MenuItem>
+                  </Link>
+                ))}
+                <Divider sx={{ my: 1}} />
+                { authMenuItems.slice(6).map((item, i) => (
+                  <Link key={i} href={!isLoggedIn && item.disabled ? '' : item.href}>
+                    <MenuItem disabled={item.disabled} style={{ fontSize: 12}} onClick={item.cta && isLoggedIn ? logout : handleClose}>
+                      {item.cta && !isLoggedIn ? <Link href={'/auth/login'} style={{ display: 'flex', gap: 11 }}> <Login fontSize='inherit' /> Login</Link> : item.label}
+                    </MenuItem>
+                  </Link>
+                ))}
+              </Box>
             </Menu>
           </Box>
         </Toolbar>
@@ -162,14 +145,13 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
           ))}
         </List>
       </Drawer>
-
       <Drawer
         variant="permanent"
         sx={{
-          width: 250,
+          width: { md: 222, lg: 250},
           flexShrink: 0,
           display: { xs: 'none', md: 'block' },
-          '& .MuiDrawer-paper': { width: 250, boxSizing: 'border-box' },
+          '& .MuiDrawer-paper': { width: { md: 222, lg: 250}, boxSizing: 'border-box' },
         }}
       >
         <Toolbar />
@@ -185,9 +167,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         </List>
       </Drawer>
 
-      <Box component="main" 
-        sx={{ flexGrow: 1, minHeight: '100vh', height: '100%', pb: 5}}
-      >
+      <Box component="main" sx={{ flexGrow: 1, minHeight: '100vh', height: '100%', pb: 5}}>
         <Toolbar />
         {children}
         <Box textAlign={'center'} mt={5}>

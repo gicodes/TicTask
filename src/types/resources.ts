@@ -20,3 +20,10 @@ export interface FAQProps {
   question: string;
   answer?: string;
 }
+
+export type DocTextBlock = string | {
+  type: 'link' | 'code' | 'callout' | 'list' | 'badge' | 'point' | 'paragraph' | 'strong' | 'italic' | 'highlight' | 'disabled' | 'outline' | 'inline',
+  title?: string,
+  content: string | string[],
+  href?: string,
+}

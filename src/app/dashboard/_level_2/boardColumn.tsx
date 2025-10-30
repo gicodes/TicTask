@@ -7,15 +7,22 @@ export const BoardColumn: React.FC<{
   title: string;
   tickets: Ticket[];
   onOpen?: (id: string | number) => void;
-}> = ({ title, tickets, onOpen }) => {
+  }> = ({ 
+    title, 
+    tickets, 
+    onOpen 
+  }
+) => {
   return (
-    <Box sx={{
-      minWidth: 320,
-      maxWidth: 360,
-      mr: 2,
-      p: 1,
-      bgcolor: 'transparent',
-    }}>
+    <Box 
+      sx={{
+        p: 1,
+        mr: 2,
+        minWidth: { xs: 300, sm: 266, md: 270, lg: 320},
+        maxWidth: 360,
+        bgcolor: 'transparent',
+      }}
+    >
       <Typography variant="h6" 
         sx={{ 
           p: 1,
@@ -26,16 +33,17 @@ export const BoardColumn: React.FC<{
           alignContent: 'center' 
         }}
       >
-        {title}
+        {title==='IN_PROGRESS' ? 'IN PROGRESS' : title}
         <small style={{ fontWeight: 500, color: 'gray' }}>
-          ({tickets.length})
+          ({tickets?.length})
         </small>
       </Typography>
+      
       <Box>
-        {tickets.map(t => <TicketCard key={t.id} ticket={t} onOpen={onOpen} />)}
+        {tickets?.map(t => <TicketCard key={t?.id} ticket={t} onOpen={onOpen} />)}
       </Box>
     </Box>
   );
 };
 
-export default BoardColumn;
+export default BoardColumn

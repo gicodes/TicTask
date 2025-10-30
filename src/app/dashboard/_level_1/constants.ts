@@ -65,3 +65,5 @@ export const TAG_SUGGESTIONS = [
   'ui/ux',
   'v1'
 ];
+
+export const TICKET_STATUSES = ['UPCOMING', 'OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'CANCELLED'];

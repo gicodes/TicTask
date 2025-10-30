@@ -68,3 +68,9 @@ export enum Ticket_Priority {
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 export type TicketStatus = 'UPCOMING'|'OPEN'|'IN_PROGRESS'|'RESOLVED'|'CLOSED'|'CANCELLED';
 export type TicketType = 'GENERAL'|'BUG'|'FEATURE_REQUEST'|'SUPPORT'|'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE';
+
+export interface BoardProps {
+  grouped: Record<string, Ticket[]>;
+  setGrouped: React.Dispatch<React.SetStateAction<Record<string, Ticket[]>>>;
+  openDetail: (id: string | number) => void;
+}

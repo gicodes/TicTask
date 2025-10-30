@@ -1,7 +1,7 @@
 import React from 'react';
 import { Ticket } from '@/types/ticket';
 import { Box, Chip } from '@mui/material';
-import { getStatusColor, getPriorityColor } from '../_level_1/tColorVariants';
+import { getStatusColor, priorityColor } from '../_level_1/tColorVariants';
 
 const TicketsList = ({
   tickets,
@@ -11,10 +11,7 @@ const TicketsList = ({
   openDetail: (id: string | number) => void;
 }) => {
   return (
-    <Box py={3} px={2}>
-      <Box pt={{ xs: 3, md: 0}}>
-        <h6>List view</h6>
-      </Box>
+    <Box py={3} px={2} maxWidth={'96vw'}>
       <Box
         sx={{
           my: 3,
@@ -51,7 +48,7 @@ const TicketsList = ({
         >
           <thead style={{ textAlign: 'left' }}>
             <tr>
-              {['ID', 'Title', 'Priority', 'Type', 'Status', 'Updated'].map((h) => (
+              {['ID', 'Title', 'Priority', 'Type', 'Status', 'Last Updated'].map((h) => (
                 <th
                   key={h}
                   style={{
@@ -63,7 +60,7 @@ const TicketsList = ({
                     top: 0,
                     background: 'var(--primary)',
                     color: 'var(--primary)',
-                    borderBottom: '2px solid var(--secondary)',
+                    borderBottom: '1px solid var(--secondary)',
                     zIndex: 1,
                   }}
                 >
@@ -78,23 +75,29 @@ const TicketsList = ({
               <tr
                 key={t.id}
                 style={{
-                  borderBottom: '0.1px solid var(--secondary',
+                  borderBottom: '0.1px solid var(--secondary)',
                   cursor: 'pointer',
                   transition: 'background 0.2s',
                 }}
                 onClick={() => openDetail(t.id)}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent)'}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--dull-gray)'}
                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
-                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{i+1}</td>
-                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{t.title}</td>
+                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
+                  {i+1}
+                </td>
+
+                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
+                  {t.title}
+                </td>
+
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
                   <Chip
                     label={t.priority}
                     size="small"
                     sx={{
-                      backgroundColor: getPriorityColor(t.priority).bg,
-                      color: getPriorityColor(t.priority).color,
+                      backgroundColor: priorityColor(t.priority),
+                      color: 'white',
                       fontWeight: 600,
                       borderRadius: '8px',
                       textTransform: 'capitalize',
@@ -102,7 +105,10 @@ const TicketsList = ({
                   />
                 </td>
 
-                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{t.type==='FEATURE_REQUEST'}</td>
+                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
+                  {t.type==='FEATURE_REQUEST' ? 'FEATURE' : t.type}
+                </td>
+
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
                   <Chip
                     label={t.status==="IN_PROGRESS" ? "IN PROGRESS" : t.status}
@@ -116,6 +122,7 @@ const TicketsList = ({
                     }}
                   />
                 </td>
+
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
                   {t.updatedAt ? new Date(t.updatedAt).toLocaleString() : ''}
                 </td>

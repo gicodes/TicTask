@@ -21,7 +21,7 @@ export const ResourceHero = ({
           {title || "Learn. Build. Grow with TicTask."}
         </Typography>
         <Typography variant="body1" color="var(--secondary)" maxWidth="md">
-          {subtitle || "Dive into our technical and non-technical resources, documentations, Frequently asked questions, and blogs to make the most of your TicTask experience."}
+          {subtitle || "Dive into the technical and educational side of things with Documentations, Frequently Asked Questions, and Blogs to make the most of your TicTask experience."}
         </Typography>
         {!title && !subtitle && <button className={styles.btnPrimary}>
           <Link href={'/resources/docs'}>Explore Resources</Link></button>}

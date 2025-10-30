@@ -1,31 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Container } from '@mui/material';
-import { Ticket } from '@/types/ticket';
-
+import { Box } from '@mui/material';
 import { api } from '../_level_1/tApi';
-import Board from '../_level_2/_board';
+import { Ticket } from '@/types/ticket';
 import Toolbar from '../_level_2/toolbar';
-import TicketFormDrawer from '../_level_2/ticketForm';
-import TicketDetailDrawer from '../_level_2/ticketDetail';
 import TicketsList from '../_level_2/_list';
-
-const STATUSES = ['UPCOMING','OPEN','IN_PROGRESS','RESOLVED','CLOSED','CANCELLED'];
+import TicketBoard from '../_level_2/_board';
+import React, { useEffect, useState } from 'react';
+import TicketFormDrawer from '../_level_2/ticketForm';
+import { TICKET_STATUSES } from '../_level_1/constants';
+import TicketDetailDrawer from '../_level_2/ticketDetail';
 
 const TicketsBoardPage: React.FC = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [grouped, setGrouped] = useState<Record<string,Ticket[]>>({});
-  const [selectedTicket, setSelectedTicket] = useState<string | number |null>(null);
+  const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
+  const [selectedTicket, setSelectedTicket] = useState<string | number | null>(null);
   const [formOpen, setFormOpen] = useState(false);
-  const [view, setView] = useState<'board'|'list'>('board');
+  const [view, setView] = useState<'board' | 'list'>('board');
 
   useEffect(() => {
     api.getTickets().then(setTickets);
   }, []);
 
   useEffect(() => {
-    const map: Record<string, Ticket[]> = {};
-    STATUSES.forEach(s => map[s] = []);
-    tickets.forEach(t => (map[t.status] ?? map['OPEN']).push(t));
+    const map: Record<string, Ticket[]> = Object.fromEntries(
+      TICKET_STATUSES.map((s) => [s, []])
+    );
+
+    tickets.forEach((t) => {
+      if (map[t.status]) map[t.status].push(t);
+      else map['OPEN'].push(t);
+    });
+
     setGrouped(map);
   }, [tickets]);
 
@@ -33,7 +37,7 @@ const TicketsBoardPage: React.FC = () => {
   const closeDetail = () => setSelectedTicket(null);
 
   const onTicketCreated = (t: Ticket) => {
-    setTickets(prev => [t, ...prev]);
+    setTickets((prev) => [t, ...prev]);
   };
 
   const refreshTickets = () => {
@@ -41,15 +45,18 @@ const TicketsBoardPage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth='xl'>
-      <Box maxWidth={1400} sx={{ py: 2 }} width={'100%'}>
-        <Toolbar view={view} setView={setView} onOpenCreate={() => setFormOpen(true)} />
+    <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
+      <Toolbar
+        view={view}
+        setView={setView}
+        onOpenCreate={() => setFormOpen(true)}
+      />
 
-        {view === 'board'
-        ? <Board grouped={grouped} setGrouped={setGrouped} openDetail={openDetail} />
-        : (
-          <TicketsList tickets={tickets} openDetail={openDetail} />
-        )}
+      {view === 'board' ? (
+        <TicketBoard grouped={grouped} setGrouped={setGrouped} openDetail={openDetail} />
+      ) : (
+        <TicketsList tickets={tickets} openDetail={openDetail} />
+      )}
 
       <TicketDetailDrawer
         open={!!selectedTicket}
@@ -57,9 +64,13 @@ const TicketsBoardPage: React.FC = () => {
         ticketId={selectedTicket !== null ? String(selectedTicket) : null}
         onUpdate={refreshTickets}
       />
-      <TicketFormDrawer open={formOpen} onClose={() => setFormOpen(false)} onCreated={onTicketCreated} />
-      </Box>
-    </Container>
+
+      <TicketFormDrawer
+        open={formOpen}
+        onClose={() => setFormOpen(false)}
+        onCreated={onTicketCreated}
+      />
+    </Box>
   );
 };
 

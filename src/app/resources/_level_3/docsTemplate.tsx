@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from "framer-motion";
-import { DocTextBlock } from "@/constants/docs";
+import { DocTextBlock } from "@/types/resources";
 import { Box, Card, CardContent, Chip, Link, Typography } from "@mui/material";
 
 export const GenericHeader = () => (
@@ -42,7 +42,7 @@ export const DocSection = ({
                   <section key={i} id={`${i+1}`} style={{ padding: '10px 0'}}>
                     <Card variant='outlined' sx={{ borderLeft: '4px solid var(--accent)' }}>
                       <CardContent>
-                        <Typography variant='subtitle1' fontWeight={700}>{b.title}</Typography>
+                        <Typography variant='subtitle1' fontWeight={700} mb={1}>{b.title}</Typography>
                         <Typography>{b.content}</Typography>
                       </CardContent>
                     </Card>
@@ -57,6 +57,17 @@ export const DocSection = ({
                     </ul>
                   </section>
                   );
+              case 'code':
+                return (
+                  <section key={i} id={`${i+1}`}>
+                    <Card variant='outlined' sx={{ mb: 2, }}>
+                      <CardContent>
+                        <Typography mb={1} color='primary'>{b.title}</Typography>
+                        <pre style={{ whiteSpace: 'pre-wrap' }}>{b.content}</pre>
+                      </CardContent>
+                    </Card>
+                  </section>
+                );
               case 'badge':
                 return <Chip key={i} label={b.content} color='primary' sx={{ margin: 1}} />
               case 'point':
@@ -75,7 +86,6 @@ export const DocSection = ({
                 return <span key={i}><i>{b.content}</i></span>
               case 'strong':
                 return <span key={i}><strong>{b.content}</strong></span>
-
               default:
                 return <section key={i} id={`${i+1}`}>
                   <Typography my={1}>{b.content}</Typography>

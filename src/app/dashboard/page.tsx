@@ -4,7 +4,7 @@ import { useAuth } from '@/providers/auth';
 import { useEffect, useState } from 'react';
 import TicketsBoardPage from './_level_3/ticket';
 import { TicketTimeTooltip } from './_level_1/tooltips';
-import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Divider, Tooltip, Typography } from '@mui/material';
 
 export default function Page() {
   const { user, loading, isAuthenticated } = useAuth();
@@ -14,7 +14,6 @@ export default function Page() {
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -26,23 +25,23 @@ export default function Page() {
 
   return (
     <Box py={1}>
-      <Stack 
+      <Box 
         p={3}
         gap={1}
+        mx={'auto'}
         width={'100%'}
-        direction={'row'} 
         alignItems={'center'}
-        justifyContent={'space-between'}
-
-        display={'flex'}
+        display={{ xs: 'grid', md: 'flex' }}
       >
-        <Typography variant="h5" fontWeight={501}>
-          Welcome, {user?.name}
-        </Typography>
-        <Tooltip title={TicketTimeTooltip}>
-          <Typography variant='subtitle2'>{time.toLocaleString()}</Typography>
-        </Tooltip>
-      </Stack>
+        <Box display={'flex'} justifyContent={'left'} width={'100%'}>
+          <Typography variant="h5" fontWeight={501}>Welcome, {user?.name}</Typography>
+        </Box>
+        <Box display={'flex'} justifyContent={'right'} width={'100%'}>
+          <Tooltip title={TicketTimeTooltip}>
+            <Typography variant='subtitle2'>{time.toLocaleString()}</Typography>
+          </Tooltip>
+        </Box>
+      </Box>
       <Divider />
       <TicketsBoardPage />
     </Box>

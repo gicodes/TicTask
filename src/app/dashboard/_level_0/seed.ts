@@ -28,8 +28,8 @@ export const DB: Ticket[] = [
   },
   { 
     id: 't3', 
-    title: 'Tickets: Dashboard Overview', 
-    description: 'Build ticket page as home with md, lg and mobile responsiveness.', 
+    title: 'Tickets: Search', 
+    description: 'Write a high-functional search logic for tickets on dashboard queue', 
     status: 'IN_PROGRESS', 
     priority: Ticket_Priority.HIGH, 
     type: Ticket_Type.GENERAL,
@@ -275,6 +275,162 @@ export const DB: Ticket[] = [
     assignedToId: 1, 
     tags: ['ui/ux', 'next', 'HTML'] 
   },
+  { 
+    id: 'i0', 
+    title: 'Blog dynamic [id] page', 
+    description: 'Implement dynamic routing and data fetching for individual blog posts using [id] slug.', 
+    status: 'IN_PROGRESS', 
+    priority: Ticket_Priority.MEDIUM,
+    type: Ticket_Type.FEATURE,
+    createdAt: '2025-10-10T10:00:00Z', 
+    updatedAt: '2025-10-29T14:25:00Z', 
+    assignedToId: 3, 
+    tags: ['frontend', 'nextjs', 'blog'] 
+  },
+  { 
+    id: 'i20', 
+    title: 'User profile', 
+    description: 'Create the user profile page with basic info and activity summary.', 
+    status: 'IN_PROGRESS', 
+    priority: Ticket_Priority.MEDIUM,
+    type: Ticket_Type.FEATURE,
+    createdAt: '2025-10-11T09:30:00Z', 
+    updatedAt: '2025-10-28T18:00:00Z', 
+    assignedToId: 2, 
+    tags: ['frontend', 'user', 'profile'] 
+  },
+  { 
+    id: 'i3', 
+    title: 'User edit profile and set status', 
+    description: 'Allow users to edit profile fields and update their current availability status.', 
+    status: 'IN_PROGRESS', 
+    priority: Ticket_Priority.MEDIUM,
+    type: Ticket_Type.FEATURE,
+    createdAt: '2025-10-12T15:40:00Z', 
+    updatedAt: '2025-10-29T13:15:00Z', 
+    assignedToId: 2, 
+    tags: ['frontend', 'user', 'settings'] 
+  },
+  { 
+    id: 'i4', 
+    title: 'Product pricing', 
+    description: 'Design and implement pricing page layout, pulling data from backend plans API.', 
+    status: 'IN_PROGRESS', 
+    priority: Ticket_Priority.MEDIUM,
+    type: Ticket_Type.FEATURE,
+    createdAt: '2025-10-13T12:20:00Z', 
+    updatedAt: '2025-10-29T16:00:00Z', 
+    assignedToId: 4, 
+    tags: ['frontend', 'pricing', 'ui'] 
+  },
+  { 
+    id: 'i5', 
+    title: 'Notification, activity and mute notifications', 
+    description: 'Add system for notifications and activity feed with user control over mute preferences.', 
+    status: 'OPEN', 
+    priority: Ticket_Priority.MEDIUM,
+    type: Ticket_Type.FEATURE,
+    createdAt: '2025-10-20T08:00:00Z', 
+    updatedAt: '2025-10-25T10:45:00Z', 
+    assignedToId: 5, 
+    tags: ['notifications', 'backend', 'ui'] 
+  },
+  { 
+    id: 'i6', 
+    title: 'New badge on dashboard menu items', 
+    description: 'Show a “new” badge beside updated dashboard sections or newly released features.', 
+    status: 'OPEN', 
+    priority: Ticket_Priority.LOW,
+    type: Ticket_Type.RELEASE,
+    createdAt: '2025-10-19T11:15:00Z', 
+    updatedAt: '2025-10-29T08:20:00Z', 
+    assignedToId: 3, 
+    tags: ['frontend', 'dashboard', 'ui'] 
+  },
+  { 
+    id: 'i7', 
+    title: 'Dashboard pages: Subscriptions, Refer, Planner', 
+    description: 'Build and connect dashboard subpages for subscription management, referral program, and planner tools.', 
+    status: 'UPCOMING', 
+    priority: Ticket_Priority.MEDIUM,
+    type: Ticket_Type.FEATURE,
+    createdAt: '2025-10-28T13:10:00Z', 
+    updatedAt: '2025-10-28T13:15:00Z', 
+    assignedToId: 1, 
+    tags: ['dashboard', 'frontend', 'ux'] 
+  },
+  { 
+    id: 'i8', 
+    title: 'See password in onboarding', 
+    description: 'Add toggle icon to show or hide password input during onboarding.', 
+    status: 'CLOSED', 
+    priority: Ticket_Priority.LOW,
+    type: Ticket_Type.BUG,
+    createdAt: '2025-09-30T10:00:00Z', 
+    updatedAt: '2025-10-05T14:00:00Z', 
+    assignedToId: 4, 
+    tags: ['auth', 'ui', 'onboarding'] 
+  },
+  { 
+    id: 'i9', 
+    title: 'Tickets: board view', 
+    description: 'Develop kanban-style board view for tickets with drag and drop.', 
+    status: 'CLOSED', 
+    priority: Ticket_Priority.MEDIUM,
+    type: Ticket_Type.FEATURE,
+    createdAt: '2025-09-25T09:00:00Z', 
+    updatedAt: '2025-10-10T11:30:00Z', 
+    assignedToId: 1, 
+    tags: ['tickets', 'frontend', 'ux'] 
+  },
+  { 
+    id: 'i10', 
+    title: 'Tickets: list view', 
+    description: 'Add sortable and filterable ticket list table view.', 
+    status: 'CLOSED', 
+    priority: Ticket_Priority.MEDIUM,
+    type: Ticket_Type.FEATURE,
+    createdAt: '2025-09-25T09:30:00Z', 
+    updatedAt: '2025-10-10T11:35:00Z', 
+    assignedToId: 1, 
+    tags: ['tickets', 'frontend', 'list'] 
+  },
+  { 
+    id: 'i11', 
+    title: 'RHS (auth) drawer', 
+    description: 'Implement right-hand-side authentication drawer with smooth transitions.', 
+    status: 'CLOSED', 
+    priority: Ticket_Priority.LOW,
+    type: Ticket_Type.FEATURE,
+    createdAt: '2025-09-20T08:00:00Z', 
+    updatedAt: '2025-09-27T09:45:00Z', 
+    assignedToId: 2, 
+    tags: ['auth', 'drawer', 'ui'] 
+  },
+  { 
+    id: 'i12', 
+    title: 'Dashboard shell optimization', 
+    description: 'Optimize dashboard shell for faster navigation and reduced layout shift.', 
+    status: 'CLOSED', 
+    priority: Ticket_Priority.MEDIUM,
+    type: Ticket_Type.OPTIMIZATION,
+    createdAt: '2025-09-22T11:00:00Z', 
+    updatedAt: '2025-10-01T17:00:00Z', 
+    assignedToId: 4, 
+    tags: ['dashboard', 'performance', 'ui'] 
+  },
+  { 
+    id: 'i13', 
+    title: 'Resources: documentations, faq, blog', 
+    description: 'Launch resources section with documentation, FAQs, and integrated blog feed.', 
+    status: 'CLOSED', 
+    priority: Ticket_Priority.MEDIUM,
+    type: Ticket_Type.FEATURE,
+    createdAt: '2025-09-18T09:15:00Z', 
+    updatedAt: '2025-09-28T13:30:00Z', 
+    assignedToId: 5, 
+    tags: ['resources', 'docs', 'blog'] 
+  }
 ];
 
 export const mockTickets = [

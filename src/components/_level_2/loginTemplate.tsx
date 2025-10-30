@@ -1,20 +1,11 @@
 import { Box, Stack, TextField, Typography, IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { authErrorMessages } from '@/lib/authOptions';
+import { LoginTemplateProps } from '@/types/auth';
 import RememberMe from '../_level_1/rememberMe';
 import styles from '@/app/page.module.css';
 import React, { useState } from 'react';
 import Link from 'next/link';
-
-interface LoginTemplateProps {
-  email: string;
-  password: string;
-  error?: string;
-  submitting?: boolean;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  setEmail: (value: string) => void;
-  setPassword: (value: string) => void;
-}
 
 const LoginTemplate = ({
   email,
@@ -29,6 +20,7 @@ const LoginTemplate = ({
   const [showPassword, setShowPassword] = useState(false);
 
   const message = (error && authErrorMessages[error]) || authErrorMessages.Default;
+  
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
   const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement>) => e.preventDefault();
 

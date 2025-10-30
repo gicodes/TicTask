@@ -1,9 +1,9 @@
 export const RESOURCES = [
   { title: "Getting Started", desc: "Your first 10 minutes with TicTask", link: "/resources/docs" },
   { title: "Templates", desc: "Jumpstart workflows with ready-made templates", link: "/resources/templates" },
-  { title: "Changelog", desc: "See what’s new and improved", link: "/resources/changelog" },
+  { title: "Updates", desc: "See what’s new and improved", link: "/resources/changelog" },
   { title: "Blog", desc: "Insights, guides, and stories from the TicTask team", link: "/resources/blog" },
-  { title: "Frequently Asked Questions", desc: "Find out more from frequently asked questions", link: '/resources/faq'},
+  { title: "FAQ", desc: "Find out more from frequently asked questions", link: '/resources/faq'},
   { title: "Developer", desc: "Get access to our technical documentation to contribute or collaborate", link: '/resources/docs/dev'}
 ];
 
@@ -11,13 +11,13 @@ export const TEMPLATES = [
   {
     title: "Team Task Board",
     desc: "A pre-built Kanban setup for small teams.",
-    file: "/templates/team-task-board.json",
+    file: "/resources/templates/team-task-board.json",
     tags: ["Project", "Team"],
   },
   {
     title: "Onboarding Checklist",
     desc: "Track and assign onboarding steps for new members.",
-    file: "/templates/onboarding-checklist.json",
+    file: "/resources/templates/onboarding-checklist.json",
     tags: ["HR", "Checklist"],
   },
 ];
@@ -60,23 +60,23 @@ export const BLOG_POSTS = [{
 
 export const FAQs = [
   {
-    q: "Is there a free plan?",
-    a: "Yes, we offer a 14-day free trial. No credit card required.",
+    q: "Is there a free plan for all users?",
+    a: "Yes, we offer a 14-day free trial. No credit card required. However not 'all' users qualify",
   },
   {
-    q: "Can I integrate with Slack or Email?",
-    a: "Absolutely, notifications can be routed via Email, SMS, and Slack.",
+    q: "How can I join TicTask as a moderator",
+    a: "To become a moderator, agent or partner. Go to partner registration page, submit your info and wait for our KYC verification",
   },
   {
     q: "Is my data secure?",
-    a: "We use enterprise-grade encryption and role-based access.",
+    a: "Yes, absolutely. We use enterprise-grade encryption and role-based access.",
   },
   {
     q: "What platforms do you support?",
-    a: "We support Trello, ClickUp, Asana, Jira, and Notion.",
+    a: "Future releases would include integrations with Slack, Trello and Notion.",
   },
   {
-    q: "How can I get support?",
-    a: "You can reach out to us via the contact form or email",
+    q: "How can I get customer support?",
+    a: "You can reach out to us via the contact form or direct email",
   },
 ];

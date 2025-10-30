@@ -17,13 +17,22 @@ import {
   FormControl,
   InputLabel,
   Select,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
+import { useState } from 'react';
 import styles from '@/app/page.module.css';
 import { Industries } from '@/constants/industries';
 import { allCountries } from '@/constants/allCounties';
 import { UserType, OnboardingProps } from '@/types/onboarding';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function OnboardingUI(props: OnboardingProps) {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+  const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement>) => e.preventDefault();
+  
   const {
     step,
     progress,
@@ -75,6 +84,7 @@ export default function OnboardingUI(props: OnboardingProps) {
         {loading ? 'Saving...' : 'Continue'}
       </button>
     </Stack>
+    
 
   const CountrySelect = ({ accountType }: { accountType: UserType}) =>
     <Box width={"100%"} maxWidth={400} mx={"auto"} my={1}>
@@ -134,11 +144,26 @@ export default function OnboardingUI(props: OnboardingProps) {
                 Set Your Password
               </Typography>
               <TextField
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 fullWidth
                 placeholder="Enter a strong password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                        aria-label="toggle password visibility"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
                 sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 4 }}
               />
               <Box textAlign="center">

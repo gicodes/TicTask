@@ -1,5 +1,3 @@
-import React, { useState} from 'react';
-
 import { Card, Stack, TextField, Button, ButtonGroup, Box, Badge, Typography, Tooltip, Divider } from '@mui/material';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 import ListAltIcon from '@mui/icons-material/ListAlt';
@@ -8,41 +6,49 @@ import SearchIcon from '@mui/icons-material/Search';
 import { InfoOutline } from '@mui/icons-material';
 import { FaPlusCircle } from 'react-icons/fa';
 import styles from '@/app/page.module.css';
+import React, { useState} from 'react';
 
 export default function Toolbar({ 
-  view, setView, onOpenCreate }: { 
-    view: 'board'|'list'; setView: (v:'board'|'list')=>void; onOpenCreate: ()=>void 
+  view, setView, onOpenCreate 
+}: { 
+    view: 'board'|'list'; 
+    setView: (v:'board'|'list') => void; 
+    onOpenCreate: () => void 
 }) {
   const [ description, setDescription ] = useState(false);
   const toggleDescription = () => setDescription(!description);
 
   return (
-    <Stack my={1} gap={2} minHeight={'125px'}>
+    <Stack my={1} gap={2} maxWidth={'99vw'}>
       <Box 
         gap={3} 
-        maxWidth={'99vw'}
+        width={'100%'}
         alignItems={'end'}
+        flexWrap={'wrap'}
         display={{ xs: 'grid', md: 'flex' }}
-        justifyContent={{xs: "center", md: 'space-between'} }
+        justifyContent={{ xs: "center", md: 'space-between' } }
       >
         <Card 
           sx={{
-            pt: 1,
-            px: 2,
-            pb: 0.5,
-            display: 'flex', 
+            width: 234,
+            py: 1, px: 2,
+            display: {xs: 'none', md: 'flex'}, 
             alignItems: 'center',
-            justifyContent: 'space-around'
+            justifyContent: 'space-between'
           }}
         >
-          <h4>Tickets</h4>
-          <Badge onClick={toggleDescription} sx={{ cursor: 'pointer', px: 2}}>
+          <Typography variant='h4' fontWeight={600}>Tickets</Typography>
+          <Badge onClick={toggleDescription} sx={{ cursor: 'pointer'}}>
             <InfoOutline sx={{ boxShadow: 2, borderRadius: '50%'}} fontSize='small' color='disabled' />
           </Badge>
         </Card>
+        {description && <Card sx={{ p: 1.5 }}>
+          <Typography variant='caption'>{TicketToolTip}</Typography>
+        </Card>}
+
         <Stack 
-          direction={{ xs: "column", md: 'row' }} 
-          display={{ xs: 'grid', md: 'flex' }}
+          direction={{ xs: "column", sm: 'row' }} 
+          display={{ xs: 'grid', sm: 'flex' }}
           justifyContent={"space-between" }
           alignItems="center"
           flexWrap={'wrap'}
@@ -55,9 +61,8 @@ export default function Toolbar({
             // set search props
             InputProps={{ startAdornment: <SearchIcon /> }} 
           />
-              
           <ButtonGroup>
-            <Tooltip title='View tickets in board mode, Kanban'>
+            <Tooltip title='View tickets in kanban, board mode'>
               <Button 
                 onClick={() => setView('board')} 
                 variant={view==='board' ? 'contained' : 'outlined'} 
@@ -68,18 +73,17 @@ export default function Toolbar({
               </Button>
             </Tooltip>
             <Divider sx={{ border: '1px solid silver'}} />
-            <Tooltip title='View tickets in list mode, Tabular'>
+            <Tooltip title='View tickets in tavular, list mode'>
               <Button  
                 onClick={() => setView('list')} 
                 variant={view==='list' ? 'contained' : 'outlined'} 
                 className={view==='list' ? styles.btnPrimary : styles.btnSecondary} 
                 startIcon={<ListAltIcon />}
               >
-                <span>LIST</span>
+                LIST
               </Button>
             </Tooltip>
           </ButtonGroup>
-
           <Tooltip title='Create New Ticket as Task, Invoice or Issue'>
             <button 
               className={styles.btnSecondary} 
@@ -90,10 +94,6 @@ export default function Toolbar({
           </Tooltip>
         </Stack>
       </Box>
-      {description && 
-      <Card sx={{ p: 1.5, width: 'max-content', maxWidth: '90vw'}}>
-        <Typography variant='caption'>{TicketToolTip}</Typography>
-      </Card>}
     </Stack>
   );
 }
