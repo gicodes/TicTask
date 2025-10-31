@@ -1,6 +1,6 @@
 export const FOOTER_LINKS = {
   PRODUCTS: [
-    {title: "All Products", link: '/product'},
+    {title: "Overview", link: '/product'},
     {title: "Pricing", link: '/product/pricing'}, // *
     {title: "Demo", link: '#'},  // *
     {title: "Integration", link: '#'}  // *
@@ -15,8 +15,8 @@ export const FOOTER_LINKS = {
   COMPANY: [
     {title: "About", link: '/company'}, 
     {title: "Careers", link: '/company/careers'},  // *
-    {title: "Become a Partner", link: '/partner/join'}, 
-    {title: "Find a Partner", link: '/partner/find'},  // *
+    {title: "Become a Partner", link: '/company/partner/register'}, 
+    {title: "Be a Contributor", link: '/collab'},  // *
     {title: "Contact Us", link: '/company/contact-us'}
   ],
   LEGAL: [

@@ -4,7 +4,8 @@ export interface BlogCardProps {
   slug: string;
   createdAt: string;
   excerpt: string;
-  image?: string;
+  coverImage?: string;
+  content: string;
 }
 
 export interface ChangeLogProps {

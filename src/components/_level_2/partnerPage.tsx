@@ -31,8 +31,12 @@ export const PartnerHero = () => {
         </Typography>
 
         <Stack mt={4} direction="row" spacing={2}>
-          <button className={styles.btnPrimary}>Join Partner Program</button>
-          <button className={styles.btnSecondary}>View Docs</button>
+          <button className={styles.btnPrimary}>
+            <Link href={'/company/partner/register'}>Join Partner Program</Link>
+          </button>
+          <button className={styles.btnSecondary}>
+            <Link href={'/resources/docs'}>View Docs</Link>
+          </button>
         </Stack>
       </Box>
     </section>
@@ -57,8 +61,9 @@ export const PartnerBenefits = () => {
           mt={8}
           justifyContent="center"
           sx={{ maxWidth: "lg", mx: "auto" }}
+          px={1}
         >
-          {BENEFITS.map((b, i) => (
+          { BENEFITS.map((b, i) => (
             <Grid key={b.title}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -102,7 +107,7 @@ export const PartnerCTA = () => {
           <Typography variant="body1" sx={{ opacity: 0.85, pb: 2 }}>
             Join the TicTask Partner Program today and unlock access to tools, insights, and shared growth.
           </Typography>
-          <Link href={'/partner/join'}>
+          <Link href={'/company/partner/register'}>
             <button className={styles.btnPrimary}>Become a Partner</button>
           </Link>
         </Stack>

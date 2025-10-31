@@ -4,13 +4,15 @@ import { SessionProvider, useSession, signIn, signOut } from 'next-auth/react';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Role, UserType } from '@/types/users';
 
-interface AuthUser {
+export interface AuthUser {
   id: number;
+  role: Role;
   name: string;
   email: string;
-  role: Role;
   userType?: UserType;
   photo?: string;
+  collab?: boolean;
+  partner?: boolean;
   organization?: string;
 }
 

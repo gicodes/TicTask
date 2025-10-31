@@ -75,7 +75,7 @@ export const TeamSection = () => {
           <Grid key={member.name}>
             <Stack alignItems="center" spacing={1}>
               <Avatar sx={{ width: 100, height: 100, bgcolor: "primary.main" }}>
-                <Typography variant="h4">{member.name[0]}</Typography>
+                <Typography variant="h4">{member.name?.split(' ').map(n => n[0]?.toUpperCase()).join('')}</Typography>
               </Avatar>
               <Typography fontWeight={600} pt={2}>{member.name}</Typography>
               <Typography sx={{ opacity: 0.6}}>{member.role}</Typography>

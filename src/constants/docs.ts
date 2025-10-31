@@ -45,7 +45,7 @@ export const TABLE_OF_CONTENTS_DEV = [
   "CI/CD & Deployments",
   "Local dev & Debugging",
   "Release Notes & Versioning Policy",
-  "Runbook: Common ops & Recovery Steps",
+  "Runbook: Common Ops & Recovery Steps",
   "Tasks & Milestone Checklist (issue-level)",
   "Onboarding Checklist For New Devs",
   "Appendix: OpenAPI / Postman / Useful commands"
@@ -262,7 +262,7 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
   "Tech stack & Versions": [
     { type: 'list', content: [
       'Node.js v20+',
-      'Next.js 15 ',
+      'Next.js 15+ ',
       'TypeScript 5.x',
       'Prisma ORM',
       'PostgreSQL 15+',

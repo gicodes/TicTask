@@ -2,9 +2,9 @@ export const RESOURCES = [
   { title: "Getting Started", desc: "Your first 10 minutes with TicTask", link: "/resources/docs" },
   { title: "Templates", desc: "Jumpstart workflows with ready-made templates", link: "/resources/templates" },
   { title: "Updates", desc: "See what’s new and improved", link: "/resources/changelog" },
-  { title: "Blog", desc: "Insights, guides, and stories from the TicTask team", link: "/resources/blog" },
+  { title: "Blog", desc: "Insights and stories from the TicTask team", link: "/resources/blog" },
   { title: "FAQ", desc: "Find out more from frequently asked questions", link: '/resources/faq'},
-  { title: "Developer", desc: "Get access to our technical documentation to contribute or collaborate", link: '/resources/docs/dev'}
+  { title: "Developer", desc: "Read and contribute to our open-source files", link: '/resources/docs/dev'}
 ];
 
 export const TEMPLATES = [

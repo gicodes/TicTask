@@ -16,7 +16,9 @@ export type User = {
   userType:     UserType;   
   country:      string;
   phone:        string;
-  photo?:       string; 
+  photo?:       string;
+
+  position?: string; 
 
   organization?: string;
   industry?:    string;
@@ -31,6 +33,10 @@ export type User = {
   teamMemberships: TeamMember[];
   createdTeams: Team[];
   adminProfile?: Admin;
+
+  partner?: boolean;
+  collab?: boolean;
+  partnerRole: string;
 };
 
 export type Admin = {

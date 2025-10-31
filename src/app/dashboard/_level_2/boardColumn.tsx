@@ -32,11 +32,11 @@ export const BoardColumn: React.FC<{
           alignContent: 'center' 
         }}
       >
-        <Badge sx={{ display: { xs: 'none', sm: 'flex' }}}>
-          ▿ {title==='IN_PROGRESS' ? 'IN PROGRESS' : title}
+        <Badge sx={{ display: { xs: 'none', sm: 'flex' }, pl: 2, gap: 2}}>
+          <span>▿</span> {title==='IN_PROGRESS' ? 'IN PROGRESS' : title}
         </Badge>
-        <span style={{ fontWeight: 500, color: 'gray' }}>
-          ➥ ({tickets?.length})
+        <span style={{ fontWeight: 500, color: 'gray', display: 'flex', gap: 5 }}>
+          <Badge sx={{ display: { xs: 'flex', sm: 'none'}}}>➥</Badge> ({tickets?.length})
         </span>
       </Typography>
       

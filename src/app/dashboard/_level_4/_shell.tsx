@@ -6,7 +6,7 @@ import { useAuth } from '@/providers/auth';
 import { ReactNode, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Login, Menu as MenuIcon, Notifications } from '@mui/icons-material';
-import { AUTH_ITEMS, NAV_ITEMS, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
+import { AUTH_ITEMS, getFilteredNav, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
 import {
   AppBar,
   Toolbar,
@@ -23,8 +23,8 @@ import {
   Tooltip,
   Stack,
   Typography,
-  Badge,
 } from '@mui/material';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -35,12 +35,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  const filteredNav = NAV_ITEMS.filter(item => {
-    if (user?.role === 'ADMIN') return true;
-    if (user?.userType === 'PERSONAL' && item.label === 'Team') 
-      return false;
-    return true;
-  });
+  const filteredNav = getFilteredNav(user);
 
   const isLoggedIn = !!user;
 
@@ -94,7 +89,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             >
               <Box minWidth={{ xs: 250, sm: 280, md: 300}}>
                 <Stack px={1} gap={1}>
-                  <Stack direction={'row'} gap={1.5} my={1}>
+                  <Stack direction={'row'} gap={1.5} my={1} px={0.5}>
                     <NavbarAvatar user={user} size={40} />
                     <Tooltip title={'Go to profile'}>
                       <Link href={'/dashboard/profile'} style={{ display: 'grid'}}>
@@ -103,22 +98,22 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                       </Link>
                     </Tooltip>
                   </Stack>
-                  <Link href={'/profile/edit/#status'} style={{ padding: 5, fontSize: 12, borderRadius: 5, border: '1px solid silver'}}>🗿 &nbsp; Set Status</Link>
-                  <Link href={'#'} style={{ padding: 5, fontSize: 12}}>🔕 &nbsp; Mute Notifications</Link>
+                  <Link href={'/profile/edit/#status'} style={{ padding: 5, fontSize: 13, borderRadius: 5, border: '1px solid silver'}}>🗿 &nbsp; Set Status</Link>
+                  <Link href={'#'} style={{ padding: 5, fontSize: 13}}>🔕 &nbsp; Mute Notifications</Link>
                 </Stack>
                 <Divider sx={{ my: 1}} />
                 { authMenuItems.slice(0, 6).map((item, i) => (
                   <Link key={i} href={item.href}>
-                    <MenuItem disabled={item.disabled} style={{ fontSize: 12}}>
-                      {item.label}
+                    <MenuItem disabled={item.disabled} style={{ fontSize: 13, display: 'flex', justifyContent: 'space-between'}}>
+                      {item.label} {item.cta && <FaExternalLinkAlt />}
                     </MenuItem>
                   </Link>
                 ))}
                 <Divider sx={{ my: 1}} />
                 { authMenuItems.slice(6).map((item, i) => (
-                  <Link key={i} href={!isLoggedIn && item.disabled ? '' : item.href}>
-                    <MenuItem disabled={item.disabled} style={{ fontSize: 12}} onClick={item.cta && isLoggedIn ? logout : handleClose}>
-                      {item.cta && !isLoggedIn ? <Link href={'/auth/login'} style={{ display: 'flex', gap: 11 }}> <Login fontSize='inherit' /> Login</Link> : item.label}
+                  <Link key={i} href={item.cta && !isLoggedIn ? '/auth/login' : item.href}>
+                    <MenuItem disabled={item.disabled} style={{ fontSize: 13}} onClick={item.cta && isLoggedIn ? logout : handleClose}>
+                      {item.cta && !isLoggedIn ? <span className='flex items-center gap-2'> <Login fontSize='inherit' /> Login</span> : item.label}
                     </MenuItem>
                   </Link>
                 ))}

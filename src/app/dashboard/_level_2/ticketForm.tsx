@@ -73,8 +73,8 @@ export default function TicketFormDrawer({
       sx={{ '& .MuiDrawer-paper': { width: { xs: '100%', md: 520 }, p: 3 } }}
     >
       <Toolbar />
-      <Box>
-        <h5 className="my-1">Create new ticket</h5>
+      <Box display={'grid'} gap={2}>
+        <h5>Create new ticket</h5>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={2}>
             <Controller
@@ -84,7 +84,7 @@ export default function TicketFormDrawer({
                 <TextField select label="Type" {...field}>
                   {Object.values(TICKET_TYPES).map((v) => (
                     <MenuItem value={v} key={v}>
-                      {v==="FEATURE_REQUEST" ? "FEARURE REQUEST" : v}
+                      {v==="FEATURE_REQUEST" ? "Feature" : v[0] + v.slice(1).toLocaleLowerCase()}
                     </MenuItem>
                   ))}
                 </TextField>
@@ -119,7 +119,7 @@ export default function TicketFormDrawer({
                 <TextField select label="Priority" {...field}>
                   {Object.values(TICKET_PRIORITIES).map((v) => (
                     <MenuItem value={v} key={v}>
-                      {v}
+                      {v[0] + v.slice(1).toLocaleLowerCase()}
                     </MenuItem>
                   ))}
                 </TextField>

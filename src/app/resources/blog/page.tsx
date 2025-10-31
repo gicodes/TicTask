@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { apiGet } from "@/lib/api";
-import { BlogRes } from "@/types/axios";
+import { AllBlogsRes } from "@/types/axios";
 import { useAuth } from "@/providers/auth";
 import styles from "@/app/page.module.css";
 import { BlogCardProps } from "@/types/resources";
@@ -17,7 +17,7 @@ export default function BlogListPage() {
   const [blogs, setBlogs] = useState<BlogCardProps[]>([]);
 
   const load = async () => {
-    const res: BlogRes = await apiGet("/resources/blog");
+    const res: AllBlogsRes = await apiGet("/resources/blog");
     setBlogs(res.data);
   };
   useEffect(() => { load(); }, []);

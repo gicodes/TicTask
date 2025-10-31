@@ -16,12 +16,12 @@ export default function SettingsPage() {
   const [workspaceName, setWorkspaceName] = useState('Acme Inc.');
 
   const INTEGRATION_BUTTON = ({
-    title, action, key }: { 
-      title: string, key: string, action?: () => void
+    title, action, i }: { 
+      title: string, i: string, action?: () => void
     }) => 
     <span 
       onClick={action}
-      key={key}
+      key={i}
       className={`max-width-360 ${styles.btnRetreat}`}
     >
       Connect {title}
@@ -184,7 +184,7 @@ export default function SettingsPage() {
           </Typography>
           <Stack spacing={1} sx={{ mx: 'auto', maxWidth: 360, mt: 5}}>
             {([ 'Slack', 'Github', 'Google-drive']).map((i) =>
-              <INTEGRATION_BUTTON title={i} key={i}/>)}
+              <INTEGRATION_BUTTON title={i} i={i} key={i}/>)}
           </Stack>
         </CardContent>
       </Card>

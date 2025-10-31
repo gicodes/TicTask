@@ -48,9 +48,14 @@ export interface ContactUs {
   name?: string;
 }
 
+export interface AllBlogsRes {
+  ok?: boolean;
+  data: BlogCardProps[];
+}
+
 export interface BlogRes {
   ok?: boolean;
-  data: BlogCardProps[]
+  data: BlogCardProps;
 }
 
 export interface ChangeLostRes {
