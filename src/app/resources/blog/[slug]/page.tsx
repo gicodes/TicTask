@@ -16,14 +16,8 @@ async function getBlogBySlug(slug: string): Promise<BlogCardProps | null> {
   }
 }
 
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
-
-async function Page({ params }: PageProps) {
-  const { slug } = params;
+async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const blog = await getBlogBySlug(slug);
 
   if (!blog) notFound();

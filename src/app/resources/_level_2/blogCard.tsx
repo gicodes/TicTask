@@ -6,7 +6,7 @@ import { ExternalLink } from "lucide-react";
 import { BlogCardProps } from "@/types/resources";
 import { Card, CardContent, CardMedia, Typography, Button, Stack } from "@mui/material";
 
-export const BlogCard = ({ title, slug, createdAt, excerpt, image }: BlogCardProps) =>  (
+export const BlogCard = ({ title, slug, createdAt, excerpt, coverImage }: BlogCardProps) =>  (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -22,11 +22,11 @@ export const BlogCard = ({ title, slug, createdAt, excerpt, image }: BlogCardPro
         justifyContent: "space-between",
       }}
     >
-      {image && (
+      {coverImage && (
         <CardMedia
           component="img"
           height="180"
-          image={image}
+          image={coverImage}
           alt={title}
           sx={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
         />
