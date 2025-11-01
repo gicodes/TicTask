@@ -43,13 +43,12 @@ export default function PricingSection() {
             sx={{
               mt: 3,
               borderRadius: 4,
-              bgcolor: "var(--background)",
+              bgcolor: "var(--foreground)",
               "& .MuiToggleButton-root": {
                 border: "none",
                 textTransform: "none",
                 px: 3,
               },
-              color: "var(--foreground)"
             }}
           >
             <ToggleButton value="monthly">Monthly</ToggleButton>
@@ -67,6 +66,7 @@ export default function PricingSection() {
               >
                 <Box
                   sx={{
+                    border: '0.1px solid var(--secondary)',
                     bgcolor: plan.highlight ? "var(--background)" : "transparent",
                     color: plan.highlight ? "var(--foreground)" : "inherit",
                     borderRadius: 4,
