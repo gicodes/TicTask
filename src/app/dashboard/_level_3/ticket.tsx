@@ -48,7 +48,6 @@ const TicketsPage: React.FC = () => {
     async function getTickets() {
       try {
         const res: TicketsRes = await apiGet(`/tickets/${user?.id}`);
-        console.log(res)
         setTickets(res.tickets)
       } catch (err) {
         console.error('Failed to fetch tickets:', err);
