@@ -100,8 +100,8 @@ export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
               </Tooltip>
             </Box>
           )}
-          { visibleStatuses.map((status) => (
-            <Droppable droppableId={status} key={status}>
+          { visibleStatuses.map((status, i) => (
+            <Droppable droppableId={status} key={i}>
               {(provided) => (
                 <Box
                   ref={provided.innerRef}

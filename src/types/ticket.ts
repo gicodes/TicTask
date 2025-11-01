@@ -38,6 +38,7 @@ export interface CreateTicket {
   priority: Ticket_Priority;  
   assignTo?: string | number | unknown;
   dueDate: Date | string;
+  createdById?: string | number;
 }
 
 export enum Ticket_Type {

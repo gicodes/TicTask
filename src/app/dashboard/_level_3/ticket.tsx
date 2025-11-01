@@ -8,6 +8,10 @@ import TicketFormDrawer from '../_level_2/ticketForm';
 import { TICKET_STATUSES } from '../_level_1/constants';
 import TicketDetailDrawer from '../_level_2/ticketDetail';
 import React, { useEffect, useMemo, useState } from 'react';
+import { apiGet } from '@/lib/api';
+import { useAuth } from '@/providers/auth';
+import { TicketsRes } from '@/types/axios';
+import { useAlert } from '@/providers/alert';
 
 function useDebounce<T>(value: T, delay = 400): T {
   const [debounced, setDebounced] = useState(value);
@@ -19,7 +23,9 @@ function useDebounce<T>(value: T, delay = 400): T {
 }
 
 const TicketsPage: React.FC = () => {
-  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const { user, isAdmin } = useAuth();
+  const { showAlert } = useAlert();
+  const [tickets, setTickets] = useState<Ticket[] | []>([]);
   const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
   const [selectedTicket, setSelectedTicket] = useState<string | number | null>(null);
   const [formOpen, setFormOpen] = useState(false);
@@ -36,14 +42,29 @@ const TicketsPage: React.FC = () => {
   }, [view]);
 
   useEffect(() => {
-    api.getTickets().then(setTickets);
-  }, []);
+    if (!user?.id) return;
+
+    const controller = new AbortController();
+    async function getTickets() {
+      try {
+        const res: TicketsRes = await apiGet(`/tickets/${user?.id}`);
+        console.log(res)
+        setTickets(res.tickets)
+      } catch (err) {
+        console.error('Failed to fetch tickets:', err);
+        showAlert("Failed to fetch. Tickets unavailable!", 'warning');
+      }
+    }    
+    
+    getTickets();
+    return () => controller.abort();
+  }, [user?.id]);
 
   const filteredTickets = useMemo(() => {
     if (!debouncedQuery) return tickets;
     const q = debouncedQuery.toLowerCase();
 
-    return tickets.filter((t) =>
+    return tickets?.filter((t) =>
       [t.title, t.description, t.status, t.assignee, t.tags?.join(' ')]
         .filter(Boolean)
         .some((field) => field?.toLowerCase().includes(q))
@@ -54,10 +75,10 @@ const TicketsPage: React.FC = () => {
     const map: Record<string, Ticket[]> = Object.fromEntries(
       TICKET_STATUSES.map((s) => [s, []])
     );
-    [...filteredTickets].reverse().forEach((t) => {
+    {filteredTickets && [...filteredTickets].reverse().forEach((t) => {
       if (map[t.status]) map[t.status].push(t);
       else map['OPEN'].push(t);
-    });
+    });}
     setGrouped(map);
   }, [filteredTickets]);
 
@@ -66,7 +87,7 @@ const TicketsPage: React.FC = () => {
   const onTicketCreated = (t: Ticket) => setTickets((prev) => [t, ...prev]);
   const refreshTickets = () => api.getTickets().then(setTickets);
   
-  const reversedTickets = useMemo(() => [...filteredTickets].reverse(), [filteredTickets]);
+  const reversedTickets = useMemo(() => [...filteredTickets]?.reverse(), [filteredTickets]);
 
   return (
     <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>

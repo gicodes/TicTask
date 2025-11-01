@@ -1,4 +1,5 @@
 import { BlogCardProps, ChangeLogProps, FAQProps } from "./resources";
+import { Ticket } from "./ticket";
 import { Role } from "./users";
 
 export interface VerifyEmailRequest {
@@ -66,4 +67,9 @@ export interface ChangeLostRes {
 export interface FAQRes {
   ok?: boolean;
   faq: FAQProps[]
+}
+
+export interface TicketsRes {
+  ok: boolean;
+  tickets: Ticket[];
 }

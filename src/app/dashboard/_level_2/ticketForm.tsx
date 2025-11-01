@@ -1,8 +1,7 @@
 'use client';
 
 import { z } from 'zod';
-import React from 'react';
-import { api } from '../_level_1/tApi';
+import React, { useEffect, useState } from 'react';
 import styles from '@/app/page.module.css';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +17,8 @@ import {
 } from '@mui/material';
 import { CreateTicket, Ticket, Ticket_Type, Ticket_Priority } from '@/types/ticket';
 import { TAG_SUGGESTIONS, TICKET_PRIORITIES, TICKET_TYPES } from '../_level_1/constants';
+import { useAuth } from '@/providers/auth';
+import { apiPost } from '@/lib/api';
 
 const schema = z.object({
   type: z.nativeEnum(Ticket_Type),
@@ -40,6 +41,8 @@ export default function TicketFormDrawer({
   onClose: () => void;
   onCreated?: (t: Ticket) => void;
 }) {
+  const { user } = useAuth();
+  const [userId, setUserId] = useState<number>();
   const { control, handleSubmit, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -53,13 +56,19 @@ export default function TicketFormDrawer({
     },
   });
 
+   useEffect(() => {
+      if (!user?.id) return;
+      setUserId(user?.id)
+    }, [user?.id]);
+
   const onSubmit = async (values: FormValues) => {
     const formatted: CreateTicket = {
       ...values,
       dueDate: values.dueDate,
       tags: values.tags ?? [],
+      createdById: user?.id
     };
-    const ticket = await api.createTicket(formatted);
+    const ticket: Ticket = await apiPost("/tickets", formatted);
     onCreated?.(ticket);
     reset();
     onClose();
@@ -126,13 +135,13 @@ export default function TicketFormDrawer({
               )}
             />
 
-            <Controller
+            {user?.organization && <Controller
               name="assignTo"
               control={control}
               render={({ field }) => (
                 <TextField label="Assign to" {...field} />
               )}
-            />
+            />}
 
             <Controller
               name="tags"

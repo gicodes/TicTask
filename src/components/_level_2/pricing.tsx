@@ -49,6 +49,7 @@ export default function PricingSection() {
                 textTransform: "none",
                 px: 3,
               },
+              color: "var(--foreground)"
             }}
           >
             <ToggleButton value="monthly">Monthly</ToggleButton>

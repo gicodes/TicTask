@@ -126,16 +126,16 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
       <Drawer
         variant="temporary"
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={() => setOpen(!open)}
         sx={{ display: { xs: 'block', md: 'none' } }}
       >
         <Toolbar />
-        <List sx={{ pt: 5}}>
+        <List sx={{ pt: 5, minWidth: 234}}>
           {filteredNav.map(item => (
-            <Link href={item.path} key={item.path}>
+            <Link href={item.path} key={item.path} onClick={() => setOpen(!open)}>
               <ListItemButton selected={pathname === item.path}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} style={{ marginLeft: -5, marginRight: 5}} />
+                <ListItemText primary={item.label} style={{ marginLeft: -10}} />
                 {item?.released===false && <NewFeatureBadge />}
               </ListItemButton>
             </Link>
