@@ -27,7 +27,7 @@ export default function TicketDetailDrawer({
 
   useEffect(() => {
     selectTicket(ticketId ?? null);
-  }, [ticketId]);
+  }, [ticketId, selectTicket]);
 
   const save = async () => {
     if (!ticket) return;

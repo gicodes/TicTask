@@ -39,7 +39,7 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
     LOW: 4,
   };
 
-  const sortTickets = (list: Ticket[]): Ticket[] => {  // Sorting algorithm: DueDate → Priority → CreatedAt
+  const sortTickets = useCallback((list: Ticket[]): Ticket[] => {  // Sorting algorithm: DueDate → Priority → CreatedAt
     return [...list].sort((a, b) => {
       if (!a.dueDate && b.dueDate) return 1;
       if (a.dueDate && !b.dueDate) return -1;
@@ -54,7 +54,7 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
 
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
-  };
+  }, []);
 
   const fetchTickets = useCallback(async () => {
     setLoading(true);
@@ -68,7 +68,7 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
     } finally {
       setLoading(false);
     }
-  }, [user?.id]);
+  }, [user?.id, sortTickets]);
 
   const selectTicket = (ticketId: string | number | null) => {
     if (!ticketId) return setSelectedTicket(null);
