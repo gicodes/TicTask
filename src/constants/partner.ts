@@ -26,9 +26,10 @@ export const BENEFITS = [
 ];
 
 export const ROLES = [
+  {role: "Moderator", collab: false},
   {role: "Funding / Investor", collab: false},
   {role: "Sponsor / Strategic Partner", collab: false},
-  {role: "Core Developer", collab: true},
+  {role: "Senior SWE/ Staff Engineer", collab: true},
   {role: "Product Engineer", collab: true},
   {role: "Developer (frontend)", collab: true},
   {role: "Developer - (backend)", collab: true},

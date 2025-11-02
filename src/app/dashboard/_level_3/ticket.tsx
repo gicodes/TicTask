@@ -12,6 +12,7 @@ import { apiGet } from '@/lib/api';
 import { useAuth } from '@/providers/auth';
 import { TicketsRes } from '@/types/axios';
 import { useAlert } from '@/providers/alert';
+import { useTickets } from '@/providers/tickets';
 
 function useDebounce<T>(value: T, delay = 400): T {
   const [debounced, setDebounced] = useState(value);
@@ -23,9 +24,8 @@ function useDebounce<T>(value: T, delay = 400): T {
 }
 
 const TicketsPage: React.FC = () => {
-  const { user, isAdmin } = useAuth();
-  const { showAlert } = useAlert();
-  const [tickets, setTickets] = useState<Ticket[] | []>([]);
+  const { tickets } = useTickets();
+  const [newTickets, setTickets] = useState<Ticket[] | []>([]);
   const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
   const [selectedTicket, setSelectedTicket] = useState<string | number | null>(null);
   const [formOpen, setFormOpen] = useState(false);
@@ -39,47 +39,46 @@ const TicketsPage: React.FC = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') localStorage.setItem('tictask_view', view);
+    setTickets(tickets)
   }, [view]);
 
-  useEffect(() => {
-    if (!user?.id) return;
-
-    const controller = new AbortController();
-    async function getTickets() {
-      try {
-        const res: TicketsRes = await apiGet(`/tickets/${user?.id}`);
-        setTickets(res.tickets)
-      } catch (err) {
-        console.error('Failed to fetch tickets:', err);
-        showAlert("Failed to fetch. Tickets unavailable!", 'warning');
-      }
-    }    
-    
-    getTickets();
-    return () => controller.abort();
-  }, [user?.id]);
-
   const filteredTickets = useMemo(() => {
-    if (!debouncedQuery) return tickets;
+    if (!debouncedQuery) return newTickets;
     const q = debouncedQuery.toLowerCase();
 
-    return tickets?.filter((t) =>
+    return newTickets?.filter((t) =>
       [t.title, t.description, t.status, t.assignee, t.tags?.join(' ')]
         .filter(Boolean)
         .some((field) => field?.toLowerCase().includes(q))
     );
-  }, [tickets, debouncedQuery]);
+  }, [newTickets, debouncedQuery]);
 
   useEffect(() => {
     const map: Record<string, Ticket[]> = Object.fromEntries(
       TICKET_STATUSES.map((s) => [s, []])
     );
-    {filteredTickets && [...filteredTickets].reverse().forEach((t) => {
+
+    const sorted = [...filteredTickets].sort((a, b) => {
+      if (!a.dueDate && b.dueDate) return 1;
+      if (a.dueDate && !b.dueDate) return -1;
+      if (a.dueDate && b.dueDate) {
+        const diff = new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+        if (diff !== 0) return diff;
+      }
+      const priorityOrder = { URGENT: 1, HIGH: 2, MEDIUM: 3, LOW: 4 };
+      const pDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
+      if (pDiff !== 0) return pDiff;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+
+    sorted.forEach((t) => {
       if (map[t.status]) map[t.status].push(t);
       else map['OPEN'].push(t);
-    });}
+    });
+
     setGrouped(map);
   }, [filteredTickets]);
+
 
   const openDetail = (id: string | number) => setSelectedTicket(id);
   const closeDetail = () => setSelectedTicket(null);
@@ -98,7 +97,12 @@ const TicketsPage: React.FC = () => {
         setSearchQuery={setSearchQuery}
       />
       {view === 'board' ? (
-        <TicketBoard grouped={grouped} setGrouped={setGrouped} openDetail={openDetail} />
+        <TicketBoard
+          grouped={grouped}
+          setGrouped={setGrouped}
+          openDetail={openDetail}
+          isSearching={!!debouncedQuery}
+        />
       ) : (
         <TicketsList tickets={reversedTickets} openDetail={openDetail} />
       )}

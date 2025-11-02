@@ -1,16 +1,10 @@
 'use client';
 
+import { useAuth } from './auth';
+import { apiGet } from '@/lib/api';
+import { Ticket } from '@/types/ticket';
+import { TicketsRes } from '@/types/axios';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-
-export type Ticket = {
-  id: string;
-  title: string;
-  description: string;
-  status: 'open' | 'in_progress' | 'closed';
-  priority: 'low' | 'medium' | 'high';
-  createdAt: string;
-  updatedAt: string;
-};
 
 type TicketContextType = {
   tickets: Ticket[];
@@ -33,22 +27,43 @@ export const useTickets = () => {
 };
 
 export const TicketsProvider = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useAuth();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState<Ticket | null>(null);
+  const [selected, setSelected] = useState<Ticket | null>(null);    
+    
+  const priorityOrder = { URGENT: 1, HIGH: 2, MEDIUM: 3, LOW: 4 };
+
+  function sortTickets(tickets: Ticket[]): Ticket[] {
+    return [...tickets].sort((a, b) => {
+      if (!a.dueDate && b.dueDate) return 1;
+      if (a.dueDate && !b.dueDate) return -1;
+
+      if (a.dueDate && b.dueDate) {
+        const diff = new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+        if (diff !== 0) return diff;
+      }
+
+      const pDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
+      if (pDiff !== 0) return pDiff;
+
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }
 
   const fetchTickets = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/tickets');
-      const data = await res.json();
+      if (!user?.id) return;
+      const res: TicketsRes = await apiGet(`/tickets/${user?.id}`);
+      const data = sortTickets(res.tickets);
       setTickets(data);
     } catch (err) {
       console.error("Failed to fetch tickets", err);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user?.id]);
 
   const selectTicket = (ticket: Ticket) => setSelected(ticket);
   const clearSelection = () => setSelected(null);

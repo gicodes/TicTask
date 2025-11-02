@@ -41,7 +41,7 @@ export const BoardColumn: React.FC<{
       </Typography>
       
       <Box>
-        {tickets?.map(t => <TicketCard key={t?.id} ticket={t} onOpen={onOpen} />)}
+        {tickets?.map((t, i) => <TicketCard key={i} ticket={t} onOpen={onOpen} />)}
       </Box>
     </Box>
   );

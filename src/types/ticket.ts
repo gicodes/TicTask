@@ -74,4 +74,5 @@ export interface BoardProps {
   grouped: Record<string, Ticket[]>;
   setGrouped: React.Dispatch<React.SetStateAction<Record<string, Ticket[]>>>;
   openDetail: (id: string | number) => void;
+  isSearching?: boolean 
 }

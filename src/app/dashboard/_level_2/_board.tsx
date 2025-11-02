@@ -2,13 +2,13 @@
 
 import BoardColumn from './boardColumn';
 import { BoardProps } from '@/types/ticket';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { Box, useTheme, useMediaQuery, Tabs, Tab, IconButton, Tooltip } from '@mui/material';
 
-export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
+export default function Board({ grouped, setGrouped, openDetail, isSearching }: BoardProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const STATUSES = Object.keys(grouped);
@@ -17,6 +17,18 @@ export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
   const isXs = useMediaQuery(theme.breakpoints.only('xs'));
   const isSm = useMediaQuery(theme.breakpoints.only('sm'));
   const isMd = useMediaQuery(theme.breakpoints.only('md'));
+
+  useEffect(() => {
+    if (isXs) localStorage.setItem('tictask_activeStatus', STATUSES[activeIndex]);
+  }, [isXs, activeIndex, STATUSES]);
+
+  useEffect(() => {
+    if (isXs) {
+      const last = localStorage.getItem('tictask_activeStatus');
+      const idx = STATUSES.indexOf(last || '');
+      if (idx >= 0) setActiveIndex(idx);
+    }
+  }, [isXs, STATUSES]);
 
   const visibleCount = isXs ? 1 : (isSm || isMd) ? 2 : 3;
 
@@ -45,10 +57,14 @@ export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
     });
   };
 
+  const visibleStatusesRaw = isSearching
+    ? STATUSES.filter((status) => grouped[status]?.length > 0)
+    : STATUSES;
+
   const visibleStatuses = useMemo(() => {
-    if (isXs) return [STATUSES[activeIndex]];
-    return STATUSES.slice(startIndex, startIndex + visibleCount);
-  }, [isXs, STATUSES, startIndex, visibleCount, activeIndex]);
+    if (isXs) return [visibleStatusesRaw[activeIndex] || visibleStatusesRaw[0]];
+    return visibleStatusesRaw.slice(startIndex, startIndex + visibleCount);
+  }, [isXs, visibleStatusesRaw, startIndex, visibleCount, activeIndex]);
 
   const prevStatuses = STATUSES.slice(
     Math.max(0, startIndex - visibleCount), startIndex
@@ -76,6 +92,7 @@ export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Box
           sx={{
+            position: 'relative',
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'space-between',
@@ -89,6 +106,9 @@ export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
                 marginTop: 2,
                 display: 'flex',
                 justifyContent: 'center',
+                zIndex: 9999,
+                border: '0.1px solid var(--disabled)',
+                borderRadius: '50%'
               }}
             >
               <Tooltip title={prevStatuses.length ? 
@@ -100,7 +120,7 @@ export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
               </Tooltip>
             </Box>
           )}
-          { visibleStatuses.map((status, i) => (
+          {visibleStatuses.map((status, i) => (
             <Droppable droppableId={status} key={i}>
               {(provided) => (
                 <Box
@@ -127,10 +147,14 @@ export default function Board({ grouped, setGrouped, openDetail }: BoardProps) {
           ))}
           {!isXs && startIndex + visibleCount < STATUSES.length && (
             <Box
-              sx={{                
+              sx={{       
+                position: 'absolute',         
                 marginTop: 2,
                 display: 'flex',
                 justifyContent: 'center',
+                right: 0,
+                border: '0.1px solid var(--disabled)',
+                borderRadius: '50%'
               }}
             >
               <Tooltip title={nextStatuses.length ? 

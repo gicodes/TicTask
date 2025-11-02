@@ -28,8 +28,10 @@ export const TAG_SUGGESTIONS = [
   'SWE',
   'accessibility',
   'analytics',
+  'algorithm',
   'backend',
   'bug fix',
+  'beta',
   'button',
   'client',
   'cloud',
@@ -63,7 +65,8 @@ export const TAG_SUGGESTIONS = [
   'system design',
   'testing',
   'ui/ux',
-  'v1'
+  'v1',
+  'v2',
 ];
 
 export const TICKET_STATUSES = ['UPCOMING', 'OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'CANCELLED'];

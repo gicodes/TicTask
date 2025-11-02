@@ -1,7 +1,7 @@
 'use client';
 
 import { z } from 'zod';
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from '@/app/page.module.css';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,11 +14,13 @@ import {
   MenuItem,
   Toolbar,
   Autocomplete,
+  Alert,
 } from '@mui/material';
+import { apiPost } from '@/lib/api';
+import { useAuth } from '@/providers/auth';
+import { useAlert } from '@/providers/alert';
 import { CreateTicket, Ticket, Ticket_Type, Ticket_Priority } from '@/types/ticket';
 import { TAG_SUGGESTIONS, TICKET_PRIORITIES, TICKET_TYPES } from '../_level_1/constants';
-import { useAuth } from '@/providers/auth';
-import { apiPost } from '@/lib/api';
 
 const schema = z.object({
   type: z.nativeEnum(Ticket_Type),
@@ -42,7 +44,8 @@ export default function TicketFormDrawer({
   onCreated?: (t: Ticket) => void;
 }) {
   const { user } = useAuth();
-  const [userId, setUserId] = useState<number>();
+  const { showAlert } = useAlert();
+  const [ errRes, setErrRes] = useState<string | null>("")
   const { control, handleSubmit, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -56,22 +59,25 @@ export default function TicketFormDrawer({
     },
   });
 
-   useEffect(() => {
-      if (!user?.id) return;
-      setUserId(user?.id)
-    }, [user?.id]);
-
   const onSubmit = async (values: FormValues) => {
-    const formatted: CreateTicket = {
-      ...values,
-      dueDate: values.dueDate,
-      tags: values.tags ?? [],
-      createdById: user?.id
-    };
-    const ticket: Ticket = await apiPost("/tickets", formatted);
-    onCreated?.(ticket);
-    reset();
-    onClose();
+    try {
+      const formatted: CreateTicket = {
+        ...values,
+        dueDate: values.dueDate,
+        tags: values.tags ?? [],
+        createdById: user?.id
+      };
+
+      const ticket: Ticket = await apiPost("/tickets", formatted);
+      onCreated?.(ticket);
+      showAlert("Your new ticket has been created!", "success");
+
+      window.location.reload();
+      reset();
+      onClose();
+    } catch {
+      setErrRes("Something went wrong. Please try again!")
+    }
   };
 
   return (
@@ -139,9 +145,26 @@ export default function TicketFormDrawer({
               name="assignTo"
               control={control}
               render={({ field }) => (
-                <TextField label="Assign to" {...field} />
+                <TextField 
+                  type='email' 
+                  label="Assign to (Team member email)" 
+                  {...field} 
+                />
               )}
             />}
+
+            <Controller
+              name="dueDate"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  label="Due date"
+                  type="date"
+                  InputLabelProps={{ shrink: true }}
+                  {...field}
+                />
+              )}
+            />
 
             <Controller
               name="tags"
@@ -160,19 +183,6 @@ export default function TicketFormDrawer({
               )}
             />
 
-            <Controller
-              name="dueDate"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  label="Due date"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  {...field}
-                />
-              )}
-            />
-
             <Stack direction="row" spacing={1} pt={3}>
               <Button className={styles.btnAction} type="submit">
                 Create
@@ -183,6 +193,7 @@ export default function TicketFormDrawer({
             </Stack>
           </Stack>
         </form>
+        {errRes && <Alert color='warning' severity='error'>{errRes}</Alert>}
       </Box>
     </Drawer>
   );

@@ -10,6 +10,8 @@ const TicketsList = ({
   tickets: Ticket[];
   openDetail: (id: string | number) => void;
 }) => {
+  if (tickets?.length===0) return <Box textAlign={'center'} py={12}>No tickets found</Box>
+
   return (
     <Box py={3} px={2} maxWidth={'96vw'}>
       <Box
@@ -48,7 +50,7 @@ const TicketsList = ({
         >
           <thead style={{ textAlign: 'left' }}>
             <tr>
-              {['No.', 'Title', 'Priority', 'Type', 'Status', 'Last Updated'].map((h) => (
+              {['No.', 'Title', 'Priority', 'Type', 'Status', 'Last Updated', 'Due Date'].map((h) => (
                 <th
                   key={h}
                   style={{
@@ -80,7 +82,7 @@ const TicketsList = ({
                   transition: 'background 0.2s',
                 }}
                 onClick={() => openDetail(t.id)}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--dull-gray)'}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--surface-1)'}
                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
@@ -134,6 +136,10 @@ const TicketsList = ({
                         hour12: true,
                       }).replace(' ', ' ') 
                     : ''}
+                </td>
+
+                <td style={{ padding: '0 10px', whiteSpace: 'nowrap', }}>
+                  {t.dueDate ? new Date(t.dueDate).toLocaleDateString(): 'Not set'}
                 </td>
               </tr>
             ))}

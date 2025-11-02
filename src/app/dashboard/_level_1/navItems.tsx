@@ -77,7 +77,7 @@ export const AUTH_ITEMS: LinkItem[] = [
   { label: <div className='flex gap-2 items-center'><GiThreeFriends/> Become a partner</div>, href: "/company/partner/register"},
   { label: <div className='flex gap-2 items-center'><GrUpdate/> Latest updates</div>, href: "/resources/changelog"},
   { label: <div className='flex gap-2 items-center'><FaVideo/>  Watch videos</div>, href: "#", cta: true},
-  { label: <div className='flex gap-2 items-center'><MdPaid/>  See pricing</div>, href: "/product/#pricing"},
+  { label: <div className='flex gap-2 items-center'><MdPaid/>  See pricing</div>, href: "/product/pricing"},
   { label: <div className='flex gap-2 items-center'><GiHelp/>  Get support</div>, href: "/company/#contact-us"},
   { label: <div className='flex gap-2 items-center'><FaDonate/>  Donations</div>, href: "#", cta: true},
   { label: <div className='flex gap-2 items-center'><FaHome/> Back to home </div>, href: "/" },
@@ -120,7 +120,7 @@ export const userLinks: LinkItem[] = [
   { label: "Dashboard", href: "/dashboard", cta: true },
 ];
 
-export const NavbarAvatar = ({ user, size = 36}: AvatarProps) => <Box position={'relative'}>
+export const NavbarAvatar = ({ user, size = 36}: AvatarProps) => <Box position={'relative'} maxHeight={50} alignContent={'center'}>
   <Avatar
     src={user?.photo || ''}
     sx={{
@@ -135,8 +135,8 @@ export const NavbarAvatar = ({ user, size = 36}: AvatarProps) => <Box position={
     <Typography color={'var(--bw)'}>{user ? user.name?.
     split(' ').map(n => n[0]?.toUpperCase()).join('') : 'NA'}</Typography>
   </Avatar>
-  <Box position={'absolute'} bottom={-5} right={1}>
-    <FaCircle size={9} color={user ? 'limegreen' : ''} />
+  <Box position={'absolute'} bottom={-5} right={0} maxHeight={1}>
+    <FaCircle size={9} color={user ? 'limegreen' : 'var(--secondary)'} />
   </Box>
 </Box>
 
@@ -147,7 +147,7 @@ export const NewFeatureBadge = () =>
       height: 15, 
       display: 'flex', 
       fontWeight: 1000,
-      fontSize: 12, 
+      fontSize: 11, 
       borderRadius: 20, 
       alignItems: 'center', 
       bgcolor: 'orange', 
@@ -155,5 +155,5 @@ export const NewFeatureBadge = () =>
       fontFamily: 'monospace'
     }}
   >
-    NEW
+    BETA
   </Badge>

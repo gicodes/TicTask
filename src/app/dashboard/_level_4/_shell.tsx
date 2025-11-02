@@ -5,7 +5,7 @@ import Logo from '@/assets/txtLogo';
 import { useAuth } from '@/providers/auth';
 import { ReactNode, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Login, Menu as MenuIcon, Notifications } from '@mui/icons-material';
+import { Login, Menu as MenuIcon, Notifications  } from '@mui/icons-material';
 import { AUTH_ITEMS, getFilteredNav, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
 import {
   AppBar,
@@ -24,7 +24,8 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { FaUserTie, FaUserShield } from 'react-icons/fa6';
+import { FaExternalLinkAlt, FaUserAstronaut, FaUserSecret, FaUsers } from 'react-icons/fa';
 
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -38,6 +39,36 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   const filteredNav = getFilteredNav(user);
 
   const isLoggedIn = !!user;
+
+  function userRole() {
+    let variant = "USER";
+
+    if (isLoggedIn && user) {
+      if (user?.role==="USER" && user.organization) variant = "ORGANIZATION";
+      if (user?.role==="USER" && user.collab) variant = "MODERATOR";
+      if (user?.role==="USER" && user.partner) variant = "PARTNER";
+      if (user?.role==="ADMIN") variant = "ADMIN";
+      return variant;
+    } else return null
+  }
+
+  const UserRole = () => (
+    <Tooltip title={userRole()?.toLocaleLowerCase()}>
+      <Box 
+        display={'grid'} 
+        alignContent={'center'} 
+        fontSize={20} 
+        justifyContent={'end'} 
+        width={30}
+      >
+        {userRole()==="USER" && <FaUserShield />}
+        {userRole()==="ORGANIZATION" && <FaUsers />} 
+        {userRole()==="MODERATOR" && <FaUserAstronaut />}
+        {userRole()==="PARTNER" && <FaUserTie />}
+        {userRole()==="ADMIN" && <FaUserSecret />}
+      </Box>
+    </Tooltip>
+  )
 
   const authMenuItems = AUTH_ITEMS.map(item => {
     const isDisabled = !isLoggedIn &&
@@ -89,22 +120,66 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             >
               <Box minWidth={{ xs: 250, sm: 280, md: 300}}>
                 <Stack px={1} gap={1}>
-                  <Stack direction={'row'} gap={1.5} my={1} px={0.5}>
+                  <Stack direction={'row'} gap={0.5} px={0.5}>
                     <NavbarAvatar user={user} size={40} />
                     <Tooltip title={'Go to profile'}>
-                      <Link href={'/dashboard/profile'} style={{ display: 'grid'}}>
+                      <Link 
+                        href={'/dashboard/profile'} 
+                        style={{ 
+                          display: 'grid', 
+                          padding: '5px 10px',
+                          minWidth: 180
+                        }} 
+                        className='hoverBg'
+                        onClick={handleClose}
+                      >
                         <Typography variant='caption'>{user?.name || 'Not Available'}</Typography>
                         <Typography className='font-xxs custom-dull'>{user?.email || 'please sign in'}</Typography>
                       </Link>
                     </Tooltip>
+                    <UserRole />
                   </Stack>
-                  <Link href={'/profile/edit/#status'} style={{ padding: 5, fontSize: 13, borderRadius: 5, border: '1px solid silver'}}>🗿 &nbsp; Set Status</Link>
-                  <Link href={'#'} style={{ padding: 5, fontSize: 13}}>🔕 &nbsp; Mute Notifications</Link>
+                  <Link 
+                    href={'/profile/edit/#status'} 
+                    style={{ 
+                      gap: 5, 
+                      padding: 7.5, 
+                      fontSize: 13, 
+                      margin: '1px 0', 
+                      display: 'flex', 
+                      borderRadius: 5, 
+                      border: '1px solid silver'
+                    }}
+                  >
+                    🗿 <>Set Status</>
+                  </Link>
+                  <Link 
+                    href={'#'} 
+                    style={{ 
+                      gap: 5,
+                      padding: 7.5, 
+                      fontSize: 13, 
+                      margin: '1px 0', 
+                      display: 'flex', 
+                    }}
+                  >
+                    🔕 <>Mute Notifications</>
+                  </Link>
                 </Stack>
                 <Divider sx={{ my: 1}} />
                 { authMenuItems.slice(0, 6).map((item, i) => (
                   <Link key={i} href={item.href}>
-                    <MenuItem disabled={item.disabled} style={{ fontSize: 13, display: 'flex', justifyContent: 'space-between'}}>
+                    <MenuItem 
+                      disabled={item.disabled} 
+                      style={{ 
+                        fontSize: 13, 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        minHeight: 36,
+                        maxHeight: 40, 
+                        margin: '5px 0'
+                      }}
+                    >
                       {item.label} {item.cta && <FaExternalLinkAlt />}
                     </MenuItem>
                   </Link>
@@ -112,8 +187,18 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                 <Divider sx={{ my: 1}} />
                 { authMenuItems.slice(6).map((item, i) => (
                   <Link key={i} href={item.cta && !isLoggedIn ? '/auth/login' : item.href}>
-                    <MenuItem disabled={item.disabled} style={{ fontSize: 13}} onClick={item.cta && isLoggedIn ? logout : handleClose}>
-                      {item.cta && !isLoggedIn ? <span className='flex items-center gap-2'> <Login fontSize='inherit' /> Login</span> : item.label}
+                    <MenuItem 
+                      disabled={item.disabled} 
+                      style={{ 
+                        fontSize: 13, 
+                        minHeight: 36, 
+                        maxHeight: 40, 
+                        margin: '5px 0'
+                      }} 
+                      onClick={item.cta && isLoggedIn ? logout : handleClose}
+                    >
+                      {item.cta && !isLoggedIn ? <span className='flex items-center gap-2'> 
+                        <Login fontSize='inherit' /> Login</span> : item.label}
                     </MenuItem>
                   </Link>
                 ))}
@@ -157,7 +242,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             <Link href={item.path} key={i}>
               <ListItemButton selected={pathname === item.path}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
+                <ListItemText primary={item.label}  style={{ marginLeft: -10}} />
                 {item?.released===false && <NewFeatureBadge />}
               </ListItemButton>
             </Link>

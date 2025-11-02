@@ -9,6 +9,7 @@ import { CloseSharp } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { getTypeColor, priorityColor } from '../_level_1/tColorVariants';
 import { Drawer, Box, Typography, Stack, Divider, Chip, Button, TextField, Toolbar, IconButton, Tooltip } from '@mui/material';
+import { useTickets } from '@/providers/tickets';
 
 export default function TicketDetailDrawer({ 
   open, 
@@ -21,6 +22,7 @@ export default function TicketDetailDrawer({
   ticketId?: string | number | null; 
   onUpdate?: () => void 
 }) {
+  const { tickets, selectTicket, updateTicket, } = useTickets();
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [moreOptions, setMoreOptions] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -33,8 +35,8 @@ export default function TicketDetailDrawer({
       return; 
     }
     setLoading(true);
-    api.getTicket(ticketId)
-      .then(t => { setTicket(t); setLoading(false); });
+    // selectTicket(ticketId)
+    setLoading(false);
   }, [ticketId]);
 
   const save = () => {

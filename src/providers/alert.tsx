@@ -38,7 +38,7 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
         onClose={() => setOpen(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <MuiAlert elevation={6} variant="filled" onClose={() => setOpen(false)} severity={severity}>
+        <MuiAlert sx={{ zIndex: 999}} elevation={6} variant="filled" onClose={() => setOpen(false)} severity={severity}>
           {message}
         </MuiAlert>
       </Snackbar>

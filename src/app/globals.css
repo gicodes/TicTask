@@ -158,6 +158,13 @@ h6 { font-size: 1.5rem; }
 .mb-1 { margin-bottom: 0.5rem; }
 .mb-2 { margin-bottom: 1rem; }
 
+.hoverBg {
+  border-radius: 5;
+  &:hover {
+    background: var(--surface-2);
+  }
+}
+
 .btn {
   border-radius: 9999px;
   height: auto;
@@ -171,6 +178,5 @@ h6 { font-size: 1.5rem; }
 
   &:hover {
     border-color: var(--accent);
-    /* transition: border-color 0.2s ease; */
   }
 }
