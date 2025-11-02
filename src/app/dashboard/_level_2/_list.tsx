@@ -131,7 +131,7 @@ const TicketsList = ({
                       ? <span className='custom-dull'>{new Date(t.dueDate).toDateString()}</span>
                       :
                     (new Date().toLocaleDateString()===new Date(t.dueDate).toLocaleDateString() 
-                      ? <strong>‼️Due Today‼️</strong> 
+                      ? <strong className='font-xxs'>‼️ Due Today ‼️</strong> 
                       : new Date(t.dueDate).toDateString()): '-----'}
                 </td>
 

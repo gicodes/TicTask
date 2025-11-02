@@ -142,7 +142,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                   <Link 
                     href={'/profile/edit/#status'} 
                     style={{ 
-                      gap: 5, 
+                      gap: 10, 
                       padding: 7.5, 
                       fontSize: 13, 
                       margin: '1px 0', 
@@ -151,19 +151,19 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                       border: '1px solid silver'
                     }}
                   >
-                    🗿 <>Set Status</>
+                    <span>🗿</span> <>Set Status</>
                   </Link>
                   <Link 
                     href={'#'} 
                     style={{ 
-                      gap: 5,
-                      padding: 7.5, 
+                      gap: 10,
+                      padding: 8, 
                       fontSize: 13, 
                       margin: '1px 0', 
                       display: 'flex', 
                     }}
                   >
-                    🔕 <>Mute Notifications</>
+                    <span>🔕</span> <>Mute Notifications</>
                   </Link>
                 </Stack>
                 <Divider sx={{ my: 1}} />

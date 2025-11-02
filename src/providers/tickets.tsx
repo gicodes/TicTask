@@ -2,9 +2,9 @@
 
 import { useAuth } from './auth';
 import { Ticket } from '@/types/ticket';
+import { TicketsRes } from '@/types/axios';
 import { apiGet, apiPatch } from '@/lib/api';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { TicketsRes } from '@/types/axios';
 
 type TicketContextType = {
   tickets: Ticket[];
@@ -20,6 +20,30 @@ type TicketContextType = {
 
 const TicketContext = createContext<TicketContextType | undefined>(undefined);
 
+const priorityOrder: Record<string, number> = {
+  URGENT: 1,
+  HIGH: 2,
+  MEDIUM: 3,
+  LOW: 4,
+};
+
+function sortTickets(list: Ticket[]): Ticket[] {
+  return [...list].sort((a, b) => {
+    if (!a.dueDate && b.dueDate) return 1;
+    if (a.dueDate && !b.dueDate) return -1;
+
+    if (a.dueDate && b.dueDate) {
+      const diff = new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      if (diff !== 0) return diff;
+    }
+
+    const pDiff = (priorityOrder[a.priority] ?? 99) - (priorityOrder[b.priority] ?? 99);
+    if (pDiff !== 0) return pDiff;
+
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+}
+
 export const useTickets = () => {
   const context = useContext(TicketContext);
   if (!context) throw new Error("useTickets must be used within a TicketsProvider");
@@ -32,43 +56,19 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
 
-  const priorityOrder: Record<string, number> = {
-    URGENT: 1,
-    HIGH: 2,
-    MEDIUM: 3,
-    LOW: 4,
-  };
-
-  const sortTickets = useCallback((list: Ticket[]): Ticket[] => {  // Sorting algorithm: DueDate → Priority → CreatedAt
-    return [...list].sort((a, b) => {
-      if (!a.dueDate && b.dueDate) return 1;
-      if (a.dueDate && !b.dueDate) return -1;
-
-      if (a.dueDate && b.dueDate) {
-        const diff = new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-        if (diff !== 0) return diff;
-      }
-
-      const pDiff = (priorityOrder[a.priority] ?? 99) - (priorityOrder[b.priority] ?? 99);
-      if (pDiff !== 0) return pDiff;
-
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
-  }, []);
-
   const fetchTickets = useCallback(async () => {
+    if (!user?.id) return;
     setLoading(true);
     try {
-      if (!user?.id) return;
       const res: TicketsRes = await apiGet(`/tickets/${user.id}`);
       const sorted = sortTickets(res.tickets);
       setTickets(sorted);
     } catch (err) {
-      console.error("Failed to fetch tickets:", err);
+      console.error('Failed to fetch tickets:', err);
     } finally {
       setLoading(false);
     }
-  }, [user?.id, sortTickets]);
+  }, [user?.id]);
 
   const selectTicket = (ticketId: string | number | null) => {
     if (!ticketId) return setSelectedTicket(null);

@@ -8,6 +8,7 @@ import { useTickets } from '@/providers/tickets';
 import React, { useEffect, useState } from 'react';
 import { getTypeColor, priorityColor } from '../_level_1/tColorVariants';
 import { Drawer, Box, Typography, Stack, Divider, Chip, Button, TextField, Toolbar, IconButton, Tooltip } from '@mui/material';
+import { useAuth } from '@/providers/auth';
 
 export default function TicketDetailDrawer({ 
   open, 
@@ -20,6 +21,7 @@ export default function TicketDetailDrawer({
   ticketId?: string | number | null; 
   onUpdate?: () => void 
 }) {
+  const { user } = useAuth();
   const { selectedTicket: ticket, selectTicket, updateTicket } = useTickets();
   const [moreOptions, setMoreOptions] = useState(false);
   const [assignee, setAssigned] = useState('');
@@ -72,13 +74,15 @@ export default function TicketDetailDrawer({
     color: ColorVariations;
     status: Status;
     title: string;
+    disabled: boolean;
   }
 
-  const QA_BUTTON = ({ ticketID, color, title, status} : QuickActions) => 
+  const QA_BUTTON = ({ ticketID, color, title, status, disabled=false} : QuickActions) => 
     <Button 
       variant="outlined"  
       color={color} 
       sx={{ boxShadow: 2}}
+      disabled={disabled}
       onClick={() => { 
         updateTicket(Number(ticketID), { status: status }).then(() => {
           onUpdate?.(); onClose()}); 
@@ -134,7 +138,7 @@ export default function TicketDetailDrawer({
               <Typography variant='body1' sx={{ textAlign: 'center', color: getTypeColor(ticket.type)}}>
                 <strong>{ticket.type==="FEATURE_REQUEST" ? "FEATURE": ticket.type}</strong>
               </Typography>
-              <Tooltip title={`Ticket ${StatusRender}`}>
+              <Tooltip title={`Ticket ${StatusRender?.toLowerCase()}`}>
                 <Chip 
                   label={StatusRender} 
                   size="small" 
@@ -152,9 +156,9 @@ export default function TicketDetailDrawer({
           <Stack spacing={1} sx={{ my: 4 }}>
             <Typography fontWeight={600}>QUICK ACTIONS</Typography>
             <Stack direction={'row'} pt={1} gap={1}>
-              <QA_BUTTON color='success' title='START' ticketID={ticket.id} status='IN_PROGRESS' />
-              <QA_BUTTON color='secondary' title='RESOLVE' ticketID={ticket.id} status='RESOLVED' />
-              <QA_BUTTON color='warning' title='CANCEL' ticketID={ticket.id} status='CANCELLED' />
+              <QA_BUTTON color='success' title='START' ticketID={ticket.id} status='IN_PROGRESS' disabled={ticket.status==="RESOLVED" || ticket.status==="CLOSED" || ticket.status==="CANCELLED"} />
+              <QA_BUTTON color='secondary' title='RESOLVE' ticketID={ticket.id} status='RESOLVED' disabled={ticket.status==="RESOLVED" || ticket.status==="CLOSED" || ticket.status==="CANCELLED"} />
+              <QA_BUTTON color='warning' title='CANCEL' ticketID={ticket.id} status='CANCELLED' disabled={ticket.status==="RESOLVED" || ticket.status==="CLOSED" || ticket.status==="CANCELLED"} />
             </Stack>    
           </Stack>
 
@@ -197,13 +201,13 @@ export default function TicketDetailDrawer({
               <strong>Due by</strong> {ticket.dueDate ? new Date(ticket.dueDate).toDateString() : ''}
             </Typography>}
           </Stack>
-          <Typography variant="subtitle2" py={1}>Add new assignee</Typography>
+          {user?.organization && <><Typography variant="subtitle2" py={1}>Add new assignee</Typography>
           <TextField 
             type='text'
             value={assignee} 
             onChange={(e) => setAssigned(e.target.value)} 
-            placeholder="Assign to..." 
-          />
+            placeholder="Assign to... (Team member email)" 
+          /></>}
           <Typography variant="subtitle2" py={1}>Add note</Typography>
           <TextField 
             multiline 
