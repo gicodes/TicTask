@@ -37,6 +37,20 @@ export async function apiPost<TResponse, TBody = unknown>(
   return res.data;
 }
 
+export async function apiPatch<TResponse, TBody = unknown>(
+  url: string,
+  data?: TBody,
+  headers?: Record<string, string>,
+  config?: AxiosRequestConfig
+): Promise<TResponse> {
+  const res: AxiosResponse<TResponse> = await api.patch(
+    url,
+    data,
+    config ? { ...config, headers: { ...config.headers, ...headers } } : { headers }
+  );
+  return res.data;
+}
+
 export async function nextAuthApiGet<TResponse>(
   url: string,
   config?: AxiosRequestConfig

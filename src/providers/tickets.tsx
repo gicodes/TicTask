@@ -1,28 +1,28 @@
 'use client';
 
 import { useAuth } from './auth';
-import { apiGet } from '@/lib/api';
 import { Ticket } from '@/types/ticket';
-import { TicketsRes } from '@/types/axios';
+import { apiGet, apiPatch } from '@/lib/api';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { TicketsRes } from '@/types/axios';
 
 type TicketContextType = {
   tickets: Ticket[];
   loading: boolean;
-  selected: Ticket | null;
-  fetchTickets: () => void;
-  selectTicket: (ticket: Ticket) => void;
+  selectedTicket: Ticket | null;
+  fetchTickets: () => Promise<void>;
+  selectTicket: (ticketId: string | number | null) => void;
   clearSelection: () => void;
   addTicket: (ticket: Ticket) => void;
-  updateTicket: (ticket: Ticket) => void;
-  deleteTicket: (id: string) => void;
+  updateTicket: (ticketId: number, updates: Partial<Ticket>) => Promise<Ticket | void>;
+  deleteTicket: (id: number | string) => void;
 };
 
 const TicketContext = createContext<TicketContextType | undefined>(undefined);
 
 export const useTickets = () => {
   const context = useContext(TicketContext);
-  if (!context) throw new Error("useTickets must be used within TicketProvider");
+  if (!context) throw new Error("useTickets must be used within a TicketsProvider");
   return context;
 };
 
@@ -30,12 +30,17 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
   const { user } = useAuth();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState<Ticket | null>(null);    
-    
-  const priorityOrder = { URGENT: 1, HIGH: 2, MEDIUM: 3, LOW: 4 };
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
 
-  function sortTickets(tickets: Ticket[]): Ticket[] {
-    return [...tickets].sort((a, b) => {
+  const priorityOrder: Record<string, number> = {
+    URGENT: 1,
+    HIGH: 2,
+    MEDIUM: 3,
+    LOW: 4,
+  };
+
+  const sortTickets = (list: Ticket[]): Ticket[] => {  // Sorting algorithm: DueDate → Priority → CreatedAt
+    return [...list].sort((a, b) => {
       if (!a.dueDate && b.dueDate) return 1;
       if (a.dueDate && !b.dueDate) return -1;
 
@@ -44,37 +49,56 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
         if (diff !== 0) return diff;
       }
 
-      const pDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
+      const pDiff = (priorityOrder[a.priority] ?? 99) - (priorityOrder[b.priority] ?? 99);
       if (pDiff !== 0) return pDiff;
 
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
-  }
+  };
 
   const fetchTickets = useCallback(async () => {
     setLoading(true);
     try {
       if (!user?.id) return;
-      const res: TicketsRes = await apiGet(`/tickets/${user?.id}`);
-      const data = sortTickets(res.tickets);
-      setTickets(data);
+      const res: TicketsRes = await apiGet(`/tickets/${user.id}`);
+      const sorted = sortTickets(res.tickets);
+      setTickets(sorted);
     } catch (err) {
-      console.error("Failed to fetch tickets", err);
+      console.error("Failed to fetch tickets:", err);
     } finally {
       setLoading(false);
     }
   }, [user?.id]);
 
-  const selectTicket = (ticket: Ticket) => setSelected(ticket);
-  const clearSelection = () => setSelected(null);
-
-  const addTicket = (ticket: Ticket) => setTickets(prev => [...prev, ticket]);
-  const updateTicket = (ticket: Ticket) => {
-    setTickets(prev => prev.map(t => (t.id === ticket.id ? ticket : t)));
+  const selectTicket = (ticketId: string | number | null) => {
+    if (!ticketId) return setSelectedTicket(null);
+    const found = tickets.find(t => t.id === Number(ticketId)) || null;
+    setSelectedTicket(found);
   };
-  const deleteTicket = (id: string) => {
-    setTickets(prev => prev.filter(t => t.id !== id));
-    if (selected?.id === id) clearSelection();
+
+  const clearSelection = () => setSelectedTicket(null); 
+
+  const addTicket = (ticket: Ticket) => {
+    setTickets(prev => sortTickets([...prev, ticket]));
+  };
+
+  const updateTicket = async (ticketId: number, updates: Partial<Ticket>) => {
+    try {
+      const updated: Ticket = await apiPatch(`/tickets/${ticketId}`, updates);
+      setTickets(prev => {
+        const updatedList = prev.map(t => (t.id === updated.id ? updated : t));
+        return sortTickets(updatedList);
+      });
+      if (selectedTicket?.id === updated.id) setSelectedTicket(updated);
+      return updated;
+    } catch (err) {
+      console.error("Failed to update ticket:", err);
+    }
+  };
+
+  const deleteTicket = (id: string | number) => {
+    setTickets(prev => prev.filter(t => t.id !== Number(id)));
+    if (selectedTicket?.id === Number(id)) clearSelection();
   };
 
   useEffect(() => {
@@ -86,7 +110,7 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
       value={{
         tickets,
         loading,
-        selected,
+        selectedTicket,
         fetchTickets,
         selectTicket,
         clearSelection,

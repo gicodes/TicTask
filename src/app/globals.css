@@ -161,7 +161,8 @@ h6 { font-size: 1.5rem; }
 .hoverBg {
   border-radius: 5;
   &:hover {
-    background: var(--surface-2);
+    background: var(--surface-1);
+    color: var(--bw);
   }
 }
 

@@ -1,15 +1,13 @@
 'use client';
 
-import { api } from '../_level_1/tApi';
-import { Ticket } from '@/types/ticket';
 import styles from '@/app/page.module.css';
 import { FaEllipsisV } from 'react-icons/fa';
 import { Download, Share2 } from 'lucide-react';
 import { CloseSharp } from '@mui/icons-material';
+import { useTickets } from '@/providers/tickets';
 import React, { useEffect, useState } from 'react';
 import { getTypeColor, priorityColor } from '../_level_1/tColorVariants';
 import { Drawer, Box, Typography, Stack, Divider, Chip, Button, TextField, Toolbar, IconButton, Tooltip } from '@mui/material';
-import { useTickets } from '@/providers/tickets';
 
 export default function TicketDetailDrawer({ 
   open, 
@@ -22,30 +20,20 @@ export default function TicketDetailDrawer({
   ticketId?: string | number | null; 
   onUpdate?: () => void 
 }) {
-  const { tickets, selectTicket, updateTicket, } = useTickets();
-  const [ticket, setTicket] = useState<Ticket | null>(null);
+  const { selectedTicket: ticket, selectTicket, updateTicket } = useTickets();
   const [moreOptions, setMoreOptions] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [assignee, setAssigned] = useState('');
   const [note, setNote] = useState('');
 
   useEffect(() => {
-    if (!ticketId) {
-      setTicket(null); 
-      return; 
-    }
-    setLoading(true);
-    // selectTicket(ticketId)
-    setLoading(false);
+    selectTicket(ticketId ?? null);
   }, [ticketId]);
 
-  const save = () => {
+  const save = async () => {
     if (!ticket) return;
-    api.updateTicket(ticket.id, { updatedAt: new Date().toISOString() }).then(t => {
-      setTicket(t);
-      onUpdate?.();
-      setNote('');
-    });
+    await updateTicket(Number(ticket.id), { updatedAt: new Date().toISOString() });
+    onUpdate?.();
+    setNote('');
   };
 
   const toggleMoreOptions = () => setMoreOptions(!moreOptions);
@@ -91,7 +79,10 @@ export default function TicketDetailDrawer({
       variant="outlined"  
       color={color} 
       sx={{ boxShadow: 2}}
-      onClick={() => { api.updateTicket(ticketID, { status: status }).then(() => onUpdate?.()); }}
+      onClick={() => { 
+        updateTicket(Number(ticketID), { status: status }).then(() => {
+          onUpdate?.(); onClose()}); 
+      }}
     >
       {title}
     </Button>
@@ -104,8 +95,6 @@ export default function TicketDetailDrawer({
       sx={{ '& .MuiDrawer-paper': { width: {xs:'100%', md: 440}, px: 3 } }}
     >
       <Toolbar />
-      {!ticket && !loading && <Typography variant="subtitle1">No ticket selected</Typography>}
-      {loading && <Typography variant="body2">Loading…</Typography>}
       {ticket && (
         <Box> 
           <Stack direction={'row'} alignItems={'center'} minHeight={64}>

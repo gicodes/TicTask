@@ -50,7 +50,7 @@ const TicketsList = ({
         >
           <thead style={{ textAlign: 'left' }}>
             <tr>
-              {['No.', 'Title', 'Priority', 'Type', 'Status', 'Last Updated', 'Due Date'].map((h) => (
+              {['No.', 'Title', 'Priority', 'Type', 'Status', 'Due Date', 'Last Updated'].map((h) => (
                 <th
                   key={h}
                   style={{
@@ -125,6 +125,16 @@ const TicketsList = ({
                   />
                 </td>
 
+                <td style={{ padding: '0 10px', whiteSpace: 'nowrap', }}>
+                  {t.dueDate ? 
+                    new Date().toLocaleDateString()>new Date(t.dueDate).toLocaleDateString() 
+                      ? <span className='custom-dull'>{new Date(t.dueDate).toDateString()}</span>
+                      :
+                    (new Date().toLocaleDateString()===new Date(t.dueDate).toLocaleDateString() 
+                      ? <strong>‼️Due Today‼️</strong> 
+                      : new Date(t.dueDate).toDateString()): '-----'}
+                </td>
+
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
                   {t.updatedAt
                     ? new Date(t.updatedAt).toLocaleString('en-US', {
@@ -136,10 +146,6 @@ const TicketsList = ({
                         hour12: true,
                       }).replace(' ', ' ') 
                     : ''}
-                </td>
-
-                <td style={{ padding: '0 10px', whiteSpace: 'nowrap', }}>
-                  {t.dueDate ? new Date(t.dueDate).toLocaleDateString(): 'Not set'}
                 </td>
               </tr>
             ))}
