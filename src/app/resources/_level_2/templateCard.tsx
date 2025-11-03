@@ -48,7 +48,7 @@ export const TemplateCard = ({ title, desc, file, tags = [] }: TemplateCardProps
           size="small"
           startIcon={<Download size={16} />}
           variant="contained"
-          sx={{ borderRadius: 2, textTransform: "none" }}
+          sx={{ borderRadius: 2, textTransform: "none", color: 'inherit', bgcolor: 'inherit' }}
           className={styles.btnSecondary}
         >
           Download

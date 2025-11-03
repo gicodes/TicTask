@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, Box, Stack, Typography, Button } from "@mui/material";
+import { Card, CardContent, Box, Stack, Typography } from "@mui/material";
 import { RESOURCES } from "@/constants/resources";
 import styles from "@/app/page.module.css";
 import Link from "next/link";
@@ -60,13 +60,9 @@ export const ResourceGrid = () => {
               <CardContent sx={{ p: 3, textAlign: 'center'}}>
                 <Typography variant="h4" fontWeight={501}>{r.title}</Typography>
                 <Typography my={2}>{r.desc}</Typography>
-                <Button 
-                  href={r.link}
-                  color="warning" 
-                  className={styles.btnRetreat}
-                >
-                  Explore
-                </Button>
+                <Link href={r.link} className={`custom-warm full-width ${styles.btnRetreat}`}>
+                  ⟹
+                </Link>
             </CardContent>
           </Card>
         ))}

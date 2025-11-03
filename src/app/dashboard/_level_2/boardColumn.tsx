@@ -42,8 +42,8 @@ export const BoardColumn: React.FC<{
       
       <Box>
         {tickets?.map((t, i) => (
-          <Box mb={5}>
-            <TicketCard key={i} ticket={t} onOpen={onOpen} />
+          <Box mb={5} key={i}>
+            <TicketCard ticket={t} onOpen={onOpen} />
           </Box>
         ))}
       </Box>

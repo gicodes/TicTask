@@ -1,6 +1,6 @@
 import { BlogCardProps, ChangeLogProps, FAQProps } from "./resources";
 import { Ticket } from "./ticket";
-import { Role } from "./users";
+import { Role, User } from "./users";
 
 export interface VerifyEmailRequest {
   email: string;
@@ -72,4 +72,10 @@ export interface FAQRes {
 export interface TicketsRes {
   ok: boolean;
   tickets: Ticket[];
+}
+
+export interface UserProfileRes {
+  ok?: boolean;
+  message?: string;
+  data: User;
 }

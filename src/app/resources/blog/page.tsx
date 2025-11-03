@@ -7,10 +7,10 @@ import { useAuth } from "@/providers/auth";
 import styles from "@/app/page.module.css";
 import { BlogCardProps } from "@/types/resources";
 import React, { useEffect, useState } from "react";
-import { BlogCard } from "@/app/resources/_level_2/blogCard";
-import { Box, Grid, Typography, Button } from "@mui/material";
-import DeleteButton from "@/app/resources/_level_1/deleteResource";
+import { Box, Grid, Typography } from "@mui/material";
 import { ResourceHero } from "@/app/resources/_level_3";
+import { BlogCard } from "@/app/resources/_level_2/blogCard";
+import DeleteButton from "@/app/resources/_level_1/deleteResource";
 
 export default function BlogListPage() {
   const {isAdmin } = useAuth();
@@ -20,22 +20,27 @@ export default function BlogListPage() {
     const res: AllBlogsRes = await apiGet("/resources/blog");
     setBlogs(res.data);
   };
+  
   useEffect(() => { load(); }, []);
 
   return (
     <Box>
       <ResourceHero title="Blog" subtitle="Posts on community insights, stories and trending topics." />
       <Box maxWidth={1100} mx="auto" px={2} py={8}>
-        <Box display="flex" justifyContent="space-between" mb={4}>
+        <Box 
+          mb={4} 
+          display="flex" 
+          alignContent={'center'} 
+          justifyContent="space-between"
+        >
           <Typography variant="h5">Latest posts</Typography>
-          <Button 
+          <Typography 
             component={Link} 
             href="/resources/blog/create" 
-            variant="contained"
             className={styles.btnPrimary}
           >
             Write a post
-          </Button>
+          </Typography>
         </Box>
 
         <Grid container spacing={3}>

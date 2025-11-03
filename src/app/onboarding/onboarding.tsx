@@ -98,8 +98,10 @@ export default function Onboarding() {
         bio,
       };
       
-      await saveStep(3, finalData);
-      router.push('/dashboard');
+      saveStep(3, finalData)
+        .then(() => setTimeout(() => router.push('/dashboard'), 0))
+        .catch(() => setError("Failed tp save final step."))
+        .finally(() => setLoading(false));
     } catch (err) {
       console.error("❌ Onboarding submit failed:", err);
       setError("Something went wrong. Please try again.");

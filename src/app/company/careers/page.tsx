@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import styles from "@/app/page.module.css";
 import { CAREERS } from "@/constants/company";
-import { Box, Typography, Grid, Stack, Button } from "@mui/material";
+import { Box, Typography, Grid, Stack } from "@mui/material";
 
 export default function CareersSection (){
   return (
@@ -57,15 +57,9 @@ export default function CareersSection (){
                     {role.desc}
                   </Typography>
                   <br/>
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      textTransform: "none",
-                    }}
-                    className={styles.btnAction}
-                  >
+                  <button className={styles.btnAction}>
                     <Link href={'/company/careers/join'}>Apply Now</Link>
-                  </Button>
+                  </button>
                 </Stack>
               </motion.div>
             </Grid>

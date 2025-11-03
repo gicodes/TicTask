@@ -47,3 +47,9 @@ export interface CountrySelectProps {
   country: string;
   setCountry: (value: string) => void;
 }
+
+export interface FinalStepRes {
+  ok: boolean;
+  message: string;
+  redirect?: string;
+}

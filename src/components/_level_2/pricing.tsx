@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import styles from "@/app/page.module.css";
 import {
   Box,
-  Button,
   Container,
   Grid,
   Stack,
@@ -121,17 +120,9 @@ export default function PricingSection() {
                       ))}
                     </List>
 
-                    <Button
-                      variant={plan.highlight ? "contained" : "outlined"}
-                      fullWidth
-                      sx={{
-                        textTransform: "none",
-                        mt: 2,
-                      }}
-                      className={styles.btnPrimary}
-                    >
+                    <button className={styles.btnPrimary}>
                       {plan.buttonLabel}
-                    </Button>
+                    </button>
                   </Stack>
                 </Box>
               </motion.div>

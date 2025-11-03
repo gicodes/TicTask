@@ -1,12 +1,12 @@
 "use client";
 
 import { apiPost } from "@/lib/api";
-import styles from "@/app/page.module.css";
 import React, { useState } from "react";
+import styles from "@/app/page.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
-import { Box, TextField, Button, Typography, Card } from "@mui/material";
 import { ResourceHero } from "@/app/resources/_level_3";
+import { Box, TextField, Typography, Card } from "@mui/material";
 
 export default function CreateBlogPage() {
   const { user, isAuthenticated } = useAuth();
@@ -83,21 +83,19 @@ export default function CreateBlogPage() {
             required 
           />
           <Box display="flex" mt={2} gap={2}>
-            <Button 
-              variant="contained" 
+            <button 
               type="submit" 
               disabled={loading}
               className={styles.btnAction}
             > 
               Publish
-            </Button>
-            <Button 
-              variant="outlined" 
+            </button>
+            <button 
               onClick={()=>{ setTitle(''); setExcerpt(''); setContent(''); }}
               className={styles.btnWarm}
             >
               Clear
-            </Button>
+            </button>
           </Box>
         </form>
       </Card>

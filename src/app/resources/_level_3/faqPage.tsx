@@ -1,15 +1,15 @@
 "use client";
 
+import { ResourceHero } from ".";
 import { FAQRes } from "@/types/axios";
 import styles from "@/app/page.module.css";
 import { useAuth } from "@/providers/auth";
 import { apiGet, apiPost } from "@/lib/api";
 import { useAlert } from "@/providers/alert";
 import { FAQProps } from "@/types/resources";
-import { ResourceHero } from ".";
 import React, { useEffect, useState } from "react";
 import DeleteButton from "../_level_1/deleteResource";
-import { Box, Typography, TextField, Button, Card } from "@mui/material";
+import { Box, Typography, TextField, Card } from "@mui/material";
 
 export default function FaqPage() {
   const { user, isAdmin, isAuthenticated } = useAuth();
@@ -86,13 +86,12 @@ export default function FaqPage() {
               required
               fullWidth
             />
-            <Button
+            <button
               type="submit"
-              variant="contained"
               className={styles.btnPrimary}
             >
               Submit
-            </Button>
+            </button>
           </form>
         </Card>
 
@@ -116,13 +115,12 @@ export default function FaqPage() {
                     required
                     fullWidth
                   />
-                  <Button
+                  <button
                     type="submit"
-                    variant="contained"
                     className={styles.btnPrimary}
                   >
                     Submit Answer
-                  </Button>
+                  </button>
                 </form>
               </Box>
             ))}
