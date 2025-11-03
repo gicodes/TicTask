@@ -1,32 +1,47 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useAuth } from '@/providers/auth';
 import styles from '@/app/page.module.css';
 import { useThemeMode } from '@/providers/theme';
 import { Sun, Moon, Laptop, Bell, Shield, User, Globe, PlugZap, Save } from 'lucide-react';
 import { Box, Typography, Stack, Switch, TextField, MenuItem, FormControlLabel, Card, CardContent, IconButton, Tooltip } from '@mui/material';
+import Link from 'next/link';
+import { useAlert } from '@/providers/alert';
+import { forgotPassword } from '@/hooks/useForgotPass';
 
 export default function SettingsPage() {
+  const { user } = useAuth()
+  const { showAlert } = useAlert();
   const { mode, setThemeMode } = useThemeMode();
-
   const [autoSave, setAutoSave] = useState(true);
   const [emailNotif, setEmailNotif] = useState(true);
   const [slackNotif, setSlackNotif] = useState(false);
   const [language, setLanguage] = useState('English');
   const [workspaceName, setWorkspaceName] = useState('Acme Inc.');
 
+  const handleForgotPassword = () => {
+    const email = user?.email;
+    if (!email) {
+      showAlert("Provide an email for password reset!", "warning"); 
+      return;
+    }
+
+    forgotPassword({email})
+      .then(() => showAlert("Password reset link sent to your email!", "success"))
+      .catch(() => showAlert("Something went wrong!", "error"))
+  }
+
   const INTEGRATION_BUTTON = ({
     title, action, i }: { 
       title: string, i: string, action?: () => void
-    }) => 
-    <span 
+    }) => <span 
       onClick={action}
       key={i}
       className={`max-width-360 ${styles.btnRetreat}`}
     >
       Connect {title}
     </span>
-
 
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto', py: 4, px: 2 }}>
@@ -46,8 +61,7 @@ export default function SettingsPage() {
           </Typography>
 
           <Stack direction="row" spacing={2} alignItems="center">
-            {[
-              { label: 'Light', icon: <Sun size={18} />, value: 'light' },
+            {[{ label: 'Light', icon: <Sun size={18} />, value: 'light' },
               { label: 'Dark', icon: <Moon size={18} />, value: 'dark' },
               { label: 'System', icon: <Laptop size={18} />, value: 'system' },
             ].map(({ label, icon, value }) => (
@@ -81,15 +95,15 @@ export default function SettingsPage() {
             Manage your personal information and credentials.
           </Typography>
           <Stack spacing={2}>
-            <TextField label="Display Name" value="Your Display Name" fullWidth />
-            <TextField label="Email" type="email" value="yourname@tictask.com" fullWidth disabled />
+            <TextField label="Display Name" value={user?.name || "Your Display Name"} fullWidth />
+            <TextField label="Email" type="email" value={user?.email || "yourname@tictask.com"} fullWidth disabled />
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-              <button className={styles.btnPrimary}>
+              <Link href={'/dashboard/profile'} className={styles.btnPrimary}>
                 Go to Profile
-              </button>
-              <button className={styles.btnInverted}>
+              </Link>
+              <Link href={'#'} onClick={handleForgotPassword} className={styles.btnWarm}>
                 Change Password
-              </button>
+              </Link>
             </Stack>
           </Stack>
         </CardContent>

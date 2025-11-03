@@ -79,3 +79,10 @@ export interface UserProfileRes {
   message?: string;
   data: User;
 }
+
+export interface GenericAPIRes {
+  ok?: boolean;
+  message: string;
+  data?: unknown;
+  redirect?: string
+}

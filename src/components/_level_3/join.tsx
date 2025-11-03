@@ -141,7 +141,7 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
           direction="row" justifyContent="space-around" alignItems="center"
         >
           <Typography variant="subtitle2"> Have an account? &nbsp;
-            <Link href={`/auth/login`}>Login here</Link>
+            <Link href={`/auth/login`} style={{ paddingBottom: 5, borderBottom: '1px solid var(--special)'}}>Login here</Link>
           </Typography>
         </Stack>
       </Box>

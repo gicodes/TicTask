@@ -1,3 +1,4 @@
+import { AuthUser } from "@/providers/auth";
 import { CgMenuGridR } from "react-icons/cg";
 import { RiRobot2Fill } from "react-icons/ri";
 import { SiAwsorganizations } from "react-icons/si";
@@ -9,23 +10,6 @@ import { BsFillCreditCard2BackFill, BsCalendar2Date } from "react-icons/bs";
 import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle } from 'react-icons/fa';
 import { FcSerialTasks, FcDocument, FcBearish, FcDataEncryption } from "react-icons/fc";
 import { MdOutlineFamilyRestroom, MdCategory, MdSettings, MdPaid, MdCampaign } from "react-icons/md";
-import { AuthUser } from "@/providers/auth";
-
-export type LinkItem = {
-  label: string | React.ReactNode;
-  href: string;
-  cta?: boolean;
-  disabled?: boolean;
-  onClick?: boolean;
-};
-
-export interface AvatarProps {
-  user: {
-    name: string;
-    photo?: string;
-  } | null;
-  size?: number;
-}
 
 export const NAV_ITEMS = [
   { label: 'Tickets', path: '/dashboard/', icon: <FcSerialTasks/> },
@@ -71,6 +55,14 @@ export const getFilteredNav = (user: AuthUser | null) => {
 
   const uniqueAllowed = [...new Set(allowed)];
   return NAV_ITEMS.filter(item => uniqueAllowed.includes(item.label));
+};
+
+export type LinkItem = {
+  label: string | React.ReactNode;
+  href: string;
+  cta?: boolean;
+  disabled?: boolean;
+  onClick?: boolean;
 };
 
 export const AUTH_ITEMS: LinkItem[] = [
@@ -120,6 +112,14 @@ export const userLinks: LinkItem[] = [
   { label: "Dashboard", href: "/dashboard", cta: true },
 ];
 
+export interface AvatarProps {
+  user: {
+    name: string;
+    photo?: string;
+  } | null;
+  size?: number;
+}
+
 export const NavbarAvatar = ({ user, size = 36}: AvatarProps) => <Box position={'relative'} maxHeight={50} alignContent={'center'}>
   <Avatar
     src={user?.photo || ''}
@@ -157,3 +157,4 @@ export const NewFeatureBadge = () =>
   >
     BETA
   </Badge>
+  

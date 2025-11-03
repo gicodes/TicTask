@@ -1,6 +1,7 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
+import { GenericAPIRes } from '@/types/axios';
 import { UserType } from '@/types/onboarding';
 import { apiPost } from '@/lib/api';
 import { useState } from 'react';
@@ -29,19 +30,24 @@ export default function Onboarding() {
 
   const stepsTotal = 3;
 
-  const saveStep = async (step: number, data: unknown) => {
+  const saveStep = async (step: number, data: unknown): Promise<GenericAPIRes> => {
     setLoading(true);
     setError(null);
- 
+
     try {
-      await apiPost('/auth/onboarding', 
-        { step, data },   
-        { Authorization: `Bearer ${token}`}
+      const res: GenericAPIRes = await apiPost(
+        '/auth/onboarding',
+        { step, data },
+        { Authorization: `Bearer ${token}` }
       );
+      return res;
     } catch (err: unknown) {
       console.error(err);
       setError('Something went wrong. Please try again.');
-    } finally { setLoading(false);}
+      return { ok: false, message: 'Something went wrong.' };
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleNext = async () => {
@@ -97,13 +103,15 @@ export default function Onboarding() {
         website,
         bio,
       };
+
+      const res = await saveStep(3, finalData);
+
+      if (res.ok) {
+        const next = res?.redirect ?? '/dashboard';
+        setTimeout(() => router.push(next), 0);
+      } else setError(res.message || "Failed to save final step.");
       
-      saveStep(3, finalData)
-        .then(() => setTimeout(() => router.push('/dashboard'), 0))
-        .catch(() => setError("Failed to save final step."))
-        .finally(() => setLoading(false));
-    } catch (err) {
-      console.error("❌ Onboarding submit failed:", err);
+    } catch {
       setError("Something went wrong. Please try again.");
     }
   };
