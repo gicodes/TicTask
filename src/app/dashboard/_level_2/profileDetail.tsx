@@ -315,7 +315,7 @@ export default function ProfileDetailDrawer() {
                 Organization Details
               </Typography>
               <Stack spacing={1.5}>
-                {profile?.organization && (
+                {profile?.userType==="BUSINESS" && (
                   <Stack direction="row" alignItems="center" spacing={1}>
                     <SiAwsorganizations />
                     <Typography variant="body2">{profile.organization}</Typography>

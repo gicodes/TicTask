@@ -100,7 +100,7 @@ export default function Onboarding() {
       
       saveStep(3, finalData)
         .then(() => setTimeout(() => router.push('/dashboard'), 0))
-        .catch(() => setError("Failed tp save final step."))
+        .catch(() => setError("Failed to save final step."))
         .finally(() => setLoading(false));
     } catch (err) {
       console.error("❌ Onboarding submit failed:", err);

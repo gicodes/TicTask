@@ -201,7 +201,7 @@ export default function TicketDetailDrawer({
               <strong>Due by</strong> {ticket.dueDate ? new Date(ticket.dueDate).toDateString() : ''}
             </Typography>}
           </Stack>
-          {user?.organization && <><Typography variant="subtitle2" py={1}>Add new assignee</Typography>
+          {user?.userType==="BUSINESS" && <><Typography variant="subtitle2" py={1}>Add new assignee</Typography>
           <TextField 
             type='text'
             value={assignee} 

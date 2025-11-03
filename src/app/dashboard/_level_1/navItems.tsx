@@ -64,7 +64,7 @@ export const getFilteredNav = (user: AuthUser | null) => {
   ];
 
   if (user?.partner) allowed.push('Marketing');
-  if (user?.organization) allowed.push('Teams', 'Metrics'); 
+  if (user?.userType==="BUSINESS") allowed.push('Teams', 'Metrics'); 
   if (user?.role === 'ADMIN') {
     return NAV_ITEMS;
   }
@@ -133,7 +133,7 @@ export const NavbarAvatar = ({ user, size = 36}: AvatarProps) => <Box position={
     }}
   >
     <Typography color={'var(--bw)'}>{user ? user.name?.
-    split(' ').map(n => n[0]?.toUpperCase()).join('') : 'NA'}</Typography>
+    split(' ').slice(0,2).map(n => n[0]?.toUpperCase()).join('') : 'NA'}</Typography>
   </Avatar>
   <Box position={'absolute'} bottom={-5} right={0} maxHeight={1}>
     <FaCircle size={9} color={user ? 'limegreen' : 'var(--secondary)'} />

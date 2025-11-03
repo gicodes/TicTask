@@ -141,7 +141,7 @@ export default function TicketFormDrawer({
               )}
             />
 
-            {user?.organization && <Controller
+            {user?.userType==="BUSINESS" && <Controller
               name="assignTo"
               control={control}
               render={({ field }) => (
