@@ -93,7 +93,7 @@ const TicketsPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
+    <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, minHeight: '75vh' }}>
       <Toolbar
         view={view}
         setView={setView}

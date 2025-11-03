@@ -1,8 +1,9 @@
 'use client';
 
+import type { User } from '@/types/users';
+import styles from "@/app/page.module.css";
 import { useAuth } from '@/providers/auth';
 import { apiGet, apiPatch } from '@/lib/api';
-import type { User } from '@/types/users';
 import { UserProfileRes } from '@/types/axios';
 import React, { useEffect, useState } from 'react';
 import {
@@ -201,7 +202,7 @@ export default function ProfileDetailDrawer() {
             </Stack>
           </Stack>
 
-          <Stack alignItems="center" spacing={1} textAlign="center" my={3}>
+          <Stack alignItems="center" spacing={1.5} textAlign="center" my={3}>
             <Avatar
               src={profile?.photo || '/default-avatar.png'}
               alt={profile?.name}
@@ -243,11 +244,9 @@ export default function ProfileDetailDrawer() {
                 color={isBusiness ? 'primary' : 'default'}
                 size="small"
                 variant="outlined"
-                sx={{ p: 1.5}}
+                sx={{ p: 1.8}}
               />
             </Stack>
-            <br/>
-
              {isEditing ? (
               <TextField
                 multiline
@@ -256,7 +255,7 @@ export default function ProfileDetailDrawer() {
                 fullWidth
                 value={profile?.bio || ''}
                 onChange={(e) => handleChange('bio', e.target.value)}
-                sx={{ maxWidth: 340, borderRadius: 5 }}
+                sx={{ maxWidth: 340, borderRadius: 5, mt: 5 }}
                 placeholder="Tell us something about yourself..."
               />
             ) : (
@@ -267,7 +266,7 @@ export default function ProfileDetailDrawer() {
           </Stack>
 
           <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-            <Typography variant="subtitle2" color="text.secondary" mb={2.5}>
+            <Typography variant="subtitle2" color="text.secondary" mb={2}>
               Contact Information
             </Typography>
             <Stack spacing={1.5}>
@@ -311,7 +310,7 @@ export default function ProfileDetailDrawer() {
 
           { isBusiness && (
             <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-              <Typography variant="subtitle2" color="text.secondary" mb={2.5}>
+              <Typography variant="subtitle2" color="text.secondary" mb={2}>
                 Organization Details
               </Typography>
               <Stack spacing={1.5}>
@@ -349,7 +348,7 @@ export default function ProfileDetailDrawer() {
 
           {!isBusiness && (
             <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-              <Typography variant="subtitle2" color="text.secondary" mb={2.5}>
+              <Typography variant="subtitle2" color="text.secondary" mb={2}>
                 Professional Details
               </Typography>
               <Stack spacing={1.5}>
@@ -400,7 +399,7 @@ export default function ProfileDetailDrawer() {
 
           <Stack direction="row" justifyContent="center" my={5}>
             <Link href='/dashboard'>
-              <button onClick={closeDetail} className='btn min-height-44 min-width-100'>
+              <button onClick={closeDetail} className={styles.btnRetreat}>
                 ← &nbsp; Back
               </button>
             </Link>

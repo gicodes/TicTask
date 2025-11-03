@@ -44,7 +44,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
     let variant = "USER";
 
     if (isLoggedIn && user) {
-      if (user?.role==="USER" && user.organization) variant = "ORGANIZATION";
+      if (user?.role==="USER" && user.userType==="BUSINESS") variant = "ORGANIZATION";
       if (user?.role==="USER" && user.collab) variant = "MODERATOR";
       if (user?.role==="USER" && user.partner) variant = "PARTNER";
       if (user?.role==="ADMIN") variant = "ADMIN";

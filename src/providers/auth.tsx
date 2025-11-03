@@ -3,6 +3,8 @@
 import { SessionProvider, useSession, signIn, signOut } from 'next-auth/react';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Role, UserType } from '@/types/users';
+import { UserProfileRes } from '@/types/axios';
+import { apiGet } from '@/lib/api';
 
 export interface AuthUser {
   id: number;
@@ -39,15 +41,21 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (session?.user) {
-      setUser({
-        id: ((session.user as unknown) as User).id,
-        name: session.user.name || '',
-        email: session.user.email || '',
-        role: ((session.user as unknown) as User).role || 'USER',
-        userType: ((session.user as unknown) as User).userType || 'PERSONAL',
-        photo: ((session.user as unknown) as User).photo,
-        organization: ((session.user as unknown) as User).organization,
-      });
+      const fetchUser = async () => {
+        const res: UserProfileRes = await apiGet(`/user/${((session.user as unknown) as User).id}`);
+        
+        setUser({
+          id: ((session.user as unknown) as User).id,
+          name: res.data.name || '',
+          email: res.data.email || '',
+          role: ((res.data as unknown) as User).role || 'USER',
+          userType: ((res.data as unknown) as User).userType || '',
+          photo: ((res.data as unknown) as User).photo,
+          organization: ((res.data as unknown) as User).organization,
+        });
+      }
+
+      fetchUser();
     } else {
       setUser(null);
     }
