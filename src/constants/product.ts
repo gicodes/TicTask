@@ -55,7 +55,7 @@ export const FEATURES_2 = [
 
 export const PLANS = [
   {
-    name: "Free",
+    name: "Personal",
     desc: "For individuals and small projects getting started.",
     priceMonthly: 0,
     priceYearly: 0,

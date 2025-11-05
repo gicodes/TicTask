@@ -85,9 +85,9 @@ export default function Board({ grouped, setGrouped, openDetail, isSearching }: 
           sx={{ marginTop: 2}}
         >
           {isSearching ? visibleStatusesRaw.map((status, idx) => (
-            <Tab key={status} label={status==='IN_PROGRESS' ? 'IN PROGRESS' : status} value={idx} />
+            <Tab key={status} label={status==='IN_PROGRESS' ? `IN PROGRESS (${grouped[status].length})` : `${status} (${grouped[status].length})`} value={idx} />
           )) : STATUSES.map((status, idx) => (
-            <Tab key={status} label={status==='IN_PROGRESS' ? 'IN PROGRESS' : status} value={idx} />
+            <Tab key={status} label={status==='IN_PROGRESS' ? `IN PROGRESS (${grouped[status].length})` : `${status} (${grouped[status].length})`} value={idx} />
           ))}
         </Tabs>
       )}

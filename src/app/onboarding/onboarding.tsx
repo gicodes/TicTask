@@ -1,6 +1,7 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
+import { signIn, useSession } from 'next-auth/react';
 import { GenericAPIRes } from '@/types/axios';
 import { UserType } from '@/types/onboarding';
 import { apiPost } from '@/lib/api';
@@ -9,6 +10,7 @@ import OnboardingUI from './ui';
 
 export default function Onboarding() {
   const router = useRouter();
+  const { update } = useSession();
   const params = useSearchParams();
   const token = params.get('token');
   const [bio, setBio] = useState('');
@@ -51,35 +53,24 @@ export default function Onboarding() {
   };
 
   const handleNext = async () => {
-    if (step === 1 && !password) {
-      setError('Password is required');
-      return;
-    }
+    setError(null);
+
+    if (step === 1 && !password) return setError('Password is required');
     if (step === 2) {
-      if (userType === 'PERSONAL' && !name) {
-        setError('Please enter your name');
-        return;
-      }
-      if (userType === 'BUSINESS' && !orgName) {
-        setError('Please enter your organization name');
-        return;
-      }
+      if (userType === 'PERSONAL' && !name) return setError('Please enter your name');
+      if (userType === 'BUSINESS' && !orgName) return setError('Please enter your organization name');
     }
 
     const data = 
-      step === 1 ? { password } 
-      : step === 2 ? userType === 'PERSONAL' 
-      ? { userType, name, country, phone }: {
-        userType,
-        orgName,
-        industry,
-        teamSize,
-        hqCountry,
-        website,
-        bio,
-      } : {};
-    await saveStep(step, data);
-    setStep((prev) => prev + 1);
+      step === 1 ? { password }
+      : step === 2 ? userType === 'PERSONAL'
+        ? { userType, name, country, phone }
+        : { userType, orgName, industry, teamSize, hqCountry, website, bio }
+      : {};
+
+    const res = await saveStep(step, data);
+    if (res.ok) setStep(prev => prev + 1);
+    else setError(res.message);
   };
 
   const handleBack = () => {
@@ -105,12 +96,18 @@ export default function Onboarding() {
       };
 
       const res = await saveStep(3, finalData);
-
       if (res.ok) {
-        const next = res?.redirect ?? '/dashboard';
-        setTimeout(() => router.push(next), 0);
+        console.log(res)
+        const email = res?.user?.email;
+
+        const r = await signIn('credentials', { redirect: false, email, password });
+        if (r?.error) {
+          setError(r.error || 'Invalid credentials');
+        } else {
+          router.refresh();
+          router.push('/dashboard');
+        }        
       } else setError(res.message || "Failed to save final step.");
-      
     } catch {
       setError("Something went wrong. Please try again.");
     }

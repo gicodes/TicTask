@@ -77,7 +77,7 @@ export default function OnboardingUI(props: OnboardingProps) {
       </button>
       <button
         type="button"
-        onClick={handleNext}
+        onClick={step===3 ? handleSubmit : handleNext}
         className={`min-width-100 ${styles.btnPrimary}`}
         disabled={loading}
       >
@@ -112,6 +112,7 @@ export default function OnboardingUI(props: OnboardingProps) {
       >
         <InputLabel>{accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}</InputLabel>
         <Select
+          fullWidth
           MenuProps={{PaperProps: { sx: { maxHeight: 300, borderRadius: 2,}}}}
           value={accountType==="BUSINESS" ? hqCountry : country} 
           label={accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}
@@ -310,6 +311,20 @@ export default function OnboardingUI(props: OnboardingProps) {
               <Typography variant="h6" fontWeight={600} mb={2}>
                 Review & Finish
               </Typography>
+              <Card sx={{py: 3, px: 5, mb: 7}}>
+                <Box display={'grid'} gap={2} textAlign={'left'}>
+                  <Typography variant='subtitle2'>
+                    <strong>{userType[0] + userType.slice(1).toLocaleLowerCase()} Account</strong>
+                  </Typography>
+                  <Typography variant='subtitle2'>{name || orgName}</Typography>
+                  <Typography variant='subtitle2'>{country || hqCountry}</Typography>
+                  {phone && <Typography variant='subtitle2'>{phone}</Typography>}
+                  {industry && <Typography variant='subtitle2'>{industry}</Typography>}
+                  {teamSize && <Typography variant='subtitle2'>Team Size: {teamSize}</Typography>}
+                  {website && <Typography variant='subtitle2'>{website}</Typography>}
+                  {bio && <Typography variant='subtitle2'>{bio}</Typography>}
+                </Box>
+              </Card>
               <Typography variant="body2" mb={4}>
                 Satisfied with the information provided? Click finish to continue to your
                 dashboard.

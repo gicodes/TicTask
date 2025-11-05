@@ -85,4 +85,7 @@ export interface GenericAPIRes {
   message: string;
   data?: unknown;
   redirect?: string
+  user?: {
+    email: string;
+  }
 }

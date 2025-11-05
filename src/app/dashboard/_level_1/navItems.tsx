@@ -19,10 +19,10 @@ export const NAV_ITEMS = [
   { label: 'Refer & Invites', path: '/dashboard/refer', icon: <MdOutlineFamilyRestroom /> },
   { label: 'Subscriptions', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
   { label: 'Marketing', path: '/dashboard/marketing', icon: <MdCampaign /> },
-  { label: 'Teams', path: '/dashboard/teams', icon: <SiAwsorganizations />}, // user.BUSINESS
+  { label: 'Teams', path: '/dashboard/teams', icon: <SiAwsorganizations />},
   { label: "Metrics", path: '/dashboard/metrics', icon: <FcDataEncryption /> },
   { label: 'Settings', path: '/dashboard/settings', icon: <MdSettings /> }, 
-  { label: 'Legal', path: '/legal', icon: <FcDocument />}, // user.BUSINESS
+  { label: 'Legal', path: '/legal', icon: <FcDocument />},
   { label: 'More', path: '', icon: <CgMenuGridR /> }, // more includes Docs, FAQ, blog, community and register new account
   { label: 'All Users', path: '/dashboard/users', icon: <FaUsers /> },
   { label: 'Careers', path: '/dashboard/careers', icon: <WorkSharp />},
@@ -157,4 +157,3 @@ export const NewFeatureBadge = () =>
   >
     BETA
   </Badge>
-  
