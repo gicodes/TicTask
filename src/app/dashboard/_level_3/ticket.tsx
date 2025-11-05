@@ -1,13 +1,13 @@
 import { Box } from '@mui/material';
 import { Ticket } from '@/types/ticket';
-import Toolbar from '../_level_2/toolbar';
+import Toolbar from '../_level_2/ticketToolbar';
 import TicketsList from '../_level_2/_list';
 import TicketBoard from '../_level_2/_board';
 import { useTickets } from '@/providers/tickets';
 import TicketFormDrawer from '../_level_2/ticketForm';
-import { TICKET_STATUSES } from '../_level_1/constants';
 import TicketDetailDrawer from '../_level_2/ticketDetail';
 import React, { useEffect, useMemo, useState } from 'react';
+import { TICKET_STATUSES, TICKET_LIST_HEADERS } from '../_level_1/constants';
 
 function useDebounce<T>(value: T, delay = 400): T {
   const [debounced, setDebounced] = useState(value);
@@ -110,7 +110,11 @@ const TicketsPage: React.FC = () => {
           isSearching={!!debouncedQuery}
         />
       ) : (
-        <TicketsList tickets={filteredTickets} openDetail={openDetail} />
+        <TicketsList 
+          list={TICKET_LIST_HEADERS}
+          tickets={filteredTickets} 
+          openDetail={openDetail} 
+        />
       )}
 
       <TicketDetailDrawer

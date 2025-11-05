@@ -70,3 +70,7 @@ export const TAG_SUGGESTIONS = [
 ];
 
 export const TICKET_STATUSES = ['UPCOMING', 'IN_PROGRESS', 'OPEN', 'RESOLVED', 'CLOSED', 'CANCELLED'];
+
+export const TICKET_LIST_HEADERS = ['No.', 'Title', 'Priority','Status',  'Type', 'Due Date', 'Last Updated']
+
+export const TASK_LIST_HEADERS = ['No.', 'Title', 'Due Date', 'Type']

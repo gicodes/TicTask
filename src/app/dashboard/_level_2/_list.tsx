@@ -4,9 +4,11 @@ import { Box, Chip } from '@mui/material';
 import { getStatusColor, priorityColor } from '../_level_1/tColorVariants';
 
 const TicketsList = ({
+  list,
   tickets,
   openDetail,
 }: {
+  list: string[];
   tickets: Ticket[];
   openDetail: (id: string | number) => void;
 }) => {
@@ -50,7 +52,7 @@ const TicketsList = ({
         >
           <thead style={{ textAlign: 'left' }}>
             <tr>
-              {['No.', 'Title', 'Priority','Status',  'Type', 'Due Date', 'Last Updated'].map((h) => (
+              {list.map((h) => (
                 <th
                   key={h}
                   style={{

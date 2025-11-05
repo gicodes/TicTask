@@ -1,0 +1,62 @@
+.rbc-calendar {
+  font-family: var(--font-family, 'Inter', sans-serif);
+  background: var(--surface-1);
+  color: var(--text-primary);
+}
+
+.rbc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.rbc-toolbar button {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.rbc-toolbar button:hover,
+.rbc-toolbar button:focus {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.rbc-toolbar button.rbc-active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.rbc-month-view,
+.rbc-time-view {
+  border-top: none;
+}
+
+.rbc-header {
+  background: var(--surface-2);
+  color: var(--text-secondary);
+  font-weight: 600;
+  padding: 8px 0;
+}
+
+.rbc-today {
+  background: var(--primary-faint);
+  border-radius: 4px;
+}
+
+.rbc-event {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.rbc-off-range-bg {
+  background: var(--surface-3);
+}
