@@ -62,6 +62,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       sx={{
         height: '100%',
         backgroundColor: 'background.paper',
+        color: 'var(--foreground)',
         overflow: 'hidden',
 
         '@media (max-width: 900px)': {
@@ -92,6 +93,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
         },
         '& .rbc-off-range-bg': {
           backgroundColor: 'var(--disabled)',
+          color: 'inherit'
         },
         '& .rbc-today': {
           backgroundColor: 'var(--success)',
@@ -147,7 +149,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           px: 0,
           borderBottom: 1,
           borderColor: 'divider',
-          backgroundColor: 'background.default',
           gap: { xs: 2, sm: 0 },
         }}
       >
@@ -174,7 +175,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           <Button
             size="small"
             variant="outlined"
-            sx={{ color: 'inherit'}}
+            sx={{ color: 'inherit', borderColor: 'var(--success)'}}
             onClick={() => handleNavigate('TODAY')}
           >
             Today
@@ -187,7 +188,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
               key={view}
               size="small"
               onClick={() => setActiveView(view)}
-              sx={{ color: 'inherit', bgcolor: 'var(--surface-1)', borderColor: 'inherit'}}
+              sx={{ bgcolor: 'var(--surface-1)', borderColor: 'inherit', color: 'var(--foreground)'}}
               variant={activeView === view ? 'outlined' : 'contained'}
             >
               {capitalizeView(view)}

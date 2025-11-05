@@ -82,24 +82,20 @@ export default function Toolbar({
               <Button
                 onClick={() => setView('board')}
                 color='inherit'
-                sx={{ bgcolor: 'inherit'}}
-                variant={view === 'board' ? 'contained' : 'outlined'}
-                className={view === 'board' ? styles.btnPrimary : styles.btnSecondary}
+                variant={view === 'board' ? 'outlined' : 'contained'}
                 startIcon={<ViewKanbanIcon />}
               >
                 BOARD
               </Button>
             </Tooltip>
 
-            <Divider sx={{ border: '1px solid silver' }} />
+            <Divider sx={{ border: '1px solid gray' }} />
 
             <Tooltip title="View tickets in tabular list mode">
               <Button
                 color='inherit'
-                sx={{ bgcolor: 'inherit'}}
                 onClick={() => setView('list')}
-                variant={view === 'list' ? 'contained' : 'outlined'}
-                className={view === 'list' ? styles.btnPrimary : styles.btnSecondary}
+                variant={view === 'list' ? 'outlined' : 'contained'}
                 startIcon={<FaList />}
               >
                 LIST
