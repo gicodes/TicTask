@@ -50,7 +50,7 @@ const TicketsList = ({
         >
           <thead style={{ textAlign: 'left' }}>
             <tr>
-              {['No.', 'Title', 'Priority', 'Type', 'Status', 'Due Date', 'Last Updated'].map((h) => (
+              {['No.', 'Title', 'Priority','Status',  'Type', 'Due Date', 'Last Updated'].map((h) => (
                 <th
                   key={h}
                   style={{
@@ -71,22 +71,23 @@ const TicketsList = ({
               ))}
             </tr>
           </thead>
-
+          
           <tbody>
             {tickets.map((t, i) => (
               <tr
                 key={t.id}
                 style={{
                   borderBottom: '0.1px solid var(--secondary)',
-                  cursor: 'pointer',
                   transition: 'background 0.2s',
+                  cursor: 'pointer',
+                  height: '60px',
                 }}
                 onClick={() => openDetail(t.id)}
                 onMouseEnter={(e) => e.currentTarget.style.background = 'var(--surface-1)'}
                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
-                  {i+1}
+                  {i+1}.
                 </td>
 
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
@@ -108,10 +109,6 @@ const TicketsList = ({
                 </td>
 
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
-                  {t.type==='FEATURE_REQUEST' ? 'FEATURE' : t.type}
-                </td>
-
-                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
                   <Chip
                     label={t.status==="IN_PROGRESS" ? "IN PROGRESS" : t.status}
                     size="small"
@@ -123,6 +120,10 @@ const TicketsList = ({
                       textTransform: 'capitalize',
                     }}
                   />
+                </td>
+
+                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
+                  {t.type==='FEATURE_REQUEST' ? 'FEATURE' : t.type}
                 </td>
 
                 <td style={{ padding: '0 10px', whiteSpace: 'nowrap', }}>

@@ -329,7 +329,7 @@ export default function ProfileDetailDrawer() {
                 {profile?.teamSize && (
                   <Stack direction="row" alignItems="center" spacing={1}>
                     <Groups3 fontSize="small" />
-                    <Typography variant="caption">Team Size: {profile.teamSize}</Typography>
+                    <Typography variant="body2">Team Size: {profile.teamSize}</Typography>
                   </Stack>
                 )}
                 {profile?.website && (

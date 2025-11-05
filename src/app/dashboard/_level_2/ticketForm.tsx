@@ -97,8 +97,8 @@ export default function TicketFormDrawer({
               control={control}
               render={({ field }) => (
                 <TextField select label="Type" {...field}>
-                  {Object.values(TICKET_TYPES).map((v) => (
-                    <MenuItem value={v} key={v}>
+                  {Object.values(TICKET_TYPES).map((v, i) => (
+                    <MenuItem value={v} key={i}>
                       {v==="FEATURE_REQUEST" ? "Feature" : v[0] + v.slice(1).toLocaleLowerCase()}
                     </MenuItem>
                   ))}
@@ -147,7 +147,7 @@ export default function TicketFormDrawer({
               render={({ field }) => (
                 <TextField 
                   type='email' 
-                  label="Assign to (Team member email)" 
+                  label="Assign to team (member email)" 
                   {...field} 
                 />
               )}

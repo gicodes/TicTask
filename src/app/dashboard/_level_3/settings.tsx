@@ -23,7 +23,7 @@ export default function SettingsPage() {
   const handleForgotPassword = () => {
     const email = user?.email;
     if (!email) {
-      showAlert("Provide an email for password reset!", "warning"); 
+      showAlert("Your account is not signed in or recognized", "warning"); 
       return;
     }
 

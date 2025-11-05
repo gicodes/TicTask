@@ -31,7 +31,10 @@ export default function Onboarding() {
 
   const stepsTotal = 3;
 
-  const saveStep = async (step: number, data: unknown): Promise<GenericAPIRes> => {
+  const saveStep = async (
+    step: number, 
+    data: unknown
+  ): Promise<GenericAPIRes> => {
     setLoading(true);
     setError(null);
 
@@ -95,6 +98,7 @@ export default function Onboarding() {
       };
 
       const res = await saveStep(3, finalData);
+      
       if (res.ok) {
         console.log(res)
         const email = res?.user?.email;

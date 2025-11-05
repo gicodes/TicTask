@@ -201,13 +201,16 @@ export default function TicketDetailDrawer({
               <strong>Due by</strong> {ticket.dueDate ? new Date(ticket.dueDate).toDateString() : ''}
             </Typography>}
           </Stack>
-          {user?.userType==="BUSINESS" && <><Typography variant="subtitle2" py={1}>Add new assignee</Typography>
-          <TextField 
-            type='text'
-            value={assignee} 
-            onChange={(e) => setAssigned(e.target.value)} 
-            placeholder="Assign to... (Team member email)" 
-          /></>}
+          {user?.userType==="BUSINESS" && <>
+            <Typography variant="subtitle2" py={1}>Add new assignee</Typography>
+            <TextField 
+              type='text'
+              value={assignee} 
+              onChange={(e) => setAssigned(e.target.value)} 
+              placeholder="Assign to team (member email)" 
+              sx={{ minWidth: 250}}
+            />
+          </>}
           <Typography variant="subtitle2" py={1}>Add note</Typography>
           <TextField 
             multiline 
