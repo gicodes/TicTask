@@ -40,6 +40,7 @@ export interface LoginResponse {
     id: string;
     email: string;
     role: Role;
+    accessToken?: string
   }
 }
 
@@ -78,6 +79,10 @@ export interface UserProfileRes {
   ok?: boolean;
   message?: string;
   data: User;
+}
+
+export interface RefreshToken {
+  accessToken: string
 }
 
 export interface GenericAPIRes {

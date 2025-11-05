@@ -16,6 +16,7 @@ export interface AuthUser {
   collab?: boolean;
   partner?: boolean;
   organization?: string;
+  accessToken?: string
 }
 
 interface AuthContextProps {
@@ -52,7 +53,10 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
           userType: ((res.data as unknown) as User).userType || '',
           photo: ((res.data as unknown) as User).photo,
           organization: ((res.data as unknown) as User).organization,
+          accessToken: ((res.data as unknown) as User).accessToken
         });
+      
+        return;
       }
 
       fetchUser();

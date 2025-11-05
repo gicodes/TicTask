@@ -27,9 +27,6 @@ export type User = {
   logo?:       string; 
   bio?:          string;
 
-  createdAt: string;
-  updatedAt: string;
-
   teamMemberships: TeamMember[];
   createdTeams: Team[];
   adminProfile?: Admin;
@@ -37,6 +34,10 @@ export type User = {
   partner?: boolean;
   collab?: boolean;
   partnerRole: string;
+
+  accessToken?: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type Admin = {

@@ -1,5 +1,5 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { LoginRequest, LoginResponse } from '@/types/axios';
+import { LoginRequest, LoginResponse, RefreshToken } from '@/types/axios';
 import GoogleProvider from 'next-auth/providers/google';
 import SlackProvider from 'next-auth/providers/slack';
 import XProvider from 'next-auth/providers/twitter';
@@ -24,6 +24,8 @@ export const authOptions: NextAuthOptions = {
             "/auth/login", credentials!
           );
           user = res.user;
+          user.accessToken = res.accessToken;
+
           if (res.ok && user) return user;
         } catch (error) {
           console.log("Login error at nextAuth Options:", error);
@@ -36,12 +38,10 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-
     SlackProvider({
       clientId: process.env.SLACK_CLIENT_ID!,
       clientSecret: process.env.SLACK_CLIENT_SECRET!,
     }),
-
     XProvider({
       clientId: process.env.X_CLIENT_ID!,
       clientSecret: process.env.X_CLIENT_SECRET!,
@@ -60,7 +60,21 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.user = user;
+  if (user) {
+      token.user = user;
+      token.expires = Math.floor(Date.now() / 1000) + 15 * 60;
+    }
+      const now = Date.now() / 1000;
+
+      if (token.accessToken && token.expires && +token.expires - now < 60) {
+        try {
+          const res: RefreshToken = await nextAuthApiPost("/auth/refresh");
+          token.accessToken = res.accessToken;
+          token.expires = now + 15 * 60;
+        } catch (err) {
+          console.error("Failed to refresh token:", err);
+        }
+      }
       return token;
     },
     async session({ session, token }) {
@@ -79,8 +93,7 @@ export const authErrorMessages: Record<string, string> = {
   OAuthCreateAccount: "Could not create your account via provider.",
   EmailCreateAccount: "Could not create your account with email.",
   Callback: "An unexpected error occurred. Please try again.",
-  OAuthAccountNotLinked:
-    "Please sign in with the same method you used to create your account.",
+  OAuthAccountNotLinked: "Please sign in with the same method you used to create your account.",
   EmailSignin: "Error sending sign-in email.",
   SessionRequired: "Please sign in to access this page.",
   Default: "Something went wrong. Please try again later.",

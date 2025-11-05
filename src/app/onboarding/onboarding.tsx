@@ -1,16 +1,15 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { signIn, useSession } from 'next-auth/react';
 import { GenericAPIRes } from '@/types/axios';
 import { UserType } from '@/types/onboarding';
+import { signIn } from 'next-auth/react';
 import { apiPost } from '@/lib/api';
 import { useState } from 'react';
 import OnboardingUI from './ui';
 
 export default function Onboarding() {
   const router = useRouter();
-  const { update } = useSession();
   const params = useSearchParams();
   const token = params.get('token');
   const [bio, setBio] = useState('');
