@@ -11,7 +11,8 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import styles from "@/app/page.module.css";
-import { Calendar, List, Plus, Search } from 'lucide-react';
+import { FaPlusCircle } from 'react-icons/fa';
+import { Calendar, List, Search } from 'lucide-react';
 
 interface PlannerToolbarProps {
   view: 'calendar' | 'list';
@@ -50,7 +51,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
           fontWeight={600}
           sx={{ fontSize: { xs: '1.25rem', sm: '1.5rem' } }}
         >
-          Planner
+          Task Planner
         </Typography>
         {dateRangeLabel && (
           <Typography
@@ -114,7 +115,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
           onClick={onOpenCreate}
           className={styles.btnPrimary}
         >
-          <Plus size={18} /> Add Task
+          <FaPlusCircle />&nbsp;ADD TASK
         </Typography>
       </Stack>
     </Box>

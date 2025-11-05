@@ -1,34 +1,18 @@
 'use client';
 
 import moment from 'moment';
-import React, { useMemo } from 'react';
-import { Ticket } from '@/types/ticket';
-import {
-  Calendar as BigCalendar,
-  momentLocalizer,
-  Views,
-  View,
-} from 'react-big-calendar';
-import {
-  Box,
-  Button,
-  IconButton,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { useMemo, useState, useEffect } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
+import { Calendar as BigCalendar, momentLocalizer, View } from 'react-big-calendar';
+import { Box, Button, IconButton, Stack, Typography, useTheme,} from '@mui/material';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../_level_1/calendar.module.css';
 
-interface PlannerCalendarProps {
-  tasks: Ticket[];
-  onSelectTask: (id: string) => void;
-  onDateChange?: (start: Date, end: Date) => void;
-}
-
 const localizer = momentLocalizer(moment);
+
 const capitalizeView = (v: string) =>
   v.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
@@ -38,8 +22,16 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   onDateChange,
 }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery('(max-width:600px)');
 
-  const events = useMemo(
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [activeView, setActiveView] = useState<View>('month');
+
+  useEffect(() => {
+    if (isMobile && activeView !== 'day') setActiveView('day');
+  }, [isMobile]);
+
+  const events = useMemo<PlannerEvent[]>(
     () =>
       tasks
         ?.filter((t) => t.dueDate)
@@ -51,94 +43,152 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           allDay: true,
           status: t.status,
           priority: t.priority,
-        })),
+        })) || [],
     [tasks]
   );
+
+  const handleNavigate = (direction: 'PREV' | 'NEXT' | 'TODAY') => {
+    const m = moment(currentDate);
+    const newDate =
+      direction === 'TODAY' ? moment()
+        : direction === 'PREV'
+        ? m.subtract(1, activeView === 'month' ? 'month' : 'week')
+        : m.add(1, activeView === 'month' ? 'month' : 'week');
+    setCurrentDate(newDate.toDate());
+  };
 
   return (
     <Box
       sx={{
         height: '100%',
         backgroundColor: 'background.paper',
-        borderRadius: 3,
         overflow: 'hidden',
-        boxShadow: theme.shadows[1],
-        '& .rbc-calendar': {
-          minHeight: '85vh',
-          fontFamily: theme.typography.fontFamily,
+
+        '@media (max-width: 900px)': {
+          overflowX: 'auto',
+          maxWidth: '96vw',
+          width: '100%',
+          '& .rbc-calendar': {
+            minWidth: '777px',
+            width: '100%',
+          },
         },
-        '& .rbc-toolbar': { display: 'none' },
-        '& .rbc-month-view': {
-          borderRadius: '8px',
-          border: '0.1px solid var(--secondary)',
-          background: theme.palette.background.default,
+        
+        '& .rbc-calendar': { // calendar base
+          minHeight: '90vh',
+          cursor: 'default',
         },
-        '& .rbc-header': {
-          alignContent: 'center',
+        '& .rbc-toolbar': {
+          display: 'none', // hide default toolbar
+        },
+        '& .rbc-header': { // headers
           height: '50px',
+          alignContent: 'center',
+          backgroundColor: 'var(--surface-2)',
+          color: theme.palette.text.primary,
           fontWeight: 600,
-          fontSize: '0.9rem',
-          color: theme.palette.text.secondary,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-        },
-        '& .rbc-date-cell': {
-          fontSize: '0.85rem',
-          fontWeight: 500,
-          textAlign: 'right',
-          padding: '4px 8px',
+          textTransform: 'uppercase',
+          fontSize: '0.8rem',
         },
         '& .rbc-off-range-bg': {
-          backgroundColor: 'transparent',
+          backgroundColor: 'var(--disabled)',
         },
         '& .rbc-today': {
-          backgroundColor: 'var(--info)',
-          color: theme.palette.common.white,
+          backgroundColor: 'var(--success)',
         },
-        '& .rbc-month-row': {
-          minHeight: '100px',
+        '& .rbc-time-view': { // time grid - week/ day
+          borderTop: '1px solid var(--disabled)',
         },
-        '& .rbc-event': {
-          borderRadius: '6px',
-          padding: '2px 6px',
+        '& .rbc-time-gutter': {
+          backgroundColor: 'var(--surface-1)',
+          color: 'var(--text-muted)',
+          fontSize: '0.75rem',
+          fontWeight: 500,
+          width: '70px',
+          border: '1px solid var(--border)',
+        },
+        '& .rbc-timeslot-group': {
+          alignContent: 'center',
+          textAlign: 'center',
+          minHeight: '60px',
+          border: '1px dashed var(--divider)',
+        },
+        '& .rbc-time-slot': {
+          transition: 'background-color 0.2s ease',
+          '&:hover': {
+            backgroundColor: 'var(--surface-hover)',
+          },
+        },
+        '& .rbc-time-slot.rbc-now': {
+          backgroundColor: 'rgba(255, 99, 71, 0.1)',
+          borderLeft: '3px solid var(--error)',
+        },
+        '& .rbc-time-header': {
+          alignContent: 'center',
+          backgroundColor: 'var(--surface-2)',
+          border: '1px solid var(--divider)',
+        },
+        '& .rbc-time-content': {
+          borderTop: 'none',
+          backgroundColor: 'background.default',
+        },
+        '& .rbc-current-time-indicator': {
+          backgroundColor: 'var(--error)',
+          height: '2px',
         },
       }}
     >
       <Stack
-        direction="row"
-        alignItems="center"
+        direction={{ xs: 'column', sm: 'row' }}
+        alignItems={{ xs: 'flex-start', sm: 'center' }}
         justifyContent="space-between"
         sx={{
-          p: 2,
+          py: 2,
+          px: 0,
           borderBottom: 1,
           borderColor: 'divider',
-          background: theme.palette.background.paper,
+          backgroundColor: 'background.default',
+          gap: { xs: 2, sm: 0 },
         }}
       >
-        <Stack direction="row" alignItems="center" spacing={1.5}>
-          <IconButton onClick={() => (window as any).calendarRef?.onNavigate?.('PREV')}>
-            <ChevronLeft size={20} />
-          </IconButton>
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: 600, color: theme.palette.text.primary }}
+        <Stack 
+          direction="row" 
+          spacing={1} 
+          alignItems="center" 
+          flexWrap={'wrap'}
+          mx={{ xs: 'auto', md: 0}}
+        >
+          <Stack direction="row">
+            <IconButton onClick={() => handleNavigate('PREV')}>
+              <ChevronLeft size={20} />
+            </IconButton>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              {moment(currentDate).format(
+                activeView === 'month' ? 'MMMM YYYY' : 'MMMM D, YYYY'
+              )}
+            </Typography>
+            <IconButton onClick={() => handleNavigate('NEXT')}>
+              <ChevronRight size={20} />
+            </IconButton>
+          </Stack>
+          <Button
+            size="small"
+            variant="outlined"
+            sx={{ color: 'inherit'}}
+            onClick={() => handleNavigate('TODAY')}
           >
-            {moment().format('MMMM YYYY')}
-          </Typography>
-          <IconButton onClick={() => (window as any).calendarRef?.onNavigate?.('NEXT')}>
-            <ChevronRight size={20} />
-          </IconButton>
+            Today
+          </Button>
         </Stack>
 
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} mx={{ xs: 'auto', md: 0}}>
           {(['month', 'week', 'day'] as View[]).map((view) => (
             <Button
               key={view}
               size="small"
-              variant={view === 'month' ? 'contained' : 'outlined'}
-              sx={{
-                textTransform: 'capitalize',
-                fontWeight: 500,
-              }}
+              onClick={() => setActiveView(view)}
+              sx={{ color: 'inherit', bgcolor: 'var(--surface-1)', borderColor: 'inherit'}}
+              variant={activeView === view ? 'outlined' : 'contained'}
             >
               {capitalizeView(view)}
             </Button>
@@ -151,7 +201,10 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
         events={events}
         startAccessor="start"
         endAccessor="end"
-        views={[Views.MONTH, Views.WEEK, Views.DAY]}
+        date={currentDate}
+        view={activeView}
+        onView={(v) => setActiveView(v)}
+        onNavigate={(date) => setCurrentDate(date)}
         popup
         selectable
         onSelectEvent={(event) => onSelectTask(String(event.id))}
@@ -169,20 +222,21 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
               ? 'var(--warm)'
               : event.priority === 'LOW'
               ? 'var(--secondary)'
-              : 'var(--surface-2)';
-
+              : 'var(--surface-1)';
           return {
             style: {
               backgroundColor: baseColor,
+              borderRadius: '6px',
               color: 'white',
               border: 'none',
-              borderRadius: 6,
+              padding: '2px 6px',
               fontSize: '0.8rem',
               fontWeight: 500,
-              padding: '2px 6px',
-              transition: 'all 0.2s ease',
             },
           };
+        }}
+        style={{
+          fontFamily: theme.typography.fontFamily,
         }}
       />
     </Box>

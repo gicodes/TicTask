@@ -1,10 +1,9 @@
 import { Card, Stack, TextField, Button, ButtonGroup, Box, Badge, Typography, Tooltip, Divider, InputAdornment } from '@mui/material';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import InfoOutline from '@mui/icons-material/InfoOutlined';
+import { FaPlusCircle, FaList } from 'react-icons/fa';
 import { TicketToolTip } from '../_level_1/tooltips';
 import SearchIcon from '@mui/icons-material/Search';
-import InfoOutline from '@mui/icons-material/InfoOutlined';
-import { FaPlusCircle } from 'react-icons/fa';
 import styles from '@/app/page.module.css';
 import React, { useState } from 'react';
 
@@ -101,7 +100,7 @@ export default function Toolbar({
                 onClick={() => setView('list')}
                 variant={view === 'list' ? 'contained' : 'outlined'}
                 className={view === 'list' ? styles.btnPrimary : styles.btnSecondary}
-                startIcon={<ListAltIcon />}
+                startIcon={<FaList />}
               >
                 LIST
               </Button>
