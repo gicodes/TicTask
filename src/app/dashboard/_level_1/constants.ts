@@ -73,4 +73,4 @@ export const TICKET_STATUSES = ['UPCOMING', 'IN_PROGRESS', 'OPEN', 'RESOLVED', '
 
 export const TICKET_LIST_HEADERS = ['No.', 'Title', 'Priority', 'Status', 'Type', 'Due Date', 'Last Updated']
 
-export const TASK_LIST_HEADERS = ['No.', 'Title', 'Type', 'Due Date', ]
+export const TASK_LIST_HEADERS = ['No.', 'Title', 'Status', 'Type', 'Due Date', ]
