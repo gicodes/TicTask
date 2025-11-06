@@ -68,12 +68,12 @@ export default function AiAssistantDrawer() {
           },
         }}
       >
-        <Toolbar sx={{ display: { xs: 'block', sm: 'none'}}} />
+        <Toolbar sx={{ display: { xs: 'block', md: 'none'}}} />
         <Box
           display="flex"
           alignItems="center"
           justifyContent="space-between"
-          mt={3}
+          mt={{ xs: 1, md: 4}}
           p={2}
           borderBottom="1px solid"
           borderColor="divider"
@@ -82,7 +82,7 @@ export default function AiAssistantDrawer() {
             <SmartToy sx={{ color: 'var(--special)'}} />
             <Typography fontWeight={600}>AI Assistant</Typography>
           </Stack>
-          <Chip label="BETA" size="small" variant="outlined" sx={{ fontWeight: 600, bgcolor: 'orange', color: 'var(--surface-1)'}} />
+          <Chip label="BETA" size="small" variant="outlined" sx={{ fontWeight: 600, bgcolor: 'orange', color: 'var(--surface-1)', p: 1.5}} />
         </Box>
 
         <Box flex={1} p={2} overflow="auto" sx={{ flexGrow: 1 }}>
