@@ -58,7 +58,7 @@ export default function Toolbar({
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           display={{ xs: 'grid', sm: 'flex' }}
-          justifyContent="space-between"
+          justifyContent={{xs: 'center', sm: "space-between"}}
           alignItems="center"
           flexWrap="wrap"
           width="100%"
@@ -111,7 +111,7 @@ export default function Toolbar({
 
           <section id='new-ticket-btn'>
             <Tooltip title="Create New Ticket as Task, Invoice or Issue">
-              <button className={styles.btnSecondary} onClick={onOpenCreate}>
+              <button className={`${styles.btnSecondary} mx-auto`} onClick={onOpenCreate}>
                 <FaPlusCircle /> &nbsp; NEW TICKET
               </button>
             </Tooltip>

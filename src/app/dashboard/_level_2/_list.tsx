@@ -12,7 +12,7 @@ const TicketsList = ({
   tickets: Ticket[];
   openDetail: (id: string | number) => void;
 }) => {
-  if (tickets?.length===0) return <Box textAlign={'center'} py={12} border={'0.1px solid var(--disabled)'} borderRadius={2}>
+  if (tickets?.length===0) return <Box textAlign={'center'} mt={4} py={12} border={'0.1px solid var(--disabled)'} borderRadius={2}>
     Tickets and Tasks empty.. Nothing to list 😶 
   </Box>
 

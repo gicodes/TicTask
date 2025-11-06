@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { handleSendAI, Message } from '../_level_1/aiSend';
 import {
   Box,
   Paper,
@@ -10,30 +11,14 @@ import {
   IconButton,
   Chip,
   Avatar,
-  Divider,
 } from '@mui/material';
 import { Send, SmartToy, Person } from '@mui/icons-material';
 
 export default function AiAssistantPage() {
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: "👋 Hey there! I’m your AI Assistant. How can I help you today?" },
+  const [messages, setMessages] = useState<Message []>([
+    { role: 'assistant', content: "👋 Hey there! I am your AI Assistant. How can I help you today?" },
   ]);
   const [input, setInput] = useState('');
-
-  const handleSend = () => {
-    if (!input.trim()) return;
-
-    const newMessage = { role: 'user', content: input };
-    setMessages((prev) => [...prev, newMessage]);
-    setInput('');
-
-    setTimeout(() => {// Mock AI response
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: "This is a mock AI response — live integration coming soon!" },
-      ]);
-    }, 800);
-  };
 
   return (
     <Box display="flex" justifyContent="center" p={3}>
@@ -49,7 +34,7 @@ export default function AiAssistantPage() {
         }}
       >
         <Box
-          display="flex"
+          display={{xs: 'none', md: "flex"}}
           alignItems="center"
           justifyContent="space-between"
           px={3}
@@ -132,11 +117,11 @@ export default function AiAssistantPage() {
             size="small"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+            onKeyDown={(e) => e.key === 'Enter' && handleSendAI({ setMessages, setInput, input })}
           />
           <IconButton
             color="info"
-            onClick={handleSend}
+            onClick={() => handleSendAI({ setMessages, setInput, input })}
             sx={{ borderRadius: 2 }}
           >
             <Send />
