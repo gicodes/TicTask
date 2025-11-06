@@ -67,13 +67,13 @@ export default function AiAssistantDrawer() {
           },
         }}
       >
+        <Toolbar />
         <Box
           display="flex"
           alignItems="center"
           justifyContent="space-between"
-          pt={6}
           px={2}
-          pb={1}
+          pb={2}
           borderBottom="1px solid"
           borderColor="divider"
         >
@@ -128,6 +128,7 @@ export default function AiAssistantDrawer() {
           borderTop="1px solid"
           borderColor="divider"
         >
+          <button className='btn custom-dull'>Back</button>
           <TextField
             fullWidth
             placeholder="Ask TicTask anything..."
