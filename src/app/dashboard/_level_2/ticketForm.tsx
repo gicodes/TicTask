@@ -173,12 +173,11 @@ export default function TicketFormDrawer({
                   type="date"
                   InputLabelProps={{ shrink: true }}
                   fullWidth
-                  variant="outlined"
                   sx={{
                     "& input": {
                       padding: "10px 14px",
                       borderRadius: 1,
-                      backgroundColor: theme.palette.background.paper,
+                      minHeight: 40,
                       fontSize: { xs: "0.9rem", sm: "1rem" },
                     },
                     "& label": {
@@ -186,19 +185,8 @@ export default function TicketFormDrawer({
                     },
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "8px",
-                      "& fieldset": {
-                        borderColor: theme.palette.divider,
-                      },
-                      "&:hover fieldset": {
-                        borderColor: theme.palette.text.primary,
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: theme.palette.primary.main,
-                        borderWidth: 2,
-                      },
                     },
                     width: "100%",
-                    maxWidth: 468,
                   }}
                 />
               )}
