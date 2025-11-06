@@ -13,6 +13,7 @@ import {
   Chip,
   Avatar,
   Toolbar,
+  Button,
 } from '@mui/material';
 import { SmartToy, Send, Chat} from '@mui/icons-material';
 
@@ -67,13 +68,13 @@ export default function AiAssistantDrawer() {
           },
         }}
       >
-        <Toolbar />
+        <Toolbar sx={{ display: { xs: 'block', sm: 'none'}}} />
         <Box
           display="flex"
           alignItems="center"
           justifyContent="space-between"
-          px={2}
-          pb={2}
+          mt={3}
+          p={2}
           borderBottom="1px solid"
           borderColor="divider"
         >
@@ -128,7 +129,7 @@ export default function AiAssistantDrawer() {
           borderTop="1px solid"
           borderColor="divider"
         >
-          <button className='btn custom-dull'>Back</button>
+          <Button variant='text' color='inherit' sx={{ width: 40}}>← </Button>
           <TextField
             fullWidth
             placeholder="Ask TicTask anything..."
