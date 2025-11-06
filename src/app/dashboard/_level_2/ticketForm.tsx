@@ -14,7 +14,6 @@ import {
   Toolbar,
   Autocomplete,
   Alert,
-  useTheme
 } from '@mui/material';
 import { apiPost } from '@/lib/api';
 import { useAuth } from '@/providers/auth';
@@ -45,7 +44,6 @@ export default function TicketFormDrawer({
   onCreated?: (t: Ticket) => void;
   task?: boolean
 }) {
-  const theme = useTheme()
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const [ errRes, setErrRes] = useState<string | null>("")
@@ -175,13 +173,12 @@ export default function TicketFormDrawer({
                   fullWidth
                   sx={{
                     "& input": {
-                      padding: "10px 14px",
+                      padding: "20px 14px",
                       borderRadius: 1,
-                      minHeight: 40,
-                      fontSize: { xs: "0.9rem", sm: "1rem" },
+                      fontSize: { xs: "1rem", sm: "1.1rem" },
                     },
                     "& label": {
-                      fontSize: { xs: "0.9rem", sm: "1rem" },
+                      fontSize: { xs: "1rem", sm: "1.1rem" },
                     },
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "8px",
