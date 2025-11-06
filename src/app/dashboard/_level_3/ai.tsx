@@ -27,8 +27,7 @@ export default function AiAssistantPage() {
     setMessages((prev) => [...prev, newMessage]);
     setInput('');
 
-    // Mock AI response
-    setTimeout(() => {
+    setTimeout(() => {// Mock AI response
       setMessages((prev) => [
         ...prev,
         { role: 'assistant', content: "This is a mock AI response — live integration coming soon!" },
@@ -42,7 +41,7 @@ export default function AiAssistantPage() {
         elevation={3}
         sx={{
           width: '100%',
-          maxWidth: 720,
+          maxWidth: 777,
           borderRadius: 3,
           display: 'flex',
           flexDirection: 'column',
@@ -59,19 +58,18 @@ export default function AiAssistantPage() {
           borderColor="divider"
         >
           <Stack direction="row" alignItems="center" spacing={1}>
-            <SmartToy fontSize="medium" color="primary" />
+            <SmartToy fontSize="medium" sx={{ color: 'var(--special)'}} />
             <Typography variant="h6" fontWeight={600}>
               AI Assistant
             </Typography>
           </Stack>
           <Chip 
             label="BETA" 
-            color="default" 
             variant="outlined" 
             sx={{ 
               bgcolor: 'orange', 
               color: 'var(--surface-1)', 
-              fontWeight: 'bold', 
+              fontWeight: 600, 
               p: 1.5, 
               border: 'none',
               fontFamily: 'monospace'
@@ -95,7 +93,7 @@ export default function AiAssistantPage() {
                 spacing={1.5}
               >
                 {msg.role === 'assistant' && (
-                  <Avatar sx={{ bgcolor: 'primary.main' }}>
+                  <Avatar sx={{ bgcolor: 'var(--special)' }}>
                     <SmartToy fontSize="small" />
                   </Avatar>
                 )}
@@ -110,8 +108,8 @@ export default function AiAssistantPage() {
                         : 'background.paper',
                     color:
                       msg.role === 'user'
-                        ? 'primary.contrastText'
-                        : 'text.primary',
+                        ? 'info.contrastText'
+                        : 'text.info',
                   }}
                 >
                   <Typography variant="body2">{msg.content}</Typography>
@@ -137,7 +135,7 @@ export default function AiAssistantPage() {
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           />
           <IconButton
-            color="primary"
+            color="info"
             onClick={handleSend}
             sx={{ borderRadius: 2 }}
           >

@@ -14,6 +14,7 @@ import {
   Toolbar,
   Autocomplete,
   Alert,
+  useTheme
 } from '@mui/material';
 import { apiPost } from '@/lib/api';
 import { useAuth } from '@/providers/auth';
@@ -44,6 +45,7 @@ export default function TicketFormDrawer({
   onCreated?: (t: Ticket) => void;
   task?: boolean
 }) {
+  const theme = useTheme()
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const [ errRes, setErrRes] = useState<string | null>("")
@@ -62,6 +64,11 @@ export default function TicketFormDrawer({
 
   const onSubmit = async (values: FormValues) => {
     try {
+      if (task && (values.dueDate==='' || !values.dueDate)) {
+        showAlert("You must add a due date for planner task!", "warning");
+        return
+      }
+
       const formatted: CreateTicket = {
         ...values,
         dueDate: values.dueDate,
@@ -98,7 +105,9 @@ export default function TicketFormDrawer({
               control={control}
               render={({ field }) => (
                 <TextField select label="Type" {...field}>
-                  {Object.values(TICKET_TYPES).map((v, i) => (
+                  {task ? <MenuItem value={'TASK'}>
+                      Task
+                    </MenuItem> : Object.values(TICKET_TYPES).map((v, i) => (
                     <MenuItem value={v} key={i}>
                       {v==="FEATURE_REQUEST" ? "Feature" : v[0] + v.slice(1).toLocaleLowerCase()}
                     </MenuItem>
@@ -128,7 +137,7 @@ export default function TicketFormDrawer({
               )}
             />
 
-            <Controller
+            {!task && <Controller
               name="priority"
               control={control}
               render={({ field }) => (
@@ -140,7 +149,7 @@ export default function TicketFormDrawer({
                   ))}
                 </TextField>
               )}
-            />
+            />}
 
             {user?.userType==="BUSINESS" && <Controller
               name="assignTo"
@@ -159,14 +168,41 @@ export default function TicketFormDrawer({
               control={control}
               render={({ field }) => (
                 <TextField
+                  {...field}
                   label="Due date"
                   type="date"
                   InputLabelProps={{ shrink: true }}
-                  {...field}
+                  fullWidth
+                  variant="outlined"
+                  sx={{
+                    "& input": {
+                      padding: "10px 14px",
+                      borderRadius: 1,
+                      backgroundColor: theme.palette.background.paper,
+                      fontSize: { xs: "0.9rem", sm: "1rem" },
+                    },
+                    "& label": {
+                      fontSize: { xs: "0.9rem", sm: "1rem" },
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "8px",
+                      "& fieldset": {
+                        borderColor: theme.palette.divider,
+                      },
+                      "&:hover fieldset": {
+                        borderColor: theme.palette.text.primary,
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: theme.palette.primary.main,
+                        borderWidth: 2,
+                      },
+                    },
+                    width: "100%",
+                    maxWidth: 468,
+                  }}
                 />
               )}
             />
-
             <Controller
               name="tags"
               control={control}
