@@ -127,7 +127,7 @@ const TicketsList = ({
                 </td>}
 
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
-                  {t.type==='FEATURE_REQUEST' ? 'FEATURE' : t.type}
+                  {t.type==='FEATURE_REQUEST' ? 'Feature' : t.type[0]+t.type.slice(1).toLowerCase()}
                 </td>
 
                 <td style={{ padding: '0 10px', whiteSpace: 'nowrap', }}>
@@ -137,7 +137,7 @@ const TicketsList = ({
                       :
                     (new Date().toLocaleDateString()===new Date(t.dueDate).toLocaleDateString() 
                       ? <strong className='font-xxs'>‼️ Due Today ‼️</strong> 
-                      : new Date(t.dueDate).toDateString()): '-----'}
+                      : new Date(t.dueDate).toDateString()): <i className='custom-dull'>Not set</i>}
                 </td>
 
                 {list.includes("Last Updated") && <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>

@@ -95,7 +95,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
         <Tooltip title="Calendar View">
           <IconButton
             onClick={() => setView('calendar')}
-            color={view === 'calendar' ? 'info' : 'inherit'}
+            color={view === 'calendar' ? 'success' : 'inherit'}
           >
             <Calendar size={20} />
           </IconButton>
@@ -104,7 +104,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
         <Tooltip title="List View">
           <IconButton
             onClick={() => setView('list')}
-            color={view === 'list' ? 'info' : 'inherit'}
+            color={view === 'list' ? 'success' : 'inherit'}
           >
             <List size={20} />
           </IconButton>
