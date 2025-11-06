@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/providers/auth';
 import { Box } from '@mui/material';
-import ProfileDetailDrawer from '../_level_2/profileDetail';
+import ProfileDetailDrawer from '../_level_2/profileDrawer';
 
 const Page = () => {
   const { loading, isAuthenticated } = useAuth();

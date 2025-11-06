@@ -1,11 +1,11 @@
 import { Box } from '@mui/material';
 import { Ticket } from '@/types/ticket';
-import Toolbar from '../_level_2/ticketToolbar';
 import TicketsList from '../_level_2/_list';
 import TicketBoard from '../_level_2/_board';
+import Toolbar from '../_level_2/ticketToolbar';
 import { useTickets } from '@/providers/tickets';
 import TicketFormDrawer from '../_level_2/ticketForm';
-import TicketDetailDrawer from '../_level_2/ticketDetail';
+import TicketDetailDrawer from '../_level_2/ticketDrawer';
 import React, { useEffect, useMemo, useState } from 'react';
 import { TICKET_STATUSES, TICKET_LIST_HEADERS } from '../_level_1/constants';
 
@@ -129,6 +129,10 @@ const TicketsPage: React.FC = () => {
         onClose={() => setFormOpen(false)}
         onCreated={onTicketCreated}
       />
+
+      <Box bottom={0} right={0} display={'flex'} justifyContent={'right'}>
+        <section style={{ position: 'fixed', bottom: 25, right: 25, height: 50, width: 50}} id='ai-assistant-trigger'/>
+      </Box>
     </Box>
   );
 };

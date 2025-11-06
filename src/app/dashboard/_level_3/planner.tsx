@@ -6,7 +6,7 @@ import { useTickets } from '@/providers/tickets';
 import PlannerCalendar from '../_level_2/_calendar';
 import TaskFormDrawer from '../_level_2/ticketForm';
 import PlannerToolbar from '../_level_2/plannerToolbar';
-import TaskDetailDrawer from '../_level_2/ticketDetail';
+import TaskDetailDrawer from '../_level_2/ticketDrawer';
 import React, { useEffect, useMemo, useState } from 'react';
 import { TASK_LIST_HEADERS } from '../_level_1/constants';
 

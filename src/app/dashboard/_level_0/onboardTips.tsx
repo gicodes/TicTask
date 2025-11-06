@@ -55,15 +55,16 @@ export default function DashboardOnboarding() {
           sx={{
             position: 'absolute',
             top: anchorEl.offsetTop - 6,
-            left: anchorEl.offsetLeft - 6,
+            left: { md: anchorEl.offsetLeft - 6},
             width: anchorEl.offsetWidth + 12,
             height: anchorEl.offsetHeight + 12,
             borderRadius: 2,
-            border: '2px solid #1976d2',
-            boxShadow: '0 0 12px rgba(25,118,210,0.4)',
+            border: {xs: 'none', md: '2px solid #1976d2'},
+            boxShadow: { xs: 'none', md: '0 0 12px rgba(25,118,210,0.4)'},
             pointerEvents: 'none',
             transition: 'all 0.3s ease',
             zIndex: 1200,
+            maxWidth: '99vw'
           }}
         />
       )}
@@ -74,17 +75,18 @@ export default function DashboardOnboarding() {
         PaperProps={{
           sx: {
             position: 'absolute',
-            top: anchorEl ? anchorEl.offsetTop + anchorEl.offsetHeight + 12 : '40%',
-            left: anchorEl ? anchorEl.offsetLeft : '50%',
+            top: tip.anchor?.includes('ai') ? '75%' : anchorEl ? anchorEl.offsetTop + anchorEl.offsetHeight + 12 : '40%',
+            left: { md: tip.anchor?.includes('ai') ? '75%' : anchorEl ? anchorEl.offsetLeft - 181 : '50%'},
             transform: anchorEl ? 'none' : 'translate(-50%, -50%)',
-            width: 320,
+            width: '100%',
+            maxWidth: 333,
             borderRadius: 3,
           },
         }}
       >
-        <DialogTitle>{tip.title}</DialogTitle>
+        <DialogTitle><strong>{tip.title}</strong></DialogTitle>
         <DialogContent>
-          <Typography gutterBottom mb={2}>{tip.text}</Typography>
+          <Typography variant='subtitle2' gutterBottom mb={2}>{tip.text}</Typography>
           <button onClick={handleNext} className={styles.btnPrimary}>
             {tip.action || (step === Tips.length - 1 ? 'Finish' : 'Next')}
           </button>

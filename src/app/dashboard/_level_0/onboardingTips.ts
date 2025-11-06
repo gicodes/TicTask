@@ -3,6 +3,7 @@ export const Tips = [
     title: 'Welcome to TicTask 🎉',
     text: "Let's take a quick tour of your dashboard!",
     action: "Got it",
+    anchor: '#tickets'
   },
   {
     title: 'Create Your First Ticket 📝',
@@ -17,17 +18,23 @@ export const Tips = [
     anchor: '#view-toggle',
   },
   {
-    title: 'Stay on Top of Priorities 🔥',
-    text: "Sort or filter tickets by status, priority, or due date to focus on what matters most.",
+    title: 'Search For Tickets 🔍',
+    text: "Search for tickets and tasks ⎯ whether open, resolved, cancelled or closed.",
     action: "Next",
-    anchor: '#ticket-filters',
+    anchor: '#search',
   },
-  {
-    title: 'Collaborate in Real-Time 🤝',
-    text: "Mention teammates, leave comments, and update statuses — all in one place for seamless teamwork.",
-    action: "Next",
-    anchor: '#ticket-comments',
-  },
+  // {
+  //   title: 'Stay on Top of Priorities 🔥',
+  //   text: "Sort or filter tickets by status, priority, or due date to focus on what matters most.",
+  //   action: "Next",
+  //   anchor: '#ticket-filters',
+  // },
+  // {
+  //   title: 'Collaborate in Real-Time 🤝',
+  //   text: "Mention teammates, leave comments, and update statuses — all in one place for seamless teamwork.",
+  //   action: "Next",
+  //   anchor: '#ticket-comments',
+  // },
   {
     title: 'Your Personal AI Assistant 🤖',
     text: "Ask the AI to summarize tickets, suggest next steps, or automate repetitive actions. Efficiency, redefined.",

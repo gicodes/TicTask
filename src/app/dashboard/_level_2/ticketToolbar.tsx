@@ -29,23 +29,25 @@ export default function Toolbar({
         display={{ xs: 'grid', md: 'flex' }}
         justifyContent={{ xs: 'center', md: 'space-between' }}
       >
-        <Card
-          sx={{
-            width: 234,
-            py: 1,
-            px: 2,
-            display: { xs: 'none', md: 'flex' },
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Typography variant="h4" fontWeight={600}>
-            Tickets
-          </Typography>
-          <Badge onClick={toggleDescription} sx={{ cursor: 'pointer' }}>
-            <InfoOutline sx={{ boxShadow: 2, borderRadius: '50%' }} fontSize="small" color="disabled" />
-          </Badge>
-        </Card>
+        <section id='tickets'>
+          <Card
+            sx={{
+              width: 234,
+              py: 1,
+              px: 2,
+              display: { xs: 'none', md: 'flex' },
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="h4" fontWeight={600}>
+              Tickets
+            </Typography>
+            <Badge onClick={toggleDescription} sx={{ cursor: 'pointer' }}>
+              <InfoOutline sx={{ boxShadow: 2, borderRadius: '50%' }} fontSize="small" color="disabled" />
+            </Badge>
+          </Card>
+        </section>
 
         {description && (
           <Card sx={{ p: 1.5 }}>
@@ -62,52 +64,58 @@ export default function Toolbar({
           width="100%"
           gap={3}
         >
-          <TextField
-            size="small"
-            placeholder="Search tickets..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            sx={{ width: { xs: '100%', sm: 260, md: 300 } }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon color="disabled" />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <section id='search'>
+            <TextField
+              size="small"
+              placeholder="Search tickets..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              sx={{ width: { xs: '100%', sm: 260, md: 300 } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon color="disabled" />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </section>
+          
+          <section id='view-toggle'>
+            <ButtonGroup>
+              <Tooltip title="View tickets in Kanban board mode">
+                <Button
+                  onClick={() => setView('board')}
+                  color='inherit'
+                  variant={view === 'board' ? 'outlined' : 'contained'}
+                  startIcon={<ViewKanbanIcon />}
+                >
+                  BOARD
+                </Button>
+              </Tooltip>
 
-          <ButtonGroup>
-            <Tooltip title="View tickets in Kanban board mode">
-              <Button
-                onClick={() => setView('board')}
-                color='inherit'
-                variant={view === 'board' ? 'outlined' : 'contained'}
-                startIcon={<ViewKanbanIcon />}
-              >
-                BOARD
-              </Button>
+              <Divider sx={{ border: '1px solid gray' }} />
+
+              <Tooltip title="View tickets in tabular list mode">
+                <Button
+                  color='inherit'
+                  onClick={() => setView('list')}
+                  variant={view === 'list' ? 'outlined' : 'contained'}
+                  startIcon={<FaList />}
+                >
+                  LIST
+                </Button>
+              </Tooltip>
+            </ButtonGroup>
+          </section>
+
+          <section id='new-ticket-btn'>
+            <Tooltip title="Create New Ticket as Task, Invoice or Issue">
+              <button className={styles.btnSecondary} onClick={onOpenCreate}>
+                <FaPlusCircle /> &nbsp; NEW TICKET
+              </button>
             </Tooltip>
-
-            <Divider sx={{ border: '1px solid gray' }} />
-
-            <Tooltip title="View tickets in tabular list mode">
-              <Button
-                color='inherit'
-                onClick={() => setView('list')}
-                variant={view === 'list' ? 'outlined' : 'contained'}
-                startIcon={<FaList />}
-              >
-                LIST
-              </Button>
-            </Tooltip>
-          </ButtonGroup>
-
-          <Tooltip title="Create New Ticket as Task, Invoice or Issue">
-            <button className={styles.btnSecondary} onClick={onOpenCreate}>
-              <FaPlusCircle /> &nbsp; NEW TICKET
-            </button>
-          </Tooltip>
+          </section>
         </Stack>
       </Box>
     </Stack>

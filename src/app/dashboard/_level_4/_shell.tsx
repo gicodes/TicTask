@@ -5,27 +5,12 @@ import Logo from '@/assets/txtLogo';
 import { useAuth } from '@/providers/auth';
 import { ReactNode, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Login, Menu as MenuIcon, Notifications  } from '@mui/icons-material';
-import { AUTH_ITEMS, getFilteredNav, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
-import {
-  AppBar,
-  Toolbar,
-  Drawer,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Divider,
-  Tooltip,
-  Stack,
-  Typography,
-} from '@mui/material';
+import AiAssistantDrawer from '../_level_2/aiDrawer';
 import { FaUserTie, FaUserShield } from 'react-icons/fa6';
+import { Login, Menu as MenuIcon, Notifications  } from '@mui/icons-material';
 import { FaExternalLinkAlt, FaUserAstronaut, FaUserSecret, FaUsers } from 'react-icons/fa';
+import { AUTH_ITEMS, getFilteredNav, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
+import { AppBar, Toolbar, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Box, IconButton, Menu, MenuItem, Divider, Tooltip, Stack, Typography,} from '@mui/material';
 
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -48,6 +33,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
       if (user?.role==="USER" && user.collab) variant = "MODERATOR";
       if (user?.role==="USER" && user.partner) variant = "PARTNER";
       if (user?.role==="ADMIN") variant = "ADMIN";
+      
       return variant;
     } else return null
   }
@@ -256,6 +242,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         <Box textAlign={'center'} mt={5}>
           <Typography fontFamily={'serif'} fontWeight={501} className='custom-dull'><i>Unleash the power of your mind— one task at a time</i></Typography>
         </Box>
+        <AiAssistantDrawer />
       </Box>
     </Box>
   );

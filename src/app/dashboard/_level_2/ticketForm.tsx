@@ -14,6 +14,7 @@ import {
   Toolbar,
   Autocomplete,
   Alert,
+  Typography,
 } from '@mui/material';
 import { apiPost } from '@/lib/api';
 import { useAuth } from '@/providers/auth';
@@ -161,33 +162,30 @@ export default function TicketFormDrawer({
               )}
             />}
 
-            <Controller
-              name="dueDate"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Due date"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  fullWidth
-                  sx={{
-                    "& input": {
-                      padding: "20px 14px",
-                      borderRadius: 1,
-                      fontSize: { xs: "1rem", sm: "1.1rem" },
-                    },
-                    "& label": {
-                      fontSize: { xs: "1rem", sm: "1.1rem" },
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "8px",
-                    },
-                    width: "100%",
-                  }}
-                />
-              )}
-            />
+            {<Stack py={3} spacing={3}>
+              <Typography>Set a due date for your {task ? "task" : "ticket"}</Typography>
+              <Controller
+                name="dueDate"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Due date"
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
+                    fullWidth
+                    sx={{
+                      "& input": {
+                        padding: "20px 14px",
+                        borderRadius: 1,
+                        fontSize: { xs: "1rem", sm: "1.1rem" },
+                      },
+                    }}
+                  />
+                )}
+              />
+            </Stack>
+            }
             <Controller
               name="tags"
               control={control}
@@ -205,7 +203,7 @@ export default function TicketFormDrawer({
               )}
             />
 
-            <Stack direction="row" spacing={1} pt={3}>
+            <Stack direction="row" spacing={3} pt={3}>
               <button className={styles.btnAction} type="submit">
                 Create
               </button>
