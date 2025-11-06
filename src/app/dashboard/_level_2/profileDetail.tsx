@@ -57,14 +57,17 @@ export default function ProfileDetailDrawer() {
   }, [user?.id]);
 
   const handleSavePDF = () => window.print();
+
   const handleEditToggle = () => {
     if (moreOptions) setMoreOptions(false);
     setIsEditing((prev) => !prev)
   };
+
   const toggleMoreOptions = () => {
     if (isEditing) setIsEditing(false);
     setMoreOptions(!moreOptions)
   };
+
   const closeDetail = () => setCloseDrawer(true);
 
   const handleChange = (field: keyof User, value: string) => {
@@ -105,11 +108,7 @@ export default function ProfileDetailDrawer() {
     }
   };
 
-  if (loading) return (
-    <Box p={4} textAlign="center">
-      <CircularProgress />
-    </Box>
-  )
+  if (loading) return <Box py={5} textAlign="center"><CircularProgress /></Box>
 
   const isBusiness = profile?.userType === 'BUSINESS';
   const isModerator = profile?.collab || profile?.partner || profile?.role === 'ADMIN';
@@ -155,7 +154,6 @@ export default function ProfileDetailDrawer() {
             <Typography variant="h6" fontWeight={600} color='textDisabled'>
               {isEditing ? 'Editing Profile' : isBusiness ? 'Business Profile' : 'User Profile'}
             </Typography>
-
             <Stack direction="row" alignItems="center">
               <Stack direction={'row'} gap={1}>
               {!isEditing && (
@@ -201,7 +199,6 @@ export default function ProfileDetailDrawer() {
               </Tooltip>
             </Stack>
           </Stack>
-
           <Stack alignItems="center" spacing={1.5} textAlign="center" my={3}>
             <Avatar
               src={profile?.photo || '/default-avatar.png'}
@@ -220,7 +217,6 @@ export default function ProfileDetailDrawer() {
                 }`,
               }}
             />
-
             {isEditing ? (
               <TextField
                 value={profile?.name || ''}
@@ -264,7 +260,6 @@ export default function ProfileDetailDrawer() {
               </Typography>
             )}
           </Stack>
-
           <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
             <Typography variant="subtitle2" color="text.secondary" mb={2}>
               Contact Information
@@ -284,7 +279,6 @@ export default function ProfileDetailDrawer() {
                   ) : (
                     <FaLocationDot size={16} />
                   )}
-
                   {isEditing && field !== 'email' ? (
                     <TextField
                       size="small"
@@ -307,7 +301,6 @@ export default function ProfileDetailDrawer() {
               ))}
             </Stack>
           </Paper>
-
           { isBusiness && (
             <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
               <Typography variant="subtitle2" color="text.secondary" mb={2}>
@@ -345,7 +338,6 @@ export default function ProfileDetailDrawer() {
               </Stack>
             </Paper>
           )}
-
           {!isBusiness && (
             <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
               <Typography variant="subtitle2" color="text.secondary" mb={2}>
@@ -373,13 +365,11 @@ export default function ProfileDetailDrawer() {
               </Stack>
             </Paper>
           )}
-
           {isModerator && (
             <Paper
               variant="outlined"
               sx={{
-                p: 2,
-                mb: 2,
+                p: 2, mb: 2,
                 borderRadius: 3,
                 bgcolor: theme.palette.warning.light + '15',
               }}
@@ -396,10 +386,9 @@ export default function ProfileDetailDrawer() {
               </Typography>
             </Paper>
           )}
-
           <Stack direction="row" justifyContent="center" my={5}>
             <Link href='/dashboard'>
-              <button onClick={closeDetail} className={styles.btnRetreat}>
+              <button onClick={closeDetail} className={styles.btnInverted}>
                 ← &nbsp; Back
               </button>
             </Link>

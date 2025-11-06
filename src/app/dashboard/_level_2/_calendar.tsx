@@ -9,7 +9,7 @@ import { Calendar as BigCalendar, momentLocalizer, View } from 'react-big-calend
 import { Box, Button, IconButton, Stack, Typography, useTheme,} from '@mui/material';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import '../_level_1/calendar.module.css';
+import '../_level_0/calendar.module.css';
 
 const localizer = momentLocalizer(moment);
 
@@ -173,9 +173,8 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             </IconButton>
           </Stack>
           <Button
-            size="small"
             variant="outlined"
-            sx={{ color: 'inherit', borderColor: 'var(--success)'}}
+            sx={{ color: 'inherit', borderColor: 'var(--success)', height: 36}}
             onClick={() => handleNavigate('TODAY')}
           >
             Today

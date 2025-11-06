@@ -79,6 +79,7 @@ const PlannerPage: React.FC = () => {
         open={formOpen}
         onClose={() => setFormOpen(false)}
         onCreated={onTaskCreated}
+        task
       />
     </Box>
   );

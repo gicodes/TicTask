@@ -13,7 +13,7 @@ import { MdOutlineFamilyRestroom, MdCategory, MdSettings, MdPaid, MdCampaign } f
 
 export const NAV_ITEMS = [
   { label: 'Tickets', path: '/dashboard/', icon: <FcSerialTasks/> },
-  { label: 'AI assistant', path: '#', icon: <RiRobot2Fill />, released: false}, // new
+  { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false}, // new
   { label: 'Planner', path: '/dashboard/planner', icon: < BsCalendar2Date/>},
   { label: 'Products', path: '/product', icon: <MdCategory /> },
   { label: 'Refer & Invites', path: '/dashboard/refer', icon: <MdOutlineFamilyRestroom /> },

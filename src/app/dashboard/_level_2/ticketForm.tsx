@@ -10,7 +10,6 @@ import {
   Box,
   TextField,
   Stack,
-  Button,
   MenuItem,
   Toolbar,
   Autocomplete,
@@ -38,10 +37,12 @@ export default function TicketFormDrawer({
   open,
   onClose,
   onCreated,
+  task,
 }: {
   open: boolean;
   onClose: () => void;
   onCreated?: (t: Ticket) => void;
+  task?: boolean
 }) {
   const { user } = useAuth();
   const { showAlert } = useAlert();
@@ -89,7 +90,7 @@ export default function TicketFormDrawer({
     >
       <Toolbar />
       <Box display={'grid'} gap={2}>
-        <h5>Create new ticket</h5>
+        <h5>Create new {task ? "task" : "ticket"}</h5>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={2}>
             <Controller
@@ -184,12 +185,12 @@ export default function TicketFormDrawer({
             />
 
             <Stack direction="row" spacing={1} pt={3}>
-              <Button className={styles.btnAction} type="submit">
+              <button className={styles.btnAction} type="submit">
                 Create
-              </Button>
-              <Button className={styles.btnWarm} onClick={onClose}>
+              </button>
+              <button className={styles.btnWarm} onClick={onClose}>
                 Cancel
-              </Button>
+              </button>
             </Stack>
           </Stack>
         </form>
