@@ -1,9 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { CreditCard } from 'lucide-react';
 import { useSubscription } from '@/providers/subscription';
 import { Box, Stack, Typography, Card, CardContent, Button, Divider, Grid, LinearProgress } from '@mui/material';
-import { CreditCard } from '@mui/icons-material';
 
 export default function SubscriptionPage() {
   const { subscription, isPro, loading } = useSubscription();
@@ -17,16 +17,14 @@ export default function SubscriptionPage() {
   }
 
   const plan = subscription?.plan || 'Free';
-  const expiresAt = subscription?.expiresAt
-    ? new Date(subscription.expiresAt).toLocaleDateString()
-    : '—';
+  const expiresAt = subscription?.expiresAt ? new Date(subscription.expiresAt).toLocaleDateString() : '—';
 
   return (
     <Box sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, md: 4 } }}>
       <Stack spacing={4} maxWidth="900px" mx="auto">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
           <Stack spacing={1}>
-            <Typography variant="h4" fontWeight={700}>
+            <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
               Subscription & Billing
             </Typography>
             <Typography variant="body1" sx={{ opacity: 0.7 }}>
@@ -51,7 +49,7 @@ export default function SubscriptionPage() {
                 {isPro ? (
                   <Button
                     variant="outlined"
-                    startIcon={<CreditCard />}
+                    startIcon={<CreditCard size={18}/>}
                     sx={{ borderRadius: 3 }}
                   >
                     Manage Billing
