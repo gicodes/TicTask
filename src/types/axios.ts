@@ -85,6 +85,12 @@ export interface RefreshToken {
   accessToken: string
 }
 
+export interface SubscriptionRes {
+  plan: string;
+  active: boolean;
+  expiresAt: string | null;
+}
+
 export interface GenericAPIRes {
   ok?: boolean;
   message: string;

@@ -13,8 +13,8 @@ import { MdOutlineFamilyRestroom, MdCategory, MdSettings, MdPaid, MdCampaign } f
 
 export const NAV_ITEMS = [
   { label: 'Tickets', path: '/dashboard/', icon: <FcSerialTasks/> },
-  { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false}, // new
-  { label: 'Planner', path: '/dashboard/planner', icon: < BsCalendar2Date/>},
+  { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
+  { label: 'Planner', path: '/dashboard/planner', icon: <BsCalendar2Date/>},
   { label: 'Products', path: '/product', icon: <MdCategory /> },
   { label: 'Refer & Invites', path: '/dashboard/refer', icon: <MdOutlineFamilyRestroom /> },
   { label: 'Subscriptions', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
@@ -156,4 +156,22 @@ export const NewFeatureBadge = () =>
     }}
   >
     BETA
+  </Badge>
+
+export const ProBadge = () =>  
+  <Badge 
+    sx={{ 
+      p: 1, 
+      height: 15, 
+      display: 'flex', 
+      fontWeight: 1000,
+      fontSize: 11, 
+      borderRadius: 20, 
+      alignItems: 'center', 
+      bgcolor: 'var(--sepcial)', 
+      color: 'var(--surface-1)', 
+      fontFamily: 'monospace'
+    }}
+  >
+    PRO
   </Badge>

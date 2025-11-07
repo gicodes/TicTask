@@ -82,6 +82,7 @@ a {
 
 .custom-bw { color: var(--bw); }
 .custom-warm { color: var(--accent); }
+.custom-white { color: #fff;}
 .custom-sharp { color: var(--success); }
 .custom-dull { color: var(--secondary); }
 
@@ -108,8 +109,8 @@ h6 { font-size: 1.5rem; }
 
 .font-xxs { font-size: 0.75rem; }
 .font-xs { font-size: 1rem; }
-.font-md { font-size: 1.5rem; }
 .font-sm { font-size: 1.25rem; }
+.font-md { font-size: 1.5rem; }
 .font-lg { font-size: 2rem; }
 .font-xl { font-size: 2.5rem; }
 .font-xxl { font-size: 2.75rem; }
@@ -151,7 +152,8 @@ h6 { font-size: 1.5rem; }
 .my-3 { margin: 1.75rem 0;}
 .my-5 { margin: 2.5rem 0; }
 
-.py-1 { padding: 1rem 0; }
+.py-1 { padding: 5px 0; }
+.py-3 { padding: 15px 0;}
 .px-1 { padding: 0 1rem; }
 
 .mt-1 { margin-top: 0.5rem; }
