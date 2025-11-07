@@ -12,7 +12,7 @@ export default function AiAssistantPage() {
   const [input, setInput] = useState('');
 
   return (
-    <Box display="flex" justifyContent="center" p={3}>
+    <Box display="flex" justifyContent="center" p={{md: 3}}>
       <Paper
         elevation={3}
         sx={{
