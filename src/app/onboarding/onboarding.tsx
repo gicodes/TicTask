@@ -100,7 +100,6 @@ export default function Onboarding() {
       const res = await saveStep(3, finalData);
       
       if (res.ok) {
-        console.log(res)
         const email = res?.user?.email;
 
         const r = await signIn('credentials', { redirect: false, email, password });

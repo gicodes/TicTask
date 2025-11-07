@@ -81,7 +81,7 @@ export default function OnboardingUI(props: OnboardingProps) {
         className={`min-width-100 ${styles.btnPrimary}`}
         disabled={loading}
       >
-        {loading ? 'Saving...' : 'Continue'}
+        {loading ? 'Saving...' : step===3 ? "Finish" : "Continue"}
       </button>
     </Stack>
     
@@ -311,7 +311,8 @@ export default function OnboardingUI(props: OnboardingProps) {
               <Typography variant="h6" fontWeight={600} mb={2}>
                 Review & Finish
               </Typography>
-              <Card sx={{py: 3, px: 5, mb: 7}}>
+
+              <Card sx={{ borderRadius: 3, py: 3, px: 5, mb: 7}}>
                 <Box display={'grid'} gap={2} textAlign={'left'}>
                   <Typography variant='subtitle2'>
                     <strong>{userType[0] + userType.slice(1).toLocaleLowerCase()} Account</strong>
@@ -325,6 +326,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                   {bio && <Typography variant='subtitle2'>{bio}</Typography>}
                 </Box>
               </Card>
+
               <Typography variant="body2" mb={4}>
                 Satisfied with the information provided? Click finish to continue to your
                 dashboard.

@@ -2,20 +2,11 @@
 
 import { useState } from 'react';
 import { handleSendAI, Message } from '../_level_1/aiSend';
-import {
-  Box,
-  Paper,
-  Stack,
-  Typography,
-  TextField,
-  IconButton,
-  Chip,
-  Avatar,
-} from '@mui/material';
 import { Send, SmartToy, Person } from '@mui/icons-material';
+import { Box, Paper, Stack, Typography, TextField, IconButton, Chip, Avatar,} from '@mui/material';
 
-export default function AiAssistantPage() {
-  const [messages, setMessages] = useState<Message []>([
+export default function AiAssistantPage() { 
+  const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: "👋 Hey there! I am your AI Assistant. How can I help you today?" },
   ]);
   const [input, setInput] = useState('');
@@ -27,10 +18,10 @@ export default function AiAssistantPage() {
         sx={{
           width: '100%',
           maxWidth: 777,
+          height: '75vh',
           borderRadius: 3,
           display: 'flex',
           flexDirection: 'column',
-          height: '75vh',
         }}
       >
         <Box

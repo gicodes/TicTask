@@ -4,24 +4,32 @@ export const TICKET_TYPES = [
   'FEATURE_REQUEST',
   'DOCUMENTATION',
   'SUPPORT',
-  'TASK',
   'ISSUE',
   'INVOICE',
-  'MEETING',
-  'EVENT',
   'OPTIMIZATION',
   'MAINTENANCE',
   'RESEARCH',
   'TEST',
-  'RELEASE',
   'SECURITY',
-  'DEPLOYMENT',
   'PERFORMANCE',
   'DESIGN',
   'TICKET',
 ];
 
-export const TICKET_PRIORITIES = ['LOW','MEDIUM','HIGH','URGENT']
+export const PLANNER_TASK_TYPES = [
+  'TASK',
+  'MEETING',
+  'EVENT',
+  'RELEASE',
+  'DEPLOYMENT',
+];
+
+export const TICKET_PRIORITIES = [
+  'LOW',
+  'MEDIUM',
+  'HIGH',
+  'URGENT'
+]
 
 export const TAG_SUGGESTIONS = [
   'API',

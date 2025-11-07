@@ -20,7 +20,7 @@ import { apiPost } from '@/lib/api';
 import { useAuth } from '@/providers/auth';
 import { useAlert } from '@/providers/alert';
 import { CreateTicket, Ticket, Ticket_Type, Ticket_Priority } from '@/types/ticket';
-import { TAG_SUGGESTIONS, TICKET_PRIORITIES, TICKET_TYPES } from '../_level_1/constants';
+import { TAG_SUGGESTIONS, TICKET_PRIORITIES, TICKET_TYPES, PLANNER_TASK_TYPES } from '../_level_1/constants';
 
 const schema = z.object({
   type: z.nativeEnum(Ticket_Type),
@@ -47,11 +47,12 @@ export default function TicketFormDrawer({
 }) {
   const { user } = useAuth();
   const { showAlert } = useAlert();
-  const [ errRes, setErrRes] = useState<string | null>("")
+  const [ submitting, setSubmitting ] = useState(false);
+  const [ errRes, setErrRes ] = useState<string | null>("");
   const { control, handleSubmit, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      type: Ticket_Type.TASK,
+      type: task ? Ticket_Type.EVENT : Ticket_Type.SUPPORT,
       title: '',
       description: '',
       priority: Ticket_Priority.MEDIUM,
@@ -62,9 +63,11 @@ export default function TicketFormDrawer({
   });
 
   const onSubmit = async (values: FormValues) => {
+    setSubmitting(true);
+
     try {
       if (task && (values.dueDate==='' || !values.dueDate)) {
-        showAlert("You must add a due date for planner task!", "warning");
+        setErrRes("You must add a due date for a planner task");
         return
       }
 
@@ -79,11 +82,12 @@ export default function TicketFormDrawer({
       onCreated?.(ticket);
       showAlert("Your new ticket has been created!", "success");
 
-      window.location.reload();
       reset();
       onClose();
     } catch {
-      setErrRes("Something went wrong. Please try again!")
+      setErrRes("Something went wrong. Please try again!");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -97,19 +101,23 @@ export default function TicketFormDrawer({
       <Toolbar />
       <Box display={'grid'} gap={2}>
         <h5>Create new {task ? "task" : "ticket"}</h5>
-        <form onSubmit={handleSubmit(onSubmit)}>
+
+        <Box component={'form'} onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={2}>
             <Controller
               name="type"
               control={control}
               render={({ field }) => (
                 <TextField select label="Type" {...field}>
-                  {task ? <MenuItem value={'TASK'}>
-                      Task
-                    </MenuItem> : Object.values(TICKET_TYPES).map((v, i) => (
-                    <MenuItem value={v} key={i}>
-                      {v==="FEATURE_REQUEST" ? "Feature" : v[0] + v.slice(1).toLocaleLowerCase()}
-                    </MenuItem>
+                  {task ? 
+                    Object.values(PLANNER_TASK_TYPES).map((ptt, i) => (
+                      <MenuItem value={ptt} key={i}>
+                        {ptt[0] + ptt.slice(1).toLocaleLowerCase()}
+                      </MenuItem>
+                    )) : Object.values(TICKET_TYPES).map((tt, i) => (
+                      <MenuItem value={tt} key={i}>
+                        {tt==="FEATURE_REQUEST" ? "Feature" : tt[0] + tt.slice(1).toLocaleLowerCase()}
+                      </MenuItem>
                   ))}
                 </TextField>
               )}
@@ -161,8 +169,25 @@ export default function TicketFormDrawer({
                 />
               )}
             />}
+            
+            <Controller
+              name="tags"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  multiple
+                  freeSolo
+                  options={TAG_SUGGESTIONS}
+                  value={field.value || []}
+                  onChange={(_, newValue) => field.onChange(newValue)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Tags" placeholder="Add tags" />
+                  )}
+                />
+              )}
+            />
 
-            {<Stack py={3} spacing={3}>
+            <Stack py={3} spacing={3}>
               <Typography>Set a due date for your {task ? "task" : "ticket"}</Typography>
               <Controller
                 name="dueDate"
@@ -185,34 +210,22 @@ export default function TicketFormDrawer({
                 )}
               />
             </Stack>
-            }
-            <Controller
-              name="tags"
-              control={control}
-              render={({ field }) => (
-                <Autocomplete
-                  multiple
-                  freeSolo
-                  options={TAG_SUGGESTIONS}
-                  value={field.value || []}
-                  onChange={(_, newValue) => field.onChange(newValue)}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Tags" placeholder="Add tags" />
-                  )}
-                />
-              )}
-            />
 
             <Stack direction="row" spacing={3} pt={3}>
-              <button className={styles.btnAction} type="submit">
-                Create
+              <button 
+                type='submit'
+                disabled={submitting}
+                className={styles.btnAction} 
+              >
+                {submitting ? "Submitting..." : "Create"}
               </button>
-              <button className={styles.btnWarm} onClick={onClose}>
+              <button className={styles.btnWarm} onClick={onClose} type='button'>
                 Cancel
               </button>
             </Stack>
           </Stack>
-        </form>
+        </Box>
+
         {errRes && <Alert color='warning' severity='error'>{errRes}</Alert>}
       </Box>
     </Drawer>
