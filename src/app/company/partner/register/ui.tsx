@@ -27,7 +27,7 @@ export default function PartnerJoinPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleRoleChange = (event: SelectChangeEvent<string>) => {
+  const handleRoleChange = (event: SelectChangeEvent<string[]>) => {
     const value = event.target.value;
     setForm({
       ...form,
@@ -118,7 +118,7 @@ export default function PartnerJoinPage() {
               labelId="role-select-label"
               multiple
               value={form.roles}
-              onChange={()=>handleRoleChange}
+              onChange={handleRoleChange}
               input={<OutlinedInput label="Select Role(s)" />}
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>

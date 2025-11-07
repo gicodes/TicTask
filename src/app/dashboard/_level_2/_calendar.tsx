@@ -23,7 +23,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:600px)');
-
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [activeView, setActiveView] = useState<View>('month');
 
@@ -180,7 +179,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             Today
           </Button>
         </Stack>
-
         <Stack direction="row" spacing={1} mx={{ xs: 'auto', md: 0}}>
           {(['month', 'week', 'day'] as View[]).map((view) => (
             <Button
@@ -235,9 +233,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             },
           };
         }}
-        style={{
-          fontFamily: theme.typography.fontFamily,
-        }}
+        style={{ fontFamily: theme.typography.fontFamily,}}
       />
     </Box>
   );
