@@ -163,7 +163,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             <IconButton onClick={() => handleNavigate('PREV')}>
               <ChevronLeft size={20} />
             </IconButton>
-            <Typography variant="h6" sx={{ fontWeight: 600 }} color='var(--bw)'>
+            <Typography variant="h6" sx={{ fontWeight: 600 }} color='var(--foreground)'>
               {moment(currentDate).format(
                 activeView === 'month' ? 'MMMM YYYY' : 'MMMM D, YYYY'
               )}
@@ -174,7 +174,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           </Stack>
           <Button
             variant="outlined"
-            sx={{ color: 'var(--bw)', borderColor: 'var(--success)', height: 36}}
+            sx={{ color: 'var(--foreground)', borderColor: 'var(--success)', height: 36}}
             onClick={() => handleNavigate('TODAY')}
           >
             Today
