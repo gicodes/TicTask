@@ -60,8 +60,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     <Box
       sx={{
         height: '100%',
-        backgroundColor: 'background.paper',
-        color: 'var(--foreground)',
         overflow: 'hidden',
 
         '@media (max-width: 900px)': {
@@ -96,13 +94,14 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
         },
         '& .rbc-today': {
           backgroundColor: 'var(--success)',
+          color: 'white'
         },
         '& .rbc-time-view': { // time grid - week/ day
           borderTop: '1px solid var(--disabled)',
         },
         '& .rbc-time-gutter': {
           backgroundColor: 'var(--surface-1)',
-          color: 'var(--text-muted)',
+          color: 'inherit',
           fontSize: '0.75rem',
           fontWeight: 500,
           width: '70px',
@@ -175,7 +174,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             variant="contained"
             sx={{ 
               color: 'inherit',
-              bgcolor: 'var(--surface-2)',
+              bgcolor: 'inherit',
               border: '0.1px solid var(--success)', 
               height: 36
             }}
@@ -230,7 +229,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             style: {
               backgroundColor: baseColor,
               borderRadius: '6px',
-              color: 'white',
+              color: 'inherit',
               border: 'none',
               padding: '2px 6px',
               fontSize: '0.8rem',

@@ -66,7 +66,6 @@ export type TeamMember = {
   role: TeamRole;
   invitedBy?: number;
   createdAt: string;
-
   user: User;
 };
 
@@ -89,4 +88,5 @@ export type Subscription = {
   expiresAt: string;
   createdAt: string;
   teamId: number;
+  userId: number;
 };

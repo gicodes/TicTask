@@ -3,10 +3,11 @@
 import { useAuth } from './auth';
 import { apiGet } from '@/lib/api';
 import { SubscriptionRes } from '@/types/axios';
+import { Subscription } from '@/types/users';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 interface SubscriptionContextProps {
-  subscription: SubscriptionRes | null;
+  subscription: Subscription | null;
   isPro: boolean;
   loading: boolean;
   refresh: () => Promise<void>;
@@ -21,7 +22,7 @@ const SubscriptionContext = createContext<SubscriptionContextProps>({
 
 export const SubscriptionProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
-  const [subscription, setSubscription] = useState<SubscriptionRes | null>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchSubscription = async () => {
@@ -29,8 +30,10 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
     setLoading(true);
 
     try {
-      const data: SubscriptionRes = await apiGet(`/subscriptions/${user.id}`);
-      setSubscription(data);
+      const data: SubscriptionRes = await apiGet(`/subscription/${user?.id}`);
+      if (data.ok && !data.data) {
+        console.log("Subscription not found"); setSubscription(null)
+      } else setSubscription(data.data); 
     } catch (err) {
       console.error('Failed to load subscription', err);
     } finally {
@@ -46,7 +49,7 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
     <SubscriptionContext.Provider
       value={{
         subscription,
-        isPro: subscription?.plan === 'Pro' && subscription?.active,
+        isPro: subscription?.plan === 'PRO' && subscription?.active,
         loading,
         refresh: fetchSubscription,
       }}

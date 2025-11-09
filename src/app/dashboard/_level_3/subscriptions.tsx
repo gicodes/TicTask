@@ -1,8 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { CreditCard } from 'lucide-react';
 import { useSubscription } from '@/providers/subscription';
+import { CreditCard, DataExploration } from '@mui/icons-material';
 import { Box, Stack, Typography, Card, CardContent, Button, Divider, Grid, LinearProgress } from '@mui/material';
 
 export default function SubscriptionPage() {
@@ -49,14 +49,14 @@ export default function SubscriptionPage() {
                 {isPro ? (
                   <Button
                     variant="outlined"
-                    startIcon={<CreditCard size={18}/>}
+                    startIcon={<CreditCard />}
                     sx={{ borderRadius: 3 }}
                   >
                     Manage Billing
                   </Button>
                 ) : (
                   <button className='btn min-height-44 custom-bw flex items-center gap-2'>
-                    UPGRADE TO PRO
+                    <DataExploration /> UPGRADE TO PRO &nbsp;
                   </button>
                 )}
               </Stack>

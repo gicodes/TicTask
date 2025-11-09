@@ -1,5 +1,5 @@
 import { BlogCardProps, ChangeLogProps, FAQProps } from "./resources";
-import { Role, User } from "./users";
+import { Role, Subscription, User } from "./users";
 import { Ticket } from "./ticket";
 
 export interface VerifyEmailRequest {
@@ -85,9 +85,8 @@ export interface RefreshToken {
 }
 
 export interface SubscriptionRes {
-  plan: string;
-  active: boolean;
-  expiresAt: string | null;
+  ok: boolean
+  data: Subscription
 }
 
 export interface GenericAPIRes {
