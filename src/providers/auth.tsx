@@ -16,7 +16,7 @@ export interface AuthUser {
   collab?: boolean;
   partner?: boolean;
   organization?: string;
-  accessToken?: string
+  accessToken: string
 }
 
 interface AuthContextProps {
@@ -35,7 +35,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: session, status, update } = useSession();
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [ user, setUser ] = useState<AuthUser | null>(null);
 
   const loading = status === 'loading';
   const isAuthenticated = !!session?.user;
@@ -43,19 +43,18 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (session?.user) {
       const fetchUser = async () => {
-        const res: UserProfileRes = await apiGet(`/user/${((session.user as unknown) as User).id}`);
+        const res: UserProfileRes = await apiGet(`/user/${((session.user) as User).id}`);
         
         setUser({
-          id: ((session.user as unknown) as User).id,
+          id: ((session.user) as User).id,
           name: res.data.name || '',
           email: res.data.email || '',
-          role: ((res.data as unknown) as User).role || 'USER',
-          userType: ((res.data as unknown) as User).userType || '',
-          photo: ((res.data as unknown) as User).photo,
-          organization: ((res.data as unknown) as User).organization,
-          accessToken: ((res.data as unknown) as User).accessToken
+          role: ((res.data) as User).role || 'USER',
+          userType: ((res.data) as User).userType || '',
+          photo: ((res.data) as User).photo,
+          organization: ((res.data) as User).organization,
+          accessToken: ((res.data) as User).accessToken
         });
-      
         return;
       }
 

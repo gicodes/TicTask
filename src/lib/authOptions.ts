@@ -1,5 +1,5 @@
-import CredentialsProvider from 'next-auth/providers/credentials';
 import { LoginRequest, LoginResponse, RefreshToken } from '@/types/axios';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import SlackProvider from 'next-auth/providers/slack';
 import XProvider from 'next-auth/providers/twitter';
@@ -24,7 +24,6 @@ export const authOptions: NextAuthOptions = {
             "/auth/login", credentials!
           );
           user = res.user;
-          user.accessToken = res.accessToken;
 
           if (res.ok && user) return user;
         } catch (error) {
@@ -60,15 +59,17 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-  if (user) {
-      token.user = user;
-      token.expires = Math.floor(Date.now() / 1000) + 15 * 60;
-    }
+      if (user) {
+        token.user = user;
+        token.accessToken = user.accessToken;
+        token.expires = Math.floor(Date.now() / 1000) + 15 * 60;
+      }
+      
       const now = Date.now() / 1000;
 
-      if (token.accessToken && token.expires && +token.expires - now < 60) {
+      if (token.expires && now > Number(token.expires) - 5 * 60) {
         try {
-          const res: RefreshToken = await nextAuthApiPost("/auth/refresh");
+          const res: RefreshToken = await nextAuthApiPost("/auth/refresh", undefined, { credentials: "include" });
           token.accessToken = res.accessToken;
           token.expires = now + 15 * 60;
         } catch (err) {
@@ -78,7 +79,11 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token?.user) session.user = token.user as User;
+      if (token.user) {
+        session.user = token.user as User;         
+        session.accessToken = token.accessToken;
+      }
+
       return session;
     },
   },

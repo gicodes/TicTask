@@ -28,11 +28,10 @@ export default function PartnerJoinPage() {
   };
 
   const handleRoleChange = (event: SelectChangeEvent<string[]>) => {
-    const value = event.target.value;
-    setForm({
-      ...form,
-      roles: typeof value === 'string' ? value.split(',') : value,
-    });
+    const { target: { value }} = event;
+    const selected = typeof value === "string" ? value.split(",") : value;
+
+    if (selected.length <= 2) setForm({ ...form, roles: selected });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

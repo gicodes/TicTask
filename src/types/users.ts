@@ -35,7 +35,7 @@ export type User = {
   collab?: boolean;
   partnerRole: string;
 
-  accessToken?: string;
+  accessToken: string;
   createdAt: string;
   updatedAt: string;
 };

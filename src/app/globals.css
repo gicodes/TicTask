@@ -82,7 +82,7 @@ a {
 
 .custom-bw { color: var(--bw); }
 .custom-warm { color: var(--accent); }
-.custom-white { color: #fff;}
+.custom-white { color: #fff; }
 .custom-sharp { color: var(--success); }
 .custom-dull { color: var(--secondary); }
 
@@ -116,7 +116,7 @@ h6 { font-size: 1.5rem; }
 .font-xxl { font-size: 2.75rem; }
 .font-sxl { font-size: 3rem; }
 
-.font-weight-l { font-weight: 200;}
+.font-weight-l { font-weight: 200; }
 
 .flex { display: flex; }
 .grid { display: grid; }
@@ -127,17 +127,17 @@ h6 { font-size: 1.5rem; }
 .gap-3 { gap: 20px; }
 
 .text-center { text-align: center; }
-.items-center { align-items: center;}
+.items-center { align-items: center; }
 .justify-center { justify-content: center; }
 .space-around { justify-content: space-around; }
 .space-between { justify-content: space-between; }
 
-.min-height-44 { min-height: 44px;}
+.min-height-44 { min-height: 44px; }
 .min-height-100 { min-height: 100px; }
 .min-height-500 { min-height: 500px; }
 
 .min-width-100 { min-width: 100px; }
-.min-width-150 { min-width: 150px;}
+.min-width-150 { min-width: 150px; }
 .min-width-180 { min-width: 180px; }
 .min-width-250 { min-width: 250px; }
 
@@ -149,7 +149,7 @@ h6 { font-size: 1.5rem; }
 .mx-auto { margin: 0 auto; }
 
 .my-1 { margin: 1rem 0; }
-.my-3 { margin: 1.75rem 0;}
+.my-3 { margin: 1.75rem 0; }
 .my-5 { margin: 2.5rem 0; }
 
 .py-1 { padding: 5px 0; }

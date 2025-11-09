@@ -163,9 +163,9 @@ export const ProBadge = () =>
     sx={{ 
       p: 1, 
       height: 15, 
+      fontSize: 11, 
       display: 'flex', 
       fontWeight: 1000,
-      fontSize: 11, 
       borderRadius: 20, 
       alignItems: 'center', 
       bgcolor: 'var(--sepcial)', 

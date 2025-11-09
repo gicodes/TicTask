@@ -140,15 +140,15 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       }}
     >
       <Stack
-        direction={{ xs: 'column', sm: 'row' }}
         alignItems={{ xs: 'flex-start', sm: 'center' }}
+        direction={{ xs: 'column', sm: 'row' }}
         justifyContent="space-between"
         sx={{
           py: 2,
           px: 0,
           borderBottom: 1,
-          borderColor: 'divider',
           gap: { xs: 2, sm: 0 },
+          borderColor: 'divider',
         }}
       >
         <Stack 
@@ -158,7 +158,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           flexWrap={'wrap'}
           mx={{ xs: 'auto', md: 0}}
         >
-          <Stack direction="row" sx={{ bgcolor: 'var(--background)'}}>
+          <Stack direction="row">
             <IconButton onClick={() => handleNavigate('PREV')}>
               <ChevronLeft size={20} />
             </IconButton>
@@ -172,8 +172,13 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             </IconButton>
           </Stack>
           <Button
-            variant="outlined"
-            sx={{ color: 'inherit', borderColor: 'var(--success)', height: 36}}
+            variant="contained"
+            sx={{ 
+              color: 'inherit',
+              bgcolor: 'var(--surface-2)',
+              border: '0.1px solid var(--success)', 
+              height: 36
+            }}
             onClick={() => handleNavigate('TODAY')}
           >
             Today
