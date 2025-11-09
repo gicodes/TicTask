@@ -5,6 +5,7 @@
   --surface-2: #eaeaea;
   --accent: #f38600;
   --success: forestgreen;
+  --flair: rgb(100, 180, 180);
   --secondary: #999;
   --disabled: #cccccc;
   --accent-contrast: #ffffff;
@@ -31,11 +32,12 @@
     --accent: #f38600;
     --error: #e75900;
     --danger: #e53935;
-    --success: #4caf50;      
+    --success: #4caf50; 
+    --info: skyblue;    
+    --flair: rgb(34, 139, 139);     
     --secondary: #777;
     --disabled: #555;
-    --bw: #fff;    
-    --info: skyblue;        
+    --bw: #fff;        
     --dull-gray: #555;
     --border-color: #333;
     --accent-contrast: #1a1a1a;
@@ -117,7 +119,7 @@ h6 { font-size: 1.5rem; }
 .font-sxl { font-size: 3rem; }
 
 .font-weight-l { font-weight: 200; }
-
+a
 .flex { display: flex; }
 .grid { display: grid; }
 .block { display: block; }

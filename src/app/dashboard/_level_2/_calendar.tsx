@@ -48,11 +48,19 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
 
   const handleNavigate = (direction: 'PREV' | 'NEXT' | 'TODAY') => {
     const m = moment(currentDate);
+
+    if (direction === 'TODAY') {
+      setCurrentDate(moment().toDate());
+      return;
+    }
+
+    const unit =
+      activeView === 'month' ? 'month' :
+      activeView === 'week' ? 'week' : 'day';
+
     const newDate =
-      direction === 'TODAY' ? moment()
-        : direction === 'PREV'
-        ? m.subtract(1, activeView === 'month' ? 'month' : 'week')
-        : m.add(1, activeView === 'month' ? 'month' : 'week');
+      direction === 'PREV' ? m.subtract(1, unit) : m.add(1, unit);
+
     setCurrentDate(newDate.toDate());
   };
 
@@ -83,7 +91,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           height: '50px',
           alignContent: 'center',
           backgroundColor: 'var(--surface-2)',
-          color: theme.palette.text.primary,
+          color: 'var(--foreground)',
           fontWeight: 600,
           textTransform: 'uppercase',
           fontSize: '0.8rem',
@@ -93,11 +101,15 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           color: 'inherit'
         },
         '& .rbc-today': {
-          backgroundColor: 'var(--success)',
-          color: 'white'
+          backgroundColor: 'var(--flair)',
+          color: 'var(--foreground)'
         },
         '& .rbc-time-view': { // time grid - week/ day
           borderTop: '1px solid var(--disabled)',
+          color: 'var(--foreground)',
+          background: 'var(--background)',
+          borderRadius: '8px',
+          padding: '6px',
         },
         '& .rbc-time-gutter': {
           backgroundColor: 'var(--surface-1)',
@@ -108,7 +120,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           border: '1px solid var(--border)',
         },
         '& .rbc-timeslot-group': {
-          alignContent: 'center',
           textAlign: 'center',
           minHeight: '60px',
           border: '1px dashed var(--divider)',
@@ -120,21 +131,44 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           },
         },
         '& .rbc-time-slot.rbc-now': {
-          backgroundColor: 'rgba(255, 99, 71, 0.1)',
+          backgroundColor: 'var(--background)',
+          color: 'var(--foreground)',
           borderLeft: '3px solid var(--error)',
         },
         '& .rbc-time-header': {
           alignContent: 'center',
+          color: 'var(--foreground)',
           backgroundColor: 'var(--surface-2)',
           border: '1px solid var(--divider)',
         },
         '& .rbc-time-content': {
           borderTop: 'none',
-          backgroundColor: 'background.default',
+          backgroundColor: 'inherit',
+          color: 'inherit'
         },
         '& .rbc-current-time-indicator': {
           backgroundColor: 'var(--error)',
           height: '2px',
+        },
+        '& .rbc-event': {
+          borderRadius: '6px',
+          margin: '4px',
+          padding: '4px 8px',
+          cursor: 'pointer',
+          transition: 'transform 0.1s ease',
+          '&:hover': {
+            transform: 'scale(1.02)',
+            backgroundColor: 'var(--surface-hover)',
+          },
+        },
+        '& .rbc-event-content': {
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        },
+        '& .rbc-date-cell': {
+          fontWeight: 500,
+          color: 'var(--foreground-muted)',
         },
       }}
     >
@@ -175,7 +209,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             sx={{ 
               color: 'inherit',
               bgcolor: 'inherit',
-              border: '0.1px solid var(--success)', 
+              border: '2px solid var(--flair)', 
               height: 36
             }}
             onClick={() => handleNavigate('TODAY')}
@@ -207,7 +241,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
         view={activeView}
         onView={(v) => setActiveView(v)}
         onNavigate={(date) => setCurrentDate(date)}
-        popup
         selectable
         onSelectEvent={(event) => onSelectTask(String(event.id))}
         onRangeChange={(range) => {
@@ -224,7 +257,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
               ? 'var(--warm)'
               : event.priority === 'LOW'
               ? 'var(--secondary)'
-              : 'var(--surface-1)';
+              : 'var(--surface-2)';
           return {
             style: {
               backgroundColor: baseColor,

@@ -188,15 +188,15 @@ export default function TicketFormDrawer({
             />
 
             <Stack py={3} spacing={3}>
-              <Typography>Set a due date for your {task ? "task" : "ticket"}</Typography>
+              <Typography>Set a due date {task ? "& time for your task" : "for your ticket"}</Typography>
               <Controller
                 name="dueDate"
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Due date"
-                    type="date"
+                    label="Due Date & Time"
+                    type="datetime-local"
                     InputLabelProps={{ shrink: true }}
                     fullWidth
                     sx={{
