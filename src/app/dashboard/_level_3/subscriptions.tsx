@@ -50,14 +50,18 @@ export default function SubscriptionPage() {
                   <Button
                     variant="outlined"
                     startIcon={<CreditCard />}
-                    sx={{ borderRadius: 3 }}
+                    color='inherit'
                   >
                     Manage Billing
                   </Button>
                 ) : (
-                  <button className='btn min-height-44 custom-bw flex items-center gap-2'>
-                    <DataExploration /> UPGRADE TO PRO &nbsp;
-                  </button>
+                  <Button 
+                    startIcon={<DataExploration />} 
+                    color='inherit'
+                    variant='outlined'
+                  >
+                     Upgrade to Pro
+                  </Button>
                 )}
               </Stack>
             </CardContent>

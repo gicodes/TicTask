@@ -24,7 +24,6 @@ export const authOptions: NextAuthOptions = {
             "/auth/login", credentials!
           );
           user = res.user;
-
           if (res.ok && user) return user;
         } catch (error) {
           console.log("Login error at nextAuth Options:", error);
@@ -54,8 +53,8 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // refresh every 24h
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60, 
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -64,12 +63,10 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = user.accessToken;
         token.expires = Math.floor(Date.now() / 1000) + 15 * 60;
       }
-      
       const now = Date.now() / 1000;
-
       if (token.expires && now > Number(token.expires) - 5 * 60) {
         try {
-          const res: RefreshToken = await nextAuthApiPost("/auth/refresh", undefined, { credentials: "include" });
+          const res = await nextAuthApiPost<RefreshToken>("/auth/refresh", undefined, { withCredentials: true });
           token.accessToken = res.accessToken;
           token.expires = now + 15 * 60;
         } catch (err) {
@@ -83,7 +80,6 @@ export const authOptions: NextAuthOptions = {
         session.user = token.user as User;         
         session.accessToken = token.accessToken;
       }
-
       return session;
     },
   },

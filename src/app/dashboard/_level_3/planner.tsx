@@ -24,7 +24,7 @@ const PlannerPage: React.FC = () => {
 
   useEffect(() => {
     fetchTickets();
-  }, []);
+  }, [fetchTickets]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') localStorage.setItem('planner_view', view);

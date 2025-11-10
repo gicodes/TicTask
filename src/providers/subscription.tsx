@@ -2,9 +2,9 @@
 
 import { useAuth } from './auth';
 import { apiGet } from '@/lib/api';
-import { SubscriptionRes } from '@/types/axios';
 import { Subscription } from '@/types/users';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { SubscriptionRes } from '@/types/axios';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
 interface SubscriptionContextProps {
   subscription: Subscription | null;
@@ -25,25 +25,25 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchSubscription = async () => {
+  const fetchSubscription = useCallback(async () => {
     if (!user) return;
     setLoading(true);
 
     try {
       const data: SubscriptionRes = await apiGet(`/subscription/${user?.id}`);
-      if (data.ok && !data.data) {
-        console.log("Subscription not found"); setSubscription(null)
-      } else setSubscription(data.data); 
+
+      if (data.ok && !data.data) setSubscription(null)
+      else setSubscription(data.data); 
     } catch (err) {
       console.error('Failed to load subscription', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchSubscription();
-  }, [user]);
+  }, [user, fetchSubscription]);
 
   return (
     <SubscriptionContext.Provider

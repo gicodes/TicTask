@@ -28,21 +28,25 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
 
   useEffect(() => {
     if (isMobile && activeView !== 'day') setActiveView('day');
-  }, [isMobile]);
+  }, [isMobile, activeView]);
 
   const events = useMemo<PlannerEvent[]>(
     () =>
       tasks
         ?.filter((t) => t.dueDate)
-        .map((t) => ({
-          id: t.id,
-          title: t.title,
-          start: new Date(t.dueDate!),
-          end: new Date(t.dueDate!),
-          allDay: true,
-          status: t.status,
-          priority: t.priority,
-        })) || [],
+        .map((t) => {
+          const start = new Date(t.dueDate!);
+          const end = new Date(start.getTime() + 60 * 60 * 1000);
+          return {
+            id: t.id,
+            title: t.title,
+            start,
+            end,
+            allDay: false,
+            status: t.status,
+            priority: t.priority,
+          };
+        }) || [],
     [tasks]
   );
 
@@ -153,7 +157,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
         '& .rbc-event': {
           borderRadius: '6px',
           margin: '4px',
-          padding: '4px 8px',
+          padding: '12px 8px',
           cursor: 'pointer',
           transition: 'transform 0.1s ease',
           '&:hover': {
@@ -254,17 +258,18 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
               : event.priority === 'HIGH'
               ? 'var(--error)'
               : event.priority === 'MEDIUM'
-              ? 'var(--warm)'
+              ? 'var(--accent)'
               : event.priority === 'LOW'
               ? 'var(--secondary)'
               : 'var(--surface-2)';
           return {
             style: {
               backgroundColor: baseColor,
+              maxWidth: 180,              
               borderRadius: '6px',
               color: 'inherit',
               border: 'none',
-              padding: '2px 6px',
+              padding: '12px 6px',
               fontSize: '0.8rem',
               fontWeight: 500,
             },

@@ -62,10 +62,9 @@ export async function nextAuthApiGet<TResponse>(
 export async function nextAuthApiPost<TResponse, TBody = unknown>(
   url: string,
   data?: TBody,
-  headers?: Record<string, string>,
   config?: AxiosRequestConfig
 ): Promise<TResponse> {
-  const res: AxiosResponse<TResponse> = await nextAuthApi.post(url, data, config ? { ...config, headers: { ...config.headers, ...headers } } : { headers });
+  const res: AxiosResponse<TResponse> = await nextAuthApi.post(url, data, config);
   return res.data;
 }
 

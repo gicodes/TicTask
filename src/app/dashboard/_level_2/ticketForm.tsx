@@ -31,7 +31,6 @@ const schema = z.object({
   tags: z.array(z.string()).optional(),
   dueDate: z.union([z.string(), z.date()]),
 });
-
 type FormValues = z.infer<typeof schema>;
 
 export default function TicketFormDrawer({
@@ -82,6 +81,7 @@ export default function TicketFormDrawer({
       onCreated?.(ticket);
       showAlert("Your new ticket has been created!", "success");
 
+      window.location.reload();
       reset();
       onClose();
     } catch {
@@ -188,7 +188,7 @@ export default function TicketFormDrawer({
             />
 
             <Stack py={3} spacing={3}>
-              <Typography>Set a due date {task ? "& time for your task" : "for your ticket"}</Typography>
+              <Typography>Set a due date {task ? "& time for your task" : "for yourticket"}</Typography>
               <Controller
                 name="dueDate"
                 control={control}

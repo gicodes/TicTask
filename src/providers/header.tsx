@@ -109,6 +109,8 @@ const Header = () => {
                           <Link
                             key={subItem.href}
                             href={subItem.href}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.05)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                             style={{
                               textDecoration: "none",
                               color: "inherit",
@@ -116,12 +118,6 @@ const Header = () => {
                               padding: "6px 8px",
                               borderRadius: 4,
                             }}
-                            onMouseEnter={(e) =>
-                              (e.currentTarget.style.background = "rgba(0,0,0,0.05)")
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.style.background = "transparent")
-                            }
                           >
                             {subItem.label}
                           </Link>
@@ -143,7 +139,7 @@ const Header = () => {
                     textTransform={'uppercase'} 
                     className={styles.btnPrimary}
                   >
-                      {link.label}
+                    {link.label}
                   </Typography>
                 </Link>
               ) : (
@@ -152,6 +148,7 @@ const Header = () => {
                   key={link.href}
                   component={Link}
                   href={link.href}
+                  onClick={link.label==="Logout" ? logout : undefined}
                   className={styles.btnRetreat}
                   textTransform={'uppercase'}
                 >
@@ -204,7 +201,7 @@ const Header = () => {
                 <ListItem key={link.href}>
                   <Link
                     href={link.href}
-                    onClick={link.onClick ? () => logout : toggleDrawer}
+                    onClick={link.label==="Logout" ? logout : toggleDrawer}
                     style={{
                       width: "100%",
                       textAlign: "center",

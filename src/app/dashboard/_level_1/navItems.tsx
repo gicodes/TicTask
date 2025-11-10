@@ -62,7 +62,6 @@ export type LinkItem = {
   href: string;
   cta?: boolean;
   disabled?: boolean;
-  onClick?: boolean;
 };
 
 export const AUTH_ITEMS: LinkItem[] = [
@@ -108,7 +107,7 @@ export const guestLinks: LinkItem[] = [
 ];
 
 export const userLinks: LinkItem[] = [
-  { label: "Logout", href: "", onClick: true},
+  { label: "Logout", href: ""},
   { label: "Dashboard", href: "/dashboard", cta: true },
 ];
 
