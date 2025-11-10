@@ -188,7 +188,7 @@ export default function TicketFormDrawer({
             />
 
             <Stack py={3} spacing={3}>
-              <Typography>Set a due date {task ? "& time for your task" : "for yourticket"}</Typography>
+              <Typography>Set a due date {task ? "& time for your task" : "for your ticket"}</Typography>
               <Controller
                 name="dueDate"
                 control={control}

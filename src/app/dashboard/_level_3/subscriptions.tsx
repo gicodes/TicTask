@@ -11,7 +11,7 @@ export default function SubscriptionPage() {
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
-        <Typography variant="body1" sx={{ opacity: 0.7 }}>Loading your subscription...</Typography>
+        <Typography variant="body1" sx={{ opacity: 0.7 }}> Loading your subscription... </Typography>
       </Box>
     );
   }

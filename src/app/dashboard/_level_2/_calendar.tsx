@@ -1,7 +1,7 @@
 'use client';
 
 import moment from 'moment';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
@@ -26,9 +26,16 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [activeView, setActiveView] = useState<View>('month');
 
+  const hasSetMobileView = useRef(false);
+
   useEffect(() => {
-    if (isMobile && activeView !== 'day') setActiveView('day');
-  }, [isMobile, activeView]);
+    if (isMobile && !hasSetMobileView.current) {
+      setActiveView('day');
+      hasSetMobileView.current = true;
+    } else if (!isMobile) {
+      hasSetMobileView.current = false;
+    }
+  }, [isMobile]);
 
   const events = useMemo<PlannerEvent[]>(
     () =>

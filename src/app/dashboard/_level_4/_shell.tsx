@@ -3,26 +3,63 @@
 import Link from 'next/link';
 import Logo from '@/assets/txtLogo';
 import { useAuth } from '@/providers/auth';
-import { ReactNode, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import AiAssistantDrawer from '../_level_2/aiDrawer';
+import { ReactNode, useEffect, useState } from 'react';
 import { FaUserTie, FaUserShield } from 'react-icons/fa6';
-import { Login, Menu as MenuIcon, Notifications  } from '@mui/icons-material';
+import { Login, Menu as MenuIcon, Notifications } from '@mui/icons-material';
 import { FaExternalLinkAlt, FaUserAstronaut, FaUserSecret, FaUsers } from 'react-icons/fa';
 import { AUTH_ITEMS, getFilteredNav, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
-import { AppBar, Toolbar, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Box, IconButton, Menu, MenuItem, Divider, Tooltip, Stack, Typography,} from '@mui/material';
+import { 
+  AppBar,
+  Toolbar, 
+  Drawer, 
+  List, 
+  ListItemButton, 
+  ListItemIcon, 
+  ListItemText, 
+  Box, 
+  IconButton, 
+  Menu, 
+  MenuItem, 
+  Divider, 
+  Tooltip, 
+  Stack, 
+  Typography,
+  LinearProgress
+} from '@mui/material';
 
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { user, logout } = useAuth();
   const pathname = usePathname();
+  const [isMounted, setIsMounted] = useState(false);
+  const [isRouteChanging, setIsRouteChanging] = useState(false);
+
+  useEffect(() => setIsMounted(true), []);
+
+  useEffect(() => {
+    if (isRouteChanging) {
+      const timer = setTimeout(() => setIsRouteChanging(false), 600);
+      return () => clearTimeout(timer);
+    }
+  }, [pathname]);
+
+  if (!isMounted) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Typography variant="h6" color="text.secondary">
+          Loading...
+        </Typography>
+      </Box>
+    );
+  }
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
   const filteredNav = getFilteredNav(user);
-
   const isLoggedIn = !!user;
 
   function userRole() {
@@ -53,8 +90,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         {userRole()==="PARTNER" && <FaUserTie />}
         {userRole()==="ADMIN" && <FaUserSecret />}
       </Box>
-    </Tooltip>
-  )
+    </Tooltip>)
 
   const authMenuItems = AUTH_ITEMS.map(item => {
     const isDisabled = !isLoggedIn &&
@@ -225,7 +261,14 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         <Toolbar />
         <List sx={{ pt: 5}}>
           {filteredNav.map((item, i) => (
-            <Link href={item.path} key={i}>
+            <Link
+              href={item.path}
+              key={item.path}
+              onClick={() => {
+                setOpen(false);
+                setIsRouteChanging(true);
+              }}
+            >
               <ListItemButton selected={pathname === item.path}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label}  style={{ marginLeft: -10}} />
@@ -244,6 +287,13 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         </Box>
         <AiAssistantDrawer />
       </Box>
+
+      {isRouteChanging && (
+        <LinearProgress
+          color="secondary"
+          sx={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 2000 }}
+        />
+      )}
     </Box>
   );
 };
