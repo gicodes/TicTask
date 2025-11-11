@@ -3,10 +3,12 @@
 import { motion } from 'framer-motion';
 import { useSubscription } from '@/providers/subscription';
 import { CreditCard, DataExploration } from '@mui/icons-material';
+import { useCreateCheckoutSession } from '@/hooks/useCreateCheckout';
 import { Box, Stack, Typography, Card, CardContent, Button, Divider, Grid, LinearProgress } from '@mui/material';
 
 export default function SubscriptionPage() {
   const { subscription, isPro, loading } = useSubscription();
+  const { mutate, isPending } = useCreateCheckoutSession();
 
   if (loading) {
     return (
@@ -46,23 +48,28 @@ export default function SubscriptionPage() {
                   </Typography>
                 </Box>
 
-                {isPro ? (
-                  <Button
-                    variant="outlined"
-                    startIcon={<CreditCard />}
-                    color='inherit'
-                  >
-                    Manage Billing
-                  </Button>
-                ) : (
-                  <Button 
-                    startIcon={<DataExploration />} 
-                    color='inherit'
-                    variant='outlined'
-                  >
-                     Upgrade to Pro
-                  </Button>
-                )}
+                <Box>
+                  {isPro ? (
+                    <Button
+                      variant="outlined"
+                      startIcon={<CreditCard />}
+                      color="inherit"
+                      onClick={() => mutate('pro')}
+                    >
+                      Manage Billing
+                    </Button>
+                  ) : (
+                    <Button
+                      startIcon={<DataExploration />}
+                      color="inherit"
+                      variant="outlined"
+                      disabled={isPending}
+                      onClick={() => mutate('pro')}
+                    >
+                      {isPending ? 'Redirecting...' : 'Upgrade to Pro'}
+                    </Button>
+                  )}
+                </Box>
               </Stack>
             </CardContent>
           </Card>

@@ -186,3 +186,19 @@ h6 { font-size: 1.5rem; }
     border-color: var(--accent);
   }
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { color: #888; }
+  50% { color: #00bfa5; }
+  100% { color: #888; }
+}
+
+.pulse {
+  display: inline-block;
+  animation: pulse 2.5s ease-in-out infinite;
+}

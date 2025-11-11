@@ -9,6 +9,8 @@ import { createContext, useCallback, useContext, useEffect, useState } from 'rea
 interface SubscriptionContextProps {
   subscription: Subscription | null;
   isPro: boolean;
+  isFreeTrial: boolean;
+  isEnterprise: boolean;
   loading: boolean;
   refresh: () => Promise<void>;
 }
@@ -16,6 +18,8 @@ interface SubscriptionContextProps {
 const SubscriptionContext = createContext<SubscriptionContextProps>({
   subscription: null,
   isPro: false,
+  isFreeTrial: false,
+  isEnterprise: false,
   loading: true,
   refresh: async () => {},
 });
@@ -31,9 +35,8 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
 
     try {
       const data: SubscriptionRes = await apiGet(`/subscription/${user?.id}`);
-
-      if (data.ok && !data.data) setSubscription(null)
-      else setSubscription(data.data); 
+      if (data.ok && !data.data) setSubscription(null);
+      else setSubscription(data.data);
     } catch (err) {
       console.error('Failed to load subscription', err);
     } finally {
@@ -45,11 +48,15 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
     fetchSubscription();
   }, [user, fetchSubscription]);
 
+  const plan = subscription?.plan?.toUpperCase() || 'FREE';
+
   return (
     <SubscriptionContext.Provider
       value={{
         subscription,
-        isPro: subscription?.plan === 'PRO' && subscription?.active,
+        isPro: plan === 'PRO' && (subscription?.active || false),
+        isFreeTrial: plan === 'TRIAL' && (subscription?.active || false),
+        isEnterprise: plan === 'ENTERPRISE' && (subscription?.active) || false,
         loading,
         refresh: fetchSubscription,
       }}

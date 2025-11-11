@@ -27,9 +27,20 @@ const IndexPitch = () => {
   return (
     <Container>
       <Stack textAlign={'center'} display={'grid'} gap={5}>
-        <Typography variant='h5' fontWeight={501}>
-          Never miss a task, routine or opportunity to get your {' '}
-          <span className='custom-dull font-md'><strong>$</strong></span>hit together
+        <Typography
+          variant="h5"
+          fontWeight={501}
+          sx={{
+            opacity: 0,
+            animation: 'fadeIn 1.5s ease forwards',
+          }}
+        >
+          <i>
+            Never miss a task, routine or opportunity to get your{' '}
+          </i>
+          <span className="custom-dull font-md pulse">
+            <i>Sh⥘t together</i>
+          </span>
         </Typography>
         <Box 
           display={'flex'}

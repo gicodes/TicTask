@@ -20,9 +20,11 @@ import {
 } from "@mui/material";
 import { CheckCircle } from "lucide-react";
 import { PLANS } from "@/constants/product";
+import { useCreateCheckoutSession } from "@/hooks/useCreateCheckout";
 
 export default function PricingSection() {
   const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
+  const { mutate } = useCreateCheckoutSession();
 
   return (
     <Box component="section" sx={{ py: { xs: 10, md: 16 }}}>
@@ -120,7 +122,10 @@ export default function PricingSection() {
                       ))}
                     </List>
 
-                    <button className={styles.btnPrimary}>
+                    <button
+                      className={styles.btnPrimary}
+                      onClick={() => mutate(plan.name.toLowerCase())}
+                    >
                       {plan.buttonLabel}
                     </button>
                   </Stack>

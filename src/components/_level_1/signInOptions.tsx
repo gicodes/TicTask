@@ -40,7 +40,7 @@ const SignInOptions = () => {
 
     if (!clientId) {
       return showAlert(
-        "You are not authorized for SSO. Please use email/ password or contact administrator",
+        "You are not authorized for SSO. Please use email/ password",
         "warning"
       )
     }
