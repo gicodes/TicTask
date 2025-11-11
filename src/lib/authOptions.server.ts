@@ -5,6 +5,7 @@ import SlackProvider from 'next-auth/providers/slack';
 import XProvider from 'next-auth/providers/twitter';
 import type { NextAuthOptions } from 'next-auth';
 import { nextAuthApiPost } from './api';
+import { cookies } from "next/headers";
 import { User } from '@/types/users';
 
 export const authOptions: NextAuthOptions = {
@@ -20,9 +21,7 @@ export const authOptions: NextAuthOptions = {
         let user = null;
 
         try {
-          const res = await nextAuthApiPost<LoginResponse, LoginRequest>(
-            "/auth/login", credentials!
-          );
+          const res = await nextAuthApiPost<LoginResponse, LoginRequest>("/auth/login", credentials!);
           user = res.user;
           if (res.ok && user) return user;
         } catch (error) {
@@ -57,45 +56,46 @@ export const authOptions: NextAuthOptions = {
     updateAge: 24 * 60 * 60, 
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt(params) {
+      const { token, user } = params;
+
       if (user) {
         token.user = user;
         token.accessToken = user.accessToken;
         token.expires = Math.floor(Date.now() / 1000) + 15 * 60;
       }
+
       const now = Date.now() / 1000;
       if (token.expires && now > Number(token.expires) - 5 * 60) {
         try {
-          const res = await nextAuthApiPost<RefreshToken>("/auth/refresh", undefined, { withCredentials: true });
-          token.accessToken = res.accessToken;
+          const cookieStore = cookies();
+          const refresh = (await cookieStore).get("refresh_token")?.value;
+
+          if (!refresh) throw new Error("Missing refresh cookie");
+
+          const resData = await nextAuthApiPost<RefreshToken>(
+            "/auth/refresh",
+            undefined,
+            { headers: { "x-refresh-token": String(refresh) } }
+          );
+
+          token.accessToken = resData.accessToken;
           token.expires = now + 15 * 60;
         } catch (err) {
           console.error("Failed to refresh token:", err);
         }
       }
+
       return token;
     },
     async session({ session, token }) {
       if (token.user) {
-        session.user = token.user as User;         
+        session.user = token.user as User;
         session.accessToken = token.accessToken;
       }
       return session;
     },
-  },
+  }
 };
 
 export default authOptions;
-
-export const authErrorMessages: Record<string, string> = {
-  CredentialsSignin: "Invalid email or password.",
-  OAuthSignin: "Error connecting to the provider.",
-  OAuthCallback: "Error handling the callback from the provider.",
-  OAuthCreateAccount: "Could not create your account via provider.",
-  EmailCreateAccount: "Could not create your account with email.",
-  Callback: "An unexpected error occurred. Please try again.",
-  OAuthAccountNotLinked: "Please sign in with the same method you used to create your account.",
-  EmailSignin: "Error sending sign-in email.",
-  SessionRequired: "Please sign in to access this page.",
-  Default: "Something went wrong. Please try again later.",
-};

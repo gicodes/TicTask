@@ -64,7 +64,10 @@ export async function nextAuthApiPost<TResponse, TBody = unknown>(
   data?: TBody,
   config?: AxiosRequestConfig
 ): Promise<TResponse> {
-  const res: AxiosResponse<TResponse> = await nextAuthApi.post(url, data, config);
+  const res = await nextAuthApi.post<TResponse>(url, data, {
+    withCredentials: true,
+    ...config,
+  });
   return res.data;
 }
 

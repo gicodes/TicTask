@@ -1,4 +1,4 @@
-import { authOptions } from './authOptions';
+import { authOptions } from './authOptions.server';
 import { getServerSession } from 'next-auth';
 
 export async function getServerSessionUser() {

@@ -44,7 +44,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
       const timer = setTimeout(() => setIsRouteChanging(false), 600);
       return () => clearTimeout(timer);
     }
-  }, [pathname]);
+  }, [pathname, isRouteChanging]);
 
   if (!isMounted) {
     return (
@@ -262,8 +262,8 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         <List sx={{ pt: 5}}>
           {filteredNav.map((item, i) => (
             <Link
+              key={i}
               href={item.path}
-              key={item.path}
               onClick={() => {
                 setOpen(false);
                 setIsRouteChanging(true);

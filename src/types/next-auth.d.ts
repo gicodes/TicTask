@@ -1,4 +1,5 @@
 import { DefaultSession, DefaultUser } from "next-auth";
+import { NextApiRequest, NextApiResponse } from "next";
 import { JWT as DefaultJWT } from "next-auth/jwt";
 
 declare module "next-auth" {
@@ -11,6 +12,18 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: User;
     accessToken: string;
+  }
+
+  interface JWTCallbackParams {
+    token: import("next-auth/jwt").JWT;
+    user?: User | null;
+    account?: import("next-auth").Account | null;
+    profile?: unknown;
+    trigger?: "signIn" | "signUp" | "update";
+    isNewUser?: boolean;
+    session?: unknown;
+    req: NextApiRequest;
+    res: NextApiResponse;
   }
 }
 
