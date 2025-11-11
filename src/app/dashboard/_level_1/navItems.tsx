@@ -16,7 +16,7 @@ export const NAV_ITEMS = [
   { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
   { label: 'Planner', path: '/dashboard/planner', icon: <BsCalendar2Date/>},
   { label: 'Products', path: '/product', icon: <MdCategory /> },
-  { label: 'Refer & Invites', path: '/dashboard/refer', icon: <MdOutlineFamilyRestroom /> },
+  { label: 'Refer & Invites', path: '/dashboard/invite', icon: <MdOutlineFamilyRestroom /> },
   { label: 'Subscriptions', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
   { label: 'Marketing', path: '/dashboard/marketing', icon: <MdCampaign /> },
   { label: 'Teams', path: '/dashboard/teams', icon: <SiAwsorganizations />},

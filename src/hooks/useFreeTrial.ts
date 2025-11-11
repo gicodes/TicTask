@@ -1,20 +1,28 @@
 import { apiPost } from "@/lib/api";
+import { useAuth } from "@/providers/auth";
 import { Subscription } from "@/types/users";
 import { SubscriptionRes } from "@/types/axios";
 
-export async function startTrial(id: number) {
-  if (!id) return null;
+export function useStartTrial() {
+  const { user } = useAuth();
 
-  const res = await apiPost<SubscriptionRes>(`/subscription`, {
-    id,
-    plan: 'TRIAL',
-    duration: 14,
-  });
+  const startTrial = async (id: number) => {
+    if (!id) return null;
 
-  if (!res.ok) {
-    console.error('Failed to start trial');
-    return null;
-  }
+    const res = await apiPost<SubscriptionRes>(`/subscription`, {
+      id,
+      plan: 'FREE',
+      duration: 14,
+    });
 
-  return res.data as Subscription;
+    let subscription: Subscription | undefined | null;
+
+    if (res.ok && res.data === null) subscription = user?.subscription;
+    if (res.ok) subscription = res.data as Subscription
+      else subscription = null
+
+    return subscription;
+  };
+
+  return { startTrial };
 }

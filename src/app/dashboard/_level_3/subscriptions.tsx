@@ -1,32 +1,45 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useAlert } from '@/providers/alert';
 import { useSubscription } from '@/providers/subscription';
 import { CreditCard, DataExploration } from '@mui/icons-material';
 import { useCreateCheckoutSession } from '@/hooks/useCreateCheckout';
-import { Box, Stack, Typography, Card, CardContent, Button, Divider, Grid, LinearProgress } from '@mui/material';
+import { Box, Stack, Typography, Card, CardContent, Button, Divider, Grid, LinearProgress, CircularProgress } from '@mui/material';
 
 export default function SubscriptionPage() {
-  const { subscription, isPro, loading } = useSubscription();
+  const { showAlert } = useAlert();
+  const { subscription, isPro, loading, isEnterprise, isFreeTrial } = useSubscription();
   const { mutate, isPending } = useCreateCheckoutSession();
 
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
-        <Typography variant="body1" sx={{ opacity: 0.7 }}> Loading your subscription... </Typography>
-      </Box>
-    );
-  }
+  if (loading) return (
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
+      <Typography variant="body1" sx={{ opacity: 0.7 }}> Loading your subscription... </Typography>
+    </Box>
+  );
+
+  const handleCheckout = (plan: string) => {
+    mutate(plan, {
+      onError: (error) => {
+        console.error(error);
+        showAlert('Something went wrong while processing checkout', 'warning');
+      },
+    });
+  };
 
   const plan = subscription?.plan || 'Free';
   const expiresAt = subscription?.expiresAt ? new Date(subscription.expiresAt).toLocaleDateString() : '—';
+
+  const aiCredits = isEnterprise ? 1000 : isPro ? 500 : isFreeTrial ? 100 : 10;
+  const automationRuns = isEnterprise ? 1000 : isPro ? 200 : 20;
 
   return (
     <Box sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, md: 4 } }}>
       <Stack spacing={4} maxWidth="900px" mx="auto">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
           <Stack spacing={1}>
-            <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+            <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}>
               Subscription & Billing
             </Typography>
             <Typography variant="body1" sx={{ opacity: 0.7 }}>
@@ -38,9 +51,16 @@ export default function SubscriptionPage() {
         <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <Card sx={{ borderRadius: 4, boxShadow: '0 6px 20px rgba(0,0,0,0.08)' }}>
             <CardContent>
-              <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} spacing={2}>
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                justifyContent="space-between"
+                alignItems={{ xs: 'flex-start', sm: 'center' }}
+                spacing={2}
+              >
                 <Box>
-                  <Typography variant="h6" fontWeight={700}>{plan} Plan</Typography>
+                  <Typography variant="h6" fontWeight={700}>
+                    {plan} Plan
+                  </Typography>
                   <Typography variant="body2" sx={{ opacity: 0.7 }}>
                     {isPro
                       ? `Active — renews on ${expiresAt}`
@@ -50,21 +70,18 @@ export default function SubscriptionPage() {
 
                 <Box>
                   {isPro ? (
-                    <Button
-                      variant="outlined"
-                      startIcon={<CreditCard />}
-                      color="inherit"
-                      onClick={() => mutate('pro')}
-                    >
+                    <Button variant="outlined" startIcon={<CreditCard />} color="inherit">
                       Manage Billing
                     </Button>
                   ) : (
                     <Button
-                      startIcon={<DataExploration />}
+                      startIcon={
+                        isPending ? <CircularProgress size={16} color="inherit" /> : <DataExploration />
+                      }
                       color="inherit"
                       variant="outlined"
                       disabled={isPending}
-                      onClick={() => mutate('pro')}
+                      onClick={() => handleCheckout('PRO')}
                     >
                       {isPending ? 'Redirecting...' : 'Upgrade to Pro'}
                     </Button>
@@ -85,24 +102,28 @@ export default function SubscriptionPage() {
                 <Divider sx={{ my: 1, opacity: 0.2 }} />
 
                 <Grid container spacing={3}>
-                  <Grid>
+                  <Grid display={'grid'} gap={1}>
                     <Typography variant="body2" sx={{ mb: 0.5 }}>
                       AI Assistant Credits
                     </Typography>
-                    <LinearProgress variant="determinate" value={isPro ? 70 : 100} sx={{ height: 8, borderRadius: 10 }} />
-                    <Typography variant="caption" sx={{ opacity: 0.7 }}>
-                      {isPro ? '70 / 100 credits used' : 'Free plan limit reached'}
-                    </Typography>
+                    <Box>
+                      <LinearProgress variant="determinate" value={(120 / aiCredits) * 100} />
+                      <Typography variant="caption" sx={{ opacity: 0.7 }}>
+                        {isPro ? '70 / 100 credits used' : 'Free plan limit reached'}
+                      </Typography>
+                    </Box>
                   </Grid>
 
-                  <Grid>
+                  <Grid display={'grid'} gap={1}>
                     <Typography variant="body2" sx={{ mb: 0.5 }}>
                       Automation Runs
                     </Typography>
-                    <LinearProgress variant="determinate" value={40} sx={{ height: 8, borderRadius: 10 }} />
-                    <Typography variant="caption" sx={{ opacity: 0.7 }}>
-                      40 / 100 this month
-                    </Typography>
+                    <Box>
+                      <LinearProgress variant="determinate" value={automationRuns} sx={{ height: 8, borderRadius: 10 }} />
+                      <Typography variant="caption" sx={{ opacity: 0.7 }}>
+                        {automationRuns} / 100 this month
+                      </Typography>
+                    </Box>
                   </Grid>
                 </Grid>
               </Stack>
@@ -115,11 +136,13 @@ export default function SubscriptionPage() {
             <CardContent>
               <Stack spacing={1.5}>
                 <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                  Need help with your billing or invoices? 
+                  Need help fixing an issue with your billing or subscription? 
                 </Typography>
-                <Button variant="contained" color='inherit' sx={{ maxWidth: 'fit-content', textTransform: 'none'}}>
-                  Contact Support
-                </Button>
+                <Link href={'/company/#contact-us'}>
+                  <Button variant="contained" color='inherit' sx={{ maxWidth: 'fit-content', textTransform: 'none'}}>
+                    Contact Support
+                  </Button>
+                </Link>
               </Stack>
             </CardContent>
           </Card>

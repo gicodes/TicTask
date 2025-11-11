@@ -27,6 +27,8 @@ export type User = {
   logo?:       string; 
   bio?:          string;
 
+  subscription?: Subscription
+
   teamMemberships: TeamMember[];
   createdTeams: Team[];
   adminProfile?: Admin;

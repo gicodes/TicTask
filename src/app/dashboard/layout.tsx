@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import DashboardIndex from './_level_4/_shell';
+import DashboardIndex from './_level_5/_shell';
 import { AuthProvider } from '@/providers/auth';
 import { AlertProvider } from '@/providers/alert';
 import { ThemeProvider } from '@/providers/theme';

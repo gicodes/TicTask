@@ -85,8 +85,9 @@ export interface RefreshToken {
 }
 
 export interface SubscriptionRes {
-  ok: boolean
-  data: Subscription
+  ok: boolean;
+  message?: string;      
+  data: Subscription | null;
 }
 
 export interface GenericAPIRes {
@@ -98,3 +99,20 @@ export interface GenericAPIRes {
     email: string;
   }
 }
+
+export interface StripeCheckOutSessionRequest {
+  userId: number;
+  plan: string
+}
+
+export interface StripeCheckOutSessionResponse {
+  ok: boolean;
+  message: string;
+  error?: {
+    message: string
+  }
+  data: {
+    url: string;
+    sessionId: string;
+  }
+} 

@@ -1,22 +1,28 @@
 import { apiPost } from "@/lib/api";
-import { SubscriptionRes } from "@/types/axios";
+import { useAuth } from "@/providers/auth";
 import { Subscription } from "@/types/users";
+import { SubscriptionRes } from "@/types/axios";
 
-export async function getPro(id: number) {
-  if (!id) return null;
+export function useGetPro() {
+  const { user } = useAuth();
 
-  console.log("NEW USER REQUEST: Get pro")
-  const getProRes = await apiPost<SubscriptionRes>(`/subscription`, {
-    id,
-    plan: 'PRO',
-    duration: 30 // Re-using this hook means duration will be open to more 30+ days
-  });
-  console.log(getProRes);
+  const getPro = async  (id: number) => {
+    if (!id) return null;
 
-  let subscription: Subscription | null;
+    const res = await apiPost<SubscriptionRes>(`/subscription`, {
+      id,
+      plan: 'PRO',
+      duration: 30 // Re-using this hook means duration will be open to more 30+ days
+    });
 
-  if (getProRes.ok)  subscription = getProRes.data
-    else subscription = null;
+    let subscription: Subscription | undefined | null;
 
-  return subscription;
+    if (res.ok && res.data===null) subscription = user?.subscription
+    if (res.ok) subscription = res.data
+      else subscription = null;
+
+    return subscription;
+  }
+
+  return { getPro };
 }

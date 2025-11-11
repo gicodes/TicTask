@@ -2,7 +2,7 @@
 
 import { SessionProvider, useSession, signIn, signOut } from 'next-auth/react';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, Role, UserType } from '@/types/users';
+import { User, Role, UserType, Subscription } from '@/types/users';
 import { UserProfileRes } from '@/types/axios';
 import { apiGet } from '@/lib/api';
 
@@ -15,8 +15,10 @@ export interface AuthUser {
   photo?: string;
   collab?: boolean;
   partner?: boolean;
+  position?: string;
   organization?: string;
-  accessToken: string
+  accessToken: string;
+  subscription?: Subscription;
 }
 
 interface AuthContextProps {
@@ -52,8 +54,10 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
           role: ((res.data) as User).role || 'USER',
           userType: ((res.data) as User).userType || '',
           photo: ((res.data) as User).photo,
+          position:  ((res.data) as User).position,
           organization: ((res.data) as User).organization,
-          accessToken: ((res.data) as User).accessToken
+          accessToken: ((res.data) as User).accessToken,
+          subscription: ((res.data) as User).subscription
         });
         return;
       }

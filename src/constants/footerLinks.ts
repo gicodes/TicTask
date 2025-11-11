@@ -2,7 +2,7 @@ export const FOOTER_LINKS = {
   PRODUCTS: [
     {title: "Overview", link: '/product'},
     {title: "Pricing", link: '/product/pricing'}, // *
-    {title: "Demo", link: '#'},  // *
+    {title: "Demo", link: '#'},
     {title: "Integration", link: '#'}  // *
   ],
   RESOURCES: [
@@ -20,10 +20,10 @@ export const FOOTER_LINKS = {
     {title: "Contact Us", link: '/company/contact-us'}
   ],
   LEGAL: [
-    {title: "Terms of Service", link: '/legal/terms'},  // *
-    {title: "Privacy Policy", link: '/legal/privacy-policy'},  // *
-    {title: "Cookie Policy", link: '/legal/cookie-policy'},  // *
-    {title: "Data Protection", link: '/legal/data-policy'} // *
+    {title: "Terms of Service", link: '/legal/terms-of-service'},
+    {title: "Privacy Policy", link: '/legal/privacy-policy'},
+    {title: "Cookie Policy", link: '/legal/cookie-policy'},
+    {title: "Data Protection", link: '/legal/data-policy'}
   ],
 };
 

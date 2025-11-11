@@ -70,11 +70,7 @@ export const authOptions: NextAuthOptions = {
         try {
           const cookieStore = cookies();
           const refresh = (await cookieStore).get("refresh_token")?.value;
-
-          if (!refresh) { 
-            console.error("Missing refresh cookie.. Throwing error in 0.01ms");
-            throw new Error("Missing refresh cookie"); 
-          }
+          if (!refresh) console.error("Missing refresh cookie.. Throwing error in 0.01ms");
 
           const resData = await nextAuthApiPost<RefreshToken>(
             "/auth/refresh",

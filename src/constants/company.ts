@@ -1,7 +1,7 @@
 export const TEAM = [
-  { name: "Gideon Iduma", role: "Founder & CEO, TicTask" },
-  { name: "Psalm Writes", role: "Design & Experience" },
-  { name: "Akachukwu O.", role: "Product Lead" },
+  { name: "Gi Codes", role: "Founder & CEO, TicTask" },
+  { name: "John Doe", role: "Design & Experience" },
+  { name: "J. Though", role: "Product Lead" },
   { name: "Select Engr.", role: "Growth & Partnerships" },
   { name: "Jane Doe", role: "Marketing & PR" }
 ];

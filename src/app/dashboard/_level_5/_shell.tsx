@@ -49,7 +49,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   if (!isMounted) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-        <Typography variant="h6" color="text.secondary">
+        <Typography variant="h6" color="var(--secondary)">
           Loading...
         </Typography>
       </Box>

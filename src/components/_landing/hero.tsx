@@ -4,12 +4,13 @@ import styles from "@/app/page.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
-import { startTrial } from "@/hooks/useFreeTrial";
+import { useStartTrial } from "@/hooks/useFreeTrial";
 
 const Hero = () => {
-  const { user } = useAuth();
+  const { startTrial } = useStartTrial();
   const { showAlert } = useAlert();
   const router = useRouter();
+  const { user } = useAuth();
 
   const handleStartTrial = async () => {
     if (!user) {
@@ -19,12 +20,9 @@ const Hero = () => {
     }
 
     const trial = await startTrial(user.id);
-    if (trial) {
-      showAlert("🎉 Free trial started!", "success");
-      router.push("/dashboard");
-    } else {
-      showAlert("Failed to start trial", "error");
-    }
+    if (trial===null) showAlert("Something went wrong. Please try again or contact admin", "warning");
+    if (!trial===null && !trial===undefined) showAlert("You have an active Pro Subscription running!");
+      else showAlert("Unauthorized! Kindly contact admin", "warning");
   };
 
   return (

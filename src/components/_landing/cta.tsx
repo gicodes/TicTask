@@ -2,15 +2,17 @@
 
 import styles from "@/app/page.module.css";
 import { useAuth } from "@/providers/auth";
-import { getPro } from "@/hooks/useGetPro";
+import { useGetPro } from "@/hooks/useGetPro";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
+
 
 const whiteDot = <span className="custom-bw">.</span>;
 
 const CTA = () => {
   const router = useRouter()
   const { user } = useAuth();
+  const { getPro } = useGetPro();
   const { showAlert } = useAlert();
 
   const GetPro = () => {
@@ -21,7 +23,10 @@ const CTA = () => {
       return
     };
 
-    getPro(user.id);
+    const subscriptionStatus = getPro(user.id);
+    if (subscriptionStatus===null) showAlert("Something went wrong. Please try again or contact admin", "warning");
+    if (!subscriptionStatus===null && !subscriptionStatus===undefined) showAlert("You have an active Pro Subscription running!");
+      else showAlert("Unauthorized! Kindly contact admin", "warning");
   }
   
   return (

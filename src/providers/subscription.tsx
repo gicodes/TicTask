@@ -55,7 +55,7 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
       value={{
         subscription,
         isPro: plan === 'PRO' && (subscription?.active || false),
-        isFreeTrial: plan === 'TRIAL' && (subscription?.active || false),
+        isFreeTrial: plan === 'FREE' && (subscription?.active || false),
         isEnterprise: plan === 'ENTERPRISE' && (subscription?.active) || false,
         loading,
         refresh: fetchSubscription,
