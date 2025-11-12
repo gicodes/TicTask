@@ -98,7 +98,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
         maxWidth={300}
         mx={{xs: 'auto', sm: 0}}
         justifyContent={'space-between'}
-        sx={{ borderRadius: 999, pl: 1, bgcolor: 'var(--surface-1)', color: 'var(--foreground)' }} 
+        sx={{ borderRadius: 999, pl: 1, borderColor: 'var(--disabled)' }} 
       >
         <Tooltip title="Calendar View">
           <IconButton
