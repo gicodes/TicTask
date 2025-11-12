@@ -85,7 +85,7 @@ export default function ReferPage() {
                   </IconButton>
                 </Stack>
 
-                <Stack direction="row" spacing={2}>
+                <Stack display={{ xs: 'grid', sm: 'flex'}} spacing={2}>
                   <Button
                     startIcon={<Share />}
                     variant="contained"
