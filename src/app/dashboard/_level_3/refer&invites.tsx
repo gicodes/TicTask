@@ -11,6 +11,7 @@ export default function ReferPage() {
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const [copied, setCopied] = useState(false);
+  
   const inviteLink = `https://tictask.ng/invite?ref=${encodeURIComponent(user?.email || '')}`;
 
   const handleCopy = async () => {
@@ -53,6 +54,7 @@ export default function ReferPage() {
     const body = encodeURIComponent(
       `Hey!\n\nI’m inviting you to join me on TicTask — a powerful ticket & task management platform.\n\nUse my referral link to sign up:\n${inviteLink}\n\nSee you inside!\n\n${user.name || ''}`
     );
+
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
 
@@ -74,7 +76,7 @@ export default function ReferPage() {
           <Card sx={{ borderRadius: 4, boxShadow: '0 6px 20px rgba(0,0,0,0.08)' }}>
             <CardContent>
               <Stack spacing={3}>
-                <Typography variant="body1" fontWeight={600}>
+                <Typography variant="body1" fontWeight={501}>
                   Share your referral link
                 </Typography>
 
@@ -85,12 +87,13 @@ export default function ReferPage() {
                   </IconButton>
                 </Stack>
 
-                <Stack display={{ xs: 'grid', sm: 'flex'}} spacing={2}>
+                <Stack direction={{ xs: 'column', sm: 'row'}} spacing={2}>
                   <Button
                     startIcon={<Share />}
                     variant="contained"
                     color="inherit"
-                    sx={{ textTransform: 'none' }}
+                    fullWidth
+                    sx={{ textTransform: 'none', maxWidth: { sm: 234} }}
                     onClick={handleShare}
                   >
                     Share Link
@@ -99,7 +102,8 @@ export default function ReferPage() {
                     startIcon={<PersonAdd />}
                     variant="outlined"
                     color="inherit"
-                    sx={{ textTransform: 'none' }}
+                    fullWidth
+                    sx={{ textTransform: 'none', maxWidth: { sm: 234} }}
                     onClick={handleInviteEmail}
                   >
                     Invite via Email

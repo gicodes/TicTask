@@ -20,7 +20,7 @@ export default function TeamsPage() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
           <Stack spacing={1} textAlign={{xs: 'center', sm: 'inherit'}}>
             <Typography variant="h4" fontWeight={700}  sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}>
-              Team Management
+              Manage Team
             </Typography>
             <Typography variant="body1" sx={{ opacity: 0.7 }}>
               Add, remove, or manage members of your organization.
@@ -31,11 +31,11 @@ export default function TeamsPage() {
         <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <Card sx={{ borderRadius: 4 }}>
             <CardContent>
-              <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h6" fontWeight={700}>
+              <Stack direction={{ xs: "column-reverse", md: "row"}} justifyContent="space-between" gap={2} alignItems="center" mb={2}>
+                <Typography variant="h6" fontWeight={600}>
                   Team Members
                 </Typography>
-                <Button startIcon={<Add />} variant="contained" color="inherit" sx={{ textTransform: 'none'}}>
+                <Button startIcon={<Add />} variant="contained" color="inherit" sx={{ textTransform: 'none', minWidth: 234}}>
                   Add Member
                 </Button>
               </Stack>
@@ -53,12 +53,12 @@ export default function TeamsPage() {
                       <Stack direction="row" alignItems="center" spacing={2}>
                         <Avatar>{member.name[0]}</Avatar>
                         <Box display={'grid'} gap={0.75}>
-                          <Typography variant='h6' fontWeight={600}>{member.name}</Typography>
+                          <Typography fontWeight={600}>{member.name}</Typography>
                           <Stack>
-                            <Typography variant='body1' color='var(--secondary)'>
+                            <Typography variant='body2' color='var(--secondary)'>
                               {member.company}
                             </Typography>
-                            <Typography variant="subtitle2" sx={{ opacity: 0.6 }}>
+                            <Typography variant="caption" sx={{ opacity: 0.6 }}>
                               <i>{member.role}</i>
                             </Typography>
                           </Stack>

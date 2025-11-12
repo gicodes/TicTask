@@ -77,6 +77,45 @@ export const TAG_SUGGESTIONS = [
   'v2',
 ];
 
+export const EVENT_TAG_SUGGESTIONS = [
+  'meeting',
+  'workshop',
+  'webinar',
+  'conference',
+  'seminar',
+  'training',
+  'demo',
+  'presentation',
+  'standup',
+  'retrospective',
+  'planning',
+  'review',
+  'kickoff',
+  'onboarding',
+  'blocked',
+  'remote',
+  'in-person',
+  'hybrid',
+  'zoom',
+  'google meet',
+  'office',
+  'conference room',
+  'stakeholders',
+  'leadership',
+  'customers',
+  'partners',
+  'public',
+  'brainstorm',
+  'feedback',
+  'decision',
+  'alignment',
+  'sync',
+  'follow-up',
+  'celebration',
+  'milestone',
+  'launch',
+];
+
 export const TICKET_STATUSES = ['UPCOMING', 'IN_PROGRESS', 'OPEN', 'RESOLVED', 'CLOSED', 'CANCELLED'];
 
 export const TICKET_LIST_HEADERS = ['No.', 'Title', 'Priority', 'Status', 'Type', 'Due Date', 'Last Updated']

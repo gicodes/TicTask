@@ -1,0 +1,32 @@
+/* calendar.module.css */
+.rbc-calendar {
+  font-family: inherit !important;
+}
+
+.rbc-event {
+  border: none !important;
+  padding: 2px 4px !important;
+}
+
+.rbc-day-slot .rbc-event {
+  margin: 2px 0 !important;
+}
+
+.rbc-time-view .rbc-time-gutter {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.rbc-current-time-indicator {
+  background-color: #ff3b30;
+  height: 2px;
+  z-index: 3;
+}
+
+/* Smooth hover on desktop only */
+@media (hover: hover) {
+  .rbc-event:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+  }
+}

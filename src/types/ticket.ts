@@ -37,7 +37,7 @@ export interface CreateTicket {
   tags?: string[] | null;
   priority: Ticket_Priority;  
   assignTo?: string | number | unknown;
-  dueDate: Date | string;
+  dueDate: Date | string | undefined;
   createdById?: string | number;
 }
 

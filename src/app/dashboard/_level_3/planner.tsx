@@ -2,16 +2,20 @@
 
 import { Box } from '@mui/material';
 import PlannerList from '../_level_2/_list';
+import { useAlert } from '@/providers/alert';
 import { useTickets } from '@/providers/tickets';
 import PlannerCalendar from '../_level_2/_calendar';
 import TaskFormDrawer from '../_level_2/ticketForm';
 import PlannerToolbar from '../_level_2/plannerToolbar';
 import TaskDetailDrawer from '../_level_2/ticketDrawer';
-import React, { useEffect, useMemo, useState } from 'react';
 import { TASK_LIST_HEADERS } from '../_level_1/constants';
+import React, { useEffect, useMemo, useState } from 'react';
+import { DateSelectDialog } from '../_level_2/createTaskDialog';
 
 const PlannerPage: React.FC = () => {
+  const { showAlert } = useAlert()
   const { tickets, fetchTickets } = useTickets();
+
   const [view, setView] = useState<'calendar' | 'list'>(() => {
     if (typeof window !== 'undefined')
       return (localStorage.getItem('planner_view') as 'calendar' | 'list') || 'calendar';
@@ -22,10 +26,10 @@ const PlannerPage: React.FC = () => {
   const [selected, setSelected] = useState<string | number | null>(null);
   const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    fetchTickets();
-  }, [fetchTickets]);
+  const [createDate, setCreateDate] = useState<Date | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
+  useEffect(() => { fetchTickets(); }, [fetchTickets]);
   useEffect(() => {
     if (typeof window !== 'undefined') localStorage.setItem('planner_view', view);
   }, [view]);
@@ -42,7 +46,22 @@ const PlannerPage: React.FC = () => {
 
   const onTaskCreated = () => {
     setFormOpen(false);
+    setCreateDate(null); 
     fetchTickets();
+  };
+
+  const handleSlotSelect = (slotInfo: { start: Date; end: Date }) => {
+    setCreateDate(slotInfo.start);
+    setDialogOpen(true);
+  };
+
+  const handleCreateConfirm = (date: Date) => {
+    if (new Date > new Date(date)) {
+      showAlert("Cannot plan for the past. Heh!", 'warning')
+      return;
+    }
+    setCreateDate(date);
+    setFormOpen(true);
   };
 
   return (
@@ -59,6 +78,7 @@ const PlannerPage: React.FC = () => {
         <PlannerCalendar
           tasks={filteredTickets}
           onSelectTask={(id) => setSelected(id)}
+          onSelectSlot={handleSlotSelect} 
         />
       ) : (
         <PlannerList
@@ -77,9 +97,20 @@ const PlannerPage: React.FC = () => {
 
       <TaskFormDrawer
         open={formOpen}
-        onClose={() => setFormOpen(false)}
+        onClose={() => {
+          setFormOpen(false);
+          setCreateDate(null);
+        }}
         onCreated={onTaskCreated}
         task
+        defaultDueDate={createDate || undefined}  
+      />
+
+      <DateSelectDialog
+        open={dialogOpen}
+        date={createDate}
+        onClose={() => setDialogOpen(false)}
+        onConfirm={handleCreateConfirm}
       />
     </Box>
   );

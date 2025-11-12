@@ -39,6 +39,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
     <Box
       sx={{
         display: 'flex',
+        flexWrap: { sm: 'wrap'},
         flexDirection: isMobile ? 'column' : 'row',
         alignItems: isMobile ? 'stretch' : 'center',
         justifyContent: 'space-between',
@@ -54,10 +55,10 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
             fontWeight={600}
             sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}
           >
-            Planner & Schedules
+            Planner & Calendar
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.7 }}>
-            Plan tasks with a date or time in mind. Calendar shows task and tickets with a due date.
+            Plan with time in mind. Calendar shows task and tickets with a due date.
           </Typography>
           {dateRangeLabel && (
             <Typography
@@ -124,7 +125,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
           onClick={onOpenCreate}
           className={styles.btnPrimary}
         >
-          <FaPlusCircle />&nbsp;ADD TASK
+          <FaPlusCircle />&nbsp;ADD EVENT
         </Typography>
       </Stack>
     </Box>

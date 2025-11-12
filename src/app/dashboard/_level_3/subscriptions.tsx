@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useAlert } from '@/providers/alert';
+import { GiArmorUpgrade } from 'react-icons/gi';
+import { CreditCard } from '@mui/icons-material';
 import { useSubscription } from '@/providers/subscription';
-import { CreditCard, DataExploration } from '@mui/icons-material';
 import { useCreateCheckoutSession } from '@/hooks/useCreateCheckout';
 import { Box, Stack, Typography, Card, CardContent, Button, Divider, Grid, LinearProgress, CircularProgress } from '@mui/material';
-import { GiArmorUpgrade } from 'react-icons/gi';
 
 export default function SubscriptionPage() {
   const { showAlert } = useAlert();

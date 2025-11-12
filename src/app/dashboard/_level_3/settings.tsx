@@ -14,7 +14,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import {
-  Sun, Moon, Laptop, Bell, Shield, User, Globe, PlugZap, Save, CreditCard,
+  Sun, Moon, Laptop, Bell, Shield, User, Globe, PlugZap, CreditCard,
 } from 'lucide-react';
 import styles from '@/app/page.module.css';
 import { useAuth } from '@/providers/auth';
@@ -72,7 +72,7 @@ export default function SettingsPage() {
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
         <Stack spacing={1} textAlign={{xs: 'center', sm: 'inherit'}} mb={3}>
           <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}>
-            Settings & Personalization
+            Personalize Settings
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.7 }}>
             Customize your Appearance, Account, Notifications, Workspace and more...
