@@ -6,14 +6,15 @@ const Footer = () => {
     <Box component="footer" py={2}>
       <Container>
         <Grid container 
-          spacing={{ xs: 4, sm: 8, md: 12, lg: 16, xl: 24}} 
+          spacing={{ xs: 4, sm: 6, md: 8, lg: 10, xl: 12}} 
           width={'100%'}
+
         >
           {
             Object.entries(FOOTER_LINKS).map(([title, items], i) => (
-              <Grid key={i} mx={'auto'}>
+              <Grid key={i} width={{xs: '100%', sm: 'fit-content'}} maxWidth={125}>
                 <Typography 
-                  variant="subtitle1" 
+                  variant="h6" 
                   fontWeight={600} 
                   mb={2}
                   color="silver"

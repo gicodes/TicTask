@@ -16,7 +16,7 @@ export default function Toolbar({
     searchQuery: string;
     setSearchQuery: (q: string) => void;
 }) {
-  const [description, setDescription] = useState(false);
+  const [description, setDescription] = useState(true);
   const toggleDescription = () => setDescription(!description);
 
   return (

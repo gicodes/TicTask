@@ -6,10 +6,10 @@ import { motion } from 'framer-motion';
 
 export default function LegalIndexPage() {
   const links = [
-    { label: 'Terms of Service', href: '/legal/terms' },
-    { label: 'Privacy Policy', href: '/legal/privacy' },
-    { label: 'Cookie Policy', href: '/legal/cookie' },
-    { label: 'Data Policy', href: '/legal/data' },
+    { label: 'Terms of Service', href: '/legal/terms-of-service' },
+    { label: 'Privacy Policy', href: '/legal/privacy-policy' },
+    { label: 'Cookie Policy', href: '/legal/cookie-policy' },
+    { label: 'Data Policy', href: '/legal/data-policy' },
   ];
 
   return (
@@ -33,7 +33,8 @@ export default function LegalIndexPage() {
                 href={href}
                 underline="hover"
                 variant="h6"
-                sx={{ display: 'inline-block', color: 'primary.main' }}
+                fontSize={'1.25rem'}
+                sx={{ display: 'inline-block', color: 'var(--info)' }}
               >
                 {label}
               </Link>

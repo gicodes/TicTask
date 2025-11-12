@@ -33,7 +33,7 @@ export default function MetricsPage() {
     <Box sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, md: 4 } }}>
       <Stack spacing={4} maxWidth="900px" mx="auto">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
-          <Stack spacing={1}>
+          <Stack spacing={1} textAlign={{xs: 'center', sm: 'inherit'}}>
             <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}>
               Performance Metrics
             </Typography>

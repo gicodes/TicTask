@@ -1,5 +1,5 @@
 export const TicketToolTip = 
-  `Search • Control Views • Add・Drag & Drop • Remove・Modify・Save・`
+  `Search ticket • Change view • Add ticket・View ticket • Modify ticket`
 
 export const TicketTimeTooltip = 
   `Every Second Counts ⏱️`

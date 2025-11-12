@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 import {
   Box,
@@ -10,6 +11,7 @@ import {
   Tooltip,
   useMediaQuery,
 } from '@mui/material';
+import { motion } from 'framer-motion';
 import styles from "@/app/page.module.css";
 import { FaPlusCircle } from 'react-icons/fa';
 import { Calendar, List, Search } from 'lucide-react';
@@ -45,23 +47,28 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
         mb: 5,
       }}
     >
-      <Stack direction="row" alignItems="center" spacing={1.5}>
-        <Typography
-          variant="h4"
-          fontWeight={600}
-          sx={{ fontSize: { xs: '1.25rem', sm: '1.5rem' } }}
-        >
-          Task Planner
-        </Typography>
-        {dateRangeLabel && (
+      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
+        <Stack spacing={1} my={2} textAlign={{ xs: 'center', sm: 'inherit'}}>
           <Typography
-            color="var(--secondary)"
-            sx={{ fontWeight: 500 }}
+            variant="h4"
+            fontWeight={600}
+            sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}
           >
-            {dateRangeLabel}
+            Planning & Schedules
           </Typography>
-        )}
-      </Stack>
+          <Typography variant="body1" sx={{ opacity: 0.7 }}>
+            Plan tasks with a date or time in mind. Calendar shows task and tickets with a set date.
+          </Typography>
+          {dateRangeLabel && (
+            <Typography
+              color="var(--secondary)"
+              sx={{ fontWeight: 500 }}
+            >
+              {dateRangeLabel}
+            </Typography>
+          )}
+        </Stack>
+      </motion.div>
 
       <TextField
         value={searchQuery}
@@ -87,7 +94,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
         direction="row" 
         spacing={1} 
         alignItems="center"
-        maxWidth={250}
+        maxWidth={300}
         mx={{xs: 'auto', sm: 0}}
         justifyContent={'space-between'}
         sx={{ borderRadius: 999, pl: 2, bgcolor: 'var(--surface-1)', color: 'var(--foreground)' }} 
@@ -96,6 +103,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
           <IconButton
             onClick={() => setView('calendar')}
             color={view === 'calendar' ? 'success' : 'inherit'}
+            sx={{ p: 1.5, background: 'var(--background)'}}
           >
             <Calendar size={20} />
           </IconButton>
@@ -105,6 +113,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
           <IconButton
             onClick={() => setView('list')}
             color={view === 'list' ? 'success' : 'inherit'}
+            sx={{ p: 1.5, background: 'var(--background)'}}
           >
             <List size={20} />
           </IconButton>

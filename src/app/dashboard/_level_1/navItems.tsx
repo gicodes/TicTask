@@ -15,13 +15,13 @@ export const NAV_ITEMS = [
   { label: 'Tickets', path: '/dashboard/', icon: <FcSerialTasks/> },
   { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
   { label: 'Planner', path: '/dashboard/planner', icon: <BsCalendar2Date/>},
-  { label: 'Products', path: '/product', icon: <MdCategory /> },
   { label: 'Refer & Invites', path: '/dashboard/invite', icon: <MdOutlineFamilyRestroom /> },
   { label: 'Subscriptions', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
   { label: 'Marketing', path: '/dashboard/marketing', icon: <MdCampaign /> },
   { label: 'Teams', path: '/dashboard/teams', icon: <SiAwsorganizations />},
   { label: "Metrics", path: '/dashboard/metrics', icon: <FcDataEncryption /> },
   { label: 'Settings', path: '/dashboard/settings', icon: <MdSettings /> }, 
+  { label: 'Products', path: '/product', icon: <MdCategory /> },
   { label: 'Legal', path: '/legal', icon: <FcDocument />},
   { label: 'More', path: '', icon: <CgMenuGridR /> }, // more includes Docs, FAQ, blog, community and register new account
   { label: 'All Users', path: '/dashboard/users', icon: <FaUsers /> },
