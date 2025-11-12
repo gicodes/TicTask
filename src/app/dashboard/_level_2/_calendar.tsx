@@ -194,9 +194,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       display: 'grid',
       alignContent: 'center',
     },
-    '& .rbc-time-slot': {
-      background: 'var(--surface-1)'
-    },
+    '& .rbc-time-slot': {},
     '& .rbc-time-slot.rbc-now': {
       background: 'var(--accent)'
     },

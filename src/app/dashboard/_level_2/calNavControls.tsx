@@ -20,7 +20,6 @@ export default function NavControls({
           <ChevronLeft size={25} />
         </IconButton>
         <Typography 
-          variant="h6" 
           minWidth={75}
           fontSize={{xs: 15, sm: 18}}
           sx={{ fontWeight: 600, textAlign: 'center' }}
@@ -38,7 +37,6 @@ export default function NavControls({
         sx={{
           height: { xs: 36, md: 40},
           border: '1px solid #B9D9EB',
-          color: 'var(--foreground)',
           fontWeight: 501,
           fontSize: { xs: 14, md: 15},
           textTransform: 'none',
