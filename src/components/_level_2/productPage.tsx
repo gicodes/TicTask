@@ -2,12 +2,12 @@
 
 import { motion } from "framer-motion";
 import styles from "@/app/page.module.css";
-import { FEATURES } from "@/constants/product";
-import { Box, Typography, Grid, Stack, Divider } from "@mui/material";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
 import { useGetPro } from "@/hooks/useGetPro";
+import { FEATURES } from "@/constants/product";
+import { Box, Typography, Grid, Stack, Divider } from "@mui/material";
 
 export const ProductHero = () => {
   return (
@@ -104,7 +104,6 @@ export const ProductCTA = () => {
 
   const GetStarted = () => {
     if (!user) router.push('/auth/login');
-    
     if (user && user.userType==="PERSONAL"){ 
       showAlert("Go Pro? Great Choice! Redirecting to subscription page...")
       setTimeout(() => router.push('/dashboard/subscription'), 5000) 

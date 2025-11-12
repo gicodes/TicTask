@@ -75,7 +75,7 @@ export const authOptions: NextAuthOptions = {
           const resData = await nextAuthApiPost<RefreshToken>(
             "/auth/refresh",
             undefined,
-            { headers: { "x-refresh-token": String(refresh) } }
+            { withCredentials: true }
           );
 
           token.accessToken = resData.accessToken;
