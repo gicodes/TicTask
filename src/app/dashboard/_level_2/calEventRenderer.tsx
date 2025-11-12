@@ -1,6 +1,12 @@
+import { TicketPriority, TicketStatus } from '@/types/ticket';
 import React, { useMemo } from 'react';
 
-export default function EventRenderer({ event }: { event: any }) {
+export interface TicketEvent {
+  priority: TicketPriority;
+  title: string;
+  status: TicketStatus;
+}
+export default function EventRenderer({ event }: { event: TicketEvent }) {
   const color = useMemo(() => {
     switch (event.priority) {
       case 'URGENT':

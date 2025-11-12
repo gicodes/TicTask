@@ -20,14 +20,15 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import ViewSelect from './calViewSelect';
 import NavControls from './calNavControls';
 import CalendarSkeleton from './calSkeleton';
-import EventRenderer from './calEventRenderer';
+import EventRenderer, { TicketEvent } from './calEventRenderer';
 import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
+
+export type InternalView = View | 'thisWeek';
 
 const localizer = momentLocalizer(moment);
 
 const DnDCalendar = withDragAndDrop<PlannerEvent, object>(BigCalendar);
 
-export type InternalView = View | 'thisWeek';
 
 const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   tasks,
@@ -72,23 +73,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   const bigCalendarView = useMemo<View>(
     () => (internalView === 'thisWeek' ? 'week' : internalView),
     [internalView]
-  );
-
-  const events = useMemo<PlannerEvent[]>(
-    () =>
-      tasks?.map((t) => {
-        const start = new Date(t.dueDate!);
-        const end = new Date(start.getTime() + 60 * 60 * 1000);
-        return {
-          id: t.id,
-          title: t.title,
-          start,
-          end,
-          status: t.status,
-          priority: t.priority,
-        };
-      }) ?? [],
-    [tasks]
   );
 
   const handleNavigate = useCallback(
@@ -164,7 +148,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     return isMobile ? m.format('MMM D, YY') : m.format('MMMM D, YYYY');
   }, [currentDate, bigCalendarView, internalView, isMobile]);
 
-  const eventPropGetter = useCallback((event: any) => {
+  const eventPropGetter = useCallback((event: TicketEvent) => {
     const colors: Record<string, string> = {
       URGENT: 'var(--danger)',
       HIGH: 'var(--error)',
@@ -173,7 +157,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     };
     return {
       style: {
-        backgroundColor: colors[event.priority] || 'var(--surface-2)',
+        backgroundColor: colors[event.priority ?? 'MEDIUM'],
         border: 'none',
         borderRadius: 6,
         padding: '8px 8px',
@@ -275,7 +259,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             onNavigate={(d) => setCurrentDate(d)}
             selectable
             onSelectSlot={(slot) => onSelectSlot?.(slot)}
-            onSelectEvent={(ev, _e) => onSelectTask(String((ev as PlannerEvent).id))}
+            onSelectEvent={(ev) => onSelectTask(String((ev as PlannerEvent).id))}
             onRangeChange={(range) => {
               if (!Array.isArray(range)) onDateChange?.(range.start, range.end);
             }}

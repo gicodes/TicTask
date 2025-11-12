@@ -1,4 +1,4 @@
-import { Ticket } from "./ticket";
+import { Ticket, TicketPriority, TicketStatus } from "./ticket";
 
 export interface PlannerEvent {
   id: string | number;
@@ -6,8 +6,8 @@ export interface PlannerEvent {
   start: Date | string;
   end: Date | string;
   allDay?: boolean;
-  status?: string;  
-  priority?: 'URGENT' | 'HIGH' | 'MEDIUM' | 'LOW';
+  status: TicketStatus;  
+  priority: TicketPriority;
 }
 
 export interface PlannerCalendarProps {
