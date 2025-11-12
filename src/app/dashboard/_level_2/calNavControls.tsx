@@ -40,6 +40,7 @@ export default function NavControls({
           fontWeight: 501,
           fontSize: { xs: 14, md: 15},
           textTransform: 'none',
+          color:'var(--bw)'
         }}
         className='btn'
       >
