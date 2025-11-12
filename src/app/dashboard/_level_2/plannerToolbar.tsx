@@ -54,10 +54,10 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
             fontWeight={600}
             sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}
           >
-            Planning & Schedules
+            Planner & Schedules
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.7 }}>
-            Plan tasks with a date or time in mind. Calendar shows task and tickets with a set date.
+            Plan tasks with a date or time in mind. Calendar shows task and tickets with a due date.
           </Typography>
           {dateRangeLabel && (
             <Typography
@@ -97,7 +97,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
         maxWidth={300}
         mx={{xs: 'auto', sm: 0}}
         justifyContent={'space-between'}
-        sx={{ borderRadius: 999, pl: 2, bgcolor: 'var(--surface-1)', color: 'var(--foreground)' }} 
+        sx={{ borderRadius: 999, pl: 1, bgcolor: 'var(--surface-1)', color: 'var(--foreground)' }} 
       >
         <Tooltip title="Calendar View">
           <IconButton

@@ -23,6 +23,7 @@ import { useAlert } from '@/providers/alert';
 import SettingsCard from '../_level_2/settingsCard';
 import { forgotPassword } from '@/hooks/useForgotPass';
 import { useSubscription } from '@/providers/subscription';
+import { motion } from 'framer-motion';
 
 export default function SettingsPage() {
   const { user } = useAuth();
@@ -68,9 +69,16 @@ export default function SettingsPage() {
 
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto', py: 4, px: 2 }}>
-      <Typography variant="h5" fontWeight={700} mb={3}>
-        ⚙️ Settings
-      </Typography>
+      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
+        <Stack spacing={1} textAlign={{xs: 'center', sm: 'inherit'}} mb={3}>
+          <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}>
+            Settings & Personalization
+          </Typography>
+          <Typography variant="body1" sx={{ opacity: 0.7 }}>
+            Customize your Appearance, Account, Notifications, Workspace and more...
+          </Typography>
+        </Stack>
+      </motion.div>
 
       <SettingsCard
         icon={<Sun size={18} />}
@@ -101,7 +109,6 @@ export default function SettingsPage() {
         </Stack>
       </SettingsCard>
 
-      {/* Account */}
       <SettingsCard
         icon={<User size={18} />}
         title="Account"
@@ -121,7 +128,6 @@ export default function SettingsPage() {
         </Stack>
       </SettingsCard>
 
-      {/* Notifications */}
       <SettingsCard
         icon={<Bell size={18} />}
         title="Notifications"
@@ -139,7 +145,6 @@ export default function SettingsPage() {
         </Stack>
       </SettingsCard>
 
-      {/* Workspace */}
       <SettingsCard
         icon={<Globe size={18} />}
         title="Workspace"
@@ -166,7 +171,6 @@ export default function SettingsPage() {
         </Stack>
       </SettingsCard>
 
-      {/* Security */}
       <SettingsCard
         icon={<Shield size={18} />}
         title="Security"
@@ -183,7 +187,6 @@ export default function SettingsPage() {
         </Stack>
       </SettingsCard>
 
-      {/* Integrations */}
       <SettingsCard
         icon={<PlugZap size={18} />}
         title="Integrations"
@@ -196,7 +199,6 @@ export default function SettingsPage() {
         </Stack>
       </SettingsCard>
 
-      {/* Billing */}
       <SettingsCard
         icon={<CreditCard size={18} />}
         title="Billing"
@@ -222,12 +224,6 @@ export default function SettingsPage() {
           </Stack>
         } 
       </SettingsCard>
-
-      <Box display="flex" justifyContent="center">
-        <button className={styles.btnAction}>
-          <Save size={16} /> &nbsp; Save Changes
-        </button>
-      </Box>
     </Box>
   );
 }

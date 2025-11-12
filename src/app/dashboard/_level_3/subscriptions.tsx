@@ -7,6 +7,7 @@ import { useSubscription } from '@/providers/subscription';
 import { CreditCard, DataExploration } from '@mui/icons-material';
 import { useCreateCheckoutSession } from '@/hooks/useCreateCheckout';
 import { Box, Stack, Typography, Card, CardContent, Button, Divider, Grid, LinearProgress, CircularProgress } from '@mui/material';
+import { GiArmorUpgrade } from 'react-icons/gi';
 
 export default function SubscriptionPage() {
   const { showAlert } = useAlert();
@@ -76,11 +77,12 @@ export default function SubscriptionPage() {
                   ) : (
                     <Button
                       startIcon={
-                        isPending ? <CircularProgress size={16} color="inherit" /> : <DataExploration />
+                        isPending ? <CircularProgress size={16} color="inherit" /> : <GiArmorUpgrade />
                       }
                       color="inherit"
                       variant="outlined"
                       disabled={isPending}
+                      sx={{ textTransform: 'none'}}
                       onClick={() => handleCheckout('PRO')}
                     >
                       {isPending ? 'Redirecting...' : 'Upgrade to Pro'}

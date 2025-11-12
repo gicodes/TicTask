@@ -34,7 +34,7 @@ export default function Page() {
         display={{ xs: 'grid', md: 'flex' }}
       >
         <Box display="flex" justifyContent="left" width="100%">
-          <Typography variant="h5" fontWeight={501}> Welcome, {user?.name}</Typography>
+          <Typography variant="h6" fontWeight={501}> Hello{user?.name ? `, ${user?.name}` : ''}</Typography>
         </Box>
         <Box display="flex" justifyContent="right" width="100%">
           <Tooltip title={TicketTimeTooltip}>

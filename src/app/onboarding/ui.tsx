@@ -263,6 +263,13 @@ export default function OnboardingUI(props: OnboardingProps) {
                       onChange={(e) => setOrgName(e.target.value)}
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
                     />
+                    <TextField
+                      fullWidth
+                      placeholder="Your Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
+                    />
                     <CountrySelect accountType='BUSINESS' />
                     <TextField
                       select
@@ -317,7 +324,8 @@ export default function OnboardingUI(props: OnboardingProps) {
                   <Typography variant='subtitle2'>
                     <strong>{userType[0] + userType.slice(1).toLocaleLowerCase()} Account</strong>
                   </Typography>
-                  <Typography variant='subtitle2'>{name || orgName}</Typography>
+                  <Typography variant='subtitle2'>{name}</Typography>
+                  {orgName && <Typography variant='subtitle2'>{orgName}</Typography>}
                   <Typography variant='subtitle2'>{country || hqCountry}</Typography>
                   {phone && <Typography variant='subtitle2'>{phone}</Typography>}
                   {industry && <Typography variant='subtitle2'>{industry}</Typography>}

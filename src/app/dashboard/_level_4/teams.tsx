@@ -1,9 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useAuth } from '@/providers/auth';
 import { Add, DeleteOutline } from '@mui/icons-material';
 import { Box, Stack, Typography, Card, CardContent, Button, Divider, Avatar, Grid, IconButton } from '@mui/material';
-import { useAuth } from '@/providers/auth';
 
 export default function TeamsPage() {
   const { user } = useAuth();
@@ -39,7 +39,6 @@ export default function TeamsPage() {
                   Add Member
                 </Button>
               </Stack>
-
               <Divider sx={{ mb: 2, opacity: 0.2 }} />
 
               <Grid container spacing={2}>
@@ -47,20 +46,22 @@ export default function TeamsPage() {
                   <Grid key={member.id}>
                     <Stack
                       direction="row"
-                      alignItems="center"
+                      alignItems="end"
                       justifyContent="space-between"
                       sx={{ p: 2, borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' }}
                     >
                       <Stack direction="row" alignItems="center" spacing={2}>
                         <Avatar>{member.name[0]}</Avatar>
-                        <Box>
-                          <Typography fontWeight={600}>{member.name}</Typography>
-                          <Typography variant='subtitle2' color='var(--secondary)'>
-                            {member.company}
-                          </Typography>
-                          <Typography variant="body2" sx={{ opacity: 0.6 }}>
-                            {member.role}
-                          </Typography>
+                        <Box display={'grid'} gap={0.75}>
+                          <Typography variant='h6' fontWeight={600}>{member.name}</Typography>
+                          <Stack>
+                            <Typography variant='body1' color='var(--secondary)'>
+                              {member.company}
+                            </Typography>
+                            <Typography variant="subtitle2" sx={{ opacity: 0.6 }}>
+                              <i>{member.role}</i>
+                            </Typography>
+                          </Stack>
                         </Box>
                       </Stack>
                       <IconButton color="error">
