@@ -182,7 +182,7 @@ export default function SettingsPage() {
             label="Enable last session on refresh"
           />
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <Typography component={'button'} className={`max-width-360 ${styles.btnSecondary}`}>Logged in devices</Typography>
+            <Typography component={'button'} className={`max-width-360 ${styles.btnPrimary}`}>Logged in devices</Typography>
             <Typography component={'button'} className={`max-width-360 ${styles.btnWarm}`}>Log out all sessions</Typography>
           </Stack>
         </Stack>
@@ -226,7 +226,7 @@ export default function SettingsPage() {
               <Link href="/dashboard/subscription" className={styles.btnPrimary}>
                 Manage Subscription
               </Link>
-              <Link href="/product/#pricing" className={styles.btnRetreat}>
+              <Link href="/product/#pricing" className={styles.btnSecondary}>
                 See Plans & Prices
               </Link>
             </Stack>
