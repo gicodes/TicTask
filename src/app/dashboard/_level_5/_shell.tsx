@@ -253,24 +253,28 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             </Link>
           ))}
         </List>
-        <List>
-        {moreMenuList && MORE_NAV_ITEMS.map((item, i) => (
-            <Link
-              key={i}
-              href={item.path}
-              onClick={() => {
-                setOpen(false);
-                setIsRouteChanging(true);
-              }}
-            >
-              <ListItemButton selected={pathname === item.path}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} style={{ marginLeft: -10}} />
-                {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
-              </ListItemButton>
-            </Link>
-          ))}
-        </List>
+        { moreMenuList && 
+          <List sx={{ mb: 3}}>
+            <Divider sx={{ mx: 1.5}} />
+            <Box sx={{ py: 1}}>
+              { MORE_NAV_ITEMS.map((item, i) => (
+                <Link
+                  key={i}
+                  href={item.path}
+                  onClick={() => {
+                    setOpen(false);
+                    setIsRouteChanging(true);
+                  }}
+                >
+                  <ListItemButton selected={pathname === item.path}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.label} style={{ marginLeft: -10}} />
+                    {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
+                  </ListItemButton>
+                </Link>
+              ))}
+          </Box>
+        </List>}
       </Drawer>
       
       <Drawer
@@ -301,22 +305,28 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
               </ListItemButton>
             </Link>
           ))}
-          {moreMenuList && MORE_NAV_ITEMS.map((item, i) => (
-            <Link
-              key={i}
-              href={item.path}
-              onClick={() => {
-                setOpen(false);
-                setIsRouteChanging(true);
-              }}
-            >
-              <ListItemButton selected={pathname === item.path}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} style={{ marginLeft: -10}} />
-                {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
-              </ListItemButton>
-            </Link>
-          ))}
+          { moreMenuList && 
+            <List sx={{ mb: 3}}>
+              <Divider sx={{ mx: 1.5}} />
+              <Box py={1}>
+                { MORE_NAV_ITEMS.map((item, i) => (
+                  <Link
+                    key={i}
+                    href={item.path}
+                    onClick={() => {
+                      setOpen(false);
+                      setIsRouteChanging(true);
+                    }}
+                  >
+                    <ListItemButton selected={pathname === item.path}>
+                      <ListItemIcon>{item.icon}</ListItemIcon>
+                      <ListItemText primary={item.label} style={{ marginLeft: -10}} />
+                      {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
+                    </ListItemButton>
+                  </Link>
+                ))}
+              </Box>
+          </List>}
         </List>
       </Drawer>
 
