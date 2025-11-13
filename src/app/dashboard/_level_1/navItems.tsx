@@ -23,7 +23,7 @@ export const NAV_ITEMS = [
   { label: 'Settings', path: '/dashboard/settings', icon: <MdSettings /> }, 
   { label: 'Products', path: '/product', icon: <MdCategory />, external: true },
   { label: 'Legal', path: '/legal', icon: <FcDocument />, external: true},
-  { label: 'More', path: '#', icon: <CgMenuGridR />, more: true }, // more includes Docs, FAQ, blog, community and register new account
+  { label: 'More', path: '#', icon: <CgMenuGridR />, more: true }, // more includes Docs, FAQ, blog, community and register Go to Signup
   
   { label: 'All Users', path: '/dashboard/users', icon: <FaUsers /> },
   { label: 'Careers', path: '/dashboard/careers', icon: <WorkSharp />},
@@ -37,7 +37,7 @@ export const MORE_NAV_ITEMS = [
   { label: 'Documentation', path: '/resources/docs', icon: <GrResources />, external: true},
   { label: 'FAQ', path: '/resources/faq', icon: <MdQuestionAnswer />, external: true},
   { label: 'Blog', path: '/resources/blog', icon: <FaBlog />, external: true},
-  { label: "New Account", path:'/auth/join/user', icon: <MdSwitchAccount />, external: true}, 
+  { label: "Go to Signup", path:'/auth/join/user', icon: <MdSwitchAccount />, external: true}, 
 ]
 
 export const getFilteredNav = (user: AuthUser | null) => {

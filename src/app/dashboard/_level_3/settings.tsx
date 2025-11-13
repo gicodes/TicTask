@@ -62,7 +62,7 @@ export default function SettingsPage() {
     i: string;
     action?: () => void;
   }) => (
-    <span onClick={action} key={i} className={`max-width-360 ${styles.btnRetreat}`}>
+    <span onClick={action} key={i} className={`mx-auto max-width-500 ${styles.btnSecondary}`}>
       Connect {title}
     </span>
   );
@@ -177,13 +177,14 @@ export default function SettingsPage() {
         subtitle="Manage session security and data privacy."
       >
         <Stack spacing={2}>
-          <FormControlLabel
+          <FormControlLabel 
             control={<Switch checked={autoSave} onChange={() => setAutoSave(!autoSave)} />}
-            label="Auto-save ticket edits"
+            label="Enable last session on refresh"
           />
-          <span>
-            <button className={`mx-auto max-width-360 ${styles.btnWarm}`}>Log out of all sessions</button>
-          </span>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+            <Typography component={'button'} className={`max-width-360 ${styles.btnSecondary}`}>Logged in devices</Typography>
+            <Typography component={'button'} className={`max-width-360 ${styles.btnWarm}`}>Log out all sessions</Typography>
+          </Stack>
         </Stack>
       </SettingsCard>
 
@@ -192,9 +193,11 @@ export default function SettingsPage() {
         title="Integrations"
         subtitle="Connect your workspace with tools you use every day."
       >
-        <Stack spacing={1} sx={{ mx: 'auto', maxWidth: 360, mt: 3 }}>
+        <Stack spacing={1} sx={{ mt: 3 }}>
           {['Slack', 'Github', 'Google Drive'].map((i) => (
-            <INTEGRATION_BUTTON title={i} i={i} key={i} />
+            <Box key={i} p={1}>
+              <INTEGRATION_BUTTON title={i} i={i} />
+            </Box>
           ))}
         </Stack>
       </SettingsCard>
@@ -218,9 +221,15 @@ export default function SettingsPage() {
             <Typography variant="body2" color="text.secondary">
               <strong>Renews on:</strong> {expiresAt}
             </Typography>
-            <Link href="/dashboard/subscription" className={styles.btnPrimary}>
-              Manage Subscription
-            </Link>
+            
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+              <Link href="/dashboard/subscription" className={styles.btnPrimary}>
+                Manage Subscription
+              </Link>
+              <Link href="/product/#pricing" className={styles.btnRetreat}>
+                See Plans & Prices
+              </Link>
+            </Stack>
           </Stack>
         } 
       </SettingsCard>

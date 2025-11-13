@@ -69,13 +69,14 @@ export const authOptions: NextAuthOptions = {
       if (token.expires && now > Number(token.expires) - 5 * 60) {
         try {
           const cookieStore = cookies();
-          const refresh = (await cookieStore).get("refresh_token")?.value;
+          console.log("Cookie Store: ", (await cookieStore).get("refreshToken")?.value)
+          const refresh = (await cookieStore).get("refreshToken")?.value;
           if (!refresh) console.error("Missing refresh cookie.. Throwing error in 0.01ms");
 
           const resData = await nextAuthApiPost<RefreshToken>(
             "/auth/refresh",
             undefined,
-            { withCredentials: true }
+            { headers: { "x-refresh-token": refresh } }
           );
 
           token.accessToken = resData.accessToken;

@@ -129,7 +129,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
           <Typography
             component={'button'}
             onClick={onOpenCreate}
-            className={styles.btnPrimary}
+            className={styles.btnAction}
           >
             <FaPlusCircle />&nbsp;ADD EVENT
           </Typography>

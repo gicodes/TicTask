@@ -105,7 +105,7 @@ export default function Toolbar({
 
           <section id='new-ticket-btn'>
             <Tooltip title="Create New Ticket as Task, Invoice or Issue">
-              <button className={`${styles.btnPrimary} mx-auto`} onClick={onOpenCreate}>
+              <button className={`${styles.btnAction} mx-auto`} onClick={onOpenCreate}>
                 <FaPlusCircle /> &nbsp; NEW TICKET
               </button>
             </Tooltip>
