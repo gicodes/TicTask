@@ -20,7 +20,7 @@ export default function Page() {
     return <Box textAlign="center" p={4}>Loading...</Box>;
 
   if (!isAuthenticated)
-    return <Box textAlign="center" p={4}>Please log in to access dashboard. <br/> If you recently logged in on this device, swipe down or refresh to restore your last session.
+    return <Box textAlign="center" py={10}>Please log in to access dashboard. <br/> If you recently logged in on this device, swipe down or refresh to restore your last session.
   </Box>;
 
   return (

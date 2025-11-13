@@ -31,7 +31,7 @@ export default function TeamsPage() {
         <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <Card sx={{ borderRadius: 4 }}>
             <CardContent>
-              <Stack direction={{ xs: "column-reverse", md: "row"}} justifyContent="space-between" gap={2} alignItems="center" mb={2}>
+              <Stack direction={{ xs: "column-reverse", sm: "row"}} justifyContent="space-between" gap={2} alignItems="center" mb={2}>
                 <Typography variant="h6" fontWeight={600}>
                   Team Members
                 </Typography>

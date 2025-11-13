@@ -64,10 +64,10 @@ export default function ReferPage() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
           <Stack spacing={1} textAlign={{xs: 'center', sm: 'inherit'}}>
             <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}>
-              Refer & Earn Rewards
+              Invite & Earn Rewards
             </Typography>
             <Typography variant="body1" sx={{ opacity: 0.7 }}>
-              Invite your colleagues to TicTask and earn credits or discounts when they subscribe.
+              Bring your colleagues to TicTask and earn credits or discounts when they subscribe.
             </Typography>
           </Stack>
         </motion.div>

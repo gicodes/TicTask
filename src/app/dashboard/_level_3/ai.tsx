@@ -12,28 +12,27 @@ export default function AiAssistantPage() {
   const [input, setInput] = useState('');
 
   return (
-    <Box display="flex" justifyContent="center" p={{md: 3}}>
+    <Box display="flex" justifyContent="center" p={{ sm: 1, md: 2, lg: 3}}>
       <Paper
         elevation={3}
         sx={{
           width: '100%',
           maxWidth: 777,
-          height: '75vh',
+          minHeight: '77vh',
           borderRadius: 3,
           display: 'flex',
           flexDirection: 'column',
         }}
       >
         <Box
-          display={{xs: 'none', md: "flex"}}
+          display={{xs: 'none', sm: "flex"}}
           alignItems="center"
           justifyContent="space-between"
-          px={3}
-          py={2}
+          p={2}
           borderBottom="1px solid"
           borderColor="divider"
         >
-          <Stack direction="row" alignItems="center" spacing={1}>
+          <Stack direction="row" alignItems="center" spacing={2}>
             <SmartToy fontSize="medium" sx={{ color: 'var(--special)'}} />
             <Typography variant="h6" fontWeight={600}>
               AI Assistant
@@ -55,7 +54,8 @@ export default function AiAssistantPage() {
 
         <Box
           flex={1}
-          p={2}
+          py={2}
+          px={{ xs: 1, sm: 2}}
           overflow="auto"
           sx={{ scrollBehavior: 'smooth', backgroundColor: 'background.default' }}
         >

@@ -98,13 +98,18 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
         maxWidth={300}
         mx={{xs: 'auto', sm: 0}}
         justifyContent={'space-between'}
-        sx={{ borderRadius: 999, pl: 1, boxShadow: 2, border: '1px solid var(--secondary)' }} 
+        sx={{ 
+          borderRadius: 999, pl: 0.5, 
+          boxShadow: 1, 
+          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+          
+        }} 
       >
         <Tooltip title="Calendar View">
           <IconButton
             onClick={() => setView('calendar')}
             color={view === 'calendar' ? 'success' : 'inherit'}
-            sx={{ p: 1.5, background: 'var(--surface-1)'}}
+            sx={{p: 1.5, background: 'rgba(255, 255, 255, 0.05)'}}
           >
             <Calendar size={20} />
           </IconButton>
@@ -114,7 +119,7 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
           <IconButton
             onClick={() => setView('list')}
             color={view === 'list' ? 'success' : 'inherit'}
-            sx={{ p: 1.5, background: 'var(--surface-1)'}}
+            sx={{p: 1.5, background: 'rgba(255, 255, 255, 0.25)'}}
           >
             <List size={20} />
           </IconButton>

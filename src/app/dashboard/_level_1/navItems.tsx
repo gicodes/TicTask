@@ -15,7 +15,7 @@ export const NAV_ITEMS = [
   { label: 'Tickets', path: '/dashboard/', icon: <FcSerialTasks/> },
   { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
   { label: 'Planner', path: '/dashboard/planner', icon: <BsCalendar2Date/>},
-  { label: 'Refer & Invites', path: '/dashboard/invite', icon: <MdOutlineFamilyRestroom /> },
+  { label: 'Invite', path: '/dashboard/invite', icon: <MdOutlineFamilyRestroom /> },
   { label: 'Subscriptions', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
   { label: 'Marketing', path: '/dashboard/marketing', icon: <MdCampaign /> },
   { label: 'Teams', path: '/dashboard/teams', icon: <SiAwsorganizations />},
@@ -36,14 +36,14 @@ export const getFilteredNav = (user: AuthUser | null) => {
   if (!user) {
     const allowed = [
       'Tickets', 'AI assistant', 'Planner', 'Products',
-      'Refer & Invites', 'Legal', 'Settings'
+      'Invite', 'Legal', 'Settings'
     ];
     return NAV_ITEMS.filter(item => allowed.includes(item.label));
   }
 
   const allowed = [
     'Tickets', 'AI assistant', 'Planner', 'Products',
-    'Refer & Invites', 'Legal', 'Subscriptions', 'Settings',
+    'Invite', 'Legal', 'Subscriptions', 'Settings',
     'More'
   ];
 
