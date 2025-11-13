@@ -52,9 +52,9 @@ export default function PricingSection() {
               },
             }}
           >
-            <Card sx={{ borderRadius: 9999}}>
+            <Card sx={{ borderRadius: 99, minHeight: 50, display: 'flex', }}>
               <ToggleButton value="monthly">Monthly</ToggleButton>
-              <ToggleButton value="yearly">Yearly (Save 20%)</ToggleButton>
+              <ToggleButton value="yearly">Yearly<span className="font-xxs">&nbsp;(Save 20%)</span></ToggleButton>
             </Card>
           </ToggleButtonGroup>
         </Stack>

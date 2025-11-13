@@ -49,9 +49,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   if (!isMounted) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-        <Typography variant="h6" color="var(--secondary)">
-          Loading...
-        </Typography>
+        <Typography variant="h6" py={6} color="var(--secondary)"> Loading...</Typography>
       </Box>
     );
   }
@@ -244,6 +242,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} style={{ marginLeft: -10}} />
                 {item?.released===false && <NewFeatureBadge />}
+                {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
               </ListItemButton>
             </Link>
           ))}
@@ -273,6 +272,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label}  style={{ marginLeft: -10}} />
                 {item?.released===false && <NewFeatureBadge />}
+                {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
               </ListItemButton>
             </Link>
           ))}
