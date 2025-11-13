@@ -150,11 +150,12 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
 
   const eventPropGetter = useCallback((event: TicketEvent) => {
     const colors: Record<string, string> = {
-      URGENT: 'var(--danger)',
-      HIGH: 'var(--error)',
-      MEDIUM: 'var(--accent)',
+      URGENT: '#b00020',
+      HIGH: '#e53935',
+      MEDIUM: '#ff9800',
       LOW: 'var(--secondary)',
     };
+    
     return {
       style: {
         backgroundColor: colors[event.priority ?? 'MEDIUM'],

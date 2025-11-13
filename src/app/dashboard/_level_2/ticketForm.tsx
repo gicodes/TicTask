@@ -167,21 +167,19 @@ export default function TicketFormDrawer({
               )}
             />
 
-            {!task && (
-              <Controller
-                name="priority"
-                control={control}
-                render={({ field }) => (
-                  <TextField select label="Priority" {...field}>
-                    {Object.values(TICKET_PRIORITIES).map((v) => (
-                      <MenuItem value={v} key={v}>
-                        {v[0] + v.slice(1).toLocaleLowerCase()}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
-              />
-            )}
+            <Controller
+              name="priority"
+              control={control}
+              render={({ field }) => (
+                <TextField select label="Priority" {...field}>
+                  {Object.values(TICKET_PRIORITIES).map((v) => (
+                    <MenuItem value={v} key={v}>
+                      {v[0] + v.slice(1).toLocaleLowerCase()}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
 
             {user?.userType === 'BUSINESS' && (
               <Controller
