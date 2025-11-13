@@ -12,7 +12,7 @@ const Page = () => {
     return <Box textAlign="center" p={4}>Loading...</Box>;
 
   if (!isAuthenticated)
-    return <Box textAlign="center" p={4}>Please log in to view planner task</Box>;
+    return <Box textAlign="center" p={4}>Please log in to view planner</Box>;
   
   return (<PlannerPage />)
 }

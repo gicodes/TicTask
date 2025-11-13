@@ -51,8 +51,7 @@ export default function AiAssistantDrawer() {
         PaperProps={{
           sx: {
             width: { xs: '100%', sm: 380 },
-            borderTopLeftRadius: { xs: 0, sm: 12 },
-            borderBottomLeftRadius: { xs: 0, sm: 12 },
+            borderBottomLeftRadius: { xs: 0, sm: 16 },
             height: { xs: '100%', sm: '90vh' },
             marginTop: { xs: 0, sm: 5 },
             boxShadow: 5,

@@ -19,6 +19,7 @@ import {
   Select,
   InputAdornment,
   IconButton,
+  Divider,
 } from '@mui/material';
 import { useState } from 'react';
 import styles from '@/app/page.module.css';
@@ -87,7 +88,7 @@ export default function OnboardingUI(props: OnboardingProps) {
     
 
   const CountrySelect = ({ accountType }: { accountType: UserType}) =>
-    <Box width={"100%"} maxWidth={400} mx={"auto"} my={1}>
+    <Box mx={"auto"} my={1}>
       <FormControl
         fullWidth
         variant="outlined"
@@ -112,7 +113,6 @@ export default function OnboardingUI(props: OnboardingProps) {
       >
         <InputLabel>{accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}</InputLabel>
         <Select
-          fullWidth
           MenuProps={{PaperProps: { sx: { maxHeight: 300, borderRadius: 2,}}}}
           value={accountType==="BUSINESS" ? hqCountry : country} 
           label={accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}
@@ -218,8 +218,8 @@ export default function OnboardingUI(props: OnboardingProps) {
                         control={<Radio sx={{ display: 'none' }} />}
                         sx={{ m: 0 }}
                         label={<Typography fontWeight={600} py={1.5}>
-                            {type === 'PERSONAL' ? 'Individual' : 'Organization'}
-                          </Typography>}
+                          {type === 'PERSONAL' ? 'Individual' : 'Organization'}
+                        </Typography>}
                       />
                     </CardActionArea>
                   </Card>
@@ -319,25 +319,26 @@ export default function OnboardingUI(props: OnboardingProps) {
                 Review & Finish
               </Typography>
 
-              <Card sx={{ borderRadius: 3, py: 3, px: 5, mb: 7}}>
+              <Card sx={{ borderRadius: 3, p: 3, mb: 6, minWidth: 300}}>
                 <Box display={'grid'} gap={2} textAlign={'left'}>
                   <Typography variant='subtitle2'>
                     <strong>{userType[0] + userType.slice(1).toLocaleLowerCase()} Account</strong>
                   </Typography>
-                  <Typography variant='subtitle2'>{name}</Typography>
-                  {orgName && <Typography variant='subtitle2'>{orgName}</Typography>}
-                  <Typography variant='subtitle2'>{country || hqCountry}</Typography>
-                  {phone && <Typography variant='subtitle2'>{phone}</Typography>}
-                  {industry && <Typography variant='subtitle2'>{industry}</Typography>}
-                  {teamSize && <Typography variant='subtitle2'>Team Size: {teamSize}</Typography>}
-                  {website && <Typography variant='subtitle2'>{website}</Typography>}
-                  {bio && <Typography variant='subtitle2'>{bio}</Typography>}
+                  <Divider />
+                  
+                  <Typography variant='subtitle2'><strong>Name:</strong>&nbsp;{name}</Typography>
+                  {orgName && <Typography variant='subtitle2'><strong>Company:</strong> {orgName}</Typography>}
+                  <Typography variant='subtitle2'><strong>Country:</strong> {country || hqCountry}</Typography>
+                  {phone && <Typography variant='subtitle2'><strong>Phone:</strong> {phone}</Typography>}
+                  {industry && <Typography variant='subtitle2'><strong>Industry:</strong> {industry}</Typography>}
+                  {teamSize && <Typography variant='subtitle2'><strong>Team Size:</strong> {teamSize}</Typography>}
+                  {website && <Typography variant='subtitle2'><strong>Website:</strong> {website}</Typography>}
+                  {bio && <Typography variant='subtitle2'><strong>Bio:</strong> {bio}</Typography>}
                 </Box>
               </Card>
 
               <Typography variant="body2" mb={4}>
-                Satisfied with the information provided? Click finish to continue to your
-                dashboard.
+                Satisfied with the information provided? Click finish to continue to Dashboard.
               </Typography>
               <ActionGroup />
             </Box>

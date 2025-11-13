@@ -16,14 +16,14 @@ import {
 import {
   Sun, Moon, Laptop, Bell, Shield, User, Globe, PlugZap, CreditCard,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import styles from '@/app/page.module.css';
 import { useAuth } from '@/providers/auth';
-import { useThemeMode } from '@/providers/theme';
 import { useAlert } from '@/providers/alert';
+import { useThemeMode } from '@/providers/theme';
 import SettingsCard from '../_level_2/settingsCard';
 import { forgotPassword } from '@/hooks/useForgotPass';
 import { useSubscription } from '@/providers/subscription';
-import { motion } from 'framer-motion';
 
 export default function SettingsPage() {
   const { user } = useAuth();
@@ -68,14 +68,21 @@ export default function SettingsPage() {
   );
 
   return (
-    <Box sx={{ maxWidth: 900, mx: 'auto', py: 4, px: 2 }}>
+    <Box 
+      sx={{ 
+        maxWidth: 900, 
+        mx: 'auto', 
+        py: 4, 
+        px: 2 
+      }}
+    >
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
         <Stack spacing={1} textAlign={{xs: 'center', sm: 'inherit'}} mb={3}>
           <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}>
-            Personalize Settings
+            App Settings
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.7 }}>
-            Customize your Appearance, Account, Notifications, Workspace and more...
+            Customize your Appearance, Account, Notifications, Workspace and more ...
           </Typography>
         </Stack>
       </motion.div>
@@ -195,7 +202,7 @@ export default function SettingsPage() {
       >
         <Stack spacing={1} sx={{ mt: 3 }}>
           {['Slack', 'Github', 'Google Drive'].map((i) => (
-            <Box key={i} p={1}>
+            <Box key={i} p={0.5}>
               <INTEGRATION_BUTTON title={i} i={i} />
             </Box>
           ))}
@@ -226,12 +233,11 @@ export default function SettingsPage() {
               <Link href="/dashboard/subscription" className={styles.btnPrimary}>
                 Manage Subscription
               </Link>
-              <Link href="/product/#pricing" className={styles.btnSecondary}>
+              <Link href="/product/pricing" className={styles.btnSecondary}>
                 See Plans & Prices
               </Link>
             </Stack>
-          </Stack>
-        } 
+          </Stack>} 
       </SettingsCard>
     </Box>
   );

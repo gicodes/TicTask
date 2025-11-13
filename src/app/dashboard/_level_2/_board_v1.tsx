@@ -24,7 +24,7 @@ export default function Board({
   const handleDragEnd = async (event: unknown) => {
     // Basic placeholder: in the real implementation we'd update source/target and call api.updateTicket()
     // For now this function exists so you can later plug in the movement logic.
-    console.log(event)
+    console.log("Drag Event", event)
   };
 
   const STATUSES = Object.keys(grouped);

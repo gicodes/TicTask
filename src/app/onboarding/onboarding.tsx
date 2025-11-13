@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import { GenericAPIRes } from '@/types/axios';
 import { UserType } from '@/types/onboarding';
+import { useAlert } from '@/providers/alert';
 import { signIn } from 'next-auth/react';
 import { apiPost } from '@/lib/api';
 import { useState } from 'react';
@@ -10,6 +11,7 @@ import OnboardingUI from './ui';
 
 export default function Onboarding() {
   const router = useRouter();
+  const { showAlert } = useAlert();
   const params = useSearchParams();
   const token = params.get('token');
   const [bio, setBio] = useState('');
@@ -84,6 +86,8 @@ export default function Onboarding() {
     e.preventDefault();
 
     try {
+      setLoading(true);
+
       const finalData = {
         userType,
         name,
@@ -102,16 +106,20 @@ export default function Onboarding() {
       if (res.ok) {
         const email = res?.user?.email;
 
+        showAlert("Onboarding Complete. Signing in may take a few seconds...", "success")
+
         const r = await signIn('credentials', { redirect: false, email, password });
         if (r?.error) {
           setError(r.error || 'Invalid credentials');
         } else {
           router.refresh();
           router.push('/dashboard');
-        }        
+        }      
       } else setError(res.message || "Failed to save final step.");
     } catch {
       setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false)
     }
   };
 

@@ -142,7 +142,6 @@ export default function ProfileDetailDrawer() {
           width: { xs: '100%', md: 440 },
           px: 3,
           borderTopLeftRadius: 16,
-          borderBottomLeftRadius: 16,
           boxShadow: '-6px 0px 20px rgba(0,0,0,0.1)',
         },
       }}
@@ -174,7 +173,8 @@ export default function ProfileDetailDrawer() {
                     {saving ? <CircularProgress size={20} /> : <Check color='var(--info)'/>}
                   </IconButton>
                 </Tooltip>
-              </>)}
+              </>
+            )}
             </Stack>
               {moreOptions && (
                 <Fade in>
@@ -208,6 +208,8 @@ export default function ProfileDetailDrawer() {
                 height: 96,
                 fontSize: 32,
                 mb: 1,
+                color: 'var(--foreground)',
+                background: 'var(--background)',
                 border: `2.5px solid ${
                   isBusiness
                     ? theme.palette.primary.main
@@ -226,9 +228,7 @@ export default function ProfileDetailDrawer() {
                 sx={{ maxWidth: 260, textAlign: 'center', border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               />
             ) : (
-              <Typography variant="h6" fontWeight={600}>
-                {profile?.name}
-              </Typography>
+              <Typography variant="h6" fontWeight={600}>{profile?.name}</Typography>
             )}
             <Stack direction="row" spacing={1} display={'flex'} alignItems={'center'}>
               <Chip 
@@ -255,7 +255,7 @@ export default function ProfileDetailDrawer() {
                 placeholder="Tell us something about yourself..."
               />
             ) : (
-              <Typography variant="body2" color="text.secondary" px={4}>
+              <Typography variant="body2" color="text.secondary" pt={1} px={4}>
                 {profile?.bio || 'No bio added yet.'}
               </Typography>
             )}
@@ -388,7 +388,7 @@ export default function ProfileDetailDrawer() {
           )}
           <Stack direction="row" justifyContent="center" my={5}>
             <Link href='/dashboard'>
-              <button onClick={closeDetail} className={styles.btnInverted}>
+              <button onClick={closeDetail} className={styles.btnSecondary}>
                 ← &nbsp; Back
               </button>
             </Link>

@@ -106,7 +106,7 @@ Security goals: short lived access tokens, refresh tokens stored in httpOnly sec
 
   users — id (uuid), email (unique), password_hash, name, is_verified, created_at, updated_at
 
-  refresh_tokens — id, user_id, token_hash, expires_at, revoked, created_ip, created_at
+  refreshTokens — id, user_id, token_hash, expires_at, revoked, created_ip, created_at
 
   email_verifications / password_resets — token_hash, user_id, expires_at, used
 
