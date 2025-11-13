@@ -7,7 +7,7 @@ import { GiHelp, GiThreeFriends } from 'react-icons/gi';
 import { Avatar, Box, Typography, Badge } from '@mui/material';
 import { Logout, CorporateFare, WorkSharp } from '@mui/icons-material';
 import { BsFillCreditCard2BackFill, BsCalendar2Date } from "react-icons/bs";
-import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle, FaBlog } from 'react-icons/fa';
+import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle, FaBlog, FaPeopleCarry } from 'react-icons/fa';
 import { FcInvite, FcSerialTasks, FcDocument, FcBearish, FcDataEncryption } from "react-icons/fc";
 import { MdCategory, MdSettings, MdPaid, MdCampaign, MdQuestionAnswer, MdSwitchAccount } from "react-icons/md";
 
@@ -34,9 +34,10 @@ export const NAV_ITEMS = [
 ];
 
 export const MORE_NAV_ITEMS = [
-  { label: 'Documentation', path: '/resources/docs', icon: <GrResources />, external: true},
+  { label: 'Docs', path: '/resources/docs', icon: <GrResources />, external: true},
   { label: 'FAQ', path: '/resources/faq', icon: <MdQuestionAnswer />, external: true},
   { label: 'Blog', path: '/resources/blog', icon: <FaBlog />, external: true},
+  { label: 'Community', path: '#', icon: <FaPeopleCarry />, external: true},
   { label: "Go to Signup", path:'/auth/join/user', icon: <MdSwitchAccount />, external: true}, 
 ]
 

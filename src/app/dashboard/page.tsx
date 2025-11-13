@@ -16,11 +16,10 @@ export default function Page() {
     return () => clearInterval(interval);
   }, []);
 
-  if (loading)
-    return <Box textAlign="center" p={4}>Loading...</Box>;
+  if (loading) return <Box textAlign="center" p={4}>Loading...</Box>;
 
-  if (!isAuthenticated)
-    return <Box textAlign="center" py={10}>Please log in to access dashboard. <br/> If you recently logged in on this device, swipe down or refresh to restore your last session.
+  if (!isAuthenticated) return <Box textAlign="center" px={2} py={10}>
+    Please log in to access dashboard. <br/> If you recently logged in on this device, swipe down or refresh to restore your last session.
   </Box>;
 
   return (
