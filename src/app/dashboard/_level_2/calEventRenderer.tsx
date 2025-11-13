@@ -1,5 +1,6 @@
 import { TicketPriority, TicketStatus } from '@/types/ticket';
 import React, { useMemo } from 'react';
+import { priorityColor } from '../_level_1/tColorVariants';
 
 export interface TicketEvent {
   priority: TicketPriority;
@@ -8,18 +9,7 @@ export interface TicketEvent {
 }
 export default function EventRenderer({ event }: { event: TicketEvent }) {
   const color = useMemo(() => {
-    switch (event.priority) {
-      case 'URGENT':
-        return 'var(--danger)';
-      case 'HIGH':
-        return 'var(--error)';
-      case 'MEDIUM':
-        return 'var(--accent)';
-      case 'LOW':
-        return 'var(--secondary)';
-      default:
-        return 'var(--surface-2)';
-    }
+    return priorityColor(event.priority)
   }, [event.priority]);
 
   return (
