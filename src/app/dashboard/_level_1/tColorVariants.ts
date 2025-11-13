@@ -23,7 +23,7 @@ export const priorityColor = (p: string) => {
     case 'HIGH': return '#e53935';
     case 'MEDIUM': return '#ff9800';
     case 'LOW': return '#999';
-    default: return '#999';
+    default: return '#9e9e9e';
   }
 };
 

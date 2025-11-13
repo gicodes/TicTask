@@ -153,7 +153,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       URGENT: '#b00020',
       HIGH: '#e53935',
       MEDIUM: '#ff9800',
-      LOW: 'var(--secondary)',
+      LOW: '#999',
     };
     
     return {
