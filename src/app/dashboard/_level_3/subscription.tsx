@@ -8,6 +8,7 @@ import { CreditCard } from '@mui/icons-material';
 import { useSubscription } from '@/providers/subscription';
 import { useCreateCheckoutSession } from '@/hooks/useCreateCheckout';
 import { Box, Stack, Typography, Card, CardContent, Button, Divider, Grid, LinearProgress, CircularProgress } from '@mui/material';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 export default function SubscriptionPage() {
   const { showAlert } = useAlert();
@@ -101,7 +102,7 @@ export default function SubscriptionPage() {
                 <Typography variant="h6" fontWeight={700}>
                   Usage Overview
                 </Typography>
-                <Divider sx={{ my: 1, opacity: 0.2 }} />
+                <Divider sx={{ my: 1, opacity: 0.2, bgcolor: 'var(--disabled)', width: '100%' }} />
 
                 <Grid container spacing={3}>
                   <Grid display={'grid'} gap={1}>
@@ -129,6 +130,19 @@ export default function SubscriptionPage() {
                   </Grid>
                 </Grid>
               </Stack>
+              <Box mt={3}>
+                <Link href={'/product/pricing'}>
+                  <Button 
+                    variant='outlined' 
+                    color='info' 
+                    size='small'
+                    endIcon={<FaExternalLinkAlt size={12.5} />}
+                    sx={{ textTransform: 'none'}}
+                  >
+                    See All Plans
+                  </Button>
+                </Link>
+              </Box>
             </CardContent>
           </Card>
         </motion.div>

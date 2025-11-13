@@ -39,7 +39,6 @@ export default function AiAssistantDrawer() {
           bottom: 24,
           right: 24,
           boxShadow: 3,
-          bgcolor: 'var(--secondary)',
         }}
       >
         <Chat fontSize='small' />

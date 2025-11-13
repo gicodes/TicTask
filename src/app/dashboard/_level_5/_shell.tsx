@@ -9,7 +9,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { FaUserTie, FaUserShield } from 'react-icons/fa6';
 import { Login, Menu as MenuIcon, Notifications } from '@mui/icons-material';
 import { FaExternalLinkAlt, FaUserAstronaut, FaUserSecret, FaUsers } from 'react-icons/fa';
-import { AUTH_ITEMS, getFilteredNav, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
+import { AUTH_ITEMS, getFilteredNav, MORE_NAV_ITEMS, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
 import { 
   AppBar,
   Toolbar, 
@@ -35,6 +35,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
+  const [moreMenuList, setMoreMenuList] = useState(false);
   const [isRouteChanging, setIsRouteChanging] = useState(false);
 
   useEffect(() => setIsMounted(true), []);
@@ -46,16 +47,18 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
     }
   }, [pathname, isRouteChanging]);
 
-  if (!isMounted) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-        <Typography variant="h6" py={6} color="var(--secondary)"> Loading...</Typography>
-      </Box>
-    );
-  }
+  if (!isMounted) return (
+    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Typography variant="h6" py={6} color="var(--secondary)"> Loading...</Typography>
+    </Box>
+  );
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+  const handleMoreMenu = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    setMoreMenuList(!moreMenuList)
+  }
 
   const filteredNav = getFilteredNav(user);
   const isLoggedIn = !!user;
@@ -237,17 +240,39 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         <Toolbar />
         <List sx={{ pt: 5, minWidth: 234}}>
           {filteredNav.map(item => (
-            <Link href={item.path} key={item.path} onClick={() => setOpen(!open)}>
+            <Link href={item.path} key={item.path} onClick={item?.more ? handleMoreMenu : () => setOpen(!open)}>
               <ListItemButton selected={pathname === item.path}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} style={{ marginLeft: -10}} />
+                <ListItemText 
+                  primary={item.label} 
+                  style={{ marginLeft: -10}} 
+                />
                 {item?.released===false && <NewFeatureBadge />}
                 {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
               </ListItemButton>
             </Link>
           ))}
         </List>
+        <List>
+        {moreMenuList && MORE_NAV_ITEMS.map((item, i) => (
+            <Link
+              key={i}
+              href={item.path}
+              onClick={() => {
+                setOpen(false);
+                setIsRouteChanging(true);
+              }}
+            >
+              <ListItemButton selected={pathname === item.path}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} style={{ marginLeft: -10}} />
+                {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
+              </ListItemButton>
+            </Link>
+          ))}
+        </List>
       </Drawer>
+      
       <Drawer
         variant="permanent"
         sx={{
@@ -263,6 +288,23 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             <Link
               key={i}
               href={item.path}
+              onClick={item?.more ? handleMoreMenu : () => {
+                setOpen(false);
+                setIsRouteChanging(true);
+              }}
+            >
+              <ListItemButton selected={pathname === item.path}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} style={{ marginLeft: -10}} />
+                {item?.released===false && <NewFeatureBadge />}
+                {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
+              </ListItemButton>
+            </Link>
+          ))}
+          {moreMenuList && MORE_NAV_ITEMS.map((item, i) => (
+            <Link
+              key={i}
+              href={item.path}
               onClick={() => {
                 setOpen(false);
                 setIsRouteChanging(true);
@@ -270,8 +312,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             >
               <ListItemButton selected={pathname === item.path}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label}  style={{ marginLeft: -10}} />
-                {item?.released===false && <NewFeatureBadge />}
+                <ListItemText primary={item.label} style={{ marginLeft: -10}} />
                 {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
               </ListItemButton>
             </Link>
