@@ -220,7 +220,7 @@ export default function TicketDetailDrawer({
             onChange={(e) => setNote(e.target.value)} 
             placeholder="Write a note..." 
           />
-          <Stack direction="row" spacing={1} sx={{ mt: 2.5 }}>
+          <Stack direction="row" spacing={1} sx={{ my: 2, py: 2 }}>
             <Button className={styles.btnPrimary} onClick={save}>Save</Button>
             <Button className={styles.btnWarm} onClick={onClose}>Back</Button>
           </Stack>
