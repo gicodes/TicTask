@@ -3,7 +3,7 @@
 import React from 'react'
 import { Box } from '@mui/material';
 import { useAuth } from '@/providers/auth';
-import AiAssistantPage from '../_level_3/ai';
+import AiAssistantPage from '../_level_4/ai';
 
 const Page = () => {
   const {loading, isAuthenticated } = useAuth();
