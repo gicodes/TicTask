@@ -34,6 +34,7 @@ const NotificationDrop = ({ anchorEl, handleClose }: {
               px={2}
               py={1.5}
               sx={{
+                borderBottom: n.id !== notifications[notifications.length -1].id ? "1px solid var(--divider)" : "none",
                 background: n.read ? "transparent" : "rgba(25,118,210,0.08)",
                 cursor: "pointer",
                 display: 'grid',

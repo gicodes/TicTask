@@ -117,7 +117,7 @@ const Page = () => {
           You can manage them in two main views:
         </Typography>
 
-        <Typography component={'button'} px={1} my={1} fontWeight={501}>Board View</Typography>
+        <Typography component={'button'} sx={{ bgcolor: 'inherit', color: 'inherit'}} px={1} my={1} fontWeight={501}>Board View</Typography>
         <Typography>
           The <strong>Board</strong> gives you a visual, Kanban-style workflow. Tickets are organized into status columns, and you can drag-and-drop cards to update their status.
         </Typography>
@@ -135,7 +135,7 @@ const Page = () => {
           Each column displays detailed ticket cards containing title, priority, due date, assignee, and quick actions.
         </Typography>
 
-        <Typography component={'button'} px={1} my={1} fontWeight={501}>List View</Typography>
+        <Typography component={'button'} sx={{ bgcolor: 'inherit', color: 'inherit'}} px={1} my={1} fontWeight={501}>List View</Typography>
         <Typography>
           The <strong>List</strong> view displays tickets in a detailed table layout.  
           It&apos;s ideal for sorting, filtering, and scanning large volumes of work.
