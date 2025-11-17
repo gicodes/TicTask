@@ -18,7 +18,7 @@ const NotificationDrop = ({ anchorEl, handleClose }: {
       <Box minWidth={{ xs: 260, sm: 280, md: 300 }}>
         <Stack direction="row" justifyContent="space-between" px={2} my={1}>
           <Typography variant='body2' fontWeight={600} pb={1} borderBottom={'1px solid var(--secondary)'}>Notifications</Typography>
-          { notifications.length >= 0 && <Typography
+          { notifications.length >= 1 && <Typography
             variant="caption"
             sx={{ cursor: "pointer", color: "info.main",
               "&:hover": { borderBottom: '1px solid var(--info)' } }}
