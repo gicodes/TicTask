@@ -1,24 +1,34 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { cookies } from "next/headers";
 
-export async function POST(req: NextRequest) {
-  const backendUrl = `${process.env.API_URL}/auth/refresh`;
+export async function POST() {
+  try {
+    const cookieStore = cookies();
+    const refresh = (await cookieStore).get("refreshToken")?.value;
 
-  const forwardedHeaders = new Headers();
-  const cookieHeader = req.headers.get("cookie");
-  if (cookieHeader) forwardedHeaders.set("cookie", cookieHeader);
+    if (!refresh) {
+      return NextResponse.json({ message: "Missing refresh token" }, { status: 401 });
+    }
 
-  const resp = await fetch(backendUrl, {
-    method: "POST",
-    headers: forwardedHeaders,
-  });
+    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
+      method: "POST",
+      headers: {
+        "x-refresh-token": refresh,
+      },
+      credentials: "include",
+    });
 
-  const text = await resp.text();
-  return new NextResponse(text, {
-    status: resp.status,
-    headers: {
-      ...(resp.headers.get("set-cookie") ? { "set-cookie": resp.headers.get("set-cookie")! } : {}),
-      "content-type": resp.headers.get("content-type") || "text/plain",
-    },
-  });
+    if (!backendRes.ok) {
+      return NextResponse.json({ message: "Refresh failed" }, { status: 401 });
+    }
+
+    const data = await backendRes.json();
+
+    return NextResponse.json({
+      accessToken: data.accessToken,
+    });
+  } catch (err) {
+    console.error("Refresh route error:", err);
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
+  }
 }

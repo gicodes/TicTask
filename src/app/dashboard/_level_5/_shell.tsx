@@ -121,7 +121,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             <IconButton edge="start" onClick={() => setOpen(!open)}>
               <MenuIcon sx={{ display: { md: 'none' }, mr: 2 }} />
             </IconButton>
-            <Logo />
+            <Logo where='/dashboard'/>
           </Box>
 
           <Box gap={2} display={'flex'}>

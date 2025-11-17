@@ -105,7 +105,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     { type: "outline", content: "BOARD"}, { type: 'inline', content: ' organizes your tickets in rows of ticket status. Each status column showing tickets in detailed card'}, '',
     { type: "badge", content: "Upcoming"}, { type: "badge", content: "Open"}, { type: "badge", content: "In progress"}, { type: "badge", content: "Resolved"}, { type: "badge", content: "Closed"}, { type: "badge", content: "Cancelled"}, '',
     { type: "outline", content: "LIST"}, { type: 'inline', content: ' tabulates your tickets in a readable format, with column tabs showing detailed ticket information'}, '',
-    { type: 'link', href: '/docs/tour', content: 'Read the full dashboard walkthrough' }
+    { type: 'link', href: '/resources/docs/tour', content: 'Read the complete dashboard walkthrough' }
   ],
 
   "Roles & Permissions": [
@@ -116,7 +116,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     { type: 'callout', title: 'Note', content: 'Custom roles i.e. Moderator are not supported by default. Setting up a custom role requires registering as partner.' }
   ],
 
-  "Common flows — Tasks, Assignments, Comments": [
+  "Common Flows — Tasks, Comments, Attachments": [
     "Create → Assign → Work → Comment → Close",
     "Attach files from local device or cloud storage and mention teammates using @ to trigger notifications.",
     { type: 'list', content: ['Create task', 'Assign task', 'Accept/ Decline task', 'Add comment', 'Attach files', 'Search ticket', 'Create team', 'Invite member', 'Accept/ Decline invite'] }
