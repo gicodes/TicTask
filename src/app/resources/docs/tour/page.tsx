@@ -154,7 +154,7 @@ const Page = () => {
         {/* ============================= */}
         {/*    AI ASSISTANT              */}
         {/* ============================= */}
-        <Typography alignItems={'center'} gap={2} display={'flex'} variant="h6" fontWeight={501} mt={4} mb={1}><RiRobot2Fill /> AI (Assistant)</Typography>
+        <Typography alignItems={'center'} gap={2} display={'flex'} variant="h6" fontWeight={501} mt={4} mb={1}><RiRobot2Fill /> AI Assistant</Typography>
         <Typography>
           The <strong>AI Page</strong> is your intelligent co-pilot.  
           Use it to quickly generate tasks, summarize long tickets, automate repetitive updates, and get data-driven suggestions.
