@@ -1,6 +1,6 @@
 export type TicketPayloads = {
   created: { ticketId: number; title: string; createdBy: number; assignee?: string | number };
-  updated: { ticketId: number; changes: Record<string, unknown>; updatedBy?: string | number };
+  updated: { ticketId: number; changes: Record<string, unknown>; status: string; updatedBy?: string | number }
   assigned: { ticketId: number; assignee?: string | number; assignedBy?: string | number };
   resolved: { ticketId: number; resolvedBy?: string | number };
   comment: { ticketId: number; commentId: string; text: string; author: string | number };
@@ -48,7 +48,7 @@ export type AppEvents = {
 
 type Handler<T> = (payload: T) => void;
 
-class TypedEmitter<E extends Record<string, any>> {
+class TypedEmitter<E extends Record<string, unknown>> {
   private handlers: Partial<{ [K in keyof E]: Handler<E[K]>[] }> = {};
 
   on<K extends keyof E>(event: K, handler: Handler<E[K]>) {

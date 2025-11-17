@@ -76,13 +76,13 @@ const Page = () => {
         {/* SET STATUS */}
         <Typography variant="h6" fontWeight={501} mt={4}>Set Status</Typography>
         <Typography mt={1}>
-          🗿 "Set Status” action allow users to update their presence, custom emoji status, or team availability.
+          🗿 &quot;Set Status&quot; action allow users to update their presence, custom emoji status, or team availability.
         </Typography>
 
         {/* MUTE NOTIFICATIONS */}
         <Typography variant="h6" fontWeight={501} mt={4}>Mute Notifications</Typography>
         <Typography mt={1}>
-          🔕 "Mute Notifications” action allows users to silence notifications temporarily.
+          🔕 &quot;Mute Notifications&quot; action allows users to silence notifications temporarily.
         </Typography>
 
         {/* EXTERNAL LINKS */}

@@ -95,6 +95,7 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
 
       AppEvents.emit("ticket:updated", {
       ticketId,
+      status: updated.status,
       changes: updates,
       updatedBy: user?.id,
     });

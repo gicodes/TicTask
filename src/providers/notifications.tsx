@@ -9,79 +9,152 @@ import React, {
 } from "react";
 import { AppEvents } from "./events";
 
+export type NotificationType = "info" | "success" | "warning" | "error";
+
 export interface AppNotification {
   id: string;
   title: string;
   message: string;
   createdAt: number;
   read: boolean;
-  type?: "info" | "success" | "warning" | "error";
-  meta?: any;
+  type?: NotificationType;
+  meta?: Record<string, unknown>;
 }
+
+export type NewNotification = Omit<
+  AppNotification,
+  "id" | "createdAt" | "read"
+>;
+
+export interface TicketCreatedPayload {
+  title: string;
+  createdBy: number;
+  [key: string]: unknown;
+}
+
+export interface TicketUpdatedPayload {
+  ticketId: number;
+  [key: string]: unknown;
+}
+
+export interface TicketAssignedPayload {
+  ticketId: number;
+  assignee?: string | number;
+  [key: string]: unknown;
+}
+
+export interface TicketCommentPayload {
+  ticketId: number;
+  author?: string | number;
+  comment?: string;
+  [key: string]: unknown;
+}
+
+export interface SubscriptionPaymentFailedPayload {
+  userId: string;
+  reason?: string;
+  [key: string]: unknown;
+}
+
+export interface SubscriptionRenewalUpcomingPayload {
+  plan: string;
+  renewDate: string;
+  [key: string]: unknown;
+}
+
+export interface AuthNewDevicePayload {
+  device: string;
+  ip?: string;
+  [key: string]: unknown;
+}
+
+export interface AppEventMap {
+  "ticket:created": TicketCreatedPayload;
+  "ticket:updated": TicketUpdatedPayload;
+  "ticket:assigned": TicketAssignedPayload;
+  "ticket:comment": TicketCommentPayload;
+
+  "subscription:payment-failed": SubscriptionPaymentFailedPayload;
+  "subscription:renewal-upcoming": SubscriptionRenewalUpcomingPayload;
+
+  "auth:new-device": AuthNewDevicePayload;
+}
+
+type EventCallback<K extends keyof AppEventMap> = (
+  payload: AppEventMap[K]
+) => void;
 
 interface NotificationsContextProps {
   notifications: AppNotification[];
   unreadCount: number;
-  addNotification: (n: Omit<AppNotification, "id" | "createdAt" | "read">) => void;
+  addNotification: (n: NewNotification) => void;
   markAsRead: (id: string) => void;
   markAllAsRead: () => void;
-  requestPushPermission: () => Promise<void>;
+  requestPushPermission: () => Promise<boolean | void>;
 }
 
-const NotificationsContext = createContext<NotificationsContextProps | undefined>(undefined);
+const NotificationsContext =
+  createContext<NotificationsContextProps | undefined>(undefined);
 
 const makeId = () => "n_" + Math.random().toString(36).slice(2, 9);
 
-export const NotificationsProvider = ({ children }: { children: React.ReactNode }) => {
+export const NotificationsProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
 
-  const webhookForward = false;  // set to true to let server forward to n8n, Twilio, Slack, etc.
+  const webhookForward = false;
   const webhookEndpoint = "/api/user/events";
 
-  const addNotification = useCallback(
-    (n: Omit<AppNotification, "id" | "createdAt" | "read">) => {
-      const newNotif: AppNotification = {
-        id: makeId(),
-        createdAt: Date.now(),
-        read: false,
-        ...n,
-      };
-      setNotifications((prev) => [newNotif, ...prev]);
+  const addNotification = useCallback((n: NewNotification) => {
+    const newNotif: AppNotification = {
+      id: makeId(),
+      createdAt: Date.now(),
+      read: false,
+      ...n,
+    };
 
-      // forward event to server so server-side webhooks (twilio, slack, n8n) can react
-      if (webhookForward) {
-        try {
-          fetch(webhookEndpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ type: "notification.created", payload: newNotif }),
-          }).catch((e) => console.warn("webhook forward failed", e));
-        } catch (err) {
-          console.warn("webhook forward error", err);
-        }
-      }
-    },
-    []
-  );
+    setNotifications((prev) => [newNotif, ...prev]);
+
+    if (webhookForward) {
+      fetch(webhookEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "notification.created",
+          payload: newNotif,
+        }),
+      }).catch((e) => console.warn("webhook forward failed", e));
+    }
+  }, [webhookForward, webhookEndpoint]);
 
   const markAsRead = useCallback((id: string) => {
-    setNotifications((prev) => prev.map((p) => (p.id === id ? { ...p, read: true } : p)));
+    setNotifications((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, read: true } : p))
+    );
   }, []);
 
   const markAllAsRead = useCallback(() => {
     setNotifications((prev) => prev.map((p) => ({ ...p, read: true })));
   }, []);
 
-  useEffect(() => { // Restore from localStorage
-    const stored = typeof window !== "undefined" ? localStorage.getItem("notifications") : null;
+  useEffect(() => {
+    const stored = typeof window !== "undefined"
+      ? localStorage.getItem("notifications")
+      : null;
+
     if (stored) {
       try {
-        setNotifications(JSON.parse(stored));
-      } catch {}
+        const parsed = JSON.parse(stored) as AppNotification[];
+        setNotifications(parsed);
+      } catch {
+        /* ignore */
+      }
     }
 
-    // --- Event listeners ---
-    const ticketCreated = (p: any) => {
+    const ticketCreated: EventCallback<"ticket:created"> = (p) => {
       addNotification({
         title: "New ticket created",
         message: `${p.title} — created by ${p.createdBy}`,
@@ -90,7 +163,7 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
       });
     };
 
-    const ticketUpdated = (p: any) => {
+    const ticketUpdated: EventCallback<"ticket:updated"> = (p) => {
       addNotification({
         title: "Ticket update",
         message: `Ticket ${p.ticketId} status updated`,
@@ -99,7 +172,7 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
       });
     };
 
-    const ticketAssigned = (p: any) => {
+    const ticketAssigned: EventCallback<"ticket:assigned"> = (p) => {
       addNotification({
         title: "Ticket assigned",
         message: `Ticket assigned to ${p.assignee}`,
@@ -108,7 +181,7 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
       });
     };
 
-    const ticketComment = (p: any) => {
+    const ticketComment: EventCallback<"ticket:comment"> = (p) => {
       addNotification({
         title: "New comment",
         message: `New comment on ${p.ticketId} by ${p.author}`,
@@ -117,16 +190,18 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
       });
     };
 
-    const subscriptionPaymentFailed = (p: any) => {
+    const subscriptionPaymentFailed: EventCallback<"subscription:payment-failed"> = (p) => {
       addNotification({
         title: "Subscription payment failed",
-        message: `Payment failed for user ${p.userId} — ${p.reason ?? "unknown"}`,
+        message: `Payment failed for user ${p.userId} — ${
+          p.reason ?? "unknown"
+        }`,
         type: "warning",
         meta: { channel: "subscription", event: "paymentFailed", ...p },
       });
     };
 
-    const subscriptionRenewal = (p: any) => {
+    const subscriptionRenewal: EventCallback<"subscription:renewal-upcoming"> = (p) => {
       addNotification({
         title: "Subscription renewal upcoming",
         message: `Plan ${p.plan} renews on ${p.renewDate}`,
@@ -135,7 +210,7 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
       });
     };
 
-    const authNewDevice = (p: any) => {
+    const authNewDevice: EventCallback<"auth:new-device"> = (p) => {
       addNotification({
         title: "New device login",
         message: `${p.device} logged in`,
@@ -157,20 +232,21 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
     };
   }, [addNotification]);
 
+  /* ----------------------------- Persist to localStorage ---------------------------- */
+
   useEffect(() => {
-    try { // persist to localStorage
+    try {
       localStorage.setItem("notifications", JSON.stringify(notifications));
     } catch {}
   }, [notifications]);
 
-  const requestPushPermission = useCallback(async () => {
-    // Keep minimal — integrate FCM or OneSignal here
-    if (typeof Notification !== "undefined") {
-      const p = await Notification.requestPermission();
-      return p === "granted";
-    }
+  /* ------------------------------ Push Permission ------------------------------ */
 
-    return;
+  const requestPushPermission = useCallback(async () => {
+    if (typeof Notification !== "undefined") {
+      const result = await Notification.requestPermission();
+      return result === "granted";
+    }
   }, []);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
@@ -183,13 +259,17 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
         addNotification,
         markAsRead,
         markAllAsRead,
-        requestPushPermission: requestPushPermission as () => Promise<void>,
+        requestPushPermission,
       }}
     >
       {children}
     </NotificationsContext.Provider>
   );
 };
+
+/* -------------------------------------------------------------------------- */
+/*                               HOOK EXPORT                                   */
+/* -------------------------------------------------------------------------- */
 
 export const useNotifications = () => {
   const ctx = useContext(NotificationsContext);
