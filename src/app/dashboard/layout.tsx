@@ -5,8 +5,8 @@ import { AlertProvider } from '@/providers/alert';
 import { ThemeProvider } from '@/providers/theme';
 import { LoadingProvider } from '@/providers/loading';
 import { TicketsProvider } from '@/providers/tickets';
-import { NotificationProvider } from '@/providers/notifications';
 import { SubscriptionProvider } from '@/providers/subscription';
+import { NotificationsProvider } from '@/providers/notifications';
 
 export const metadata: Metadata = {
   title: "TicTask",
@@ -22,13 +22,13 @@ export default function DashboardLayout({
         <LoadingProvider>
           <AuthProvider>
             <SubscriptionProvider>
-              <NotificationProvider>
-                <TicketsProvider>
+              <TicketsProvider>
+                <NotificationsProvider>
                   <DashboardIndex>
                     {children}
                   </DashboardIndex>
-                </TicketsProvider>
-              </NotificationProvider>
+                </NotificationsProvider>
+              </TicketsProvider>
             </SubscriptionProvider>
           </AuthProvider>
         </LoadingProvider>

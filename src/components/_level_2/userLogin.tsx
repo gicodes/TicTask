@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { useAuth } from '@/providers/auth';
 import { useRouter } from 'next/navigation';
 import LoginTemplate from './loginTemplate';
+import { NextAuthLoginResponse } from '@/types/axios';
 
 export const CredentialsForm = () => {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [password, setPassword] = useState('');
@@ -17,13 +19,9 @@ export const CredentialsForm = () => {
     setSubmitting(true);
     setError('');
 
-    const res = await signIn('credentials', {
-      redirect: false,
-      email,
-      password,
-    });
+    const res = await login(email, password);
 
-    if (res?.error) {
+    if (res && (res as NextAuthLoginResponse).error) {
       setError(res.error || 'Invalid credentials');
       setSubmitting(false);
     } else {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from './auth';
+import { AppEvents } from './events';
 import { Ticket } from '@/types/ticket';
 import { TicketsRes } from '@/types/axios';
 import { apiGet, apiPatch } from '@/lib/api';
@@ -85,11 +86,30 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
   const updateTicket = async (ticketId: number, updates: Partial<Ticket>) => {
     try {
       const updated: Ticket = await apiPatch(`/tickets/${ticketId}`, updates);
+      
       setTickets(prev => {
         const updatedList = prev.map(t => (t.id === updated.id ? updated : t));
         return sortTickets(updatedList);
       });
       if (selectedTicket?.id === updated.id) setSelectedTicket(updated);
+
+      AppEvents.emit("ticket:updated", {
+      ticketId,
+      changes: updates,
+      updatedBy: user?.id,
+    });
+
+    if (updates.assignee) {
+      AppEvents.emit("ticket:assigned", {
+        ticketId,
+        assignee: updated.assignee,
+        assignedBy: updated.createdById,
+      });
+    }
+
+    if (updates.status && updates.status === "RESOLVED") {
+      AppEvents.emit("ticket:resolved", { ticketId, resolvedBy: updated.updatedById });
+    }
       return updated;
     } catch (err) {
       console.error("Failed to update ticket:", err);

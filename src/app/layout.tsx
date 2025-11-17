@@ -1,4 +1,5 @@
 import "./globals.css";
+
 import type { Metadata } from "next";
 import { CssBaseline } from "@mui/material";
 import { AlertProvider } from "@/providers/alert";
@@ -6,7 +7,7 @@ import ThemeRegistry from '@/emotion/ThemeRegistry';
 import ConditionalLayout from "@/providers/_layout";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/providers/auth";
-import AppProviders from "@/providers/clientProvider";
+import AppProviders from "@/providers/stripeClient";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });

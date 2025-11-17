@@ -7,6 +7,8 @@ import { usePathname } from 'next/navigation';
 import AiAssistantDrawer from '../_level_2/aiDrawer';
 import { ReactNode, useEffect, useState } from 'react';
 import { FaUserTie, FaUserShield } from 'react-icons/fa6';
+import NotificationDrop from '../_level_2/notificationDrop';
+import { useNotifications } from '@/providers/notifications';
 import { Login, Menu as MenuIcon, Notifications } from '@mui/icons-material';
 import { FaExternalLinkAlt, FaUserAstronaut, FaUserSecret, FaUsers } from 'react-icons/fa';
 import { AUTH_ITEMS, getFilteredNav, MORE_NAV_ITEMS, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
@@ -14,6 +16,7 @@ import {
   AppBar,
   Toolbar, 
   Drawer, 
+  Badge,
   List, 
   ListItemButton, 
   ListItemIcon, 
@@ -32,6 +35,8 @@ import {
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [notificationDrop, setNotificationDrop] = useState<null | HTMLElement>(null);
+  const { notifications } = useNotifications();
   const { user, logout } = useAuth();
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
@@ -53,8 +58,10 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
     </Box>
   );
 
+  const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => setNotificationDrop(event.currentTarget);
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
+  const handleCloseUserMenu = () => setAnchorEl(null);
+  const handleCloseNotification = () => setNotificationDrop(null);
   const handleMoreMenu = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     setMoreMenuList(!moreMenuList)
@@ -71,7 +78,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
       if (user?.role==="USER" && user.collab) variant = "MODERATOR";
       if (user?.role==="USER" && user.partner) variant = "PARTNER";
       if (user?.role==="ADMIN") variant = "ADMIN";
-      
+
       return variant;
     } else return null
   }
@@ -126,10 +133,30 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
 
           <Box gap={2} display={'flex'}>
             <Tooltip title={'Notifications'}>
-              <IconButton sx={{ p: 0 }}>
-                <Notifications />
-              </IconButton>
+              <Badge 
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }} 
+                sx={{
+                  "& .MuiBadge-badge": {
+                    fontSize: 10,
+                    minWidth: 12,
+                    height: 14,
+                  }
+                }}
+                badgeContent={notifications.filter(n => !n.read).length} color="info"
+              >
+                <IconButton onClick={handleNotificationClick} sx={{ p: 0 }}>
+                  <Notifications />
+                </IconButton>
+              </Badge>
             </Tooltip>
+            <NotificationDrop 
+              anchorEl={notificationDrop} 
+              handleClose={handleCloseNotification} 
+            />
+
             <Tooltip title={isLoggedIn ? user?.name || 'Profile' : 'Not logged in'}>
               <IconButton onClick={handleAvatarClick} sx={{ p: 0 }}>
                 <NavbarAvatar user={user} />
@@ -138,7 +165,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
-              onClose={handleClose}
+              onClose={handleCloseUserMenu}
               sx={{ marginTop: 1.75, marginLeft: 1.75}}
             >
               <Box minWidth={{ xs: 250, sm: 280, md: 300}}>
@@ -154,7 +181,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                           minWidth: 180
                         }} 
                         className='hoverBg'
-                        onClick={handleClose}
+                        onClick={handleCloseUserMenu}
                       >
                         <Typography variant='caption'>{user?.name || 'Not Available'}</Typography>
                         <Typography className='font-xxs custom-dull'>{user?.email || 'please sign in'}</Typography>
@@ -162,8 +189,9 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                     </Tooltip>
                     <UserRole />
                   </Stack>
+
                   <Link 
-                    href={'/profile/edit/#status'} 
+                    href={'#'} 
                     style={{ 
                       gap: 10, 
                       padding: 7.5, 
@@ -190,6 +218,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                   </Link>
                 </Stack>
                 <Divider sx={{ my: 1}} />
+                
                 { authMenuItems.slice(0, 6).map((item, i) => (
                   <Link key={i} href={item.href}>
                     <MenuItem 
@@ -218,7 +247,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                         maxHeight: 40, 
                         margin: '5px 0'
                       }} 
-                      onClick={item.cta && isLoggedIn ? logout : handleClose}
+                      onClick={item.cta && isLoggedIn ? logout : handleCloseUserMenu}
                     >
                       {item.cta && !isLoggedIn ? <span className='flex items-center gap-2'> 
                         <Login fontSize='inherit' /> Login</span> : item.label}

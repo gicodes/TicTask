@@ -135,8 +135,8 @@ export default function TicketDetailDrawer({
               width={'100%'}
               maxWidth={120}
             >
-              <Typography variant='body1' sx={{ textAlign: 'center', color: getTypeColor(ticket.type)}}>
-                <strong>{ticket.type==="FEATURE_REQUEST" ? "FEATURE": ticket.type}</strong>
+              <Typography variant='body1' sx={{ textAlign: 'center', color: getTypeColor(ticket?.type)}}>
+                <strong>{ticket?.type==="FEATURE_REQUEST" ? "FEATURE": ticket?.type}</strong>
               </Typography>
               <Tooltip title={`Ticket ${StatusRender?.toLowerCase()}`}>
                 <Chip 
@@ -167,7 +167,7 @@ export default function TicketDetailDrawer({
             sx={{ 
               py: 2, 
               borderTop: '1px solid var(--dull-gray)', 
-              borderBottom: '1px solid var(--dull-gray)' 
+              borderBottom: '1px solid var(--disabled)' 
             }}
           >
             <Typography variant='caption'>
@@ -201,27 +201,35 @@ export default function TicketDetailDrawer({
               <strong>Due by</strong> {ticket.dueDate ? new Date(ticket.dueDate).toDateString() : ''}
             </Typography>}
           </Stack>
-          {user?.userType==="BUSINESS" && <>
-            <Typography variant="subtitle2" py={1}>Add new assignee</Typography>
-            <TextField 
-              type='text'
-              value={assignee} 
-              onChange={(e) => setAssigned(e.target.value)} 
-              placeholder="Assign to team (member email)" 
-              sx={{ minWidth: 250}}
-            />
-          </>}
-          <Typography variant="subtitle2" py={1}>Add note</Typography>
-          <TextField 
-            multiline 
-            minRows={3} 
-            value={note} 
-            fullWidth
-            onChange={(e) => setNote(e.target.value)} 
-            placeholder="Write a note..." 
-          />
+
+          {!(ticket?.status==="CANCELLED" || ticket?.status==="RESOLVED" || ticket?.status==="CLOSED") && 
+            <Box>
+              {user?.userType==="BUSINESS" && <>
+                <Typography variant="subtitle2" py={1}>Add new assignee</Typography>
+                <TextField 
+                  type='text'
+                  value={assignee} 
+                  onChange={(e) => setAssigned(e.target.value)} 
+                  placeholder="Assign to team (member email)" 
+                  sx={{ minWidth: 250}}
+                />
+              </>}
+              <Typography variant="subtitle2" py={1}>Add note</Typography>
+              <TextField 
+                multiline 
+                minRows={3} 
+                value={note} 
+                fullWidth
+                onChange={(e) => setNote(e.target.value)} 
+                placeholder="Write a note..." 
+              />
+            </Box>
+          }
+          
           <Stack direction="row" spacing={3} sx={{ my: 2, py: 2 }}>
-            <Typography component={'button'} className={styles.btnPrimary} onClick={save}>Save</Typography>
+            {!(ticket?.status==="CANCELLED" || ticket?.status==="RESOLVED" || ticket?.status==="CLOSED") && 
+              <Typography component={'button'} className={styles.btnPrimary} onClick={save}>Save</Typography>
+            }
             <Typography component={'button'} className={styles.btnWarm} onClick={onClose}>Back</Typography>
           </Stack>
         </Box>

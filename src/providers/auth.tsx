@@ -1,9 +1,10 @@
 'use client';
 
-import { SessionProvider, useSession, signIn, signOut } from 'next-auth/react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { SessionProvider, useSession, signIn, signOut, SignInResponse } from 'next-auth/react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { User, Role, UserType, Subscription } from '@/types/users';
 import { UserProfileRes } from '@/types/axios';
+import { AppEvents } from './events';
 import { apiGet } from '@/lib/api';
 
 export interface AuthUser {
@@ -28,7 +29,17 @@ interface AuthContextProps {
   isAdmin: boolean;
   isUser: boolean;
   isBusiness: boolean;
-  login: (provider?: string) => Promise<void>;
+  login: (
+    email: string, 
+    password: string, 
+    provider?: string, 
+    ip?: string, 
+    device?: string
+  ) => Promise<SignInResponse | void>;
+  notifyNewDevice: (email: string, device: string, ip?: string) => Promise<void>;
+  changeRole: (email: string, fromRole: string, toRole: string, changedBy?: string) => Promise<void>;
+  inviteUser: (email: string, invitedBy?: string) => Promise<void>;
+  removeUser: (email: string, removedBy?: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -59,6 +70,7 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
           accessToken: ((res.data) as User).accessToken,
           subscription: ((res.data) as User).subscription
         });
+
         return;
       }
 
@@ -68,9 +80,39 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [session]);
 
-  const login = async (provider = 'credentials') => {
-    await signIn(provider);
-  };
+  const login = useCallback(async (
+    email: string, 
+    password: string, 
+    provider = 'credentials', 
+    ip?: string, 
+    device?: string
+  ) => {
+    const res = await signIn(provider, {
+      redirect: false,
+      email,
+      password,
+    });
+
+    AppEvents.emit("auth:login", { email, ip, device, at: Date.now() });
+
+    return res;
+  }, []);
+
+  const notifyNewDevice = useCallback(async (email: string, device: string, ip?: string) => {
+    AppEvents.emit("auth:new-device", { email, device, ip, at: Date.now() });
+  }, []);
+
+  const changeRole = useCallback(async (email: string, fromRole: string, toRole: string, changedBy?: string) => {
+    AppEvents.emit("auth:role-changed", { email, fromRole, toRole, changedBy, at: Date.now() });
+  }, []);
+
+  const inviteUser = useCallback(async (email: string, invitedBy?: string) => {
+    AppEvents.emit("auth:invited", { email, invitedBy, inviteId: "invite_" + Date.now(), at: Date.now() });
+  }, []);
+
+  const removeUser = useCallback(async (email: string, removedBy?: string) => {
+    AppEvents.emit("auth:removed", { email, removedBy, at: Date.now() });
+  }, []);
 
   const logout = async () => {
     await signOut({ 
@@ -92,6 +134,10 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
     isBusiness: user?.userType === 'BUSINESS',
     login,
     logout,
+    changeRole,
+    notifyNewDevice,
+    inviteUser,
+    removeUser,
     refreshUser,
   };
 

@@ -12,6 +12,7 @@ export interface Ticket {
   status: TicketStatus;
   type: Ticket_Type;
   priority: Ticket_Priority;
+  updatedById?: string | number;
 }
 
 export interface Create_Ticket {

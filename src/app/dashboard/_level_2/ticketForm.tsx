@@ -56,7 +56,7 @@ export default function TicketFormDrawer({
   const { control, handleSubmit, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      type: task ? Ticket_Type.EVENT : Ticket_Type.SUPPORT,
+      type: task ? Ticket_Type.EVENT : Ticket_Type.GENERAL,
       title: '',
       description: '',
       priority: Ticket_Priority.MEDIUM,
@@ -68,7 +68,7 @@ export default function TicketFormDrawer({
 
   useEffect(() => {
     reset({
-      type: task ? Ticket_Type.EVENT : Ticket_Type.SUPPORT,
+      type: task ? Ticket_Type.EVENT : Ticket_Type.GENERAL,
       title: '',
       description: '',
       priority: Ticket_Priority.MEDIUM,

@@ -127,7 +127,7 @@ const TicketsList = ({
                 </td>}
 
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
-                  {t.type==='FEATURE_REQUEST' ? 'Feature' : t.type[0]+t.type.slice(1).toLowerCase()}
+                  {t?.type==='FEATURE_REQUEST' ? 'Feature' : t?.type[0]+t?.type.slice(1).toLowerCase()}
                 </td>
 
                 <td style={{ padding: '0 10px', whiteSpace: 'nowrap', }}>

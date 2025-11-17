@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
 import { MdSettings } from 'react-icons/md'
 import { RiRobot2Fill } from 'react-icons/ri'
 import { SiAwsorganizations } from 'react-icons/si'
@@ -77,20 +76,13 @@ const Page = () => {
         {/* SET STATUS */}
         <Typography variant="h6" fontWeight={501} mt={4}>Set Status</Typography>
         <Typography mt={1}>
-          🗿 "Set Status” link redirects users to: <Link href={'/profile/edit/#status'} style={{ fontWeight: 600}}>/profile/edit/#status</Link>
-        </Typography> 
-        <Typography mt={1}>
-          Here, users can update their presence, custom emoji status, or team availability.
+          🗿 "Set Status” action allow users to update their presence, custom emoji status, or team availability.
         </Typography>
 
         {/* MUTE NOTIFICATIONS */}
         <Typography variant="h6" fontWeight={501} mt={4}>Mute Notifications</Typography>
         <Typography mt={1}>
           🔕 "Mute Notifications” action allows users to silence notifications temporarily.
-        </Typography>
-        <Typography mt={1}>
-          For consistency, it should behave like the profile link —  
-          redirecting to a dedicated notifications page or opening a right-side drawer.
         </Typography>
 
         {/* EXTERNAL LINKS */}

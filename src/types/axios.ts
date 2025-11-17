@@ -41,6 +41,14 @@ export interface LoginResponse {
     role: Role;
     accessToken: string
   }
+  error?: string
+}
+
+export interface NextAuthLoginResponse {
+  ok?: boolean;
+  error?: string;
+  status?: number;
+  url: string;
 }
 
 export interface ContactUs {
