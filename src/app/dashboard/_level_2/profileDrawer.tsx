@@ -7,6 +7,7 @@ import { apiGet, apiPatch } from '@/lib/api';
 import { UserProfileRes } from '@/types/axios';
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Drawer,
   Box,
   Typography,
@@ -386,13 +387,10 @@ export default function ProfileDetailDrawer() {
               </Typography>
             </Paper>
           )}
-          <Stack direction="row" justifyContent="center" my={5}>
-            <Link href='/dashboard'>
-              <button onClick={closeDetail} className={styles.btnSecondary}>
-                ← &nbsp; Back
-              </button>
-            </Link>
-          </Stack>
+          
+          <Link href="/dashboard" onClick={closeDetail} style={{ padding: 20}}>
+            <Button fullWidth color="inherit" variant="contained"> ← &nbsp; Back </Button>
+          </Link>
         </Box>
       </Fade>
     </Drawer>

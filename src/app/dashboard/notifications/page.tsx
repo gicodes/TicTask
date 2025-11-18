@@ -1,8 +1,8 @@
 'use client';
 
+import NotificationsDrawer from '../_level_2/notificationDrawer';
 import { useAuth } from '@/providers/auth';
 import { Box } from '@mui/material';
-import ProfileDetailDrawer from '../_level_2/profileDrawer';
 
 const Page = () => {
   const { loading, isAuthenticated } = useAuth();
@@ -11,11 +11,11 @@ const Page = () => {
     return <Box textAlign={'center'} p={4}> Loading...</Box>;
 
   if (!isAuthenticated) 
-    return <Box textAlign={'center'} p={4}> Please log in to access profile </Box>;
+    return <Box textAlign={'center'} p={4}> Please log in to access notifications </Box>;
 
   return (
     <Box textAlign={'center'} minHeight={'100vh'} p={2}>
-      <ProfileDetailDrawer />
+      <NotificationsDrawer />
     </Box>
   )
 }

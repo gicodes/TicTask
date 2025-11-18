@@ -90,6 +90,8 @@ interface NotificationsContextProps {
   addNotification: (n: NewNotification) => void;
   markAsRead: (id: string) => void;
   markAllAsRead: () => void;
+  removeNotification: (id: string) => void;       
+  clearNotifications: () => void;               
   requestPushPermission: () => Promise<boolean | void>;
 }
 
@@ -139,6 +141,15 @@ export const NotificationsProvider = ({
   const markAllAsRead = useCallback(() => {
     setNotifications((prev) => prev.map((p) => ({ ...p, read: true })));
   }, []);
+
+  const removeNotification = useCallback((id: string) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  }, []);
+
+  const clearNotifications = useCallback(() => {
+    setNotifications([]);
+  }, []);
+
 
   useEffect(() => {
     const stored = typeof window !== "undefined"
@@ -259,6 +270,8 @@ export const NotificationsProvider = ({
         addNotification,
         markAsRead,
         markAllAsRead,
+        removeNotification,
+        clearNotifications,
         requestPushPermission,
       }}
     >
@@ -266,10 +279,6 @@ export const NotificationsProvider = ({
     </NotificationsContext.Provider>
   );
 };
-
-/* -------------------------------------------------------------------------- */
-/*                               HOOK EXPORT                                   */
-/* -------------------------------------------------------------------------- */
 
 export const useNotifications = () => {
   const ctx = useContext(NotificationsContext);
