@@ -18,14 +18,16 @@ const NotificationDrop = ({ anchorEl, handleClose }: {
       <Box minWidth={{ xs: 260, sm: 280, md: 300 }}>
         <Stack direction="row" justifyContent="space-between" px={2} my={1}>
           <Typography variant='body2' fontWeight={600} pb={1} borderBottom={'1px solid var(--secondary)'}>Notifications</Typography>
-          { notifications.length >= 1 && <Typography
-            variant="caption"
-            sx={{ cursor: "pointer", color: "info.main",
-              "&:hover": { borderBottom: '1px solid var(--info)' } }}
-            onClick={markAllAsRead}
-          >
-            Mark all read
-          </Typography>}
+          { (notifications.length >= 1 && notifications.some(n => n.read === false)) && 
+            <Typography
+              variant="caption"
+              sx={{ cursor: "pointer", color: "info.main",
+                "&:hover": { borderBottom: '1px solid var(--info)' } }}
+              onClick={markAllAsRead}
+            >
+              Mark all read
+            </Typography>
+          }
         </Stack>
         { notifications.length > 0 ? <Stack>
           { notifications.slice(0, 5).map((n) => (
@@ -43,7 +45,7 @@ const NotificationDrop = ({ anchorEl, handleClose }: {
               onClick={() => handleClose()}
             >
               <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Typography fontSize={{ xs: 14, md: 14.5}} fontWeight={501}>{n.title}</Typography>
+                <Typography fontSize={{ xs: 14, md: 14.5}} fontWeight={501} sx={{ opacity: 0.85}}>{n.title}</Typography>
                 { n.read === false && 
                   <Tooltip title='Mark as read'>
                     <IconButton
