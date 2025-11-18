@@ -107,7 +107,7 @@ const NotificationDrop = ({ anchorEl, handleClose }: {
               color='inherit'
               sx={{ textTransform: 'none'}}
             >
-              Manage feed
+              Manage Feed
             </Button>
           </Link>
         </Box>
