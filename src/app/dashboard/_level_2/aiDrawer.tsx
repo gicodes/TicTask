@@ -133,6 +133,8 @@ export default function AiAssistantDrawer() {
                 color: 'inherit',
                 border: 'none',
                 pr: 1,
+                display: 'flex',
+                alignItems: 'center'
               }}
             >
               <ArrowBackIosNew  />
