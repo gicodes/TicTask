@@ -36,11 +36,10 @@ export default function NavControls({
         onClick={onToday}
         sx={{
           height: { xs: 36, md: 40},
-          border: '1px solid #B9D9EB',
+          border: '1px solid var(--accent)',
           fontWeight: 501,
           fontSize: { xs: 14, md: 15},
           textTransform: 'none',
-          color:'var(--bw)'
         }}
         className='btn'
       >

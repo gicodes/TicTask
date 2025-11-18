@@ -14,18 +14,23 @@ import {
   Chip,
   Avatar,
   Toolbar,
+  Tooltip,
 } from '@mui/material';
 import { usePathname } from 'next/navigation';
-import { SmartToy, Send, Chat} from '@mui/icons-material';
+import { SmartToy, Send, Chat, ArrowBackIosNew } from '@mui/icons-material';
 
 export default function AiAssistantDrawer() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message []>([
-    { role: 'assistant', content: "👋  Hey there, I'm your AI Assistant. How can I help you today?" },
-  ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState<string>('');
+  const [messages, setMessages] = useState<Message []>([{ 
+    role: 'assistant', 
+    content: "👋  Hey there, I'm your AI Assistant. How can I help you today?" 
+  },]);
+
   const pathname = usePathname();
   const isAiPage = pathname.startsWith('/dashboard/ai');
+
+  const handleClose = () => setOpen(false);
 
   if (isAiPage) return null;
 
@@ -119,7 +124,21 @@ export default function AiAssistantDrawer() {
           borderTop="1px solid"
           borderColor="divider"
         >
-          <button style={{ background: 'transparent', border: 'none', padding: 2}} onClick={() => setOpen(!open)}>← </button>
+          <Tooltip title='Close AI Assistant'>
+            <Typography 
+              component={'button'} 
+              onClick={handleClose}
+              sx={{ 
+                bgcolor: 'transparent',
+                color: 'inherit',
+                display: 'flex',
+                border: 'none',
+                gap: 1,
+              }}
+            >
+              <ArrowBackIosNew  />
+            </Typography>
+          </Tooltip>
           <TextField
             fullWidth
             placeholder="Ask TicTask anything..."

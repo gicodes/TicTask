@@ -214,6 +214,11 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     '& .rbc-row-bg': {},
     '& .rbc-month-view': {},
     '& .rbc-allday-cell': {},
+    '& .rbc-today': {
+      fontWeight: 'bold',
+      color: 'var(--accent)',
+      background: 'var(--accent-light)',
+    }
   };
 
   return (
