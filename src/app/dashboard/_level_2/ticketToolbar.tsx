@@ -25,7 +25,7 @@ export default function Toolbar({
     setSearchQuery: (q: string) => void;
 }) {  
   return (
-    <Stack gap={2} maxWidth="99vw" mb={2}>
+    <Stack gap={2} maxWidth="96vw" mb={2}>
       <Box
         gap={1}
         flexWrap={{ md: 'wrap'}}
@@ -64,7 +64,7 @@ export default function Toolbar({
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search tickets..."
               size="small"
-              sx={{ minWidth: { xs: 333, sm: 200}}}
+              sx={{ minWidth: { xs: 313, sm: 200}}}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
