@@ -137,7 +137,7 @@ const NotificationsDrawer: React.FC = () => {
         </Stack>
       </Box>
 
-      <Box sx={{ px: 3, py: 2 }} minHeight={'50vh'}>
+      <Box sx={{ px: 3, py: 2 }} minHeight={'60vh'}>
         {filtered.length === 0 && (
           <Typography mt={4} textAlign="center" color="text.secondary">
             No notifications found
