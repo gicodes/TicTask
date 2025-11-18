@@ -18,8 +18,8 @@ export default function AiAssistantPage() {
         sx={{
           width: '100%',
           maxWidth: 777,
-          minHeight: '77vh',
-          borderRadius: 3,
+          minHeight: { md: '77vh', sm: '88vh', xs: '99vh', },
+          borderRadius: { xs: 1, sm: 2, md: 3, },
           display: 'flex',
           flexDirection: 'column',
         }}
