@@ -131,9 +131,8 @@ export default function AiAssistantDrawer() {
               sx={{ 
                 bgcolor: 'transparent',
                 color: 'inherit',
-                display: 'flex',
                 border: 'none',
-                gap: 1,
+                pr: 1,
               }}
             >
               <ArrowBackIosNew  />
