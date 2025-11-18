@@ -1,7 +1,6 @@
 'use client';
 
 import type { User } from '@/types/users';
-import styles from "@/app/page.module.css";
 import { useAuth } from '@/providers/auth';
 import { apiGet, apiPatch } from '@/lib/api';
 import { UserProfileRes } from '@/types/axios';

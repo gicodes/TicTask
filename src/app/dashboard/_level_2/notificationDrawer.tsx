@@ -125,7 +125,7 @@ const NotificationsDrawer: React.FC = () => {
             select
             size="small"
             value={filterType}
-            onChange={(e) => setFilterType(e.target.value as any)}
+            onChange={(e) => setFilterType(e.target.value as FilterType)}
             sx={{ width: 120 }}
           >
             <MenuItem value="all">All</MenuItem>
