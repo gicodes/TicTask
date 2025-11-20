@@ -1,11 +1,11 @@
 "use client";
 
+import { Button } from "@/assets/buttons";
 import styles from "@/app/page.module.css";
 import { useAuth } from "@/providers/auth";
-import { useGetPro } from "@/hooks/useGetPro";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
-
+import { useGetPro } from "@/hooks/useGetPro";
 
 const whiteDot = <span className="custom-bw">.</span>;
 
@@ -33,19 +33,14 @@ const CTA = () => {
     <div className={styles.readyToStart}>
       <p className="font-sm max-width-500 mx-auto">Unlock advanced features and enhanced productivity by starting the paid version of TicTask Pro</p>
       <h2 className="my-3 custom-dull">Set{whiteDot} Ready{whiteDot} <span className="custom-warm">Go{whiteDot}</span></h2>
+      
       <div className={`${styles.btnGroup} mt-1 mx-auto justify-center`}>
-        <button 
-          className={styles.btnPrimary} 
-          onClick={GetPro}
-        >
+        <Button onClick={GetPro}>
           Get TicTask Pro
-        </button>
-        <button 
-          className={styles.btnSecondary}
-          onClick={() => router.push('https://calendly.com/your-tictask-schedule')}
-        >
+        </Button>
+        <Button tone="secondary" onClick={() => router.push('https://calendly.com/your-tictask-schedule')}>
           Schedule Payment
-        </button>
+        </Button>
       </div>
     </div>
   );

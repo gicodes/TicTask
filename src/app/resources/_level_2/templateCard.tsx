@@ -1,9 +1,10 @@
 "use client";
 
-import { Card, CardContent, CardActions, Chip, Button, Stack, Typography } from "@mui/material";
-import styles from "@/app/page.module.css";
+import { Card, CardContent, CardActions, Chip, Stack, Typography } from "@mui/material";
+import { Button } from "@/assets/buttons";
 import { Download } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface TemplateCardProps {
   title: string;
@@ -12,7 +13,12 @@ interface TemplateCardProps {
   tags?: string[];
 }
 
-export const TemplateCard = ({ title, desc, file, tags = [] }: TemplateCardProps) => (
+export const TemplateCard = ({ 
+  title, 
+  desc, 
+  file,
+  tags = [] 
+}: TemplateCardProps) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -43,13 +49,12 @@ export const TemplateCard = ({ title, desc, file, tags = [] }: TemplateCardProps
       </CardContent>
       <CardActions sx={{ px: 2, pb: 2 }}>
         <Button
+          component={Link}
           href={file}
-          download
+          // download
           size="small"
+          tone='secondary'
           startIcon={<Download size={16} />}
-          variant="contained"
-          sx={{ borderRadius: 2, textTransform: "none", color: 'inherit', bgcolor: 'inherit' }}
-          className={styles.btnSecondary}
         >
           Download
         </Button>

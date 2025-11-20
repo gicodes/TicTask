@@ -1,29 +1,34 @@
 import { 
   Stack, 
   TextField, 
-  Button, 
   ButtonGroup, 
   Box, 
   Typography, 
   Tooltip, 
-  Divider, 
   InputAdornment, 
 } from '@mui/material';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 import { FaPlusCircle, FaList } from 'react-icons/fa';
 import SearchIcon from '@mui/icons-material/Search';
-import styles from '@/app/page.module.css';
+import { Button } from '@/assets/buttons';
 import { motion } from 'framer-motion';
+import React from 'react';
 
-export default function Toolbar({ 
-  view, setView, onOpenCreate, searchQuery, setSearchQuery 
-}: { 
-    view: 'board' | 'list'; 
-    setView: (v: 'board' | 'list') => void; 
-    onOpenCreate: () => void;
-    searchQuery: string;
-    setSearchQuery: (q: string) => void;
-}) {  
+interface ToolbarProps {
+  view: 'board' | 'list'; 
+  setView: (v: 'board' | 'list') => void; 
+  onOpenCreate: () => void;
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+}
+
+const Toolbar: React.FC<ToolbarProps> = ({ 
+  view, 
+  setView, 
+  onOpenCreate, 
+  searchQuery, 
+  setSearchQuery 
+}) => {  
   return (
     <Stack gap={2} maxWidth="96vw" mb={2}>
       <Box
@@ -76,38 +81,54 @@ export default function Toolbar({
           </section>
           
           <section id='view-toggle'>
-            <ButtonGroup sx={{ display: 'flex', justifyContent: 'center'}}>
-              <Tooltip title="View tickets in Kanban board mode">
-                <Button
-                  onClick={() => setView('board')}
-                  color='inherit'
-                  size='small'
-                  variant={view === 'board' ? 'outlined' : 'contained'}
-                  startIcon={<ViewKanbanIcon />}
-                >
-                  BOARD
-                </Button>
+            <ButtonGroup sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Tooltip title="View tickets in Kanban board mode" arrow>
+                <div>
+                  <Button
+                    onClick={() => setView('board')}
+                    tone={view === 'board' ? "retreat" : 'action'}
+                    variant={view === 'board' ? 'contained' : 'outlined'}
+                    startIcon={<ViewKanbanIcon />}
+                    sx={{
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                    }}
+                  >
+                    BOARD
+                  </Button>
+                </div>
               </Tooltip>
-              <Divider sx={{ border: '1px solid var(--secondary)' }} />
-              <Tooltip title="View tickets in tabular list mode">
-                <Button
-                  color='inherit'
-                  size='small'
-                  onClick={() => setView('list')}
-                  variant={view === 'list' ? 'outlined' : 'contained'}
-                  startIcon={<FaList />}
-                >
-                  LIST
-                </Button>
+              <Tooltip title="View tickets in tabular list mode" arrow>
+                <div>
+                  <Button
+                    tone={view === 'list' ? 'retreat' : "action"}
+                    variant={view === 'list' ? 'contained' : 'outlined'}
+                    onClick={() => setView('list')}
+                    startIcon={<FaList />}
+                    sx={{
+                      borderTopLeftRadius: 0,
+                      borderBottomLeftRadius: 0,
+                    }}
+                  >
+                    LIST
+                  </Button>
+                </div>
               </Tooltip>
             </ButtonGroup>
           </section>
 
-          <section id='new-ticket-btn'>
+          <section id="new-ticket-btn">
             <Tooltip title="Create New Ticket as Task, Invoice or Issue">
-              <button className={`${styles.btnAction} mx-auto`} onClick={onOpenCreate}>
-                <FaPlusCircle /> &nbsp; NEW TICKET
-              </button>
+              <div>
+                <Button
+                  startIcon={<FaPlusCircle />}
+                  onClick={onOpenCreate}
+                  tone='action'
+                  sx={{ marginInline: 'auto', display: 'flex' }}
+                >
+                  NEW TICKET
+                </Button>
+              </div>
             </Tooltip>
           </section>
         </Stack>
@@ -115,3 +136,5 @@ export default function Toolbar({
     </Stack>
   );
 }
+
+export default Toolbar;

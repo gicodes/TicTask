@@ -22,6 +22,7 @@ import {
   Divider,
 } from '@mui/material';
 import { useState } from 'react';
+import { Button } from '@/assets/buttons';
 import styles from '@/app/page.module.css';
 import { Industries } from '@/constants/industries';
 import { allCountries } from '@/constants/allCounties';
@@ -68,22 +69,21 @@ export default function OnboardingUI(props: OnboardingProps) {
 
   const ActionGroup = () => 
     <Stack className={styles.actions}>
-      <button
+      <Button
+        tone='warm'
         type="button"
         onClick={handleBack}
-        className={`min-width-100 ${styles.btnRetreat}`}
         disabled={loading}
       >
         Back
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
         onClick={step===3 ? handleSubmit : handleNext}
-        className={`min-width-100 ${styles.btnPrimary}`}
         disabled={loading}
       >
         {loading ? 'Saving...' : step===3 ? "Finish" : "Continue"}
-      </button>
+      </Button>
     </Stack>
     
 
@@ -168,14 +168,13 @@ export default function OnboardingUI(props: OnboardingProps) {
                 sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 4 }}
               />
               <Box textAlign="center">
-                <button
+                <Button
                   type="button"
                   disabled={!password || loading}
                   onClick={handleNext}
-                  className={styles.btnPrimary}
                 >
                   {loading ? 'Saving...' : 'Continue'}
-                </button>
+                </Button>
               </Box>
             </Box>
           </Fade>

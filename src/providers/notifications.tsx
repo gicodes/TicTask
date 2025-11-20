@@ -28,7 +28,7 @@ export type NewNotification = Omit<
 
 export interface TicketCreatedPayload {
   title: string;
-  createdBy: number;
+  createdBy:string | number;
   [key: string]: unknown;
 }
 

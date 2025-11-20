@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import {
   Box,
   Stack,
@@ -11,8 +10,9 @@ import {
   Tooltip,
   useMediaQuery,
 } from '@mui/material';
+import React from 'react';
 import { motion } from 'framer-motion';
-import styles from "@/app/page.module.css";
+import { Button } from '@/assets/buttons';
 import { FaPlusCircle } from 'react-icons/fa';
 import { Calendar, List, Search } from 'lucide-react';
 
@@ -91,25 +91,28 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
         }}
       />
 
-      <Stack 
-        direction="row" 
-        spacing={1} 
+      <Stack
+        direction="row"
+        spacing={1}
         alignItems="center"
-        maxWidth={300}
-        mx={{xs: 'auto', sm: 0}}
-        justifyContent={'space-between'}
-        sx={{ 
-          borderRadius: 999, pl: 0.5, 
-          boxShadow: 2, 
+        justifyContent="space-between"
+        sx={{
+          maxWidth: 300,
+          mx: { xs: 'auto', sm: 0 },
+          pl: 0.5,
+          boxShadow: 2,
+          borderRadius: 999,
           backgroundColor: 'rgba(255, 255, 255, 0.05)',
-          
-        }} 
+        }}
       >
         <Tooltip title="Calendar shows task and tickets with a due date">
           <IconButton
             onClick={() => setView('calendar')}
             color={view === 'calendar' ? 'success' : 'inherit'}
-            sx={{p: 1.5, background: view === 'calendar' ?'rgba(255, 255, 255, 0.05)' : 'none'}}
+            sx={{
+              p: 1.5,
+              backgroundColor: view === 'calendar' ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+            }}
           >
             <Calendar size={20} />
           </IconButton>
@@ -119,20 +122,24 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
           <IconButton
             onClick={() => setView('list')}
             color={view === 'list' ? 'success' : 'inherit'}
-            sx={{p: 1.5, background: view === 'list' ? 'rgba(255, 255, 255, 0.25)' : 'none'}}
+            sx={{
+              p: 1.5,
+              backgroundColor: view === 'list' ? 'rgba(255, 255, 255, 0.25)' : 'transparent',
+            }}
           >
             <List size={20} />
           </IconButton>
         </Tooltip>
 
         <Tooltip title="Create task as event or meeting and set date & time">
-          <Typography
-            component={'button'}
+          <><Button
             onClick={onOpenCreate}
-            className={styles.btnAction}
+            tone="action"
+            startIcon={<FaPlusCircle />}
+            sx={{ flexShrink: 0 }}
           >
-            <FaPlusCircle />&nbsp;ADD EVENT
-          </Typography>
+            ADD EVENT
+          </Button></>
         </Tooltip>
       </Stack>
     </Box>

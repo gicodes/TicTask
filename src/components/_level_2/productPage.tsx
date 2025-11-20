@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import styles from "@/app/page.module.css";
+import { Button } from "@/assets/buttons";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
@@ -131,7 +131,7 @@ export const ProductCTA = () => {
           <Typography variant="body1" sx={{ opacity: 0.65 }}>
             Get started with TicTask and experience a calmer, more focused way to collaborate.
           </Typography>
-          <button className={styles.btnPrimary} onClick={GetStarted}>Get Started</button>
+          <Button onClick={GetStarted}>Get Started</Button>
         </Stack>
       </Box>
     </section>

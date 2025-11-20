@@ -1,14 +1,16 @@
 'use client';
 
-import styles from '@/app/page.module.css';
+import { useAuth } from '@/providers/auth';
 import { FaEllipsisV } from 'react-icons/fa';
 import { Download, Share2 } from 'lucide-react';
 import { CloseSharp } from '@mui/icons-material';
 import { useTickets } from '@/providers/tickets';
 import React, { useEffect, useState } from 'react';
 import { getTypeColor, priorityColor } from '../_level_1/tColorVariants';
-import { Drawer, Box, Typography, Stack, Divider, Chip, Button, TextField, Toolbar, IconButton, Tooltip } from '@mui/material';
-import { useAuth } from '@/providers/auth';
+import { Drawer, Box, Typography, Stack, Divider, Chip, TextField, Toolbar, IconButton, Tooltip } from '@mui/material';
+
+import { Button } from '@/assets/buttons';
+import { QA_BUTTON } from '@/assets/QA_buttons';
 
 export default function TicketDetailDrawer({ 
   open, 
@@ -33,6 +35,7 @@ export default function TicketDetailDrawer({
 
   const save = async () => {
     if (!ticket) return;
+
     await updateTicket(Number(ticket.id), { updatedAt: new Date().toISOString() });
     onUpdate?.();
     setNote('');
@@ -65,31 +68,7 @@ export default function TicketDetailDrawer({
     }
   };
 
-  type ColorVariations = 'success' | 'secondary' | 'warning';
-  type Status = 'RESOLVED' | 'CANCELLED' | 'IN_PROGRESS';
   const StatusRender = ticket?.status==="IN_PROGRESS" ? "IN PROGRESS" : ticket?.status
-
-  interface QuickActions {
-    ticketID: string | number;
-    color: ColorVariations;
-    status: Status;
-    title: string;
-    disabled: boolean;
-  }
-
-  const QA_BUTTON = ({ ticketID, color, title, status, disabled=false} : QuickActions) => 
-    <Button 
-      variant="outlined"  
-      color={color} 
-      sx={{ boxShadow: 2}}
-      disabled={disabled}
-      onClick={() => { 
-        updateTicket(Number(ticketID), { status: status }).then(() => {
-          onUpdate?.(); onClose()}); 
-      }}
-    >
-      {title}
-    </Button>
 
   return (
     <Drawer 
@@ -99,6 +78,7 @@ export default function TicketDetailDrawer({
       sx={{ '& .MuiDrawer-paper': { width: {xs:'100%', md: 440}, px: 3 } }}
     >
       <Toolbar />
+
       {ticket && (
         <Box> 
           <Stack direction={'row'} alignItems={'center'} minHeight={64}>
@@ -107,6 +87,7 @@ export default function TicketDetailDrawer({
                 {!moreOptions ? <FaEllipsisV size={20} /> : <CloseSharp sx={{ fontSize: 20}} />}
               </IconButton>
             </Tooltip>
+
             { moreOptions && 
               <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Stack direction="row" spacing={1}>
@@ -119,6 +100,7 @@ export default function TicketDetailDrawer({
                 </Stack>
               </Toolbar>}
           </Stack>
+          
           <Stack direction="row" justifyContent="space-between" alignItems="end" mb={1}>
             <Typography 
               variant="caption" 
@@ -179,6 +161,7 @@ export default function TicketDetailDrawer({
               {ticket.assignedToId && <Typography variant='caption'><strong>Assigned to</strong> {ticket.assignedToId}.</Typography>}
               {ticket.assignee && <Typography variant='caption'><strong>&</strong> {ticket.assignee}.</Typography>} 
             </Stack>
+
             <Stack 
               py={1}
               spacing={1} 
@@ -228,9 +211,8 @@ export default function TicketDetailDrawer({
           
           <Stack direction="row" spacing={3} sx={{ my: 2, py: 2 }}>
             {!(ticket?.status==="CANCELLED" || ticket?.status==="RESOLVED" || ticket?.status==="CLOSED") && 
-              <Typography component={'button'} className={styles.btnPrimary} onClick={save}>Save</Typography>
-            }
-            <Typography component={'button'} className={styles.btnWarm} onClick={onClose}>Back</Typography>
+              <Button onClick={save}>Save Changes </Button>}
+              <Button onClick={onClose}>Back</Button>
           </Stack>
         </Box>
       )}

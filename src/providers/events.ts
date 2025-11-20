@@ -1,5 +1,5 @@
 export type TicketPayloads = {
-  created: { ticketId: number; title: string; createdBy: number; assignee?: string | number };
+  created: { ticketId: string | number; title: string; createdBy: string | number; assignee?: string | number };
   updated: { ticketId: number; changes: Record<string, unknown>; status: string; updatedBy?: string | number }
   assigned: { ticketId: number; assignee?: string | number; assignedBy?: string | number };
   resolved: { ticketId: number; resolvedBy?: string | number };

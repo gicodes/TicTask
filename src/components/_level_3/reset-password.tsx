@@ -2,22 +2,23 @@
 
 import { useState } from 'react';
 import { apiPost } from '@/lib/api';
-import styles from "@/app/page.module.css";
 import { useAlert } from '@/providers/alert';
 import { GenericAPIRes } from '@/types/axios';
 import { useSearchParams, useRouter } from "next/navigation";
 import { VisibilityOff, Visibility } from '@mui/icons-material'
 import { Box, Card, Stack, TextField, InputAdornment, Typography, IconButton } from '@mui/material';
+import { Button } from '@/assets/buttons';
 
 const ResetPassword = () => {
+  const router = useRouter();
   const { showAlert } = useAlert();
+  const params = useSearchParams();
+  const token = params.get('token');
+
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
-  const params = useSearchParams();
-  const token = params.get('token');
   
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
   const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement>) => e.preventDefault();
@@ -25,9 +26,11 @@ const ResetPassword = () => {
   const handleSubmit = async () => {
     try {
       setSubmitting(true);
+
       const res: GenericAPIRes = await apiPost("/auth/reset-password", {
         token, password
       });
+      
       if (res.ok) {
         showAlert("Password Reset Successfully!", "success");
         router.push('/dashboard')
@@ -79,13 +82,13 @@ const ResetPassword = () => {
               </Typography>
             )}
 
-            <button
+            <Button
               type="submit"
               disabled={submitting}
-              className={`mx-auto ${styles.btnPrimary}`}
+              sx={{ margin: '0 auto'}}
             >
               {submitting ? 'Resetting Password...' : 'Reset Password'}
-            </button>
+            </Button>
           </Stack>
         </Box>
       </Card>

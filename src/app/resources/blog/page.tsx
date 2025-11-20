@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { apiGet } from "@/lib/api";
-import { AllBlogsRes } from "@/types/axios";
+import { Button } from "@/assets/buttons";
 import { useAuth } from "@/providers/auth";
-import styles from "@/app/page.module.css";
+import { AllBlogsRes } from "@/types/axios";
 import { BlogCardProps } from "@/types/resources";
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
@@ -26,6 +26,7 @@ export default function BlogListPage() {
   return (
     <Box>
       <ResourceHero title="Blog" subtitle="Posts on community insights, stories and trending topics." />
+      
       <Box maxWidth={1100} mx="auto" px={2} py={8}>
         <Box 
           mb={4} 
@@ -34,13 +35,12 @@ export default function BlogListPage() {
           justifyContent="space-between"
         >
           <Typography variant="h5">Latest posts</Typography>
-          <Typography 
+          <Button 
             component={Link} 
             href="/resources/blog/create" 
-            className={styles.btnPrimary}
           >
             Write a post
-          </Typography>
+          </Button>
         </Box>
 
         <Grid container spacing={3}>

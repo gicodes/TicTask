@@ -2,7 +2,7 @@
 
 import { ResourceHero } from ".";
 import { FAQRes } from "@/types/axios";
-import styles from "@/app/page.module.css";
+import { Button } from "@/assets/buttons";
 import { useAuth } from "@/providers/auth";
 import { apiGet, apiPost } from "@/lib/api";
 import { useAlert } from "@/providers/alert";
@@ -23,7 +23,9 @@ export default function FaqPage() {
     setFaqs(res.faq || []);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { 
+    load(); 
+  }, []);
 
   const submitQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,8 +42,10 @@ export default function FaqPage() {
 
   const submitAnswer = async (e: React.FormEvent, faqId: number) => {
     e.preventDefault();
+    
     try {
       await apiPost("/resources/faq", { faqId, answer: answers[faqId], user });
+      
       showAlert("Answer submitted", "success");
       setAnswers(prev => ({ ...prev, [faqId]: "" }));
       load();
@@ -61,10 +65,12 @@ export default function FaqPage() {
         {ASKED_AND_ANSWERED.length > 0 && (
           <Box mb={5}>
             <Typography variant="h6" mb={2}>Answered Questions</Typography>
+            
             {ASKED_AND_ANSWERED.map(f => (
               <Box key={f.id} mb={2} p={2} borderRadius={2} border="1px solid rgba(0,0,0,0.04)">
                 <Typography fontWeight={700}>{f.question}</Typography>
                 <Typography color="text.secondary" mb={1}>{f.answer}</Typography>
+                
                 {isAdmin && (
                   <Box display="flex" justifyContent="flex-end">
                     <DeleteButton endpoint={`/resources/faq/${f.id}`} id={f.id} onDeleted={load} />
@@ -77,6 +83,7 @@ export default function FaqPage() {
 
         <Card sx={{ py: 3, px: 2, maxWidth: 669, mx: "auto", mb: 6 }}>
           <Typography variant="h6">Ask a question</Typography>
+          
           <form onSubmit={submitQuestion}>
             <TextField
               label="Your Question"
@@ -86,19 +93,15 @@ export default function FaqPage() {
               required
               fullWidth
             />
-            <button
-              type="submit"
-              className={styles.btnPrimary}
-            >
-              Submit
-            </button>
+            <Button type="submit"> Submit</Button>
           </form>
         </Card>
 
         {ASKED_NOT_ANSWERED.length > 0 && isAuthenticated && (
           <Box>
             <Typography variant="h6" mb={2}>Unanswered Questions</Typography>
-            {ASKED_NOT_ANSWERED.map(f => (
+            
+            { ASKED_NOT_ANSWERED.map(f => (
               <Box key={f.id} mb={2} p={2} borderRadius={2} border="1px solid rgba(0,0,0,0.04)">
                 <Typography fontWeight={700}>{f.question}</Typography>
                 {isAdmin && (
@@ -106,6 +109,7 @@ export default function FaqPage() {
                     <DeleteButton endpoint={`/resources/faq/${f.id}`} id={f.id} onDeleted={load} />
                   </Box>
                 )}
+                
                 <form onSubmit={(e) => submitAnswer(e, f.id)}>
                   <TextField
                     label="Your Answer"
@@ -115,13 +119,9 @@ export default function FaqPage() {
                     required
                     fullWidth
                   />
-                  <button
-                    type="submit"
-                    className={styles.btnPrimary}
-                  >
-                    Submit Answer
-                  </button>
+                  <Button type="submit"> Submit Answer</Button>
                 </form>
+                
               </Box>
             ))}
           </Box>

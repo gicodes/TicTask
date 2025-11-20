@@ -1,4 +1,5 @@
-import { Stack, IconButton, Typography, Button } from '@mui/material';
+import { Button } from '@/assets/buttons';
+import { Stack, IconButton, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function NavControls({
@@ -32,16 +33,10 @@ export default function NavControls({
       </Stack>
 
       <Button
+        size='small'
+        tone='warm'
         variant="outlined"
         onClick={onToday}
-        sx={{
-          height: { xs: 36, md: 40},
-          border: '1px solid var(--accent)',
-          fontWeight: 501,
-          fontSize: { xs: 14, md: 15},
-          textTransform: 'none',
-        }}
-        className='btn'
       >
         See Today
       </Button>

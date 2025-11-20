@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { apiPost } from "@/lib/api";
+import { Button } from "@/assets/buttons";
 import { ContactUs } from "@/types/axios";
-import styles from "@/app/page.module.css";
 import { useAlert } from "@/providers/alert";
 import { Box, Typography, TextField, Stack, Divider, Card } from "@mui/material";
 
@@ -94,13 +94,12 @@ export const ContactUsSection = () => {
             />
 
             <Stack alignItems="center" mt={3}>
-              <button 
+              <Button 
                 type="submit"
                 disabled={loading} 
-                className={styles.btnPrimary}
               >
                 {loading ? "Sending Message..." : "Send Message"}
-              </button>
+              </Button>
             </Stack>
           </Box>
         </Card>

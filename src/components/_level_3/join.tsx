@@ -1,13 +1,13 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { apiPost } from "@/lib/api";
 import { Role } from '@/types/users';
-import styles from "@/app/page.module.css";
-import { useEffect, useState } from 'react';
-import SignInOptions from '../_level_1/signInOptions';
+import { Button } from '@/assets/buttons';
 import { useRouter } from 'next/navigation';
 import { useAlert } from '@/providers/alert';
+import SignInOptions from '../_level_1/signInOptions';
 import { AuthDivider } from '../_level_1/orAuthDivider';
 import { VerifyEmailResponse, VerifyEmailRequest } from '@/types/axios'
 import { Box, Stack, Fade, TextField, Typography, Divider, Card } from '@mui/material';
@@ -118,13 +118,13 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
 
                   <Box display="flex" gap={2} justifyContent="space-between" pt={2}>
                     <span>{error && (<Typography color="error" variant='caption'>{error}</Typography>)}</span>
-                    <button
+                    <Button
+                      tone='action'
                       type="submit"
                       disabled={loading}
-                      className={`min-width-150 ${styles.btnAction}`}
                     >
                       {loading ? 'Processing...' : 'Verify Email'}
-                    </button>
+                    </Button>
                   </Box>
                 </Box>
               </Fade>
@@ -133,13 +133,12 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
         </Box>
 
         {role === 'USER' && <>
-          <AuthDivider />
-          <SignInOptions />
-        </>}
+            <AuthDivider />
+            <SignInOptions />
+          </>
+        }
 
-        <Stack mt={10} gap={2}
-          direction="row" justifyContent="space-around" alignItems="center"
-        >
+        <Stack mt={10} gap={2} direction="row" justifyContent="space-around" alignItems="center">
           <Typography variant="subtitle2"> Have an account? &nbsp;
             <Link href={`/auth/login`} style={{ paddingBottom: 5, borderBottom: '1px solid var(--special)'}}>Login here</Link>
           </Typography>

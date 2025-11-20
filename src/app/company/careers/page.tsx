@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import styles from "@/app/page.module.css";
 import { CAREERS } from "@/constants/company";
 import { Box, Typography, Grid, Stack } from "@mui/material";
+import { Button } from "@/assets/buttons";
 
 export default function CareersSection (){
   return (
@@ -28,6 +28,7 @@ export default function CareersSection (){
             We&apos;re looking for people who care deeply about craft, empathy, and impact.
           </Typography>
         </motion.div>
+
         <Grid container spacing={4} justifyContent="center" mt={3}>
           {CAREERS.map((role, i) => (
             <Grid key={role.title}>
@@ -43,7 +44,7 @@ export default function CareersSection (){
                   textAlign: "left",
                 }}
               >
-                <Stack spacing={1}>
+                <Stack spacing={1} mb={2}>
                   <Typography variant="h6" fontWeight={600}>
                     {role.title}
                   </Typography>
@@ -52,19 +53,19 @@ export default function CareersSection (){
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{ opacity: 0.85, mt: 1, minHeight: 70 }}
+                    sx={{ opacity: 0.85, minHeight: 70 }}
                   >
                     {role.desc}
                   </Typography>
-                  <br/>
-                  <button className={styles.btnAction}>
-                    <Link href={'/company/careers/join'}>Apply Now</Link>
-                  </button>
                 </Stack>
+                <Button component={Link} href={'/company/careers/join'} fullWidth>
+                  Apply Now
+                </Button>
               </motion.div>
             </Grid>
           ))}
         </Grid>
+        
         <Typography variant="body2" sx={{ mt: 6, opacity: 0.7 }}>
           Don&apos;t see a role that fits?{" "}
           <strong>We&apos;re always open to great people — reach out anytime.</strong>

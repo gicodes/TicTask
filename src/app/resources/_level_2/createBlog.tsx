@@ -2,7 +2,7 @@
 
 import { apiPost } from "@/lib/api";
 import React, { useState } from "react";
-import styles from "@/app/page.module.css";
+import { Button } from "@/assets/buttons";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { ResourceHero } from "@/app/resources/_level_3";
@@ -16,30 +16,29 @@ export default function CreateBlogPage() {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
-
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       if (!user || !isAuthenticated) {
         alert("You must be signed in to create a blog post.");
         setLoading(false);
         return;
       }
-
       const payload = { title, excerpt, content }
       await apiPost("/resources/blog", payload);
       
       router.push("/resources/blog");
     } catch (err) {
-      if (err && typeof err==="object" && "message" in err ) 
-        alert("Client error: " + err?.message);
+      if (err && typeof err==="object" && "message" in err ) alert("Client error: " + err?.message);
     } finally { setLoading(false); }
   };
 
   return (
     <Box>
       <ResourceHero title="Write a blog post" subtitle="Write insights and stories that educates and entertain the TicTask Community" />
+
       <Card 
         sx={{
           mt: 10,
@@ -49,6 +48,7 @@ export default function CreateBlogPage() {
           maxWidth: 800,
         }}
       >
+
         <form onSubmit={onSubmit}>
           <Typography 
             variant="h6" 
@@ -82,22 +82,28 @@ export default function CreateBlogPage() {
             sx={{ mb:2 }} 
             required 
           />
+          
           <Box display="flex" mt={2} gap={2}>
-            <button 
+            <Button 
+              tone="action"
               type="submit" 
               disabled={loading}
-              className={styles.btnAction}
             > 
               Publish
-            </button>
-            <button 
-              onClick={()=>{ setTitle(''); setExcerpt(''); setContent(''); }}
-              className={styles.btnWarm}
+            </Button>
+            <Button 
+              tone="warm"
+              onClick={()=>{ 
+                setTitle(''); 
+                setExcerpt(''); 
+                setContent('');
+             }}
             >
               Clear
-            </button>
+            </Button>
           </Box>
         </form>
+
       </Card>
     </Box>
   );

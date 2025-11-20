@@ -1,14 +1,13 @@
 "use client";
 
+import { Box, TextField, Typography, Card } from "@mui/material";
+import { ResourceHero } from "../../_level_3";
 import { useAlert } from "@/providers/alert";
-import styles from "@/app/page.module.css";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/providers/auth";
+import { Button } from "@/assets/buttons";
 import React, { useState } from "react";
 import { apiPost } from "@/lib/api";
-
-import { useAuth } from "@/providers/auth";
-import { useRouter } from "next/navigation";
-import { ResourceHero } from "../../_level_3";
-import { Box, TextField, Button, Typography, Card } from "@mui/material";
 
 export default function CreateChangelog() {
   const { showAlert } = useAlert();
@@ -35,6 +34,7 @@ export default function CreateChangelog() {
   return (
     <Box>
       <ResourceHero title="Publish changelog" />
+      
       <Card 
         sx={{
           maxWidth: 800,
@@ -49,18 +49,22 @@ export default function CreateChangelog() {
           <TextField label="Version (e.g. v1.4.0)" fullWidth value={version} onChange={(e)=>setVersion(e.target.value)} sx={{ mb:2 }} required />
           <TextField label="Date" type="date" fullWidth value={date} onChange={(e)=>setDate(e.target.value)} sx={{ mb:2 }} required />
           <TextField label="Highlights (one per line)" fullWidth multiline minRows={6} value={highlights} onChange={(e)=>setHighlights(e.target.value)} sx={{ mb:2 }} />
+          
           <Box display="flex" gap={2}>
             <Button 
               variant="contained" 
               type="submit"
-              className={styles.btnAction}
+              tone="action"
             >
               Publish
             </Button>
             <Button 
+              tone="warm"
               variant="outlined" 
-              className={styles.btnWarm}
-              onClick={()=>{ setVersion(''); setHighlights(''); }}
+              onClick={()=>{ 
+                setVersion(''); 
+                setHighlights(''); 
+              }}
             >
               Clear
             </Button>

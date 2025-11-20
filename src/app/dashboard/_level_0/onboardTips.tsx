@@ -1,8 +1,8 @@
 'use client';
 
 import { Tips } from './onboardingTips';
+import { Button } from '@/assets/buttons';
 import { useEffect, useState } from 'react';
-import styles from "@/app/page.module.css";
 import { Dialog, DialogTitle, DialogContent, Typography, Box } from '@mui/material';
 
 interface OnboardingTipProps {
@@ -27,7 +27,9 @@ export default function DashboardOnboarding() {
 
   useEffect(() => {
     if (!open) return;
+    
     const currentAnchor = Tips[step]?.anchor;
+
     if (currentAnchor) {
       const element = document.querySelector(currentAnchor) as HTMLElement;
       setAnchorEl(element);
@@ -87,9 +89,9 @@ export default function DashboardOnboarding() {
         <DialogTitle><strong>{tip.title}</strong></DialogTitle>
         <DialogContent>
           <Typography variant='subtitle2' gutterBottom mb={2}>{tip.text}</Typography>
-          <button onClick={handleNext} className={styles.btnPrimary}>
+          <Button onClick={handleNext}>
             {tip.action || (step === Tips.length - 1 ? 'Finish' : 'Next')}
-          </button>
+          </Button>
         </DialogContent>
       </Dialog>
     </>

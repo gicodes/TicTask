@@ -5,7 +5,7 @@ import { authErrorMessages } from '@/lib/authErrorMsg';
 import { LoginTemplateProps } from '@/types/auth';
 import RememberMe from '../_level_1/rememberMe';
 import { useAlert } from '@/providers/alert';
-import styles from '@/app/page.module.css';
+import { Button } from '@/assets/buttons';
 import React, { useState } from 'react';
 import Link from 'next/link';
 
@@ -85,13 +85,13 @@ const LoginTemplate = ({
           <RememberMe remember={remember} setRemember={setRemember} />
         </Box>
         {error && (<Typography color="error" fontSize="0.9rem">{message}</Typography>)}
-        <button
+        <Button
           type="submit"
+          fullWidth
           disabled={submitting}
-          className={`full-width ${styles.btnPrimary}`}
         >
           {submitting ? 'Signing in...' : 'Sign in with Email'}
-        </button>
+        </Button>
       </Stack>
     </Box>
   );

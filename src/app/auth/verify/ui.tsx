@@ -1,10 +1,11 @@
 "use client";
 
 import { apiPost } from "@/lib/api";
+import { Button } from "@/assets/buttons";
 import styles from "@/app/page.module.css";
 import { useState, useEffect } from "react";
-import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 
 export const AuthVerifyPage = () => {
   const router = useRouter();
@@ -51,16 +52,14 @@ export const AuthVerifyPage = () => {
     } catch (err) {
       if (err && typeof err === "object" && "message" in err) {
         setError((err as { message: string }).message);
-      } else {
-        setError("Failed to resend verification email");
-      }
+      } else setError("Failed to resend verification email");
+
     } finally {
       setLoading(false);
     }
   };
 
   const handleChangeEmail = () => router.push(`/auth/join/${role}`);
-
   const expired = timeLeft <= 0;
 
   return (
@@ -82,21 +81,25 @@ export const AuthVerifyPage = () => {
       </Typography>
 
       <Stack className={styles.actions}>
-        <button
-          type="button"
-          className={`min-width-180 ${styles.btnAction}`}
+        <Button
+          tone="action"
+          size="medium"
+          fullWidth={false}
+          loading={loading}
           onClick={handleResend}
-          disabled={loading}
+          sx={{ minWidth: 180 }}
         >
           {loading ? "Resending..." : "Resend Email"}
-        </button>
-        <button
-          type="button"
-          className={`min-width-180 ${styles.btnWarm}`}
+        </Button>
+        
+        <Button
+          tone="warm"
+          size="medium"
           onClick={handleChangeEmail}
+          sx={{ minWidth: 180 }}
         >
           Change Email
-        </button>
+        </Button>
       </Stack>
 
       {info && <Typography color="green">{info}</Typography>}

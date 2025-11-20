@@ -1,9 +1,8 @@
 'use client';
 
 import { z } from 'zod';
-import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import styles from '@/app/page.module.css';
+import { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -17,9 +16,10 @@ import {
   Alert,
   Typography,
 } from '@mui/material';
-import { apiPost } from '@/lib/api';
+import { Button } from '@/assets/buttons';
 import { useAuth } from '@/providers/auth';
 import { useAlert } from '@/providers/alert';
+import { useTickets } from '@/providers/tickets';
 import { CreateTicket, Ticket, Ticket_Type, Ticket_Priority, } from '@/types/ticket';
 import { TAG_SUGGESTIONS, TICKET_PRIORITIES, TICKET_TYPES, PLANNER_TASK_TYPES, EVENT_TAG_SUGGESTIONS} from '../_level_1/constants';
 
@@ -44,12 +44,13 @@ export default function TicketFormDrawer({
 }: {
   open: boolean;
   onClose: () => void;
-  onCreated?: (t: Ticket) => void;
+  onCreated?: (t: Ticket | void) => Ticket | void;
   task?: boolean;
   defaultDueDate?: Date;
 }) {
   const { user } = useAuth();
   const { showAlert } = useAlert();
+  const { createTicket } = useTickets();
   const [submitting, setSubmitting] = useState(false);
   const [errRes, setErrRes] = useState<string | null>(null);
 
@@ -97,11 +98,16 @@ export default function TicketFormDrawer({
         createdById: user?.id,
       };
 
-      const ticket: Ticket = await apiPost('/tickets', payload);
+      if (!createTicket) {
+        setErrRes('Ticket creation is not available right now.');
+        return;
+      }
+
+      const ticket = await createTicket(payload);
       onCreated?.(ticket);
       showAlert('Your new ticket has been created!', 'success');
 
-      window.location.reload();
+      setInterval(() => window.location.reload(), 2500);
       reset();
       onClose();
     } catch {
@@ -244,20 +250,20 @@ export default function TicketFormDrawer({
             </Stack>
 
             <Stack direction="row" spacing={3} pt={3}>
-              <button
+              <Button
                 type="submit"
-                disabled={submitting}
-                className={styles.btnAction}
+                tone="action"
+                loading={submitting}     
               >
-                {submitting ? 'Submitting...' : 'Create'}
-              </button>
-              <button
-                className={styles.btnWarm}
-                onClick={onClose}
+                Create
+              </Button>
+              <Button
                 type="button"
+                tone="warm"
+                onClick={onClose}
               >
                 Cancel
-              </button>
+              </Button>
             </Stack>
           </Stack>
         </Box>

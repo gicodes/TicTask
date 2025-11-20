@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import styles from "@/app/page.module.css";
+import { Button } from "@/assets/buttons";
 import { BENEFITS } from "@/constants/partner";
 import { Box, Stack, Typography, Grid, Divider } from "@mui/material";
 
@@ -31,12 +31,12 @@ export const PartnerHero = () => {
         </Typography>
 
         <Stack mt={4} direction="row" spacing={2}>
-          <button className={styles.btnPrimary}>
-            <Link href={'/company/partner/register'}>Join Partner Program</Link>
-          </button>
-          <button className={styles.btnSecondary}>
-            <Link href={'/resources/docs'}>View Docs</Link>
-          </button>
+          <Button component={Link} href={'/company/partner/register'}>
+            Join Partner Program
+          </Button>
+          <Button component={Link} tone="secondary" href={'/resources/docs'}>
+            View Docs
+          </Button>
         </Stack>
       </Box>
     </section>
@@ -54,6 +54,7 @@ export const PartnerBenefits = () => {
       >
         <Typography variant="h4" fontWeight={700}> Why Partner with Us</Typography>
         <Typography my={2} sx={{ opacity: 0.8 }}> A partnership built to serve high-value products</Typography>
+        
         <Divider sx={{ background: 'var(--dull-gray)', maxWidth: 250, mx: 'auto'}} />
         <Grid
           container
@@ -107,9 +108,10 @@ export const PartnerCTA = () => {
           <Typography variant="body1" sx={{ opacity: 0.85, pb: 2 }}>
             Join the TicTask Partner Program today and unlock access to tools, insights, and shared growth.
           </Typography>
-          <Link href={'/company/partner/register'}>
-            <button className={styles.btnPrimary}>Become a Partner</button>
-          </Link>
+
+          <Button component={Link} href={'/company/partner/register'}>
+            Become a Partner
+          </Button>
         </Stack>
       </Box>
     </section>

@@ -2,7 +2,7 @@
 
 import { Card, CardContent, Box, Stack, Typography } from "@mui/material";
 import { RESOURCES } from "@/constants/resources";
-import styles from "@/app/page.module.css";
+import { Button } from "@/assets/buttons";
 import Link from "next/link";
 
 export const ResourceHero = ({
@@ -23,8 +23,11 @@ export const ResourceHero = ({
         <Typography variant="body1" color="var(--secondary)" maxWidth="md">
           {subtitle || "Dive into the educational and technical side of TicTask. Featuring Documentation, Frequently Asked Questions and Blog."}
         </Typography>
-        {!title && !subtitle && <button className={styles.btnPrimary}>
-          <Link href={'/resources/docs'}>Explore Resources</Link></button>}
+        {!title && !subtitle && 
+          <Button component={Link} href={'/resources/docs'}>
+            Explore Resources
+          </Button>
+        }
       </Stack>
     </Box>
   );
@@ -43,7 +46,7 @@ export const ResourceGrid = () => {
         px={1}
         py={10}
       >
-        {RESOURCES.map((r) => (
+        { RESOURCES.map((r) => (
           <Card
             key={r.title} 
             elevation={1}
@@ -60,9 +63,9 @@ export const ResourceGrid = () => {
               <CardContent sx={{ p: 3, textAlign: 'center'}}>
                 <Typography variant="h4" fontWeight={501}>{r.title}</Typography>
                 <Typography my={2}>{r.desc}</Typography>
-                <Link href={r.link} className={`custom-warm full-width ${styles.btnRetreat}`}>
+                <Button tone="retreat" component={Link} href={r.link} fullWidth>
                   ⟹
-                </Link>
+                </Button>
             </CardContent>
           </Card>
         ))}

@@ -1,14 +1,14 @@
 "use client";
 
-import styles from "@/app/page.module.css";
-import { ResourceHero } from "../_level_3";
-import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { ChangelogItem } from "../_level_2/changeLog";
 import DeleteButton from "../_level_1/deleteResource";
 import { ChangeLogProps } from "@/types/resources";
+import { Box, Typography } from "@mui/material";
 import { ChangeLostRes } from "@/types/axios";
 import { useAuth } from "@/providers/auth";
+import { ResourceHero } from "../_level_3";
+import { Button } from "@/assets/buttons";
 import { apiGet } from "@/lib/api";
 import Link from "next/link";
 
@@ -28,13 +28,12 @@ export default function ChangelogList() {
       <Box maxWidth={900} mx="auto" px={2} py={8}>
         <Box display="flex" justifyContent="space-between" mb={4}>
           <Typography variant="h5">Release notes</Typography>
-          <Typography 
+          <Button 
             component={Link} 
-            className={styles.btnPrimary}
             href="/resources/changelog/create" 
           >
             New update
-          </Typography>
+          </Button>
         </Box>
         {items?.map(item => (
           <Box key={item.id} mb={2}>

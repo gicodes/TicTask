@@ -17,7 +17,7 @@ import {
   Sun, Moon, Laptop, Bell, Shield, User, Globe, PlugZap, CreditCard,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import styles from '@/app/page.module.css';
+import { Button } from '@/assets/buttons';
 import { useAuth } from '@/providers/auth';
 import { useAlert } from '@/providers/alert';
 import { useThemeMode } from '@/providers/theme';
@@ -32,6 +32,7 @@ export default function SettingsPage() {
   const [autoSave, setAutoSave] = useState(true);
   const [emailNotif, setEmailNotif] = useState(true);
   const [slackNotif, setSlackNotif] = useState(false);
+
   const [language, setLanguage] = useState('English');
   const [workspaceName, setWorkspaceName] = useState('Acme Inc.');
 
@@ -62,9 +63,9 @@ export default function SettingsPage() {
     i: string;
     action?: () => void;
   }) => (
-    <span onClick={action} key={i} className={`mx-auto max-width-500 ${styles.btnSecondary}`}>
+    <Button tone='secondary' onClick={action} key={i}>
       Connect {title}
-    </span>
+    </Button>
   );
 
   return (
@@ -125,12 +126,12 @@ export default function SettingsPage() {
           <TextField label="Display Name" value={user?.name || 'Your Display Name'} fullWidth />
           <TextField label="Email" type="email" value={user?.email || ''} fullWidth disabled />
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <Link href="/dashboard/profile" className={styles.btnPrimary}>
+            <Button component={Link} href="/dashboard/profile">
               Go to Profile
-            </Link>
-            <button onClick={handleForgotPassword} className={styles.btnWarm}>
+            </Button>
+            <Button onClick={handleForgotPassword} tone='warm'>
               Change Password
-            </button>
+            </Button>
           </Stack>
         </Stack>
       </SettingsCard>
@@ -189,8 +190,8 @@ export default function SettingsPage() {
             label="Enable last session on refresh"
           />
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <Typography component={'button'} className={`max-width-360 ${styles.btnPrimary}`}>Logged in devices</Typography>
-            <Typography component={'button'} className={`max-width-360 ${styles.btnWarm}`}>Log out all sessions</Typography>
+            <Button>Logged in devices</Button>
+            <Button tone='warm'>Log out all sessions</Button>
           </Stack>
         </Stack>
       </SettingsCard>
@@ -230,12 +231,12 @@ export default function SettingsPage() {
             </Typography>
             
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-              <Link href="/dashboard/subscription" className={styles.btnPrimary}>
+              <Button component={Link} href="/dashboard/subscription">
                 Manage Subscription
-              </Link>
-              <Link href="/product/pricing" className={styles.btnSecondary}>
+              </Button>
+              <Button component={Link} href="/product/pricing" tone='secondary'>
                 See Plans & Prices
-              </Link>
+              </Button>
             </Stack>
           </Stack>} 
       </SettingsCard>

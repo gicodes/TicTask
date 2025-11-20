@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import styles from "@/app/page.module.css";
+import { Button } from "@/assets/buttons";
 import { Box, Typography, Divider, Card, Stack } from "@mui/material";
 
 export default function ContributorsSection() {
@@ -51,7 +51,7 @@ export default function ContributorsSection() {
             and refine systems that help teams work better, everywhere.
           </Typography>
 
-          <Card sx={{ px: 3, py: 5, mt: 10, maxWidth: 500, mx: 'auto', borderRadius: 6}}>
+          <Card sx={{ px: 3, py: 5, my: 10, maxWidth: 500, mx: 'auto', borderRadius: 6}}>
             <Box mx="auto" textAlign="left">
               <Typography variant="h6" fontWeight={600} mb={1}>
                 📜 Collaboration Guidelines
@@ -84,16 +84,13 @@ export default function ContributorsSection() {
             </Box>
           </Card>
 
-          <Typography
-            component={"button"}
-            mx={"auto"}
-            mt={6}
-            className={styles.btnAction}
+          <Button
+            component={Link}
+            href="/company/partner/register?context=collab"
+            tone="action"
           >
-            <Link href={"/company/partner/register?context=collab"}>
-              Ready to Collaborate
-            </Link>
-          </Typography>
+            Ready to Collaborate
+          </Button>
         </motion.div>
       </Box>
     </section>

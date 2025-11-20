@@ -1,10 +1,16 @@
 import React from 'react'
 import { Stack } from '@mui/material';
 import { signIn } from 'next-auth/react';
-import styles from '@/app/page.module.css';
+import { Button } from '@/assets/buttons';
 import { FaXTwitter } from 'react-icons/fa6';
-import { FaGoogle, FaSlack } from 'react-icons/fa';
 import { useAlert } from '@/providers/alert';
+import { FaGoogle, FaSlack } from 'react-icons/fa';
+
+interface Option {
+  name: string
+  provider: string
+  icon: React.JSX.Element
+}
 
 const signInOptions = [
   {
@@ -24,12 +30,6 @@ const signInOptions = [
   },
 ];
 
-interface Option {
-  name: string
-  provider: string
-  icon: React.JSX.Element
-}
-
 const SignInOptions = () => {
   const { showAlert } = useAlert();
 
@@ -44,21 +44,20 @@ const SignInOptions = () => {
         "warning"
       )
     }
-
     signIn(option.provider)
   }
 
   return (
     <Stack gap={2}>
       { signInOptions.map((option, key) => (
-        <button
+        <Button
           key={key}
+          tone='secondary'
+          startIcon={option.icon}
           onClick={() => notAuthorized(option)}
-          className={`min-width-250 flex gap-3 ${styles.btnSecondary}`}
         >
-          {option.icon}
           <span className='font-weight-l'>Continue with {option.name}</span>
-        </button>
+        </Button>
       ))}
     </Stack>
   )

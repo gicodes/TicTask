@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import styles from "@/app/page.module.css";
 import {
   Box,
   Container,
@@ -18,6 +17,7 @@ import {
   ListItemText,
   Card,
 } from "@mui/material";
+import { Button } from "@/assets/buttons";
 import { CheckCircle } from "lucide-react";
 import { PLANS } from "@/constants/product";
 import { useCreateCheckoutSession } from "@/hooks/useCreateCheckout";
@@ -60,7 +60,8 @@ export default function PricingSection() {
         </Stack>
 
         <Grid container spacing={4} justifyContent="center">
-          {PLANS.map((plan, i) => (
+          
+          { PLANS.map((plan, i) => (
             <Grid key={plan.name}>
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
@@ -122,12 +123,9 @@ export default function PricingSection() {
                       ))}
                     </List>
 
-                    <button
-                      className={styles.btnPrimary}
-                      onClick={() => mutate(plan.name.toLowerCase())}
-                    >
+                    <Button onClick={() => mutate(plan.name.toLowerCase())}>
                       {plan.buttonLabel}
-                    </button>
+                    </Button>
                   </Stack>
                 </Box>
               </motion.div>

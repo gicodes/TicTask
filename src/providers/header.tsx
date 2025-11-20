@@ -4,11 +4,11 @@ import Link from "next/link";
 import { useAuth } from "./auth";
 import { useState } from "react";
 import Logo from "@/assets/txtLogo";
-import styles from '@/app/page.module.css';
+import { Button } from "@/assets/buttons";
 import MenuIcon from "@mui/icons-material/Menu";
 import { CancelRounded } from "@mui/icons-material";
 import { userLinks, guestLinks, menuItems, extendedMenuItems } from "@/app/dashboard/_level_1/navItems";
-import { AppBar, Box, IconButton, Toolbar, Stack, Drawer, List, ListItem, Popover, Typography,} from "@mui/material";
+import { AppBar, Box, IconButton, Toolbar, Stack, Drawer, List, ListItem, Popover,} from "@mui/material";
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -131,29 +131,27 @@ const Header = () => {
           </Stack>
           
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
-            {authLinks.map((link) =>
+            {authLinks.map((link, i) =>
               link?.cta ? (
-                <Link href={link.href} key={link.href}>
-                  <Typography 
-                    component={'button'} 
-                    textTransform={'uppercase'} 
-                    className={styles.btnPrimary}
-                  >
-                    {link.label}
-                  </Typography>
-                </Link>
-              ) : (
-                <Typography
-                  color="inherit"
-                  key={link.href}
-                  component={Link}
-                  href={link.href}
-                  onClick={link.label==="Logout" ? logout : undefined}
-                  className={styles.btnRetreat}
-                  textTransform={'uppercase'}
+                <Button 
+                  key={i} 
+                  component={Link} 
+                  href={link.href} 
+                  sx={{ textTransform: 'uppercase'}}
                 >
                   {link.label}
-                </Typography>
+                </Button>
+              ) : (
+                <Button 
+                  key={i}
+                  tone="retreat"
+                  component={Link}
+                  href={link.href}
+                  sx={{ textTransform: 'uppercase'}}
+                  onClick={link.label==="Logout" ? logout : undefined}
+                >
+                  {link.label}
+                </Button>
               )
             )}
           </Box>
@@ -199,18 +197,16 @@ const Header = () => {
 
               {authLinks.map((link) => (
                 <ListItem key={link.href}>
-                  <Link
+                  <Button
+                    tone="retreat"
+                    component={Link}
                     href={link.href}
+                    variant={link.cta ? "contained" : 'text'}
                     onClick={link.label==="Logout" ? logout : toggleDrawer}
-                    style={{
-                      width: "100%",
-                      textAlign: "center",
-                      textTransform: link.cta ? "uppercase" : "none",
-                    }}
-                    className={link.cta ? styles.btnRetreat : ""}
+                    sx={{ margin: '0 auto', textTransform: link.cta ? "uppercase" : "none" }}
                   >
                     {link.label}
-                  </Link>
+                  </Button>
                 </ListItem>
               ))}
             </List>

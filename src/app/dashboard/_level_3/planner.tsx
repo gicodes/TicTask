@@ -14,6 +14,7 @@ import { DateSelectDialog } from '../_level_2/createTaskDialog';
 
 const PlannerPage: React.FC = () => {
   const { showAlert } = useAlert()
+
   const { tickets, fetchTickets } = useTickets();
 
   const [view, setView] = useState<'calendar' | 'list'>(() => {
@@ -29,7 +30,10 @@ const PlannerPage: React.FC = () => {
   const [createDate, setCreateDate] = useState<Date | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  useEffect(() => { fetchTickets(); }, [fetchTickets]);
+  useEffect(() => { 
+    fetchTickets(); 
+  }, [fetchTickets]);
+
   useEffect(() => {
     if (typeof window !== 'undefined') localStorage.setItem('planner_view', view);
   }, [view]);
@@ -37,6 +41,7 @@ const PlannerPage: React.FC = () => {
   const filteredTickets = useMemo(() => {
     if (!search) return tickets;
     const q = search.toLowerCase();
+
     return tickets.filter((t) =>
       [t.title, t.description, t.status, t.assignee]
         .filter(Boolean)

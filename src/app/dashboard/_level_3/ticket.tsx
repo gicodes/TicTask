@@ -1,3 +1,5 @@
+'use client'
+
 import { Box } from '@mui/material';
 import { Ticket } from '@/types/ticket';
 import TicketsList from '../_level_2/_list';
@@ -86,7 +88,8 @@ const TicketsPage: React.FC = () => {
   const openDetail = (id: string | number) => setSelectedTicket(id);
   const closeDetail = () => setSelectedTicket(null);
 
-  const onTicketCreated = (t: Ticket) => setTickets((prev) => [t, ...prev]);
+  const onTicketCreated = (t: Ticket | void) => 
+    setTickets((prev) => [t, ...prev] as Ticket[]);
 
   const refreshTickets = async () => {
     await fetchTickets();

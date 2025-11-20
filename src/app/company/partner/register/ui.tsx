@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { apiPost } from "@/lib/api";
-import styles from "@/app/page.module.css";
+import { Button } from "@/assets/buttons";
 import { ROLES } from "@/constants/partner";
 import { useSearchParams } from "next/navigation";
 import { Box, Stack, Card, TextField, Typography, MenuItem, Select, InputLabel, FormControl, Chip, OutlinedInput, SelectChangeEvent } from "@mui/material";
@@ -152,13 +152,14 @@ export default function PartnerJoinPage() {
             onChange={handleChange}
           />
 
-          <button
+          <Button
             type="submit"
-            className={styles.btnPrimary}
-            disabled={loading}
+            tone="primary"
+            loading={loading}
           >
-            {loading ? "Submitting..." : "Submit Application"}
-          </button>
+            Submit Application
+          </Button>
+
           {response.message && (
             <Typography
               variant="body2"

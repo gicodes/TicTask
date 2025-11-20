@@ -1,9 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Button } from '@/assets/buttons';
 import { useAuth } from '@/providers/auth';
 import { Add, DeleteOutline } from '@mui/icons-material';
-import { Box, Stack, Typography, Card, CardContent, Button, Divider, Avatar, Grid, IconButton } from '@mui/material';
+import { Box, Stack, Typography, Card, CardContent, Divider, Avatar, Grid, IconButton } from '@mui/material';
 
 export default function TeamsPage() {
   const { user } = useAuth();
@@ -35,7 +36,8 @@ export default function TeamsPage() {
                 <Typography variant="h6" fontWeight={600}>
                   Team Members
                 </Typography>
-                <Button startIcon={<Add />} variant="contained" color="inherit" sx={{ textTransform: 'none', minWidth: 234}}>
+                <Divider sx={{ display: {xs: 'block', sm: 'none'},  width: '100%'}} />
+                <Button startIcon={<Add />} tone="primary" variant="filled">
                   Add Member
                 </Button>
               </Stack>
@@ -65,6 +67,7 @@ export default function TeamsPage() {
                           </Stack>
                         </Box>
                       </Stack>
+                      
                       <IconButton color="error">
                         <DeleteOutline />
                       </IconButton>
