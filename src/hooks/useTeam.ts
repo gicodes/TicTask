@@ -58,8 +58,7 @@ export function useTeam() {
         showAlert("Error sending invitation", "error");
         return false;
       }
-    },
-    [team, user]
+    }, [team, user, showAlert]
   );
 
   const removeFromTeam = useCallback(
@@ -85,8 +84,7 @@ export function useTeam() {
         showAlert("Error removing member", "error");
         return false;
       }
-    },
-    [team]
+    }, [team, showAlert]
   );
 
   const dissolveTeam = useCallback(async () => {
@@ -109,7 +107,7 @@ export function useTeam() {
       showAlert("Error dissolving team", "error");
       return false;
     }
-  }, [team]);
+  }, [team, showAlert, router]);
 
   return {
     team,
