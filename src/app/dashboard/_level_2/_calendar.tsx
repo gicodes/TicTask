@@ -29,7 +29,6 @@ const localizer = momentLocalizer(moment);
 
 const DnDCalendar = withDragAndDrop<PlannerEvent, object>(BigCalendar);
 
-
 const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   tasks,
   onSelectTask,
@@ -50,9 +49,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     if (isMobile && !hasSetMobileView.current) {
       setInternalView('day');
       hasSetMobileView.current = true;
-    } else if (!isMobile) {
-      hasSetMobileView.current = false;
-    }
+    } else if (!isMobile) hasSetMobileView.current = false;
   }, [isMobile]);
 
   useEffect(() => {

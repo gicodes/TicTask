@@ -69,6 +69,7 @@ export type TeamMember = {
   invitedBy?: number;
   createdAt: string;
   user: User;
+  team: Team;
 };
 
 export type Invitation = {

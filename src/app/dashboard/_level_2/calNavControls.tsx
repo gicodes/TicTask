@@ -32,11 +32,12 @@ export default function NavControls({
         </IconButton>
       </Stack>
 
-      <Button
+       <Button
         size='small'
-        tone='warm'
+        tone='retreat'
         variant="outlined"
         onClick={onToday}
+        sx={{ color: 'var(--accent)', padding: '0 20px'}}
       >
         See Today
       </Button>

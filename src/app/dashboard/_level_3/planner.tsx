@@ -14,7 +14,6 @@ import { DateSelectDialog } from '../_level_2/createTaskDialog';
 
 const PlannerPage: React.FC = () => {
   const { showAlert } = useAlert()
-
   const { tickets, fetchTickets } = useTickets();
 
   const [view, setView] = useState<'calendar' | 'list'>(() => {
@@ -23,12 +22,12 @@ const PlannerPage: React.FC = () => {
     return 'calendar';
   });
 
-  const [formOpen, setFormOpen] = useState(false);
+  const [search, setSearch] = useState<string>('');
+  const [formOpen, setFormOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string | number | null>(null);
-  const [search, setSearch] = useState('');
 
-  const [createDate, setCreateDate] = useState<Date | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [createDate, setCreateDate] = useState<Date | null>(null);
 
   useEffect(() => { 
     fetchTickets(); 
@@ -65,6 +64,7 @@ const PlannerPage: React.FC = () => {
       showAlert("Cannot plan for the past. Heh!", 'warning')
       return;
     }
+
     setCreateDate(date);
     setFormOpen(true);
   };
