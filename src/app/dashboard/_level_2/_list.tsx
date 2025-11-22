@@ -2,6 +2,7 @@ import React from 'react';
 import { Ticket } from '@/types/ticket';
 import { Box, Chip } from '@mui/material';
 import { getStatusColor, priorityColor } from '../_level_1/tColorVariants';
+import { getTicketOrder } from '../_level_1/tSorting';
 
 const TicketsList = ({
   list,
@@ -16,6 +17,10 @@ const TicketsList = ({
     Tickets and Tasks empty.. Nothing to list 😶 
   </Box>
 
+  const sortedTickets = [...tickets].sort((a, b) => {
+    return getTicketOrder(a) - getTicketOrder(b);
+  });
+
   return (
     <Box py={3} px={2} maxWidth={'96vw'}>
       <Box
@@ -29,7 +34,6 @@ const TicketsList = ({
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'thin',
           scrollBehavior: 'smooth',
-
           '&::-webkit-scrollbar': {
             height: 6,
           },
@@ -77,7 +81,7 @@ const TicketsList = ({
           </thead>
           
           <tbody>
-            {tickets.map((t, i) => (
+            {sortedTickets.map((t, i) => (
               <tr
                 key={t.id}
                 style={{
@@ -127,7 +131,7 @@ const TicketsList = ({
                 </td>}
 
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
-                  {t?.type==='FEATURE_REQUEST' ? 'Feature' : t?.type[0]+t?.type.slice(1).toLowerCase()}
+                  {t?.type==='FEATURE_REQUEST' ? 'Feature' : t.type[0] + t.type.slice(1).toLowerCase()}
                 </td>
 
                 <td style={{ padding: '0 10px', whiteSpace: 'nowrap', }}>

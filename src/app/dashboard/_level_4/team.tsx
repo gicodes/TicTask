@@ -33,7 +33,7 @@ export default function TeamsPage() {
             <CardContent>
               <Stack spacing={2}>
                 {teams.length === 0 && (
-                  <Typography textAlign={'center'}>No team yet</Typography>
+                  <Typography textAlign={'center'} py={12}>No team yet</Typography>
                 )}
                 {teams.length > 0 && 
                   <Stack py={1}>

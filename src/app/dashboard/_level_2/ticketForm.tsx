@@ -3,8 +3,22 @@
 import { z } from 'zod';
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/assets/buttons';
+import { useAuth } from '@/providers/auth';
+import { useAlert } from '@/providers/alert';
+import { useTickets } from '@/providers/tickets';
+import { DatePicker } from '../_level_1/tDatepicker';
+import { schema, TICKET_FORM_TYPES } from '../_level_1/tSchema';
+import { CreateTicket, Ticket_Type, Ticket_Priority } from '@/types/ticket';
+import { useForm, Controller, Control, FieldValues } from 'react-hook-form';
+import { 
+  TAG_SUGGESTIONS, 
+  TICKET_PRIORITIES, 
+  TICKET_TYPES, 
+  PLANNER_TASK_TYPES, 
+  EVENT_TAG_SUGGESTIONS
+} from '../_level_1/constants';
 import {
   Drawer,
   Box,
@@ -16,22 +30,6 @@ import {
   Alert,
   Typography,
 } from '@mui/material';
-import { Button } from '@/assets/buttons';
-import { useAuth } from '@/providers/auth';
-import { useAlert } from '@/providers/alert';
-import { useTickets } from '@/providers/tickets';
-import { CreateTicket, Ticket, Ticket_Type, Ticket_Priority, } from '@/types/ticket';
-import { TAG_SUGGESTIONS, TICKET_PRIORITIES, TICKET_TYPES, PLANNER_TASK_TYPES, EVENT_TAG_SUGGESTIONS} from '../_level_1/constants';
-
-const schema = z.object({
-  type: z.nativeEnum(Ticket_Type),
-  title: z.string().min(3),
-  description: z.string().optional(),
-  priority: z.nativeEnum(Ticket_Priority),
-  assignTo: z.union([z.string(), z.number()]).optional(),
-  tags: z.array(z.string()).optional(),
-  dueDate: z.union([z.string(), z.date()]).optional(),
-});
 
 type FormValues = z.infer<typeof schema>;
 
@@ -41,13 +39,7 @@ export default function TicketFormDrawer({
   onCreated,
   task,
   defaultDueDate,
-}: {
-  open: boolean;
-  onClose: () => void;
-  onCreated?: (t: Ticket | void) => Ticket | void;
-  task?: boolean;
-  defaultDueDate?: Date;
-}) {
+}: TICKET_FORM_TYPES ) {
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const { createTicket } = useTickets();
@@ -63,7 +55,7 @@ export default function TicketFormDrawer({
       priority: Ticket_Priority.MEDIUM,
       assignTo: '',
       tags: [],
-      dueDate: undefined,
+      dueDate: '',
     },
   });
 
@@ -125,6 +117,7 @@ export default function TicketFormDrawer({
       sx={{ '& .MuiDrawer-paper': { width: { xs: '100%', md: 520 }, p: 3 } }}
     >
       <Toolbar />
+
       <Box display="grid" gap={2}>
         <h5>Create new {task ? 'task' : 'ticket'}</h5>
 
@@ -151,7 +144,6 @@ export default function TicketFormDrawer({
                 </TextField>
               )}
             />
-
             <Controller
               name="title"
               control={control}
@@ -159,7 +151,6 @@ export default function TicketFormDrawer({
                 <TextField label="Title" required {...field} />
               )}
             />
-
             <Controller
               name="description"
               control={control}
@@ -172,7 +163,6 @@ export default function TicketFormDrawer({
                 />
               )}
             />
-
             <Controller
               name="priority"
               control={control}
@@ -186,7 +176,6 @@ export default function TicketFormDrawer({
                 </TextField>
               )}
             />
-
             {user?.userType === 'BUSINESS' && (
               <Controller
                 name="assignTo"
@@ -200,7 +189,6 @@ export default function TicketFormDrawer({
                 )}
               />
             )}
-
             <Controller
               name="tags"
               control={control}
@@ -222,48 +210,16 @@ export default function TicketFormDrawer({
               )}
             />
 
-            <Stack py={3} spacing={3}>
-              <Typography>
-                Set a due date {task ? '& time for your task' : 'for your ticket'}
+            <Stack py={1} spacing={2}>
+              <Typography variant='body2' sx={{ opacity: 0.75}}>
+                Set date {task ? 'and time for this task' : 'for this ticket'}
               </Typography>
-
-              <Controller
-                name="dueDate"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Due Date & Time"
-                    type="datetime-local"
-                    InputLabelProps={{ shrink: true }}
-                    fullWidth
-                    sx={{
-                      '& input': {
-                        padding: '20px 14px',
-                        borderRadius: 1,
-                        fontSize: { xs: '1rem', sm: '1.1rem' },
-                      },
-                    }}
-                  />
-                )}
-              />
+              <DatePicker control={control} name="dueDate" defaultValue="" />
             </Stack>
 
-            <Stack direction="row" spacing={3} pt={3}>
-              <Button
-                type="submit"
-                tone="action"
-                loading={submitting}     
-              >
-                Create
-              </Button>
-              <Button
-                type="button"
-                tone="warm"
-                onClick={onClose}
-              >
-                Cancel
-              </Button>
+            <Stack direction="row" spacing={3} pt={1.5}>
+              <Button loading={submitting}> Create </Button>
+              <Button tone="warm" onClick={onClose}> Cancel</Button>
             </Stack>
           </Stack>
         </Box>

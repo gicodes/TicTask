@@ -20,10 +20,10 @@ export interface Create_Ticket {
   title: string;
   description?: string;
   createdAt: string;
-  updatedAt?: string | Date | null;
+  updatedAt?: string | Date;
   assignee?: string;
   createdById?: string | number;
-  assignedToId?: string | number | null;
+  assignedToId?: string | number;
   tags?: string[] | null;
   dueDate?: Date | string | null;
   status: TicketStatus;

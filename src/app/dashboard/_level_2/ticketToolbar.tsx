@@ -90,6 +90,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
                     variant={view === 'board' ? 'contained' : 'outlined'}
                     startIcon={<ViewKanbanIcon />}
                     sx={{
+                      color: view === 'board' ? "var(--special)" : "inherit",
                       borderTopRightRadius: 0,
                       borderBottomRightRadius: 0,
                     }}
@@ -106,6 +107,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
                     onClick={() => setView('list')}
                     startIcon={<FaList />}
                     sx={{
+                      color: view === 'list' ? "var(--special)" : "inherit",
                       borderTopLeftRadius: 0,
                       borderBottomLeftRadius: 0,
                     }}

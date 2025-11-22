@@ -103,9 +103,9 @@ const NotificationDrop = ({ anchorEl, handleClose }: {
           <Link href={'/dashboard/notifications'} onClick={handleClose}>
             <Button 
               fullWidth 
+              size='small'
               variant='outlined' 
-              color='inherit'
-              sx={{ textTransform: 'none'}}
+              sx={{ textTransform: 'none', height: 36, fontSize: 13}}
             >
               Manage Feed
             </Button>

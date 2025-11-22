@@ -34,7 +34,6 @@ export function useTeam() {
 
     setTeam(found);
     setLoading(false);
-
   }, [user, teamId]);
 
   const inviteToTeam = useCallback(

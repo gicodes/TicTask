@@ -23,7 +23,7 @@ export const api = {
       type: (payload.type as Ticket_Type) ?? 'GENERAL',
       createdAt: now,
       updatedAt: now,
-      assignedToId: payload.assignedToId ?? null,
+      assignedToId: payload.assignedToId ?? undefined,
       tags: payload.tags ?? [],
       dueDate: payload.dueDate ?? null,
     };

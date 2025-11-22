@@ -29,7 +29,7 @@ export const priorityColor = (p: string) => {
 
 export const getTypeColor = (type: string) => {
   switch (type?.toLocaleUpperCase()) {
-    case 'GENERAL' : return '#000';
+    case 'GENERAL' : return 'inherit';
     case 'BUG': return 'var(--danger)';
     case 'FEATURE_REQUEST': return 'var(--special)';
     case 'SUPPORT': return 'var(--success)';
