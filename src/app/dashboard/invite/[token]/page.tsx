@@ -36,13 +36,8 @@ export default function AcceptInvitePage() {
     } else setStatus('failed');
   }
 
-  // in future releases, we can differentiate between team 
-  // rir invites, 
-  // team invites,
-  // team-admin invites *,
-  // contributor invites *,
-  // moderator invites *,
-  // partner invites *,
+  // in future releases, we can differentiate between: 
+  // rir invites, team invites, team-admin invites *, contributor invites *, moderator invites *, partner invites *,
 
   useEffect(() => {
     try {
@@ -52,16 +47,17 @@ export default function AcceptInvitePage() {
       }
 
       if (token) acceptInvite();
-    } catch (error) {
+    } catch {
       setStatus('failed');
       setTimeout(() => router.push('/dashboard'), 2000);
     }
 
-  }, [token, router]);
+  }, [token, router, acceptInvite, acceptTeamInvite]);
 
   if (status === 'pending') return (
     <Typography textAlign={'center'} py={8}>Accepting invite...</Typography>
   );
+  
   if (status === 'success') return (
     <Typography textAlign={'center'} py={8}>Welcome to the team! 🎉</Typography>
   );

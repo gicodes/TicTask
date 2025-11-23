@@ -1,230 +1,178 @@
-'use client';
-
-import { z } from 'zod';
-import { format } from 'date-fns';
-import { useState, useEffect } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/assets/buttons';
-import { useAuth } from '@/providers/auth';
-import { useAlert } from '@/providers/alert';
+import React, { useEffect, useState } from 'react';
 import { useTickets } from '@/providers/tickets';
-import { DatePicker } from '../_level_1/tDatepicker';
-import { schema, TICKET_FORM_TYPES } from '../_level_1/tSchema';
-import { CreateTicket, Ticket_Type, Ticket_Priority } from '@/types/ticket';
-import { useForm, Controller, Control, FieldValues } from 'react-hook-form';
+import { CreateTicket, Ticket } from '@/types/ticket';
+import { useAlert } from '@/providers/alert';
+import { useAuth } from '@/providers/auth';
+import { Button } from '@/assets/buttons';
 import { 
-  TAG_SUGGESTIONS, 
-  TICKET_PRIORITIES, 
-  TICKET_TYPES, 
-  PLANNER_TASK_TYPES, 
-  EVENT_TAG_SUGGESTIONS
-} from '../_level_1/constants';
+  useForm, 
+  FormProvider, 
+  FieldValues, 
+  Control, 
+  Resolver 
+} from 'react-hook-form';
+import { ZodType } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  TICKET_FORMS,
+  TICKET_SCHEMAS,
+  TICKET_DEFAULTS,
+  TASK_FORMS,
+  TASK_SCHEMAS,
+  TASK_DEFAULTS,
+  TicketTypeUnion,
+  PlannerTaskTypeUnion,
+} from '../_level_1/tSchema';
 import {
   Drawer,
   Box,
-  TextField,
-  Stack,
-  MenuItem,
   Toolbar,
-  Autocomplete,
+  TextField,
+  MenuItem,
+  Stack,
   Alert,
   Typography,
 } from '@mui/material';
 
-type FormValues = z.infer<typeof schema>;
+type Props = {
+  open: boolean;
+  task?: boolean;
+  defaultDueDate?: Date;
+  onClose: () => void;
+  onCreated?: (t: Ticket | void) => void;
+};
 
-export default function TicketFormDrawer({
+export default function TicketTaskCreateFormsDrawer({ 
   open,
-  onClose,
-  onCreated,
-  task,
+  task = false, 
   defaultDueDate,
-}: TICKET_FORM_TYPES ) {
+  onClose, 
+  onCreated, 
+}: Props) {
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const { createTicket } = useTickets();
-  const [submitting, setSubmitting] = useState(false);
-  const [errRes, setErrRes] = useState<string | null>(null);
 
-  const { control, handleSubmit, reset } = useForm<FormValues>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      type: task ? Ticket_Type.EVENT : Ticket_Type.GENERAL,
-      title: '',
-      description: '',
-      priority: Ticket_Priority.MEDIUM,
-      assignTo: '',
-      tags: [],
-      dueDate: '',
-    },
+  const [submitting, setSubmitting] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  type LocalType = TicketTypeUnion | PlannerTaskTypeUnion;
+
+  const registryForms = task ? TASK_FORMS : TICKET_FORMS;
+  const registrySchemas = task ? TASK_SCHEMAS : TICKET_SCHEMAS;
+  const registryDefaults = (task ? TASK_DEFAULTS : TICKET_DEFAULTS) as Record<
+    LocalType,
+    (d?: Date) => Record<string, unknown>
+  >;
+
+  const initialType = task ? ('EVENT' as PlannerTaskTypeUnion) : ('GENERAL' as TicketTypeUnion);
+  const [itemType, setItemType] = useState<LocalType>(initialType);
+
+  const currentSchema: ZodType<FieldValues, FieldValues> = registrySchemas[itemType as keyof typeof registrySchemas];
+  const defaultValues = registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate);
+
+  const methods = useForm<FieldValues>({
+    resolver: zodResolver(currentSchema) as Resolver<FieldValues, FieldValues>,
+    defaultValues: defaultValues as Record<string, unknown>,
   });
 
-  useEffect(() => {
-    reset({
-      type: task ? Ticket_Type.EVENT : Ticket_Type.GENERAL,
-      title: '',
-      description: '',
-      priority: Ticket_Priority.MEDIUM,
-      assignTo: '',
-      tags: [],
-      dueDate: defaultDueDate
-        ? format(defaultDueDate, "yyyy-MM-dd'T'HH:mm")
-        : undefined,
-    });
-  }, [defaultDueDate, task, reset]);
+  const FormComponent = registryForms[itemType as keyof typeof registryForms] as React.ComponentType<{ control: Control<FieldValues>; task?: boolean }>;
 
-  const onSubmit = async (values: FormValues) => {
+  useEffect(() => {
+    methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultDueDate, itemType, task]);
+
+  const onSubmit = async (values: FieldValues) => {
+    setErr(null);
     setSubmitting(true);
-    setErrRes(null);
 
     try {
-      if (task && !values.dueDate) {
-        setErrRes('You must add a due date for a planner task');
-        return;
+      if (task && itemType === 'TASK') {
+        if (!values.dueDate && !values.startTime) {
+          setErr('You must add a due date or start time for a planner task');
+          setSubmitting(false);
+          return;
+        }
       }
 
-      const payload: CreateTicket = {
-        ...values,
-        dueDate: values.dueDate ? new Date(values.dueDate) : undefined,
-        tags: values.tags ?? [],
-        createdById: user?.id,
-      };
+      const payloadBase: Record<string, unknown> = { ...(values as Record<string, unknown>) };
+
+      if (Array.isArray(payloadBase.tags) === false && typeof payloadBase.tags === 'string') {
+        // if tags were provided as comma string, convert and normalize
+        payloadBase.tags = (payloadBase.tags as unknown as string).split(',').map(s => s.trim()).filter(Boolean);
+      }
+
+      const dueDateIso =
+        typeof payloadBase.dueDate === 'string' && payloadBase.dueDate
+          ? new Date(payloadBase.dueDate as string)
+          : typeof payloadBase.startTime === 'string' && payloadBase.startTime
+            ? new Date(payloadBase.startTime as string)
+            : undefined;
+
+      const payload = {
+        ...payloadBase,
+        dueDate: dueDateIso,
+        createdById: user?.id ?? null,
+      } as unknown as CreateTicket;
 
       if (!createTicket) {
-        setErrRes('Ticket creation is not available right now.');
-        return;
+        showAlert("Ticket creation is not available right now.", 'warning')
+        throw new Error('Ticket creation is not available right now.');
       }
 
       const ticket = await createTicket(payload);
       onCreated?.(ticket);
       showAlert('Your new ticket has been created!', 'success');
 
-      setInterval(() => window.location.reload(), 2500);
-      reset();
+      methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
       onClose();
-    } catch {
-      setErrRes('Something went wrong. Please try again!');
+
+      setTimeout(() => {
+        try { 
+          window.location.reload(); 
+        } catch { 
+          console.warn("Timed Out")
+        }
+      }, 2500);
+    } catch (e) {
+      const message = (e instanceof Error) ? e.message : 'Something went wrong. Please try again.';
+      console.error(e);
+      setErr(message);
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <Drawer
-      anchor="right"
-      open={open}
-      onClose={onClose}
-      sx={{ '& .MuiDrawer-paper': { width: { xs: '100%', md: 520 }, p: 3 } }}
-    >
+    <Drawer anchor="right" open={open} onClose={onClose} sx={{ '& .MuiDrawer-paper': { width: { xs: '100%', md: 520 }, p: 3 } }}>
       <Toolbar />
-
       <Box display="grid" gap={2}>
-        <h5>Create new {task ? 'task' : 'ticket'}</h5>
+        <Typography variant="h6">Create new {itemType === 'TASK' ? 'task' : 'ticket'}</Typography>
 
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={2}>
-            <Controller
-              name="type"
-              control={control}
-              render={({ field }) => (
-                <TextField select label="Type" {...field}>
-                  {task
-                    ? Object.values(PLANNER_TASK_TYPES).map((ptt, i) => (
-                        <MenuItem value={ptt} key={i}>
-                          {ptt[0] + ptt.slice(1).toLocaleLowerCase()}
-                        </MenuItem>
-                      ))
-                    : Object.values(TICKET_TYPES).map((tt, i) => (
-                        <MenuItem value={tt} key={i}>
-                          {tt === 'FEATURE_REQUEST'
-                            ? 'Feature'
-                            : tt[0] + tt.slice(1).toLocaleLowerCase()}
-                        </MenuItem>
-                      ))}
-                </TextField>
-              )}
-            />
-            <Controller
-              name="title"
-              control={control}
-              render={({ field }) => (
-                <TextField label="Title" required {...field} />
-              )}
-            />
-            <Controller
-              name="description"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  label="Description"
-                  multiline
-                  minRows={4}
-                  {...field}
-                />
-              )}
-            />
-            <Controller
-              name="priority"
-              control={control}
-              render={({ field }) => (
-                <TextField select label="Priority" {...field}>
-                  {Object.values(TICKET_PRIORITIES).map((v) => (
-                    <MenuItem value={v} key={v}>
-                      {v[0] + v.slice(1).toLocaleLowerCase()}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-            {user?.userType === 'BUSINESS' && (
-              <Controller
-                name="assignTo"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    type="email"
-                    label="Assign to team (member email)"
-                    {...field}
-                  />
-                )}
-              />
-            )}
-            <Controller
-              name="tags"
-              control={control}
-              render={({ field }) => (
-                <Autocomplete
-                  multiple
-                  freeSolo
-                  options={task ? EVENT_TAG_SUGGESTIONS : TAG_SUGGESTIONS}
-                  value={field.value || []}
-                  onChange={(_, newValue) => field.onChange(newValue)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Tags"
-                      placeholder="Add tags"
-                    />
-                  )}
-                />
-              )}
-            />
-
-            <Stack py={1} spacing={2}>
-              <Typography variant='body2' sx={{ opacity: 0.75}}>
-                Set date {task ? 'and time for this task' : 'for this ticket'}
-              </Typography>
-              <DatePicker control={control} name="dueDate" defaultValue="" />
-            </Stack>
-
-            <Stack direction="row" spacing={3} pt={1.5}>
-              <Button loading={submitting}> Create </Button>
-              <Button tone="warm" onClick={onClose}> Cancel</Button>
-            </Stack>
-          </Stack>
+        <Box>
+          <TextField select label="Type" value={String(itemType)} onChange={(e) => setItemType(e.target.value as LocalType)} fullWidth>
+            {Object.keys(registryForms).map((k) => (
+              <MenuItem key={k} value={k}>
+                {k[0] + k.slice(1).toLowerCase()}
+              </MenuItem>
+            ))}
+          </TextField>
         </Box>
 
-        {errRes && <Alert severity="error">{errRes}</Alert>}
+        <FormProvider {...methods}>
+          <form key={String(itemType)} onSubmit={methods.handleSubmit(onSubmit)}>
+            <FormComponent control={methods.control} task={task} />
+            <Stack direction="row" spacing={2} pt={2}>
+              <Button type="submit" loading={submitting}>Create</Button>
+              <Button tone="warm" onClick={() => { methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate)); onClose(); }}>
+                Cancel
+              </Button>
+            </Stack>
+          </form>
+        </FormProvider>
+
+        {err && <Alert severity="error">{err}</Alert>}
       </Box>
     </Drawer>
   );

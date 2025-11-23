@@ -26,7 +26,6 @@ import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
 export type InternalView = View | 'thisWeek';
 
 const localizer = momentLocalizer(moment);
-
 const DnDCalendar = withDragAndDrop<PlannerEvent, object>(BigCalendar);
 
 const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
@@ -38,9 +37,11 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:600px)');
 
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [internalView, setInternalView] = useState<InternalView>('week');
   const [loading, setLoading] = useState(true);
+  const [calendarKey, setCalendarKey] = useState(0);
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [eventsState, setEventsState] = useState<PlannerEvent[]>([]);
+  const [internalView, setInternalView] = useState<InternalView>('week');
 
   const hasInitialised = useRef(false);
   const hasSetMobileView = useRef(false);
@@ -49,7 +50,9 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     if (isMobile && !hasSetMobileView.current) {
       setInternalView('day');
       hasSetMobileView.current = true;
-    } else if (!isMobile) hasSetMobileView.current = false;
+    } else if (!isMobile) {
+      hasSetMobileView.current = false;
+    }
   }, [isMobile]);
 
   useEffect(() => {
@@ -67,6 +70,20 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     return () => clearTimeout(timeout);
   }, [tasks]);
 
+  useEffect(() => {
+    if (tasks?.length) {
+      const mapped = tasks.map((t) => ({
+        id: t.id,
+        title: t.title,
+        start: new Date(t.dueDate!),
+        end: new Date(new Date(t.dueDate!).getTime() + 60 * 60 * 1000),
+        status: t.status,
+        priority: t.priority,
+      }));
+      setEventsState(mapped);
+    }
+  }, [tasks]);
+
   const bigCalendarView = useMemo<View>(
     () => (internalView === 'thisWeek' ? 'week' : internalView),
     [internalView]
@@ -75,9 +92,17 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   const handleNavigate = useCallback(
     (direction: 'PREV' | 'NEXT' | 'TODAY') => {
       const m = moment(currentDate);
+
       if (direction === 'TODAY') {
-        setCurrentDate(moment().toDate());
-        if (internalView === 'thisWeek') setInternalView('thisWeek');
+        const today = moment().toDate();
+        setCurrentDate(today);
+
+        // Forcing BigCalendar to refresh its internal focus
+        setTimeout(() => setCalendarKey((k) => k + 1), 0);
+
+        if (internalView === 'thisWeek') {
+          setInternalView('thisWeek');
+        }
         return;
       }
 
@@ -88,7 +113,9 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           ? 'week'
           : 'day';
 
-      const newDate = direction === 'PREV' ? m.subtract(1, unit) : m.add(1, unit);
+      const newDate =
+        direction === 'PREV' ? m.subtract(1, unit) : m.add(1, unit);
+
       setCurrentDate(newDate.toDate());
       if (internalView === 'thisWeek') setInternalView('week');
     },
@@ -107,8 +134,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     if (e.key === 'ArrowRight') handleNavigate('NEXT');
     if (e.key === 't' || e.key === 'T') handleNavigate('TODAY');
   };
-
-  const [eventsState, setEventsState] = useState<PlannerEvent[]>([]);
 
   useEffect(() => {
     if (tasks?.length) {
@@ -177,7 +202,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       '& .rbc-calendar': { minWidth: '735px' },
     },
     '& .rbc-calendar': { minHeight: '90vh', cursor: 'default' },
-
     '& .rbc-toolbar': { display: 'none'},
     '& .rbc-header': {
       height: 60,
@@ -193,15 +217,9 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       alignContent: 'center',
     },
     '& .rbc-time-slot': {},
-    '& .rbc-time-slot.rbc-now': {
-      background: 'var(--accent)'
-    },
-    '& .rbc-time-header': {
-      height: 60,
-    },
-    '& .rbc-current-time-indicator': {
-      background: 'var(--accent)'
-    },
+    '& .rbc-time-slot.rbc-now': { background: 'var(--accent)'},
+    '& .rbc-time-header': { height: 60, },
+    '& .rbc-current-time-indicator': { background: 'var(--accent)'},
     '& .rbc-event': {},
     '& .rbc-event-content': {
       height: 'fit-content',
@@ -250,12 +268,13 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       ) : (
         <Box sx={calendarStyle}>
           <DnDCalendar
+            key={calendarKey}                       // ← Forces refocus on TODAY
             localizer={localizer}
             events={eventsState}
-            startAccessor={(ev) => new Date(ev.start)}
-            endAccessor={(ev) => new Date(ev.end)}
             date={currentDate}
             view={bigCalendarView}
+            scrollToTime={moment().startOf('day').add(8, 'hours').toDate()} // ← Today's scroll target
+            endAccessor={(ev) => new Date(ev.end)}
             onView={(v) => setInternalView(v as InternalView)}
             onNavigate={(d) => setCurrentDate(d)}
             selectable
