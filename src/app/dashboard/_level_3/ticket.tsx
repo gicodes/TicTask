@@ -100,9 +100,9 @@ const TicketsPage: React.FC = () => {
       <Toolbar
         view={view}
         setView={setView}
-        onOpenCreate={() => setFormOpen(true)}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        onOpenCreate={() => setFormOpen(true)}
       />
 
       {view === 'board' ? (

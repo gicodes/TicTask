@@ -174,29 +174,38 @@ a.secondary {
 .btnSmall {
   height: 36px;
   padding: 0 12px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .btnMedium {
   height: 44px;
   padding: 5px 18px;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .btnLarge {
-  height: 50px;
+  height: 55px;
   padding: 10px 22px;
-  font-size: 18px;
+  font-size: 20px;
+}
+
+.btnXLarge {
+  height: 69px;
+  padding: 10px 22px;
+  font-size: 25px;
 }
 
 .btnFullWidth { width: 100%; }
 
 .btnFilled { border: 1px solid transparent; }
+
 .btnOutlined {
   background: transparent;
   border: 1px solid currentColor;
 }
-.btnContained { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.btnContained { 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+}
 .btnText {
   background: transparent;
   border: none;
@@ -224,7 +233,7 @@ a.secondary {
 .btnAction {
   background: var(--surface-2);
   color: var(--foreground);
-  border-color: #ccc;
+  border-color: var(--disabled);
 }
 
 .btnRetreat {
@@ -262,49 +271,41 @@ a.secondary {
     color: var(--btn-secondary-color);
     border-color: darkorange;
   }
-
   .btnSecondary:hover {
     background: var(--btn-primary-bg);
     color: var(--btn-primary-color);
     border-color: darkorange;
   }
-
   .btnAction:hover {
     background: var(--surface-1);
     border-color: darkorange;
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
-
   .btnInverted:hover {
     background: var(--foreground);
     color: var(--background);
     border-color: darkorange;
   }
-
   .btnRetreat:hover {
     color: var(--warm);
     border-color: darkorange;
   }
-
   .btnSharp:hover {
     background: transparent;
     color: var(--success);
     border-color: var(--success);
   }
-
   .btnWarm:hover {
     background: var(--accent);
     color: var(--accent-contrast);
     border-color: var(--accent);
   }
-
   .btnError:hover {
     background: transparent;
     color: var(--error);
     border-color: var(--error);
   }
-
   .btnDanger:hover {
     background: transparent;
     color: var(--danger);
@@ -315,7 +316,6 @@ a.secondary {
 .btnWithStartIcon > span {
   margin-left: 0.35rem;
 }
-
 .btnWithEndIcon > span {
   margin-right: 0.35rem;
 }
@@ -323,11 +323,6 @@ a.secondary {
 .btnIconWrapper {
   display: inline-flex;
   align-items: center;
-}
-
-.defPageColors {
-  color: white;
-  background-color: (var(--background));
 }
 
 .container {
@@ -346,13 +341,6 @@ a.secondary {
   max-width: 500px;
   margin: 0 auto;
   justify-content: center;
-}
-
-.outerCircle {
-  border: 0.1px solid white;
-  padding: 10px;
-  border-radius: 50%;
-  width: fit-content;
 }
 
 .actions {

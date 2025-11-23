@@ -1,13 +1,13 @@
 import { Button } from "@mui/material";
 import { useTickets } from "@/providers/tickets";
 
-type Status = 'RESOLVED' | 'CANCELLED' | 'IN_PROGRESS';
-type ColorVariations = 'success' | 'secondary' | 'warning';
+export type QA_Status = 'RESOLVED' | 'CANCELLED' | 'IN_PROGRESS';
+export type QA_ColorVariations = 'success' | 'secondary' | 'warning';
 
 interface QuickActions {
   ticketID: string | number;
-  color: ColorVariations;
-  status: Status;
+  color: QA_ColorVariations;
+  status: QA_Status;
   title: string;
   disabled: boolean;
   onClose: () => void;
@@ -33,12 +33,17 @@ export const QA_Btn = ({
   }
 
   return (
-    <Button 
-      variant="outlined"  
+    <Button  
       color={color} 
-      sx={{ boxShadow: 2}}
+      variant="outlined" 
       disabled={disabled}
       onClick={handleQuickAction}
+      sx={{ 
+        boxShadow: 2,
+        height: { xs: 36, sm: ''},
+        maxWidth: { xs: 96, sm: 'none'},
+        fontSize: { xs: 12, sm: 15, md: 16}
+      }}
     >
       {disabled ? "PAUSED" : title}
     </Button>

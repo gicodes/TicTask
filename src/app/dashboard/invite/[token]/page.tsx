@@ -52,7 +52,7 @@ export default function AcceptInvitePage() {
       setTimeout(() => router.push('/dashboard'), 2000);
     }
 
-  }, [token, router, acceptInvite, acceptTeamInvite]);
+  }, [user, token, router, acceptInvite, acceptTeamInvite]);
 
   if (status === 'pending') return (
     <Typography textAlign={'center'} py={8}>Accepting invite...</Typography>

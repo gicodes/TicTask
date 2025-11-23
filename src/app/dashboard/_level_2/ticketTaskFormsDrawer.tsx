@@ -1,6 +1,6 @@
+import { CreateTicket, Ticket } from '@/types/ticket';
 import React, { useEffect, useState } from 'react';
 import { useTickets } from '@/providers/tickets';
-import { CreateTicket, Ticket } from '@/types/ticket';
 import { useAlert } from '@/providers/alert';
 import { useAuth } from '@/providers/auth';
 import { Button } from '@/assets/buttons';
@@ -32,6 +32,7 @@ import {
   Stack,
   Alert,
   Typography,
+  Card,
 } from '@mui/material';
 
 type Props = {
@@ -57,17 +58,15 @@ export default function TicketTaskCreateFormsDrawer({
   const [err, setErr] = useState<string | null>(null);
 
   type LocalType = TicketTypeUnion | PlannerTaskTypeUnion;
+  
+  const initialType = task ? ('EVENT' as PlannerTaskTypeUnion) : ('GENERAL' as TicketTypeUnion);
+  const [itemType, setItemType] = useState<LocalType>(initialType);
 
   const registryForms = task ? TASK_FORMS : TICKET_FORMS;
   const registrySchemas = task ? TASK_SCHEMAS : TICKET_SCHEMAS;
   const registryDefaults = (task ? TASK_DEFAULTS : TICKET_DEFAULTS) as Record<
-    LocalType,
-    (d?: Date) => Record<string, unknown>
+    LocalType, (d?: Date) => Record<string, unknown>
   >;
-
-  const initialType = task ? ('EVENT' as PlannerTaskTypeUnion) : ('GENERAL' as TicketTypeUnion);
-  const [itemType, setItemType] = useState<LocalType>(initialType);
-
   const currentSchema: ZodType<FieldValues, FieldValues> = registrySchemas[itemType as keyof typeof registrySchemas];
   const defaultValues = registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate);
 
@@ -145,33 +144,88 @@ export default function TicketTaskCreateFormsDrawer({
   };
 
   return (
-    <Drawer anchor="right" open={open} onClose={onClose} sx={{ '& .MuiDrawer-paper': { width: { xs: '100%', md: 520 }, p: 3 } }}>
+    <Drawer 
+      anchor="right" 
+      open={open} 
+      onClose={onClose} 
+      sx={{ 
+        '& .MuiDrawer-paper': { width: { xs: '100%', md: 600 },} 
+      }}
+    >
       <Toolbar />
+
       <Box display="grid" gap={2}>
-        <Typography variant="h6">Create new {itemType === 'TASK' ? 'task' : 'ticket'}</Typography>
-
-        <Box>
-          <TextField select label="Type" value={String(itemType)} onChange={(e) => setItemType(e.target.value as LocalType)} fullWidth>
-            {Object.keys(registryForms).map((k) => (
-              <MenuItem key={k} value={k}>
-                {k[0] + k.slice(1).toLowerCase()}
-              </MenuItem>
-            ))}
-          </TextField>
+        <Card 
+          sx={{
+            px: 2,
+            pt: 2,
+            pb: 1.5,
+            borderRadius: 0,
+          }}
+        >
+          <Box 
+            gap={1}  
+            alignItems={'center'}
+            justifyContent={'space-between'}
+            display={{ xs: 'block', sm: 'flex' }}
+          >
+            <Typography 
+              pb={1}
+              variant="h6" 
+              fontWeight={600}
+              minWidth={{ sm: 200}}
+              textAlign={{ xs: 'center', sm: 'left'}} 
+            >
+              Create new {itemType === 'TASK' ? 'task' : 'ticket'}
+            </Typography>
+            <Box width={'100%'}>
+              <TextField 
+                select 
+                label="Type" 
+                value={String(itemType)} 
+                onChange={(e) => setItemType(e.target.value as LocalType)} 
+                fullWidth
+              >
+                {Object.keys(registryForms).map((k) => (
+                  <MenuItem key={k} value={k}>
+                    {k[0] + k.slice(1).toLowerCase()}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Box>
+          </Box>
+        </Card>
+        
+        <Box px={3}>
+          <FormProvider {...methods}>
+            <form key={String(itemType)} onSubmit={methods.handleSubmit(onSubmit)}>
+              <FormComponent control={methods.control} task={task} />
+              <Stack gap={2} py={3} px={{ xs: 4, sm: 5, md: 6, }}>
+                <Button 
+                  fullWidth 
+                  type="submit"
+                  tone='action'
+                  size='large'
+                  loading={submitting}
+                >
+                  Create
+                </Button>
+                <Button 
+                  tone="warm" 
+                  onClick={() => { 
+                    methods.reset(registryDefaults[itemType as 
+                      keyof typeof registryDefaults](defaultDueDate)); 
+                    onClose(); 
+                  }}
+                  sx={{ minWidth: 222, margin: '0 auto'}}
+                >
+                  Cancel
+                </Button>
+              </Stack>
+            </form>
+          </FormProvider>
         </Box>
-
-        <FormProvider {...methods}>
-          <form key={String(itemType)} onSubmit={methods.handleSubmit(onSubmit)}>
-            <FormComponent control={methods.control} task={task} />
-            <Stack direction="row" spacing={2} pt={2}>
-              <Button type="submit" loading={submitting}>Create</Button>
-              <Button tone="warm" onClick={() => { methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate)); onClose(); }}>
-                Cancel
-              </Button>
-            </Stack>
-          </form>
-        </FormProvider>
-
+        
         {err && <Alert severity="error">{err}</Alert>}
       </Box>
     </Drawer>

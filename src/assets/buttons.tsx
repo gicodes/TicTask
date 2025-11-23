@@ -16,7 +16,8 @@ export const BUTTON_STYLES = {
 export const BUTTON_SIZES = {
   small: styles.btnSmall,
   medium: styles.btnMedium,
-  large: styles.btnLarge
+  large: styles.btnLarge,
+  Xlarge: styles.btnXLarge
 };
 
 export const BUTTON_VARIANTS = {
