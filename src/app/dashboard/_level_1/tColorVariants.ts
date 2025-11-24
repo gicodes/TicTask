@@ -44,3 +44,22 @@ export const getTypeColor = (type: string) => {
     default: return 'var(--secondary)';
   }
 }
+
+export const TICKET_TYPE_COLORS = {
+  BUG: '#EF4444',
+  FEATURE_REQUEST: '#3B82F6',
+  TASK: '#10B981',
+  INVOICE: '#F59E0B',
+  EVENT: '#8B5CF6',
+  MEETING: '#8B5CF6',
+  GENERAL: '#111',
+};
+
+export const TYPE_COLORS: Record<string, string> = {
+  BUG: '#d32f2f',
+  FEATURE_REQUEST: '#1976d2',
+  INVOICE: '#2e7d32',
+  TASK: '#7b1fa2',
+  EVENT: '#f57c00',
+  MEETING: '#0288d1',
+};

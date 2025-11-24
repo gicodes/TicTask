@@ -1,29 +1,31 @@
+import { PlannerTaskType, TicketsType, TicketType } from '../_level_0/constants';
 import GeneralForm from "../_level_2/ticketFormTypes/general";
 import FeatureForm from "../_level_2/ticketFormTypes/feature";
 import BugFixForm from "../_level_2/ticketFormTypes/bugFix";
 import InvoiceForm from "../_level_2/ticketFormTypes/invoice";
 import EventForm from "../_level_2/ticketFormTypes/event";
-
-import { PlannerTaskType, TicketType } from './constants';
 import TaskForm from "../_level_2/ticketFormTypes/task";
-
 import { Control, FieldValues } from 'react-hook-form';
+import { Ticket } from '@/types/ticket';
 import { z, ZodTypeAny } from 'zod';
 import { format } from "date-fns";
 
-import { Ticket } from '@/types/ticket';
+import { FcDeployment, FcDocument, FcSupport } from "react-icons/fc";
+import { GrOptimize, GrPerformance, GrRotateLeft, GrTest } from "react-icons/gr";
+import { MdDesignServices, MdReadMore, MdSecurityUpdateGood, MdWarning } from "react-icons/md";
+import { Bug, Lightbulb, ReceiptText, CalendarClock, CheckSquare, CheckCircle, ToolCase, TicketCheck } from "lucide-react";
 
 export type TicketTypeUnion = TicketType;
 export type PlannerTaskTypeUnion = PlannerTaskType;
-export type FormComponentType = React.ComponentType<{ 
-  control: Control<FieldValues>; task?: boolean }>;
+export type FormComponentType = React.ComponentType<{control: Control<FieldValues>; task?: boolean }>;
 
-export interface TICKET_DRAWER_TYPES { 
-  open: boolean; 
-  onClose: () => void; 
-  onUpdate?: () => void;
-  ticketId?: string | number | null; 
-}
+export type TicketFormValuesUnion =
+  | GeneralFormValues
+  | BugFormValues
+  | FeatureFormValues
+  | InvoiceFormValues
+  | TaskFormValues
+  | EventMeetingFormValues;
 
 export interface TICKET_FORM_TYPES {
   open: boolean;
@@ -32,6 +34,36 @@ export interface TICKET_FORM_TYPES {
   task?: boolean;
   defaultDueDate?: Date;
 }
+
+export interface TICKET_DRAWER_TYPES { 
+  open: boolean; 
+  onClose: () => void; 
+  onUpdate?: () => void;
+  ticketId?: string | number | null; 
+}
+
+export const TICKET_TYPE_ICONS: Record<TicketsType, React.ComponentType<{ size?: number }>> = {
+  BUG: Bug,
+  FEATURE_REQUEST: Lightbulb,
+  TASK: CheckCircle,
+  INVOICE: ReceiptText,
+  EVENT: CalendarClock,
+  MEETING: CalendarClock,
+  GENERAL: CheckSquare,
+  DOCUMENTATION: FcDocument,
+  SUPPORT: FcSupport,
+  ISSUE: MdWarning,
+  OPTIMIZATION: GrOptimize,
+  MAINTENANCE: ToolCase,
+  RESEARCH: MdReadMore,
+  TEST: GrTest,
+  SECURITY: MdSecurityUpdateGood,
+  PERFORMANCE: GrPerformance,
+  DESIGN: MdDesignServices,
+  TICKET: TicketCheck,
+  RELEASE: GrRotateLeft,
+  DEPLOYMENT: FcDeployment
+};
 
 export const generalSchema = z.object({
   type: z.string().optional(),
@@ -74,6 +106,7 @@ export const invoiceSchema = z.object({
   amount: z.number().min(0),
   currency: z.string().default('USD'),
   dueDate: z.string().optional(),
+  recurrence: z.string().optional(),
   tags: z.array(z.string()).optional(),
 });
 export type InvoiceFormValues = z.infer<typeof invoiceSchema>;
@@ -85,9 +118,9 @@ export const taskSchema = z.object({
   priority: z.enum(['LOW','MEDIUM','HIGH','CRITICAL']).optional(),
   assignTo: z.string().email().optional(),
   checklist: z.array(z.string()).optional(),
-  recurrence: z.string().optional(), // e.g. cron-like or 'daily','weekly'...
+  recurrence: z.string().optional(),
   estimatedTimeHours: z.number().nonnegative().optional(),
-  attachments: z.array(z.string()).optional(), // store urls / ids
+  attachments: z.array(z.string()).optional(), // store urls & ids
   subtasks: z.array(z.object({ title: z.string(), done: z.boolean().optional() })).optional(),
   dueDate: z.string().optional(),
   tags: z.array(z.string()).optional(),
@@ -145,9 +178,7 @@ export const TICKET_SCHEMAS: Record<TicketTypeUnion, ZodTypeAny> = {
   TICKET: generalSchema,
 };
 
-export const TICKET_DEFAULTS: 
-  Record<TicketTypeUnion, (defaultDueDate?: Date) => Record<string, unknown>> = {
-
+export const TICKET_DEFAULTS: Record<TicketTypeUnion, (defaultDueDate?: Date) => Record<string, unknown>> = {
   GENERAL: () => ({ type: 'GENERAL', title: '', description: '', priority: 'MEDIUM', tags: [] }),
   BUG: () => ({ type: 'BUG', title: '', severity: 'HIGH', steps: '', priority: 'HIGH', tags: [] }),
   FEATURE_REQUEST: () => ({ type: 'FEATURE_REQUEST', title: '', impact: 'MEDIUM', description: '' }),

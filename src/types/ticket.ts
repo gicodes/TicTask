@@ -1,82 +1,102 @@
+import { User } from "./users";
+
+export interface TicketNote {
+  id: number;
+  content: string;
+  createdAt: string;
+  authorId?: number | null;
+  author?: User | null;
+}
+
+export interface TicketHistory {
+  id: number;
+  action: string;
+  oldValue?: string | null;
+  newValue?: string | null;
+  createdAt: string;
+  performedById?: number | null;
+  performedBy?: User | null;
+}
+
 export interface Ticket {
   id: number;
   title: string;
-  createdAt: string;
-  type: Ticket_Type;
+  description: string | null;
+  type: TicketType;
   status: TicketStatus;
-  priority: Ticket_Priority;
+  priority: TicketPriority | null;
 
-  description?: string;
+  tags: string[];
+  dueDate: string | null;
+  startTime: string | null;
+  endTime: string | null;
 
-  assignee?: string;
-  createdById?: number;
-  assignedToId?: number;
+  amount: number | null;
+  currency: string | null;
 
-  tags?: string[] | null;
+  data: Data;
 
-  startTime?: Date | string;
-  endTime?: Date | string;
-  estimatedTimeHours?: number;
+  createdAt: string;
+  updatedAt: string;
 
-  attachments?: string[];
-  subtasks?: string[];
-  recurrence?: string;
+  createdById: number;
+  createdBy: User;
+  assignedToId: number | null;
+  assignedTo: User | null;
 
-  impact?: Partial<TicketPriority>;
-  severity?: TicketPriority;
-  steps?: string | string[];
+  notes: TicketNote[];
+  history: TicketHistory[];
+}
 
-  location?: string;
-  checklist?: string[];
-  attendees?: string[];
-
+export type Data = {
   amount?: number;
   currency?: string;
-  dueDate?: Date | string | null;
+  severity?: TicketPriority,
+  steps?: string,
+  impact?: TicketImpact,
+  location?: string,
+  attendees?: string[],
+  checklist?: string[] | [],
+  recurrence?: string;
+  estimatedTimeHours?: number,
+  attachments?: string[],
+  subtasks?: SubTask[]
+}
 
-  updatedAt?: string | Date | null;
-  updatedById?: string | number;
+type SubTask = {
+  id: string | number;
+  title: string;
+  done?: boolean;
 }
 
 export interface Create_Ticket {
-  id: number;
+  type: TicketType;
   title: string;
-  createdAt: string;
-  type: Ticket_Type;
-  priority: Ticket_Priority;  
-  status: TicketStatus;
-  
   description?: string;
+  priority?: TicketPriority;
+  tags?: string[];
 
-  assignee?: string;
-  createdById?: number;
-  assignedToId?: number;
+  dueDate?: string | null;
+  startTime?: string | null;
+  endTime?: string | null;
 
-  tags?: string[] | null;
-
-  startTime?: Date | string;
-  endTime?: Date | string;
-  estimatedTimeHours?: number;
-
-  attachments?: string[];
-  subtasks?: string[];
-  recurrence?: string;
-
-  impact?: Partial<TicketPriority>;
-  severity?: TicketPriority;
-  steps?: string | string[];
-
-  location?: string;
-  checklist?: string[];
-  attendees?: string[];
-
+  severity?: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+  steps?: string;
+  impact?: 'LOW' | 'MEDIUM' | 'HIGH';
   amount?: number;
   currency?: string;
+  recurrence?: string;
 
-  dueDate?: Date | string;
-  updatedAt?: string | Date;
+  checklist?: string[];
+  subtasks?: SubTask[];
+  estimatedTimeHours?: number;
+  attachments?: string[];
+
+  location?: string;
+  attendees?: string[];
+
+  assignTo?: string;
 }
-
 export enum Ticket_Type {
   GENERAL = 'GENERAL',
   INVOICE = 'INVOICE',
@@ -108,9 +128,11 @@ export enum Ticket_Priority {
   URGENT = "URGENT"
 }
 
+export type TicketImpact = 'LOW' | 'MEDIUM' | 'HIGH';
+
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
-export type TicketStatus = 'UPCOMING'|'OPEN'|'IN_PROGRESS'|'RESOLVED'|'CLOSED'|'CANCELLED';
-export type TicketType = 'GENERAL'|'BUG'|'FEATURE_REQUEST'|'SUPPORT'|'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE';
+export type TicketStatus = 'UPCOMING'| 'OPEN'| 'IN_PROGRESS'| 'RESOLVED'| 'CLOSED'| 'CANCELLED';
+export type TicketType = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' |'SUPPORT'| 'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE';
 
 export interface BoardProps {
   grouped: Record<string, Ticket[]>;

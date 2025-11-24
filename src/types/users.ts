@@ -31,6 +31,7 @@ export type User = {
 
   subscription?: Subscription;
   getTNotifsViaEmail?: boolean;
+  workSpaceName?: string;
 
   teamMemberships: TeamMember[];
   createdTeams: Team[];

@@ -7,9 +7,9 @@ import TicketBoard from '../_level_2/_board';
 import Toolbar from '../_level_2/ticketsPageToolbar';
 import { useTickets } from '@/providers/tickets';
 import TicketFormDrawer from '../_level_2/CNTFormsDrawer';
-import TicketDetailDrawer from '../_level_2/ticketWorkSpaceDrawer';
+import TicketDetailDrawer from '../_level_2/TWSMiniDrawer';
 import React, { useEffect, useMemo, useState } from 'react';
-import { TICKET_STATUSES, TICKET_LIST_HEADERS } from '../_level_1/constants';
+import { TICKET_STATUSES, TICKET_LIST_HEADERS } from '../_level_0/constants';
 
 function useDebounce<T>(value: T, delay = 400): T {
   const [debounced, setDebounced] = useState(value);
@@ -52,7 +52,7 @@ const TicketsPage: React.FC = () => {
     const q = debouncedQuery.toLowerCase();
 
     return newTickets.filter((t) =>
-      [t.title, t.description, t.status, t.assignee, t.tags?.join(' ')]
+      [t.title, t.description, t.status, t.assignedTo?.name, t.tags?.join(' ')]
         .filter(Boolean)
         .some((field) => field?.toLowerCase().includes(q))
     );
@@ -114,9 +114,9 @@ const TicketsPage: React.FC = () => {
         />
       ) : (
         <TicketsList 
-          list={TICKET_LIST_HEADERS}
+          columns={TICKET_LIST_HEADERS}
           tickets={filteredTickets} 
-          openDetail={openDetail} 
+          onOpen={openDetail} 
         />
       )}
 

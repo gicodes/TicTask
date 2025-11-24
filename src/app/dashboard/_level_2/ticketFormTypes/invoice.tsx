@@ -1,5 +1,6 @@
 import { Stack, TextField } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
+import { DatePicker } from "../../_level_1/tDateControl";
 
 const InvoiceForm = ({ 
   control 
@@ -49,6 +50,8 @@ const InvoiceForm = ({
           />
         }
       />
+      <DatePicker control={control} name="dueDate" />
+      {/* Add client in feature versions */}
     </Stack>
   );
 }

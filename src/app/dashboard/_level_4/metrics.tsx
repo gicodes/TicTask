@@ -12,7 +12,7 @@ export default function MetricsPage() {
   const completedTickets = tickets.filter(t => t.status === 'RESOLVED').length;
   const activeTickets = tickets.filter(t => t.status === 'IN_PROGRESS' || t.status === 'OPEN').length;
   const uniqueProjects = new Set(tickets.map(t => t.id)).size || 0;
-  const teamMembers = new Set(tickets.map(t => t.assignee)).size || 0;
+  const teamMembers = new Set(tickets.map(t => t.assignedTo)).size || 0;
 
   const completedRate = totalTickets > 0 ? (completedTickets / totalTickets) * 100 : 0;
   const activeRate = totalTickets > 0 ? (activeTickets / totalTickets) * 100 : 0;

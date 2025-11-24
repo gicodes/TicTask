@@ -1,0 +1,59 @@
+import { Ticket } from '@/types/ticket';
+import { TicketFormValuesUnion } from './tSchema';
+
+export function extractTicketData(ticket: Ticket): TicketFormValuesUnion {
+  const base = {
+    type: ticket.type,
+    title: ticket.title,
+    description: ticket.description ?? '',
+    priority: ticket.priority ?? undefined,
+    tags: ticket.tags ?? [],
+    startTime: ticket.startTime ?? undefined,
+    endTime: ticket.endTime ?? undefined,
+    dueDate: ticket.dueDate ?? undefined,
+  };
+
+  const data = ticket.data;
+
+  switch (ticket.type) {
+    case 'BUG':
+      return {
+        ...base,
+        severity: data.severity ?? 'HIGH',
+        steps: data.steps ?? '',
+      };
+    case 'FEATURE_REQUEST':
+      return {
+        ...base,
+        impact: data.impact ?? 'MEDIUM',
+      };
+    case 'INVOICE':
+      return {
+        ...base,
+        amount: ticket.amount ?? data.amount ?? 0,
+        currency: ticket.currency ?? data.currency ?? 'USD',
+        recurrence: data.recurrence ?? '',
+      };
+    case 'TASK':
+      return {
+        ...base,
+        checklist: data.checklist ?? [],
+        subtasks: data.subtasks ?? [],
+        estimatedTimeHours: data.estimatedTimeHours,
+        attachments: data.attachments ?? [],
+        recurrence: data.recurrence ?? '',
+        startTime: ticket.startTime ?? undefined,
+      };
+    case 'EVENT':
+      return {
+        ...base,
+        type: ticket.type,
+        startTime: ticket.startTime ?? undefined,
+        endTime: ticket.endTime ?? undefined,
+        location: data.location ?? '',
+        attendees: data.attendees ?? [],
+      };
+    default:
+      return base;
+  }
+}

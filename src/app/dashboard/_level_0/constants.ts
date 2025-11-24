@@ -1,3 +1,26 @@
+export const ALL_TICKET_TYPES = [
+  'GENERAL',
+  'BUG',
+  'FEATURE_REQUEST',
+  'DOCUMENTATION',
+  'SUPPORT',
+  'ISSUE',
+  'INVOICE',
+  'OPTIMIZATION',
+  'MAINTENANCE',
+  'RESEARCH',
+  'TEST',
+  'SECURITY',
+  'PERFORMANCE',
+  'DESIGN',
+  'TICKET',
+  'TASK',
+  'MEETING',
+  'EVENT',
+  'RELEASE',
+  'DEPLOYMENT',
+] as const;
+
 export const TICKET_TYPES = [
   'GENERAL',
   'BUG',
@@ -40,6 +63,7 @@ export const EVENT_TAG_SUGGESTIONS = [
 ] as const;
 
 export type TicketType = (typeof TICKET_TYPES)[number];
+export type TicketsType = (typeof ALL_TICKET_TYPES)[number];
 export type PlannerTaskType = (typeof PLANNER_TASK_TYPES)[number];
 export type TicketPriority = (typeof TICKET_PRIORITIES)[number];
 

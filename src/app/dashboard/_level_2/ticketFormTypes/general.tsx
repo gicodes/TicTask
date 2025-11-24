@@ -3,7 +3,7 @@ import { useAuth } from '@/providers/auth';
 import { Control, Controller } from 'react-hook-form';
 import { DatePicker } from '../../_level_1/tDateControl';
 import { Autocomplete, MenuItem, Stack, TextField, Typography } from '@mui/material';
-import { EVENT_TAG_SUGGESTIONS, TAG_SUGGESTIONS, TICKET_PRIORITIES,} from '../../_level_1/constants';
+import { EVENT_TAG_SUGGESTIONS, TAG_SUGGESTIONS, TICKET_PRIORITIES,} from '../../_level_0/constants';
 
 type Props = {
   control: Control;
