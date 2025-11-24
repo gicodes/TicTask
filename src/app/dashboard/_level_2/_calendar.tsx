@@ -17,9 +17,9 @@ import { Calendar as BigCalendar, momentLocalizer, View } from 'react-big-calend
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 
-import ViewSelect from './calViewSelect';
 import NavControls from './calNavControls';
 import CalendarSkeleton from './calSkeleton';
+import ViewSelect from './plannerViewSelect';
 import EventRenderer, { TicketEvent } from './calEventRenderer';
 import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
 
@@ -77,8 +77,8 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
         title: t.title,
         start: new Date(t.dueDate!),
         end: new Date(new Date(t.dueDate!).getTime() + 60 * 60 * 1000),
-        status: t.status,
-        priority: t.priority,
+        status: t.status!,
+        priority: t.priority!,
       }));
       setEventsState(mapped);
     }
@@ -142,8 +142,8 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
         title: t.title,
         start: new Date(t.dueDate!),
         end: new Date(new Date(t.dueDate!).getTime() + 60 * 60 * 1000),
-        status: t.status,
-        priority: t.priority,
+        status: t.status!,
+        priority: t.priority!,
       }));
       setEventsState(mapped);
     }
@@ -180,7 +180,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     
     return {
       style: {
-        backgroundColor: colors[event.priority ?? 'MEDIUM'],
+        backgroundColor: colors[event.priority ?? 'LOW'],
         border: 'none',
         borderRadius: 6,
         padding: '8px 8px',

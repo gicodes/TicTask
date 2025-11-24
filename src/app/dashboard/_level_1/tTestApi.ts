@@ -1,5 +1,4 @@
-import { Ticket, Ticket_Priority, TicketStatus, Ticket_Type, Create_Ticket } from '@/types/ticket';
-import { v4 as uuidv4 } from 'uuid';
+import { Ticket, Ticket_Priority, Ticket_Type, Create_Ticket } from '@/types/ticket';
 import { DB } from '../_level_0/seed';
 
 const simulate = <T,>(result: T, ms = 200) =>
@@ -14,19 +13,21 @@ export const api = {
   },
   async createTicket(payload: Partial<Create_Ticket>) {
     const now = new Date().toISOString();
+
     const ticket: Create_Ticket = {
-      id: uuidv4(),
+      id: Math.random(),
       title: payload.title ?? 'Untitled',
       description: payload.description ?? '',
-      status: (payload.status as TicketStatus) ?? 'OPEN',
       priority: (payload.priority as Ticket_Priority) ?? 'MEDIUM',
       type: (payload.type as Ticket_Type) ?? 'GENERAL',
       createdAt: now,
       updatedAt: now,
+      status: payload.status ?? "OPEN",
       assignedToId: payload.assignedToId ?? undefined,
       tags: payload.tags ?? [],
-      dueDate: payload.dueDate ?? null,
+      dueDate: payload.dueDate ?? undefined,
     };
+
     DB.unshift(ticket);
     return simulate(ticket, 250);
   },

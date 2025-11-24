@@ -1,8 +1,8 @@
 import React from 'react';
-import { Ticket } from '@/types/ticket';
-import { Box, Chip } from '@mui/material';
-import { getStatusColor, priorityColor } from '../_level_1/tColorVariants';
+import { Box, Chip, Typography } from '@mui/material';
+import { Ticket, Ticket_Type } from '@/types/ticket';
 import { getTicketOrder } from '../_level_1/tSorting';
+import { getStatusColor, priorityColor } from '../_level_1/tColorVariants';
 
 const TicketsList = ({
   list,
@@ -20,6 +20,12 @@ const TicketsList = ({
   const sortedTickets = [...tickets].sort((a, b) => {
     return getTicketOrder(a) - getTicketOrder(b);
   });
+
+  const formatType = (type: Ticket_Type) => {
+  if (!type) return '';
+  if (type === 'FEATURE_REQUEST') return 'Feature';
+  return type.charAt(0) + type.slice(1).toLowerCase();
+};
 
   return (
     <Box py={3} px={2} maxWidth={'96vw'}>
@@ -102,27 +108,50 @@ const TicketsList = ({
                   {t.title}
                 </td>
 
-                {list.includes("Priority") && <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
-                  <Chip
+                {list?.includes("Priority") && <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
+                  {t.priority ? <Chip
                     label={t.priority}
                     size="small"
                     sx={{
-                      backgroundColor: priorityColor(t.priority),
+                      backgroundColor: priorityColor(t.priority ?? "LOW"),
                       color: 'white',
                       fontWeight: 600,
                       borderRadius: '8px',
                       textTransform: 'capitalize',
                     }}
-                  />
+                  />: <>{t.startTime ? new Date(t?.startTime).toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                      }).replace(' ', ' ') : ''}</>}
                 </td>}
 
-                {list.includes("Status") && <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
+                <td style={{ padding: '0 10px', whiteSpace: 'nowrap', }}>
+                  {t?.dueDate ? 
+                    new Date().toLocaleDateString()>new Date(t?.dueDate).toLocaleDateString() 
+                      ? <span className='custom-dull'>{new Date(t.dueDate).toDateString()}</span>
+                      :
+                    (new Date().toLocaleDateString()===new Date(t?.dueDate).toLocaleDateString() 
+                      ? <Typography variant='caption'>
+                          <strong className='font-xs custom-sharp'>Today</strong>{" "}
+                            @{new Date(t?.dueDate).toLocaleTimeString('en-US', {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              hour12: true,
+                            }).replace(' ', ' ')}
+                        </Typography> 
+                      : new Date(t.dueDate).toDateString()) 
+                  : t.startTime ? <span className='custom-dull'>{new Date(t.startTime).toDateString()}</span>
+                    : <i className='custom-dull'>Not set</i>}
+                </td>
+
+                {list?.includes("Status") && <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
                   <Chip
                     label={t.status==="IN_PROGRESS" ? "IN PROGRESS" : t.status}
                     size="small"
                     sx={{
-                      backgroundColor: getStatusColor(t.status).bg,
-                      color: getStatusColor(t.status).color,
+                      backgroundColor: getStatusColor(t.status!).bg,
+                      color: getStatusColor(t.status!).color,
                       fontWeight: 600,
                       borderRadius: '8px',
                       textTransform: 'capitalize',
@@ -130,21 +159,15 @@ const TicketsList = ({
                   />
                 </td>}
 
+                {list?.includes("Tags") &&  <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
+                  {t.tags}
+                </td>}
+
                 <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
-                  {t?.type==='FEATURE_REQUEST' ? 'Feature' : t.type[0] + t.type.slice(1).toLowerCase()}
+                  {formatType(t?.type)}
                 </td>
 
-                <td style={{ padding: '0 10px', whiteSpace: 'nowrap', }}>
-                  {t.dueDate ? 
-                    new Date().toLocaleDateString()>new Date(t.dueDate).toLocaleDateString() 
-                      ? <span className='custom-dull'>{new Date(t.dueDate).toDateString()}</span>
-                      :
-                    (new Date().toLocaleDateString()===new Date(t.dueDate).toLocaleDateString() 
-                      ? <strong className='font-xxs custom-warm'>Due Today</strong> 
-                      : new Date(t.dueDate).toDateString()): <i className='custom-dull'>Not set</i>}
-                </td>
-
-                {list.includes("Last Updated") && <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
+                {list?.includes("Last Updated") && <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>
                   {t.updatedAt
                     ? new Date(t.updatedAt).toLocaleString('en-US', {
                         month: '2-digit',

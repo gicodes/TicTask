@@ -4,10 +4,10 @@ import { Box } from '@mui/material';
 import { Ticket } from '@/types/ticket';
 import TicketsList from '../_level_2/_list';
 import TicketBoard from '../_level_2/_board';
-import Toolbar from '../_level_2/ticketToolbar';
+import Toolbar from '../_level_2/ticketsPageToolbar';
 import { useTickets } from '@/providers/tickets';
-import TicketFormDrawer from '../_level_2/ticketTaskFormsDrawer';
-import TicketDetailDrawer from '../_level_2/ticketDrawer';
+import TicketFormDrawer from '../_level_2/CNTFormsDrawer';
+import TicketDetailDrawer from '../_level_2/ticketWorkSpaceDrawer';
 import React, { useEffect, useMemo, useState } from 'react';
 import { TICKET_STATUSES, TICKET_LIST_HEADERS } from '../_level_1/constants';
 
@@ -72,7 +72,7 @@ const TicketsPage: React.FC = () => {
         const diff = new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
         if (diff !== 0) return diff;
       }
-      const pDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
+      const pDiff = priorityOrder[a.priority ?? "MEDIUM"] - priorityOrder[b.priority ?? "MEDIUM"];
       if (pDiff !== 0) return pDiff;
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });

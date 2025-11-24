@@ -3,7 +3,7 @@
 import { apiPost } from '@/lib/api';
 import { Typography } from '@mui/material';
 import { useAuth } from '@/providers/auth';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { GenericAPIRes } from '@/types/axios';
 import { useSearchParams, useRouter } from 'next/navigation';
 
@@ -13,7 +13,7 @@ export default function AcceptInvitePage() {
   const token = useSearchParams().get('token');
   const [status, setStatus] = useState('pending');
 
-  async function acceptInvite() {
+  const acceptInvite = useCallback(async () => {
     if (!token) return;
     
     const res: GenericAPIRes = await apiPost('/invite/accept', token);
@@ -22,9 +22,9 @@ export default function AcceptInvitePage() {
       setStatus('success');
       setTimeout(() => router.push('/auth/join/user'), 2000);
     } else setStatus('failed');
-  }
+  }, [router, token])
 
-  async function acceptTeamInvite() {
+  const acceptTeamInvite = useCallback(async () => {
     if (!token || !user) return;
   
     const credentials = { token, userId: user?.id };
@@ -34,7 +34,7 @@ export default function AcceptInvitePage() {
       setStatus('success');
       setTimeout(() => router.push('/dashboard'), 2000);
     } else setStatus('failed');
-  }
+  }, [router, token, user])
 
   // in future releases, we can differentiate between: 
   // rir invites, team invites, team-admin invites *, contributor invites *, moderator invites *, partner invites *,

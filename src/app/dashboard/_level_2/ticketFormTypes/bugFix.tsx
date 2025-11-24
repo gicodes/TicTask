@@ -2,8 +2,9 @@ import { MenuItem, Stack, TextField } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
 
 const BugFixForm = ({ 
-  control }: { control: Control}
-) => {
+  control 
+}: { control: Control }
+  ) => {
   return (
     <Stack spacing={2} mt={2}>
       <Controller
@@ -22,7 +23,7 @@ const BugFixForm = ({
             <MenuItem value="LOW">Low</MenuItem>
             <MenuItem value="MEDIUM">Medium</MenuItem>
             <MenuItem value="HIGH">High</MenuItem>
-            <MenuItem value="CRITICAL">Critical</MenuItem>
+            <MenuItem value="URGENT">Critical</MenuItem>
           </TextField>
         )}
       />

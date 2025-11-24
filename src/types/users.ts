@@ -1,15 +1,17 @@
 export type Role = 'ADMIN' | 'USER';
+export type UserType = 'PERSONAL' | 'BUSINESS';
 export type TeamRole = 'OWNER' | 'ADMIN' | 'MEMBER';
 export type AdminLevel = 'BASIC' | 'FULL' | 'SUPER';
 export type Plan = 'FREE' | 'STANDARD' | 'PRO' | 'ENTERPRISE';
-export type UserType = 'PERSONAL' | 'BUSINESS';
 
 export type User = {
   id: number;
   name: string;
   email: string;
   role: Role;
+
   emailVerifiedAt?: string;
+
   failedLogins: number;
   lockedUntil?: string;
 
@@ -27,7 +29,8 @@ export type User = {
   logo?:       string; 
   bio?:          string;
 
-  subscription?: Subscription
+  subscription?: Subscription;
+  getTNotifsViaEmail?: boolean;
 
   teamMemberships: TeamMember[];
   createdTeams: Team[];
@@ -66,8 +69,10 @@ export type TeamMember = {
   userId: number;
   teamId: number;
   role: TeamRole;
+
   invitedBy?: number;
   createdAt: string;
+
   user: User;
   team: Team;
 };

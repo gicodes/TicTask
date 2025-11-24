@@ -3,7 +3,6 @@
 import { useAuth } from '@/providers/auth';
 import { useEffect, useState } from 'react';
 import TicketsPage from './_level_3/ticket';
-import { TicketTimeTooltip } from './_level_1/tooltips';
 import DashboardOnboarding from './_level_0/onboardTips';
 import { Box, Divider, Tooltip, Typography } from '@mui/material';
 
@@ -26,7 +25,8 @@ export default function Page() {
     <Box py={1}>
       <DashboardOnboarding />
       <Box
-        p={3}
+        px={3}
+        py={1}
         gap={1}
         mx="auto"
         width="100%"
@@ -37,7 +37,7 @@ export default function Page() {
           <Typography variant="h6" fontWeight={501}>Hello{user?.name ? `, ${user?.name}` : ' there...'}</Typography>
         </Box>
         <Box display="flex" justifyContent="right" width="100%">
-          <Tooltip title={TicketTimeTooltip}>
+          <Tooltip title={'Every Second Counts ⏱️'}>
             <Typography variant="subtitle2">{time.toLocaleString()}</Typography>
           </Tooltip>
         </Box>

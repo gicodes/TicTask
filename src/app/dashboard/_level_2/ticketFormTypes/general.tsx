@@ -3,13 +3,7 @@ import { useAuth } from '@/providers/auth';
 import { Control, Controller } from 'react-hook-form';
 import { DatePicker } from '../../_level_1/tDateControl';
 import { Autocomplete, MenuItem, Stack, TextField, Typography } from '@mui/material';
-import {
-  EVENT_TAG_SUGGESTIONS,
-  PLANNER_TASK_TYPES,
-  TAG_SUGGESTIONS,
-  TICKET_PRIORITIES,
-  TICKET_TYPES,
-} from '../../_level_1/constants';
+import { EVENT_TAG_SUGGESTIONS, TAG_SUGGESTIONS, TICKET_PRIORITIES,} from '../../_level_1/constants';
 
 type Props = {
   control: Control;
@@ -23,33 +17,16 @@ const GeneralForm = ({ control, task = false }: Props) => {
   return (
     <Stack spacing={2} mt={2}>
       <Controller
-        name="type"
-        control={control}
-        render={({ field }) => (
-          <TextField select label="Type" {...field}>
-            {task
-              ? Object.values(PLANNER_TASK_TYPES).map((ptt, i) => (
-                  <MenuItem value={ptt} key={i}>
-                    {ptt[0] + ptt.slice(1).toLocaleLowerCase()}
-                  </MenuItem>
-                ))
-              : Object.values(TICKET_TYPES).map((tt, i) => (
-                  <MenuItem value={tt} key={i}>
-                    {tt === 'FEATURE_REQUEST' ? 'Feature' : tt[0] + tt.slice(1).toLocaleLowerCase()}
-                  </MenuItem>
-                ))}
-          </TextField>
-        )}
-      />
-      <Controller
         name="title"
         control={control}
-        render={({ field }) => <TextField label="Title" required {...field} />}
+        render={({ field }) => 
+          <TextField label="Title" required {...field} />}
       />
       <Controller
         name="description"
         control={control}
-        render={({ field }) => <TextField label="Description" multiline minRows={4} {...field} />}
+        render={({ field }) => 
+          <TextField label="Description" multiline minRows={4} {...field} />}
       />
       <Controller
         name="priority"
@@ -64,11 +41,13 @@ const GeneralForm = ({ control, task = false }: Props) => {
           </TextField>
         )}
       />
-      {user?.userType === 'BUSINESS' && (
+
+      { user?.userType === 'BUSINESS' && (
         <Controller
           name="assignTo"
           control={control}
-          render={({ field }) => <TextField type="email" label="Assign to team (member email)" {...field} />}
+          render={({ field }) => 
+            <TextField type="email" label="Assign to team (member email)" {...field} />}
         />
       )}
       <Controller
@@ -78,10 +57,12 @@ const GeneralForm = ({ control, task = false }: Props) => {
           <Autocomplete
             multiple
             freeSolo
-            options={task ? EVENT_TAG_SUGGESTIONS as readonly string[] : TAG_SUGGESTIONS as readonly string[]}
+            options={task ? EVENT_TAG_SUGGESTIONS as readonly string[] 
+              : TAG_SUGGESTIONS as readonly string[]}
             value={field.value || []}
             onChange={(_, newValue) => field.onChange(newValue)}
-            renderInput={(params) => <TextField {...params} label="Tags" placeholder="Add tags" />}
+            renderInput={(params) => 
+              <TextField {...params} label="Tags" placeholder="Add tags" />}
           />
         )}
       />

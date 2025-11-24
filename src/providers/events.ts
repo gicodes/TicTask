@@ -1,8 +1,9 @@
 export type TicketPayloads = {
-  created: { ticketId: string | number; title: string; createdBy: string | number; assignee?: string | number };
-  updated: { ticketId: number; changes: Record<string, unknown>; status: string; updatedBy?: string | number }
+  created: { ticketId: number; type: string; title: string; createdBy: string | number; assignee?: string | number };
+  updated: { ticketId: number; type: string; changes: Record<string, unknown>; status: string; updatedBy?: string | number }
   assigned: { ticketId: number; assignee?: string | number; assignedBy?: string | number };
   resolved: { ticketId: number; resolvedBy?: string | number };
+  closed: { ticketId: number, closedBy?: string | number};
   comment: { ticketId: number; commentId: string; text: string; author: string | number };
   statusChanged: { ticketId: number; from: string; to: string; changedBy?: string };
 };
@@ -29,6 +30,7 @@ export type AppEvents = {
   "ticket:updated": TicketPayloads["updated"];
   "ticket:assigned": TicketPayloads["assigned"];
   "ticket:resolved": TicketPayloads["resolved"];
+  "ticket:closed": TicketPayloads["closed"];
   "ticket:comment": TicketPayloads["comment"];
   "ticket:status-changed": TicketPayloads["statusChanged"];
 

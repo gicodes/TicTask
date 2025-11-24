@@ -26,7 +26,7 @@ export const getTicketOrder = (t: Ticket) => {
   if (t.status === 'OPEN' && days !== null && days >= 7) return 5;
 
   // 6. Tickets without dueDate (except final categories)
-  if (!t.dueDate && !['RESOLVED', 'CLOSED', 'CANCELLED'].includes(t.status))
+  if (!t.dueDate && !['RESOLVED', 'CLOSED', 'CANCELLED'].includes(t.status ?? "MEDIUM"))
     return 6;
 
   // 7. RESOLVED

@@ -1,5 +1,5 @@
 import React from 'react';
-import TicketCard from './ticketCard';
+import TicketCard from './boardTCard';
 import { Ticket } from '@/types/ticket';
 import { Badge, Box, Typography } from '@mui/material';
 

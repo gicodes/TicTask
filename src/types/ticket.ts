@@ -1,55 +1,93 @@
 export interface Ticket {
-  id: number | string;
+  id: number;
   title: string;
-  description?: string;
   createdAt: string;
-  updatedAt?: string | Date | null;
-  assignee?: string;
-  createdById?: string | number;
-  assignedToId?: string | number | null;
-  tags?: string[] | null;
-  dueDate?: Date | string | null;
-  status: TicketStatus;
   type: Ticket_Type;
+  status: TicketStatus;
   priority: Ticket_Priority;
+
+  description?: string;
+
+  assignee?: string;
+  createdById?: number;
+  assignedToId?: number;
+
+  tags?: string[] | null;
+
+  startTime?: Date | string;
+  endTime?: Date | string;
+  estimatedTimeHours?: number;
+
+  attachments?: string[];
+  subtasks?: string[];
+  recurrence?: string;
+
+  impact?: Partial<TicketPriority>;
+  severity?: TicketPriority;
+  steps?: string | string[];
+
+  location?: string;
+  checklist?: string[];
+  attendees?: string[];
+
+  amount?: number;
+  currency?: string;
+  dueDate?: Date | string | null;
+
+  updatedAt?: string | Date | null;
   updatedById?: string | number;
 }
 
 export interface Create_Ticket {
-  id: number | string;
+  id: number;
   title: string;
-  description?: string;
   createdAt: string;
-  updatedAt?: string | Date;
-  assignee?: string;
-  createdById?: string | number;
-  assignedToId?: string | number;
-  tags?: string[] | null;
-  dueDate?: Date | string | null;
-  status: TicketStatus;
   type: Ticket_Type;
-  priority: Ticket_Priority;
-}
-
-export interface CreateTicket {
-  type: Ticket_Type;
-  title: string;
-  description?: string;
-  tags?: string[] | null;
   priority: Ticket_Priority;  
-  assignTo?: string | number | unknown;
-  dueDate: Date | string | undefined;
-  createdById?: string | number;
+  status: TicketStatus;
+  
+  description?: string;
+
+  assignee?: string;
+  createdById?: number;
+  assignedToId?: number;
+
+  tags?: string[] | null;
+
+  startTime?: Date | string;
+  endTime?: Date | string;
+  estimatedTimeHours?: number;
+
+  attachments?: string[];
+  subtasks?: string[];
+  recurrence?: string;
+
+  impact?: Partial<TicketPriority>;
+  severity?: TicketPriority;
+  steps?: string | string[];
+
+  location?: string;
+  checklist?: string[];
+  attendees?: string[];
+
+  amount?: number;
+  currency?: string;
+
+  dueDate?: Date | string;
+  updatedAt?: string | Date;
 }
 
 export enum Ticket_Type {
   GENERAL = 'GENERAL',
   INVOICE = 'INVOICE',
-  ISSUE = 'ISSUE',
-  TASK = "TASK",
-  BUG = 'BUG',
-  TEST = 'TEST',
+  FEATURE = 'FEATURE_REQUEST',
   EVENT = 'EVENT',
+  BUG = 'BUG',
+  TASK = "TASK",
+
+  TICKET = 'TICKET',
+  ISSUE = 'ISSUE',
+  TEST = 'TEST',
   DESIGN = 'DESIGN',
   MEETING = 'MEETING',
   RELEASE = 'RELEASE',
@@ -57,12 +95,10 @@ export enum Ticket_Type {
   RESEARCH = 'RESEARCH',
   SECURITY = 'SECURITY',
   DEPLOYMENT = 'DEPLOYMENT',
-  FEATURE = 'FEATURE_REQUEST',
   PERFORMANCE = 'PERFORMANCE',
   MAINTENANCE = 'MAINTENANCE',
   OPTIMIZATION = 'OPTIMIZATION',
   DOCUMENTATION = 'DOCUMENTATION',
-  TICKET = 'TICKET'
 }
 
 export enum Ticket_Priority {

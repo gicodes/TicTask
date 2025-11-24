@@ -2,7 +2,7 @@ import { Ticket_Type, Ticket_Priority, Ticket} from '@/types/ticket';
 
 export const DB: Ticket[] = [
   { 
-    id: 't1', 
+    id: 101, 
     title: 'Kanban board v1 bug', 
     description: 'Modules not found. Issue is between package and client runtime.', 
     status: 'OPEN',
@@ -14,7 +14,7 @@ export const DB: Ticket[] = [
     tags: ['dnd/core','node_modules', 'react', 'next'], 
     dueDate: '2025-12-12' 
   },
-  { id: 't2', 
+  { id: 102, 
     title: 'Admin Dashboard Design', 
     description: 'Design md, lg and mobile dashboard UI for admin.', 
     status: 'UPCOMING', 
@@ -22,12 +22,12 @@ export const DB: Ticket[] = [
     type: Ticket_Type.FEATURE,
     createdAt: '2025-10-09T12:00:00Z', 
     updatedAt: '2025-10-20T12:00:00Z', 
-    assignedToId: null, 
+    assignedToId: undefined, 
     tags: ['UI/ UX','design', 'frontend'], 
     dueDate: '2025-11-11' 
   },
   { 
-    id: 't3', 
+    id: 103, 
     title: 'Tickets: Search', 
     description: 'Write a high-functional search logic for tickets on dashboard queue', 
     status: 'CLOSED', 
@@ -40,7 +40,7 @@ export const DB: Ticket[] = [
     dueDate: '2025-11-01' 
   },
   { 
-    id: 't4', 
+    id: 104, 
     title: 'Double api call, race conditions', 
     description: 'client component makes double api calls on (re)render causing error in app-breaking api event.', 
     status: 'RESOLVED', 
@@ -52,7 +52,7 @@ export const DB: Ticket[] = [
     tags: ['react', 'useffect', 'express'] 
   },
   { 
-    id: 't5', 
+    id: 105, 
     title: 'Web hooks: Slack and SMS channel selection', 
     description: 'Select Slack channel per workspace.', 
     status: 'OPEN', 
@@ -63,7 +63,7 @@ export const DB: Ticket[] = [
     tags: ['integration','slack', 'sms'] 
   },
   { 
-    id: 't9', 
+    id: 109, 
     title: 'Dashboard Authbar Avatar', 
     description: 'Set color variants for Teams, User.organization and Admins.', 
     status: 'UPCOMING', 
@@ -76,7 +76,7 @@ export const DB: Ticket[] = [
     dueDate: '2025-11-10' 
   },
   { 
-    id: 'i2', 
+    id: 122, 
     title: 'Ticket API controllers', 
     description: 'Write REST functions for client-api live stream, tickets overview sync and data update', 
     status: 'UPCOMING', 
@@ -89,7 +89,7 @@ export const DB: Ticket[] = [
     dueDate: '2025-10-22' 
   },
     { 
-    id: 't6', 
+    id: 106, 
     title: 'Console.log cleanup', 
     description: 'Clean up all trailing logs and unnecessary console.logs', 
     status: 'UPCOMING', 
@@ -101,7 +101,7 @@ export const DB: Ticket[] = [
     tags: ['refactor', 'console.log', 'cleanup',] 
   },
   { 
-    id: 't7',
+    id: 107,
     title: 'Resolve Hydration mismatch', 
     description: 'Trace the source of server vs client HTML render mis-match.', 
     status: 'OPEN', 
@@ -112,7 +112,7 @@ export const DB: Ticket[] = [
     tags: ['hydration', 'react', 'client', 'server', 'next', 'HTML'] 
   },
   {
-    id: 't11',
+    id: 101,
     title: "Kanban board, hello-pangea/dnd",
     description: "Module not found. Package install error. Resolved by classic 'rm -rf .next node_modules package-lock.json npm install' ",
     status: "RESOLVED",
@@ -125,7 +125,7 @@ export const DB: Ticket[] = [
     tags: ['react', 'module', 'package', 'next'],
   },
   {
-    id: 't12',
+    id: 101,
     title: "NextAuth & auth flow",
     description: "Fix nextAuth Credentials error and resolve client to server authentication flow.",
     status: "RESOLVED",
@@ -138,7 +138,7 @@ export const DB: Ticket[] = [
     tags: ["frontend","design"],
   },
   {
-    id: 't13',
+    id: 101,
     title: "TicTask, User Dashboard",
     description: "Start building out TicTask Dashboard with users: personal and team view.",
     status: "OPEN",
@@ -152,7 +152,7 @@ export const DB: Ticket[] = [
     dueDate: '2025-10-29',
   },
   {
-    id: 't14',
+    id: 101,
     title: "TicTask SWE Expo",
     description: "Record every thought, reason and bias toward my TicTask bug fixing and learning curve experience.",
     status: "IN_PROGRESS",
@@ -165,7 +165,7 @@ export const DB: Ticket[] = [
     tags: ["dev","SWE", 'documentation'],
   },
   {
-    id: 't15',
+    id: 101,
     title: "DevEx Journal",
     description: "Document my experience with bug fixes, frustrations and learning curve.",
     status: "CANCELLED",
@@ -178,7 +178,7 @@ export const DB: Ticket[] = [
     tags: ["docs","dev", 'experience'],
   },
   {
-    id: 't16',
+    id: 101,
     title: "Dashboard Pages (12+)",
     description: "Build out all menu pages, sections on dashboard with inherit styles in mind.",
     status: "IN_PROGRESS",
@@ -187,12 +187,12 @@ export const DB: Ticket[] = [
     createdAt: "2025-10-15T08:00:00Z",
     updatedAt: "2025-09-20T09:00:00Z",
     createdById: 3,
-    assignedToId: 'Akachukwu.Obiaju',
+    assignee: 'Akachukwu.Obiaju',
     dueDate: '2025-10-30',
     tags: ["frontend","ui/ ux", 'design', 'pages'],
   },
   { 
-    id: 't8', 
+    id: 108, 
     title: 'Dashboard layout and flow tree', 
     description: 'Design dashboard data structure, layout and flow tree.', 
     status: 'CLOSED',
@@ -204,7 +204,7 @@ export const DB: Ticket[] = [
     tags: ['system design','frontend', 'layout'] 
   },
   { 
-    id: 't17', 
+    id: 101, 
     title: 'Landing Page', 
     description: 'Build the index page. This event set the tempo for the rest of the app building', 
     status: 'CLOSED',
@@ -216,7 +216,7 @@ export const DB: Ticket[] = [
     tags: ['ui/ux', 'design'] 
   },
   { 
-    id: 't18', 
+    id: 101, 
     title: 'Auth Pages', 
     description: 'Build login, register and other auth pages from the front. Design the client with backend data structure in mind', 
     status: 'CLOSED',
@@ -228,7 +228,7 @@ export const DB: Ticket[] = [
     tags: ['ui/ux', 'next', 'frontend'] 
   },
   { 
-    id: 't19', 
+    id: 101, 
     title: 'TicTask Backend design', 
     description: 'Design TicTask Overall System. App heirachy. Data structure and algorithms. File system, routes and controllers, REST apis and other utility functions. Consider all SWE principles', 
     status: 'CLOSED', 
@@ -240,7 +240,7 @@ export const DB: Ticket[] = [
     tags: ['backend', 'dsa', 'system design', 'SWE'] 
   },
   { 
-    id: 't10', 
+    id: 101, 
     title: 'App theme: background, colors variations', 
     description: 'Design app baseline styles with mui and css for inherit colors and bgColors', 
     status: 'CLOSED', 
@@ -252,7 +252,7 @@ export const DB: Ticket[] = [
     tags: ['ui/ux', 'css', 'material-ui'] 
   },
   { 
-    id: 'i1', 
+    id: 121, 
     title: 'Deploy backend to prod', 
     description: 'Bundle and deploy backend to production via render, railway or AWS', 
     status: 'UPCOMING', 
@@ -264,7 +264,7 @@ export const DB: Ticket[] = [
     tags: ['backend', 'prod', 'aws'] 
   },
   { 
-    id: 't20', 
+    id: 102, 
     title: 'Layouts nesting mixup', 
     description: 'Root layout vs nested layout causing background mismatch and inherit issues', 
     status: 'RESOLVED',
@@ -276,7 +276,7 @@ export const DB: Ticket[] = [
     tags: ['ui/ux', 'next', 'HTML'] 
   },
   { 
-    id: 'i0', 
+    id: 120, 
     title: 'Blog dynamic [id] page', 
     description: 'Implement dynamic routing and data fetching for individual blog posts using [id] slug.', 
     status: 'IN_PROGRESS', 
@@ -288,7 +288,7 @@ export const DB: Ticket[] = [
     tags: ['frontend', 'nextjs', 'blog'] 
   },
   { 
-    id: 'i20', 
+    id: 1220, 
     title: 'User profile', 
     description: 'Create the user profile page with basic info and activity summary.', 
     status: 'IN_PROGRESS', 
@@ -300,7 +300,7 @@ export const DB: Ticket[] = [
     tags: ['frontend', 'user', 'profile'] 
   },
   { 
-    id: 'i3', 
+    id: 123, 
     title: 'User edit profile and set status', 
     description: 'Allow users to edit profile fields and update their current availability status.', 
     status: 'IN_PROGRESS', 
@@ -312,7 +312,7 @@ export const DB: Ticket[] = [
     tags: ['frontend', 'user', 'settings'] 
   },
   { 
-    id: 'i4', 
+    id: 124, 
     title: 'Product pricing', 
     description: 'Design and implement pricing page layout, pulling data from backend plans API.', 
     status: 'IN_PROGRESS', 
@@ -324,7 +324,7 @@ export const DB: Ticket[] = [
     tags: ['frontend', 'pricing', 'ui'] 
   },
   { 
-    id: 'i5', 
+    id: 125, 
     title: 'Notification, activity and mute notifications', 
     description: 'Add system for notifications and activity feed with user control over mute preferences.', 
     status: 'OPEN', 
@@ -336,7 +336,7 @@ export const DB: Ticket[] = [
     tags: ['notifications', 'backend', 'ui'] 
   },
   { 
-    id: 'i6', 
+    id: 126, 
     title: 'New badge on dashboard menu items', 
     description: 'Show a “new” badge beside updated dashboard sections or newly released features.', 
     status: 'OPEN', 
@@ -348,7 +348,7 @@ export const DB: Ticket[] = [
     tags: ['frontend', 'dashboard', 'ui'] 
   },
   { 
-    id: 'i7', 
+    id: 127, 
     title: 'Dashboard pages: Subscriptions, Refer, Planner', 
     description: 'Build and connect dashboard subpages for subscription management, referral program, and planner tools.', 
     status: 'UPCOMING', 
@@ -360,7 +360,7 @@ export const DB: Ticket[] = [
     tags: ['dashboard', 'frontend', 'ux'] 
   },
   { 
-    id: 'i8', 
+    id: 128, 
     title: 'See password in onboarding', 
     description: 'Add toggle icon to show or hide password input during onboarding.', 
     status: 'CLOSED', 
@@ -372,7 +372,7 @@ export const DB: Ticket[] = [
     tags: ['auth', 'ui', 'onboarding'] 
   },
   { 
-    id: 'i9', 
+    id: 129, 
     title: 'Tickets: board view', 
     description: 'Develop kanban-style board view for tickets with drag and drop.', 
     status: 'CLOSED', 
@@ -384,7 +384,7 @@ export const DB: Ticket[] = [
     tags: ['tickets', 'frontend', 'ux'] 
   },
   { 
-    id: 'i10', 
+    id: 1210, 
     title: 'Tickets: list view', 
     description: 'Add sortable and filterable ticket list table view.', 
     status: 'CLOSED', 
@@ -396,7 +396,7 @@ export const DB: Ticket[] = [
     tags: ['tickets', 'frontend', 'list'] 
   },
   { 
-    id: 'i11', 
+    id: 1211, 
     title: 'RHS (auth) drawer', 
     description: 'Implement right-hand-side authentication drawer with smooth transitions.', 
     status: 'CLOSED', 
@@ -408,7 +408,7 @@ export const DB: Ticket[] = [
     tags: ['auth', 'drawer', 'ui'] 
   },
   { 
-    id: 'i12', 
+    id: 1212, 
     title: 'Dashboard shell optimization', 
     description: 'Optimize dashboard shell for faster navigation and reduced layout shift.', 
     status: 'CLOSED', 
@@ -420,7 +420,7 @@ export const DB: Ticket[] = [
     tags: ['dashboard', 'performance', 'ui'] 
   },
   { 
-    id: 'i13', 
+    id: 1213, 
     title: 'Resources: documentations, faq, blog', 
     description: 'Launch resources section with documentation, FAQs, and integrated blog feed.', 
     status: 'CLOSED', 

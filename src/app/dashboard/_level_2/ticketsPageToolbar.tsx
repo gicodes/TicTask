@@ -33,7 +33,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
     <Box
       px={1}
       pb={2}
-      gap={3}
+      gap={1}
       alignItems="center"
       flexWrap={{ md: 'wrap'}}
       display={{ xs: 'grid', md: 'flex' }}
@@ -49,7 +49,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
             >
               Tickets Overview
             </Typography>
-            <Typography variant="body1" sx={{ opacity: 0.7 }} minWidth={{ lg: 555}}>
+            <Typography variant="body1" sx={{ opacity: 0.7 }} minWidth={{ lg: 400}}>
               Create new ticket, change view from kanban to list and search for tickets. 
             </Typography>
           </Stack>

@@ -1,32 +1,18 @@
 'use client';
 
-import { useAuth } from './auth';
-import { AppEvents } from './events';
-import { Ticket } from '@/types/ticket';
-import { TicketsRes } from '@/types/axios';
-import { apiGet, apiPatch, apiPost } from '@/lib/api';
 import { 
   createContext, 
-  useCallback,
+  useCallback, 
   useContext, 
-  useEffect,  
+  useEffect, 
   useRef, 
   useState 
-} from 'react';
-
-type TicketContextType = {
-  tickets: Ticket[];
-  loading: boolean;
-  selectedTicket: Ticket | null;
-  fetchTickets: () => Promise<void>;
-  selectTicket: (ticketId: string | number | null) => void;
-  clearSelection: () => void;
-  createTicket?: (payload: Partial<Ticket>) => Promise<Ticket | void>;
-  updateTicket: (ticketId: number, updates: Partial<Ticket>) => Promise<Ticket | void>;
-  deleteTicket: (id: number | string) => void;
-};
-
-const TicketContext = createContext<TicketContextType | undefined>(undefined);
+} from "react";
+import { useAuth } from "./auth";
+import { AppEvents } from "./events";
+import { Ticket } from "@/types/ticket"; 
+import { TicketsRes } from "@/types/axios";
+import { apiGet, apiPatch, apiPost } from "@/lib/api";
 
 const priorityOrder: Record<string, number> = {
   URGENT: 1,
@@ -35,7 +21,7 @@ const priorityOrder: Record<string, number> = {
   LOW: 4,
 };
 
-function sortTickets(list: Ticket[]): Ticket[] {
+const sortTickets = (list: Ticket[]): Ticket[] => {
   return [...list].sort((a, b) => {
     if (!a.dueDate && b.dueDate) return 1;
     if (a.dueDate && !b.dueDate) return -1;
@@ -45,65 +31,48 @@ function sortTickets(list: Ticket[]): Ticket[] {
       if (diff !== 0) return diff;
     }
 
-    const pDiff = (priorityOrder[a.priority] ?? 99) - (priorityOrder[b.priority] ?? 99);
+    const pDiff = (priorityOrder[a.priority ?? "MEDIUM"] ?? 99) - (priorityOrder[b.priority ?? "MEDIUM"] ?? 99);
     if (pDiff !== 0) return pDiff;
 
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
-}
-
-export const useTickets = () => {
-  const context = useContext(TicketContext);
-
-  if (!context) throw new Error("useTickets must be used within a TicketsProvider");
-  return context;
 };
 
-export const TicketsProvider = ({ children }: { children: React.ReactNode }) => {
+type TicketContextType = {
+  tickets: Ticket[];
+  loading: boolean;
+  selectedTicket: Ticket | null;
+
+  fetchTickets: () => Promise<void>;
+  selectTicket: (ticketId: string | number | null) => void;
+  clearSelection: () => void;
+
+  createTicket: (payload: Partial<Ticket>) => Promise<Ticket | void>;
+  updateTicket: (ticketId: number, updates: Partial<Ticket>) => Promise<Ticket | void>;
+  deleteTicket: (id: number | string) => void;
+};
+
+const TicketContext = createContext<TicketContextType | undefined>(undefined);
+
+export function TicketsProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
   const hasFetchedRef = useRef(false);
+
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
 
-  const fetchTickets = useCallback(async () => {
-    if (hasFetchedRef.current) return; 
-    hasFetchedRef.current = true;
-
-    if (!user?.id) return;
-    setLoading(true);
-
-    try {
-      const res: TicketsRes = await apiGet(`/tickets/${user.id}`);
-      const sorted = sortTickets(res.tickets);
-
-      setTickets(sorted);
-    } catch (err) {
-      console.error('Failed to fetch tickets:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [user?.id]);
-
-  const selectTicket = (ticketId: string | number | null) => {
-    if (!ticketId) return setSelectedTicket(null);
-    
-    const found = tickets.find(t => t.id === Number(ticketId)) || null;
-    setSelectedTicket(found);
-  };
-
-  const clearSelection = () => setSelectedTicket(null); 
-
   const createTicket = async (payload: Partial<Ticket>) => {
     try {
-      const created: Ticket = await apiPost('/tickets', payload);
+      const created: Ticket = await apiPost(`/tickets`, payload);
+
       setTickets(prev => sortTickets([...prev, created]));
 
       AppEvents.emit("ticket:created", {
-        ticketId: payload.id!,
-        title: payload.title!,
-        createdBy: payload.createdById!,
-        assignee: payload.assignee,
+        ticketId: created.id,
+        title: created.title,
+        type: created.type,
+        createdBy: created.createdById!,
       });
 
       return created;
@@ -112,34 +81,65 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
     }
   };
 
+  const fetchTickets = useCallback(async () => {
+    if (!user?.id || hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
+
+    try {
+      setLoading(true);
+      const res: TicketsRes = await apiGet(`/tickets/${user.id}`);
+
+      const sorted = sortTickets(res.tickets || []);
+      setTickets(sorted);
+    } catch (err) {
+      console.error("Failed to fetch tickets:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.id]);
+
+  const selectTicket = (ticketId: string | number | null) => {
+    if (!ticketId) return setSelectedTicket(null);
+    const found = tickets.find(t => t.id === Number(ticketId)) || null;
+    setSelectedTicket(found);
+  };
+
+  const clearSelection = () => setSelectedTicket(null);
+
   const updateTicket = async (ticketId: number, updates: Partial<Ticket>) => {
     try {
       const updated: Ticket = await apiPatch(`/tickets/${ticketId}`, updates);
-      
+
       setTickets(prev => {
-        const updatedList = prev.map(t => (t.id === updated.id ? updated : t));
-        return sortTickets(updatedList);
+        const final = prev.map(t => (t.id === updated.id ? updated : t));
+        return sortTickets(final);
       });
 
-      if (selectedTicket?.id === updated.id) setSelectedTicket(updated);
+      if (selectedTicket?.id === updated.id) {
+        setSelectedTicket(updated);
+      }
 
       AppEvents.emit("ticket:updated", {
         ticketId,
-        status: updated.status,
-        changes: updates,
+        type: updated.type,
+        status: updated.status!,
         updatedBy: user?.id,
+        changes: updates,
       });
 
-      if (updates.assignee) {
+      if (updates.assignedToId) {
         AppEvents.emit("ticket:assigned", {
           ticketId,
-          assignee: updated.assignee,
-          assignedBy: updated.createdById,
+          assignee: updates.assignedToId,
+          assignedBy: user?.id,
         });
       }
 
-      if (updates.status && updates.status === "RESOLVED") {
-        AppEvents.emit("ticket:resolved", { ticketId, resolvedBy: updated.updatedById });
+      if (updates.status === "CLOSED") {
+        AppEvents.emit("ticket:closed", {
+          ticketId,
+          closedBy: user?.id,
+        });
       }
 
       return updated;
@@ -149,14 +149,14 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
   };
 
   const deleteTicket = (id: string | number) => {
-    setTickets(prev => prev.filter(t => t.id !== Number(id)));
-    if (selectedTicket?.id === Number(id)) clearSelection();
+    const numeric = Number(id);
+    setTickets(prev => prev.filter(t => t.id !== numeric));
+    if (selectedTicket?.id === numeric) clearSelection();
   };
 
   useEffect(() => {
     hasFetchedRef.current = false;
     fetchTickets();
-
   }, [fetchTickets]);
 
   return (
@@ -176,4 +176,10 @@ export const TicketsProvider = ({ children }: { children: React.ReactNode }) => 
       {children}
     </TicketContext.Provider>
   );
+}
+
+export const useTickets = () => {
+  const ctx = useContext(TicketContext);
+  if (!ctx) throw new Error("useTickets must be used inside TicketsProvider");
+  return ctx;
 };

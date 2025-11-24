@@ -176,8 +176,10 @@ export default function TicketDetailDrawer({
             <Stack spacing={1} sx={{ px: 1, pb: 2 }}>
               <Typography variant='caption' sx={{ opacity: 0.5}}>
                 <span>Created</span> 
-                  {ticket.createdById && <> by {ticket.createdById===user?.id ? <strong className='custom-warm'>you</strong> : <span className='custom-warm'>ticket.createdById</span>}.</>}
-                  <br/> <>On {ticket.createdAt ? new Date(ticket.createdAt).toDateString() + `, ${new Date(ticket.createdAt).toLocaleTimeString()}` : ''}</>
+                  {ticket.createdById && <> by {ticket.createdById===user?.id ? <strong className='custom-warm'>you</strong> 
+                    : <span className='custom-warm'>ticket.createdById</span>}.</>}
+                  <br/> <>On {ticket.createdAt ? new Date(ticket.createdAt).toDateString() + 
+                    `, ${new Date(ticket.createdAt).toLocaleTimeString()}` : ''}</>
               </Typography>
 
               <Typography variant='caption' sx={{ opacity: 0.75}}>
@@ -197,15 +199,24 @@ export default function TicketDetailDrawer({
                 </Box>
 
                 <Box display={'flex'} justifyContent={'end'}>
-                  <Stack gap={0.5}>
+                  {ticket?.priority && <Stack gap={0.5}>
                     <Typography fontSize={11} color='text.secondary' textAlign={'center'}>Priority</Typography>
-                    <Chip size='medium' label={ticket?.priority} sx={{ bgcolor: priorityColor(ticket.priority), color: '#fff', fontWeight: 600 }}/>
-                  </Stack>
+                    <Chip 
+                      size='medium' 
+                      label={ticket?.priority} 
+                      sx={{ 
+                        bgcolor: priorityColor(ticket.priority ?? "LOW"), 
+                        color: '#fff', 
+                        fontWeight: 600 
+                      }}
+                    />
+                  </Stack>}
                 </Box>
               </Stack>
 
               {ticket?.dueDate && <Typography variant="caption" sx={{ opacity: !activeTicket ? 0.5 : ''}}>
-                <strong>Due by</strong> {ticket.dueDate ? (new Date(ticket.dueDate).toDateString() + ", " + new Date(ticket.dueDate).toLocaleTimeString()) : ''}
+                <strong>Due by</strong> {ticket.dueDate ? (new Date(ticket.dueDate).toDateString() + 
+                  ", " + new Date(ticket.dueDate).toLocaleTimeString()) : ''}
               </Typography>}
             </Stack>
 
@@ -224,7 +235,7 @@ export default function TicketDetailDrawer({
                 direction={'row'} 
                 justifyContent={'center'}
                 gap={{ xs: 1, sm: 2, md: 3}} 
-                maxWidth={{ xs: 300, sm: 'none'}}
+                maxWidth={{ xs: 282, sm: 'none'}}
               >
                 { TICTASK_QUICK_ACTIONS.map((qa, i) =>
                   <QA_Btn
@@ -236,7 +247,6 @@ export default function TicketDetailDrawer({
                     disabled={ticket.status==="RESOLVED" || ticket.status==="CLOSED" || ticket.status==="CANCELLED"} 
                     onUpdate={() => onUpdate}
                     onClose={onClose}
-
                   />
                 )}
               </Stack>    
@@ -277,7 +287,7 @@ export default function TicketDetailDrawer({
       <Divider  sx={{ mt: 5}}/>
       <Stack p={3} direction={{ xs: "column", sm: "row" }} spacing={3}>
         {businessOrActiveTeam && activeTicket &&
-          (note !== '' || assignee !== '') && (
+          (note !== '' || assignee !== '' && dateChanged) && (
             <Button onClick={save}>Save Changes</Button> 
           )}
         <Button onClick={onClose} tone="retreat" sx={{ width: 200 }}> ← &nbsp; Back</Button>

@@ -1,27 +1,22 @@
-import { Ticket_Type, Ticket_Priority, Ticket } from '@/types/ticket';
 import GeneralForm from "../_level_2/ticketFormTypes/general";
 import FeatureForm from "../_level_2/ticketFormTypes/feature";
 import BugFixForm from "../_level_2/ticketFormTypes/bugFix";
 import InvoiceForm from "../_level_2/ticketFormTypes/invoice";
 import EventForm from "../_level_2/ticketFormTypes/event";
+
 import { PlannerTaskType, TicketType } from './constants';
 import TaskForm from "../_level_2/ticketFormTypes/task";
+
 import { Control, FieldValues } from 'react-hook-form';
 import { z, ZodTypeAny } from 'zod';
 import { format } from "date-fns";
 
+import { Ticket } from '@/types/ticket';
+
 export type TicketTypeUnion = TicketType;
 export type PlannerTaskTypeUnion = PlannerTaskType;
-
-export const schema = z.object({
-  type: z.nativeEnum(Ticket_Type),
-  title: z.string().min(3),
-  description: z.string().optional(),
-  priority: z.nativeEnum(Ticket_Priority),
-  assignTo: z.union([z.string(), z.number()]).optional(),
-  tags: z.array(z.string()).optional(),
-  dueDate: z.union([z.string(), z.date()]).optional(),
-});
+export type FormComponentType = React.ComponentType<{ 
+  control: Control<FieldValues>; task?: boolean }>;
 
 export interface TICKET_DRAWER_TYPES { 
   open: boolean; 
@@ -112,8 +107,6 @@ export const eventMeetingSchema = z.object({
 });
 export type EventMeetingFormValues = z.infer<typeof eventMeetingSchema>;
 
-export type FormComponentType = React.ComponentType<{ control: Control<FieldValues>; task?: boolean }>;
-
 export const TICKET_FORMS: Record<TicketTypeUnion, FormComponentType> = {
   GENERAL: GeneralForm,
   BUG: BugFixForm,
@@ -152,7 +145,9 @@ export const TICKET_SCHEMAS: Record<TicketTypeUnion, ZodTypeAny> = {
   TICKET: generalSchema,
 };
 
-export const TICKET_DEFAULTS: Record<TicketTypeUnion, (defaultDueDate?: Date) => Record<string, unknown>> = {
+export const TICKET_DEFAULTS: 
+  Record<TicketTypeUnion, (defaultDueDate?: Date) => Record<string, unknown>> = {
+
   GENERAL: () => ({ type: 'GENERAL', title: '', description: '', priority: 'MEDIUM', tags: [] }),
   BUG: () => ({ type: 'BUG', title: '', severity: 'HIGH', steps: '', priority: 'HIGH', tags: [] }),
   FEATURE_REQUEST: () => ({ type: 'FEATURE_REQUEST', title: '', impact: 'MEDIUM', description: '' }),

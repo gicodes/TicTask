@@ -45,9 +45,9 @@ export type TicketPriority = (typeof TICKET_PRIORITIES)[number];
 
 export const TICKET_STATUSES = ['UPCOMING', 'IN_PROGRESS', 'OPEN', 'RESOLVED', 'CLOSED', 'CANCELLED'];
 
-export const TICKET_LIST_HEADERS = ['No.', 'Title', 'Priority', 'Status', 'Type', 'Due Date', 'Last Updated']
+export const TICKET_LIST_HEADERS = ['No.', 'Title', 'Priority', 'Due Date', 'Status', 'Type', 'Last Updated']
 
-export const TASK_LIST_HEADERS = ['No.', 'Title', 'Status', 'Type', 'Due Date', ]
+export const TASK_LIST_HEADERS = ['No.', 'Title', 'Due Date', 'Status', 'Tags', 'Type']
 
 export const TICTASK_QUICK_ACTIONS = [
   {

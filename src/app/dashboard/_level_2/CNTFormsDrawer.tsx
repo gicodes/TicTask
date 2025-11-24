@@ -1,4 +1,4 @@
-import { CreateTicket, Ticket } from '@/types/ticket';
+import { Create_Ticket, Ticket } from '@/types/ticket';
 import React, { useEffect, useState } from 'react';
 import { useTickets } from '@/providers/tickets';
 import { useAlert } from '@/providers/alert';
@@ -65,8 +65,7 @@ export default function TicketTaskCreateFormsDrawer({
   const registryForms = task ? TASK_FORMS : TICKET_FORMS;
   const registrySchemas = task ? TASK_SCHEMAS : TICKET_SCHEMAS;
   const registryDefaults = (task ? TASK_DEFAULTS : TICKET_DEFAULTS) as Record<
-    LocalType, (d?: Date) => Record<string, unknown>
-  >;
+    LocalType, (d?: Date) => Record<string, unknown>>;
   const currentSchema: ZodType<FieldValues, FieldValues> = registrySchemas[itemType as keyof typeof registrySchemas];
   const defaultValues = registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate);
 
@@ -79,15 +78,14 @@ export default function TicketTaskCreateFormsDrawer({
 
   useEffect(() => {
     methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultDueDate, itemType, task]);
+  }, [defaultDueDate, itemType, task, methods, registryDefaults]);
 
   const onSubmit = async (values: FieldValues) => {
     setErr(null);
     setSubmitting(true);
 
     try {
-      if (task && itemType === 'TASK') {
+      if (task && (itemType === 'MEETING' || itemType==='EVENT')) {
         if (!values.dueDate && !values.startTime) {
           setErr('You must add a due date or start time for a planner task');
           setSubmitting(false);
@@ -113,7 +111,7 @@ export default function TicketTaskCreateFormsDrawer({
         ...payloadBase,
         dueDate: dueDateIso,
         createdById: user?.id ?? null,
-      } as unknown as CreateTicket;
+      } as unknown as Create_Ticket;
 
       if (!createTicket) {
         showAlert("Ticket creation is not available right now.", 'warning')

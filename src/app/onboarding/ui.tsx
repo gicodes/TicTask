@@ -82,7 +82,7 @@ export default function OnboardingUI(props: OnboardingProps) {
         onClick={step===3 ? handleSubmit : handleNext}
         disabled={loading}
       >
-        {loading ? 'Saving...' : step===3 ? "Finish" : "Continue"}
+        {(loading && step===3) ? "Building Profile..." : loading ?  'Saving...' : step===3 ? "Finish" : "Continue"}
       </Button>
     </Stack>
     
