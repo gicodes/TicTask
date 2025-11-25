@@ -8,9 +8,12 @@ export function extractTicketData(ticket: Ticket): TicketFormValuesUnion {
     description: ticket.description ?? '',
     priority: ticket.priority ?? undefined,
     tags: ticket.tags ?? [],
+    amount: ticket.amount,
+    currency: ticket.currency,
     startTime: ticket.startTime ?? undefined,
     endTime: ticket.endTime ?? undefined,
     dueDate: ticket.dueDate ?? undefined,
+    client: ticket.client ?? undefined,
   };
 
   const data = ticket.data;
@@ -30,8 +33,6 @@ export function extractTicketData(ticket: Ticket): TicketFormValuesUnion {
     case 'INVOICE':
       return {
         ...base,
-        amount: ticket.amount ?? data.amount ?? 0,
-        currency: ticket.currency ?? data.currency ?? 'USD',
         recurrence: data.recurrence ?? '',
       };
     case 'TASK':

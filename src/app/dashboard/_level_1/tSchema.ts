@@ -29,27 +29,28 @@ export type TicketFormValuesUnion =
 
 export interface TICKET_FORM_TYPES {
   open: boolean;
-  onClose: () => void;
-  onCreated?: (t: Ticket | void) => Ticket | void;
   task?: boolean;
   defaultDueDate?: Date;
+  onClose: () => void;
+  onCreated?: (t: Ticket | void) => void;
 }
 
-export interface TICKET_DRAWER_TYPES { 
-  open: boolean; 
-  onClose: () => void; 
-  onUpdate?: () => void;
-  ticketId?: string | number | null; 
+export interface TICKET_WORKSPACE_TYPES { 
+  open: boolean;
+  onClose: () => void;
+  ticket?: Ticket;
+  ticketId?: string | number;
+  onUpdate?: () => void; 
 }
 
 export const TICKET_TYPE_ICONS: Record<TicketsType, React.ComponentType<{ size?: number }>> = {
   BUG: Bug,
   FEATURE_REQUEST: Lightbulb,
-  TASK: CheckCircle,
+  TASK: CheckSquare,
   INVOICE: ReceiptText,
   EVENT: CalendarClock,
   MEETING: CalendarClock,
-  GENERAL: CheckSquare,
+  GENERAL: TicketCheck,
   DOCUMENTATION: FcDocument,
   SUPPORT: FcSupport,
   ISSUE: MdWarning,
@@ -60,7 +61,7 @@ export const TICKET_TYPE_ICONS: Record<TicketsType, React.ComponentType<{ size?:
   SECURITY: MdSecurityUpdateGood,
   PERFORMANCE: GrPerformance,
   DESIGN: MdDesignServices,
-  TICKET: TicketCheck,
+  TICKET: CheckCircle,
   RELEASE: GrRotateLeft,
   DEPLOYMENT: FcDeployment
 };
@@ -101,13 +102,13 @@ export type FeatureFormValues = z.infer<typeof featureSchema>;
 
 export const invoiceSchema = z.object({
   type: z.literal('INVOICE').optional(),
-  title: z.string().min(1),
+  title: z.string().min(1, "Title is required"),
+  amount: z.number().positive("Amount must be greater than 0"),
+  currency: z.string().default("USD"), // ← This prevents undefined
   description: z.string().optional(),
-  amount: z.number().min(0),
-  currency: z.string().default('USD'),
   dueDate: z.string().optional(),
   recurrence: z.string().optional(),
-  tags: z.array(z.string()).optional(),
+  tags: z.array(z.string()).optional().default([]),
 });
 export type InvoiceFormValues = z.infer<typeof invoiceSchema>;
  

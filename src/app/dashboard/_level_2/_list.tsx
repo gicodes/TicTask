@@ -2,6 +2,7 @@
 
 import React, { useMemo } from 'react';
 import {
+  Box,
   Table,
   TableBody,
   TableCell,
@@ -10,7 +11,6 @@ import {
   TableRow,
   Chip,
   Typography,
-  Box,
   Avatar,
   Tooltip,
   Paper,
@@ -75,7 +75,6 @@ export default function TicketsList({
     );
   }
 
-
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return <Typography color="text.disabled">—</Typography>;
     const date = new Date(dateStr);
@@ -92,8 +91,8 @@ export default function TicketsList({
     }
 
     return (
-      <Typography color={isOverdue ? 'error' : 'text.primary'}>
-        {isOverdue && 'OVERDUE'}
+      <Typography color={isOverdue ? 'error' : 'text.primary'} variant='body2'>
+        {isOverdue && 'OVERDUE • '}
         {date.toLocaleDateString([], { month: 'short', day: 'numeric' })}
       </Typography>
     );
@@ -211,90 +210,124 @@ export default function TicketsList({
   };
 
   return (
-    <TableContainer 
-      component={Paper} 
-      elevation={0} 
-      sx={{ 
-        border: '1px solid', 
-        borderColor: 'divider', 
-        borderRadius: 2 
-      }}
-    >
-      <Table stickyHeader size="small">
-        <TableHead>
-          <TableRow>
-            {columns?.map((col, i) => (
-              <TableCell 
-                key={i} 
-                sx={{ 
-                  fontWeight: 600, 
-                  bgcolor: 'background.paper', 
-                  color: 'text.primary',
-                  height: 60
-                }}
-              >
-                {col}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {sortedTickets.map((ticket, index) => (
-            <TableRow
-              key={ticket.id}
-              hover
-              onClick={() => onOpen(ticket.id)}
-              sx={{
-                height: 48,
-                cursor: 'pointer',
-                '&:last-child td': { border: 0 },
-                bgcolor: index % 2 === 0 ? 'action.hover' : 'transparent',
-              }}
-            >
-              {columns?.includes('No.') && (
-                <TableCell>
-                  <Typography variant="body2">{index + 1}</Typography>
-                </TableCell>
-              )}
-              {columns?.includes('Title') && (
-                <TableCell>
-                  <Stack direction="row" alignItems="center" gap={1.5}>
-                    <Typography variant="body2" fontWeight={500}>
-                      {ticket.title}
-                    </Typography>
-                  </Stack>
-                </TableCell>
-              )}
-              {columns?.includes('Priority') && <TableCell>
-                {renderPriorityCell(ticket)}
-              </TableCell>}
-              {columns?.includes('Due Date') && <TableCell>
-                {formatDate(ticket.dueDate)}
-              </TableCell>}
-              {columns?.includes('Status') && <TableCell>
-                {renderStatusCell(ticket)}
-              </TableCell>}
-              {columns?.includes('Tags') && <TableCell>
-                {renderTagsCell(ticket)}
-              </TableCell>}
-              {columns?.includes('Assignee') && <TableCell>
-                {renderAssigneeCell(ticket)}
-              </TableCell>}
-              {columns?.includes('Type') && <TableCell>
-                {renderTypeCell(ticket)}
-              </TableCell>}
-              {columns?.includes('Last Updated') && (
-                <TableCell>
-                  <Typography variant="caption" color="text.secondary">
-                    {ticket.updatedAt ? new Date(ticket.updatedAt).toLocaleDateString() : '—'}
-                  </Typography>
-                </TableCell>
-              )}
-              {columns?.includes('Extra') && <TableCell>{renderExtraInfo(ticket)}</TableCell>}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box py={3} px={2} maxWidth={'96vw'}>
+      <Box
+        sx={{
+          my: 3,
+          width: '100%',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          borderRadius: 2,
+          border: '0.1px solid var(--dull-gray)',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'thin',
+          scrollBehavior: 'smooth',
+          '&::-webkit-scrollbar': { height: 6,},
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'var(--secondary)',
+            borderRadius: 10,
+          },
+          '@media (max-width: 600px)': {
+            display: 'block',
+            maxWidth: '90vw',
+          },
+        }}
+      >
+        <Box
+          sx={{
+            minWidth: 750,
+            width: '100%',
+            borderCollapse: 'collapse',
+            tableLayout: 'auto',
+          }}
+        >
+          <TableContainer 
+            component={Paper} 
+            elevation={0} 
+            sx={{ 
+              border: '1px solid', 
+              borderColor: 'divider', 
+              borderRadius: 2 
+            }}
+          >
+            <Table stickyHeader size="small">
+              <TableHead>
+                <TableRow>
+                  {columns?.map((col, i) => (
+                    <TableCell 
+                      key={i} 
+                      sx={{ 
+                        fontWeight: 600, 
+                        bgcolor: 'background.paper', 
+                        color: 'text.primary',
+                        height: 60
+                      }}
+                    >
+                      {col}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sortedTickets.map((ticket, index) => (
+                  <TableRow
+                    key={ticket.id}
+                    hover
+                    onClick={() => onOpen(ticket.id)}
+                    sx={{
+                      height: 48,
+                      cursor: 'pointer',
+                      '&:last-child td': { border: 0 },
+                      bgcolor: index % 2 === 0 ? 'action.hover' : 'transparent',
+                    }}
+                  >
+                    {columns?.includes('No.') && (
+                      <TableCell>
+                        <Typography variant="body2">{index + 1}</Typography>
+                      </TableCell>
+                    )}
+                    {columns?.includes('Title') && (
+                      <TableCell>
+                        <Stack direction="row" alignItems="center" gap={1.5}>
+                          <Typography variant="body2" fontWeight={500}>
+                            {ticket.title}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                    )}
+                    {columns?.includes('Priority') && <TableCell>
+                      {renderPriorityCell(ticket)}
+                    </TableCell>}
+                    {columns?.includes('Due Date') && <TableCell>
+                      {formatDate(ticket.dueDate)}
+                    </TableCell>}
+                    {columns?.includes('Status') && <TableCell>
+                      {renderStatusCell(ticket)}
+                    </TableCell>}
+                    {columns?.includes('Tags') && <TableCell>
+                      {renderTagsCell(ticket)}
+                    </TableCell>}
+                    {columns?.includes('Assignee') && <TableCell>
+                      {renderAssigneeCell(ticket)}
+                    </TableCell>}
+                    {columns?.includes('Type') && <TableCell>
+                      {renderTypeCell(ticket)}
+                    </TableCell>}
+                    {columns?.includes('Last Updated') && (
+                      <TableCell>
+                        <Typography variant="caption" color="text.secondary">
+                          {ticket.updatedAt ? new Date(ticket.updatedAt).toLocaleDateString() : '—'}
+                        </Typography>
+                      </TableCell>
+                    )}
+                    {columns?.includes('Extra') && <TableCell>{renderExtraInfo(ticket)}</TableCell>}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Box>
+    </Box>
   );
 }

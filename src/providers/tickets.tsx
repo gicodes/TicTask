@@ -104,20 +104,17 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
     setSelectedTicket(found);
   };
 
-  const clearSelection = () => setSelectedTicket(null);
-
   const updateTicket = async (ticketId: number, updates: Partial<Ticket>) => {
     try {
       const updated: Ticket = await apiPatch(`/tickets/${ticketId}`, updates);
 
       setTickets(prev => {
         const final = prev.map(t => (t.id === updated.id ? updated : t));
+        window.location.reload()
         return sortTickets(final);
       });
 
-      if (selectedTicket?.id === updated.id) {
-        setSelectedTicket(updated);
-      }
+      if (selectedTicket?.id === updated.id) setSelectedTicket(updated);
 
       AppEvents.emit("ticket:updated", {
         ticketId,
@@ -147,6 +144,8 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
       console.error("Failed to update ticket:", err);
     }
   };
+
+  const clearSelection = () => setSelectedTicket(null);
 
   const deleteTicket = (id: string | number) => {
     const numeric = Number(id);

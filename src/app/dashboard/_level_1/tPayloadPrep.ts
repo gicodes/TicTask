@@ -1,7 +1,22 @@
 import { Create_Ticket, Data, Ticket } from "@/types/ticket";
 
-export function prepareTicketPayload(formValues: Create_Ticket): Partial<Ticket> {
-  const { type, title, description, priority, tags, dueDate, startTime, endTime, amount, currency, ...extras } = formValues;
+export function prepareTicketPayload(
+  formValues: Create_Ticket
+): Partial<Ticket> {
+  const { 
+    type, 
+    title, 
+    description, 
+    priority, 
+    tags, 
+    dueDate, 
+    startTime, 
+    endTime, 
+    amount, 
+    currency, 
+    ...extras 
+  } = formValues;
+
   return {
     type,
     title,

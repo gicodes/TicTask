@@ -96,7 +96,7 @@ const PlannerPage: React.FC = () => {
       <TaskDetailDrawer
         open={!!selected}
         onClose={() => setSelected(null)}
-        ticketId={selected ? String(selected) : null}
+        ticketId={selected ? String(selected) : undefined}
         onUpdate={fetchTickets}
       />
 

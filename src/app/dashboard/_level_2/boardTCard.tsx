@@ -18,11 +18,11 @@ import {
   Bug,
   Lightbulb,
   Clock,
-  DollarSign,
   Users,
   Paperclip,
   Repeat,
 } from 'lucide-react';
+import { FaMoneyBill } from 'react-icons/fa';
 import { TICKET_TYPE_ICONS } from '../_level_1/tSchema';
 
 interface TicketCardProps {
@@ -133,7 +133,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
 
           {'amount' in fields && fields.amount && (
             <Chip
-              icon={<DollarSign size={14} />}
+              icon={<FaMoneyBill size={14} />}
               label={`${fields.amount} ${fields.currency || 'USD'}`}
               size="small"
               color="success"
@@ -205,7 +205,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
             {hasDueDate && (
               <Typography
                 variant="caption"
-                letterSpacing={1.5}
+                letterSpacing={isOverdue ? 1.5 : 0.5}
                 color={isOverdue ? 'error' : 'text.secondary'}
               >
                 {isOverdue ? <>

@@ -1,7 +1,7 @@
 'use client';
 
 import { extractTicketData } from '../_level_1/tFieldExtract';
-import { TicketFormValuesUnion } from '../_level_1/tSchema';
+import { TICKET_WORKSPACE_TYPES, TicketFormValuesUnion } from '../_level_1/tSchema';
 import { useForm, Controller } from 'react-hook-form';
 import { DatePicker } from '../_level_1/tDateControl';
 import { useTickets } from '@/providers/tickets';
@@ -30,32 +30,24 @@ import {
 } from '@mui/material';
 import { CloseSharp, ExpandMore } from '@mui/icons-material';
 
-interface TWSExtDrawerProps {
-  open: boolean;
-  onClose: () => void;
-  ticket: Ticket;
-  onUpdate?: () => void;
-}
-
 export default function TWSExtDrawer({ 
   open, 
   onClose, 
   ticket, 
   onUpdate 
-}: TWSExtDrawerProps ) {
-
+}: TICKET_WORKSPACE_TYPES ) {  
   const { user } = useAuth();
   const { updateTicket } = useTickets();
-  const fields = extractTicketData(ticket);
+  const fields = extractTicketData(ticket!);
   const { control, handleSubmit, reset } = useForm<TicketFormValuesUnion>({ defaultValues: fields });
   const [newNote, setNewNote] = useState('');
   const [newHistoryAction, setNewHistoryAction] = useState('');
 
-  const isActive = !['CANCELLED', 'RESOLVED', 'CLOSED'].includes(ticket.status);
+  const isActive = !['CANCELLED', 'RESOLVED', 'CLOSED'].includes(ticket!.status);
   const isTeamAdmin = !!(user as User).teamMemberships && !!(user as User).createdTeams;
 
   const onSubmit = async (data: TicketFormValuesUnion) => {
-    await updateTicket(Number(ticket.id), data as Partial<Ticket>);
+    await updateTicket(Number(ticket!.id), data as Partial<Ticket>);
     onUpdate?.();
     reset(data);
   };
@@ -63,9 +55,9 @@ export default function TWSExtDrawer({
   const addNote = async () => {
     if (!newNote) return;
 
-    await updateTicket(Number(ticket.id), { 
-      notes: [...(ticket.notes ?? []), { 
-        id: Number(ticket.id+Math.random()), 
+    await updateTicket(Number(ticket!.id), { 
+      notes: [...(ticket!.notes ?? []), { 
+        id: Number(ticket!.id+Math.random()), 
         content: newNote, 
         createdAt: new Date().toISOString(), 
         authorId: user?.id }] 
@@ -78,9 +70,9 @@ export default function TWSExtDrawer({
   const addHistory = async () => {
     if (!newHistoryAction) return;
 
-    await updateTicket(Number(ticket.id), { 
-      history: [...(ticket.history ?? []), { 
-        id: Number(ticket.id+Math.random()), 
+    await updateTicket(Number(ticket!.id), { 
+      history: [...(ticket!.history ?? []), { 
+        id: Number(ticket!.id+Math.random()), 
         action: newHistoryAction, 
         createdAt: new Date().toISOString(), 
         performedById: user?.id }] 
@@ -104,7 +96,7 @@ export default function TWSExtDrawer({
 
       <Toolbar>
         <Typography flexGrow={1}>
-          Extended Workspace: <strong>{ticket.title}</strong>
+          Extended Workspace: <strong>{ticket!.title}</strong>
         </Typography>
         <IconButton onClick={onClose}>
           <CloseSharp />
@@ -120,7 +112,7 @@ export default function TWSExtDrawer({
             </AccordionSummary>
             <AccordionDetails>
               <Stack gap={2}>
-                {ticket.type === 'BUG' && 'severity' in fields && (
+                {ticket!.type === 'BUG' && 'severity' in fields && (
                   <Controller
                     name="severity"
                     control={control}
@@ -130,14 +122,14 @@ export default function TWSExtDrawer({
                     )}
                   />
                 )}
-                {ticket.type === 'BUG' && 'steps' in fields && (
+                {ticket!.type === 'BUG' && 'steps' in fields && (
                   <Controller
                     name="steps"
                     control={control}
                     render={({ field }) => <TextField label="Steps" multiline disabled={!isActive} {...field} />}
                   />
                 )}
-                {ticket.type === 'FEATURE_REQUEST' && 'impact' in fields && (
+                {ticket!.type === 'FEATURE_REQUEST' && 'impact' in fields && (
                   <Controller
                     name="impact"
                     control={control}
@@ -148,16 +140,16 @@ export default function TWSExtDrawer({
                     )}
                   />
                 )}
-                {ticket.type === 'INVOICE' && 'amount' in fields && (
+                {ticket!.type === 'INVOICE' && 'amount' in fields && (
                   <Controller name="amount" control={control} render={({ field }) => <TextField label="Amount" type="number" disabled={!isActive} {...field} />} />
                 )}
-                {ticket.type === 'INVOICE' && 'currency' in fields && (
+                {ticket!.type === 'INVOICE' && 'currency' in fields && (
                   <Controller name="currency" control={control} render={({ field }) => <TextField label="Currency" disabled={!isActive} {...field} />} />
                 )}
-                {ticket.type === 'INVOICE' && 'recurrence' in fields && (
+                {ticket!.type === 'INVOICE' && 'recurrence' in fields && (
                   <Controller name="recurrence" control={control} render={({ field }) => <TextField label="Recurrence" disabled={!isActive} {...field} />} />
                 )}
-                {ticket.type === 'TASK' && 'checklist' in fields && (
+                {ticket!.type === 'TASK' && 'checklist' in fields && (
                   <Stack gap={1}>
                     <Typography>Checklist</Typography>
                     {fields.checklist?.map((item, idx) => (
@@ -169,25 +161,25 @@ export default function TWSExtDrawer({
                     {isActive && <TextField placeholder="Add checklist item" />}
                   </Stack>
                 )}
-                {ticket.type === 'TASK' && 'recurrence' in fields && (
+                {ticket!.type === 'TASK' && 'recurrence' in fields && (
                   <Controller name="recurrence" control={control} render={({ field }) => 
                     <TextField label="Recurrence" disabled={!isActive} {...field} />} />
                 )}
-                {ticket.type === 'TASK' && 'estimatedTimeHours' in fields && (
+                {ticket!.type === 'TASK' && 'estimatedTimeHours' in fields && (
                   <Controller
                     name="estimatedTimeHours"
                     control={control}
                     render={({ field }) => <TextField label="Estimated Hours" type="number" disabled={!isActive} {...field} />}
                   />
                 )}
-                {ticket.type === 'TASK' && 'attachments' in fields && (
+                {ticket!.type === 'TASK' && 'attachments' in fields && (
                   <Stack gap={1}>
                     <Typography>Attachments</Typography>
                     {fields.attachments?.map((url, idx) => <Chip key={idx} label={url} />)}
                     {isActive && <Button>Upload Attachment</Button>}
                   </Stack>
                 )}
-                {ticket.type === 'TASK' && 'subtasks' in fields && (
+                {ticket!.type === 'TASK' && 'subtasks' in fields && (
                   <Stack gap={1}>
                     <Typography>Subtasks</Typography>
                     <List>
@@ -200,7 +192,7 @@ export default function TWSExtDrawer({
                     {isActive && <TextField placeholder="Add subtask" />}
                   </Stack>
                 )}
-                {['EVENT', 'MEETING'].includes(ticket.type) && 'startTime' in fields && (
+                {['EVENT', 'MEETING'].includes(ticket!.type) && 'startTime' in fields && (
                   <Controller 
                     name="startTime" 
                     control={control} 
@@ -209,7 +201,7 @@ export default function TWSExtDrawer({
                     } 
                   />
                 )}
-                {['EVENT', 'MEETING'].includes(ticket.type) && 'endTime' in fields && (
+                {['EVENT', 'MEETING'].includes(ticket!.type) && 'endTime' in fields && (
                   <Controller 
                     name="endTime" 
                     control={control} 
@@ -218,11 +210,11 @@ export default function TWSExtDrawer({
                     } 
                   />
                 )}
-                {['EVENT', 'MEETING'].includes(ticket.type) && 'location' in fields && (
+                {['EVENT', 'MEETING'].includes(ticket!.type) && 'location' in fields && (
                   <Controller name="location" control={control} render={({ field }) => 
                     <TextField label="Location" disabled={!isActive} {...field} />} />
                 )}
-                {['EVENT', 'MEETING'].includes(ticket.type) && 'attendees' in fields && (
+                {['EVENT', 'MEETING'].includes(ticket!.type) && 'attendees' in fields && (
                   <Stack gap={1}>
                     <Typography>Attendees</Typography>
                     {fields.attendees?.map((attendee, idx) => <Chip key={idx} label={attendee} />)}
@@ -241,11 +233,11 @@ export default function TWSExtDrawer({
 
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography>Notes ({ticket.notes?.length ?? 0})</Typography>
+              <Typography>Notes ({ticket!.notes?.length ?? 0})</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <List>
-                {ticket.notes?.map((note, idx) => (
+                {ticket!.notes?.map((note, idx) => (
                   <ListItem key={idx}>
                     <ListItemText 
                       primary={note.content} 
@@ -267,11 +259,11 @@ export default function TWSExtDrawer({
 
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography>History ({ticket.history?.length ?? 0})</Typography>
+              <Typography>History ({ticket!.history?.length ?? 0})</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <List>
-                {ticket.history?.map((hist, idx) => (
+                {ticket!.history?.map((hist, idx) => (
                   <ListItem key={idx}>
                     <ListItemText
                       primary={hist.action}

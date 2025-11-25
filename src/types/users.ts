@@ -1,3 +1,5 @@
+import { Ticket, TicketHistory, TicketNote } from "./ticket";
+
 export type Role = 'ADMIN' | 'USER';
 export type UserType = 'PERSONAL' | 'BUSINESS';
 export type TeamRole = 'OWNER' | 'ADMIN' | 'MEMBER';
@@ -42,6 +44,7 @@ export type User = {
   partnerRole: string;
 
   accessToken: string;
+
   createdAt: string;
   updatedAt: string;
 };
@@ -50,6 +53,7 @@ export type Admin = {
   id: number;
   userId: number;
   level: AdminLevel;
+
   createdAt: string;
 };
 
@@ -84,18 +88,35 @@ export type Invitation = {
   token: string;
   accepted: boolean;
   expiresAt: string;
-  createdAt: string;
   teamId: number;
   invitedById: number;
+  
+  createdAt: string;
 };
 
 export type Subscription = {
   id: number;
   plan: Plan;
   active: boolean;
-  startedAt: string;
-  expiresAt: string;
-  createdAt: string;
   teamId: number;
   userId: number;
+  
+  startedAt: string;
+  expiresAt: string;
+
+  createdAt: string;
 };
+
+export type Client = {
+  id: number;
+  name: string;
+  email?: string;
+  phone?: string;
+  company?: string;
+
+  tickets: Ticket[];
+  notes: TicketNote[];
+  histories: TicketHistory[];
+
+  createdAt: Date | string;
+}

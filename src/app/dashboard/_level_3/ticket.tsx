@@ -123,7 +123,7 @@ const TicketsPage: React.FC = () => {
       <TicketDetailDrawer
         open={!!selectedTicket}
         onClose={closeDetail}
-        ticketId={selectedTicket !== null ? String(selectedTicket) : null}
+        ticketId={selectedTicket !== undefined ? String(selectedTicket) : undefined}
         onUpdate={refreshTickets}
       />
 

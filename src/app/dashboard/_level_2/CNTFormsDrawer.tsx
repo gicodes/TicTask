@@ -1,9 +1,10 @@
-import { Create_Ticket, Ticket } from '@/types/ticket';
 import React, { useEffect, useState } from 'react';
 import { useTickets } from '@/providers/tickets';
+import { Create_Ticket } from '@/types/ticket';
 import { useAlert } from '@/providers/alert';
 import { useAuth } from '@/providers/auth';
 import { Button } from '@/assets/buttons';
+
 import { 
   useForm, 
   FormProvider, 
@@ -22,6 +23,7 @@ import {
   TASK_DEFAULTS,
   TicketTypeUnion,
   PlannerTaskTypeUnion,
+  TICKET_FORM_TYPES,
 } from '../_level_1/tSchema';
 import {
   Drawer,
@@ -35,21 +37,13 @@ import {
   Card,
 } from '@mui/material';
 
-type Props = {
-  open: boolean;
-  task?: boolean;
-  defaultDueDate?: Date;
-  onClose: () => void;
-  onCreated?: (t: Ticket | void) => void;
-};
-
 export default function TicketTaskCreateFormsDrawer({ 
   open,
   task = false, 
   defaultDueDate,
   onClose, 
   onCreated, 
-}: Props) {
+}: TICKET_FORM_TYPES) {
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const { createTicket } = useTickets();
@@ -186,7 +180,7 @@ export default function TicketTaskCreateFormsDrawer({
               >
                 {Object.keys(registryForms).map((k) => (
                   <MenuItem key={k} value={k}>
-                    {k[0] + k.slice(1).toLowerCase()}
+                    {k === 'FEATURE_REQUEST' ? 'Feature' : (k[0]+k.slice(1).toLowerCase())}
                   </MenuItem>
                 ))}
               </TextField>
@@ -224,7 +218,12 @@ export default function TicketTaskCreateFormsDrawer({
           </FormProvider>
         </Box>
         
-        {err && <Alert severity="error">{err}</Alert>}
+        {err && <Alert severity="error" sx={{ mt: 2 }}>{err}</Alert>}
+        {methods.formState.errors && Object.keys(methods.formState.errors).length > 0 && (
+          <Alert severity="warning" sx={{ mt: 2 }}>
+            Please fix the errors above
+          </Alert>
+        )}
       </Box>
     </Drawer>
   );

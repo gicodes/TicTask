@@ -1,4 +1,4 @@
-import { User } from "./users";
+import { Client, User } from "./users";
 
 export interface TicketNote {
   id: number;
@@ -44,6 +44,7 @@ export interface Ticket {
   assignedToId: number | null;
   assignedTo: User | null;
 
+  client: Client;
   notes: TicketNote[];
   history: TicketHistory[];
 }
@@ -133,10 +134,3 @@ export type TicketImpact = 'LOW' | 'MEDIUM' | 'HIGH';
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 export type TicketStatus = 'UPCOMING'| 'OPEN'| 'IN_PROGRESS'| 'RESOLVED'| 'CLOSED'| 'CANCELLED';
 export type TicketType = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' |'SUPPORT'| 'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE';
-
-export interface BoardProps {
-  grouped: Record<string, Ticket[]>;
-  setGrouped: React.Dispatch<React.SetStateAction<Record<string, Ticket[]>>>;
-  openDetail: (id: string | number) => void;
-  isSearching?: boolean 
-}

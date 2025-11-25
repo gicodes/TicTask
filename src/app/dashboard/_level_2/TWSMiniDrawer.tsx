@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { extractTicketData } from '../_level_1/tFieldExtract';
 import { TICTASK_QUICK_ACTIONS } from '../_level_0/constants';
 import { getTypeColor, priorityColor } from '../_level_1/tColorVariants';
-import { TICKET_DRAWER_TYPES, TICKET_TYPE_ICONS } from '../_level_1/tSchema';
+import { TICKET_WORKSPACE_TYPES, TICKET_TYPE_ICONS } from '../_level_1/tSchema';
 import {
   Box,
   Drawer,
@@ -36,7 +36,7 @@ export default function TicketDetailDrawer({
   onClose,
   onUpdate,
   ticketId,
-}: TICKET_DRAWER_TYPES) {
+}: TICKET_WORKSPACE_TYPES) {
 
   const { user } = useAuth();
   const { selectedTicket: ticket, selectTicket, updateTicket } = useTickets();
@@ -219,7 +219,15 @@ export default function TicketDetailDrawer({
               <Stack direction="row" flexWrap="wrap" gap={1}>
                 {'severity' in fields && fields.severity && <Chip label={`Severity: ${fields.severity}`} size="small" />}
                 {'impact' in fields && fields.impact && <Chip label={`Impact: ${fields.impact}`} size="small" />}
-                {'amount' in fields && fields.amount && <Chip label={`${fields.amount} ${fields.currency}`} size="small" />}
+                {'amount' in fields && fields.amount > 0 && <Chip
+                  label={`${fields.amount.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })} ${fields.currency || "USD"}`}
+                  size="small"
+                  color="success"
+                  variant="outlined"
+                />}
                 {'estimatedTimeHours' in fields && fields.estimatedTimeHours && <Chip label={`${fields.estimatedTimeHours}h est.`} size="small" />}
                 {'subtasks' in fields && fields.subtasks?.length && <Chip label={`${fields.subtasks.length} subtasks`} size="small" />}
                 {'checklist' in fields && fields.checklist?.length && <Chip label={`${fields.checklist.length} checklist items`} size="small" />}

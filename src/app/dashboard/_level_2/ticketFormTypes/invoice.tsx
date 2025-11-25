@@ -1,59 +1,195 @@
-import { Stack, TextField } from "@mui/material";
-import { Control, Controller } from "react-hook-form";
+import { Stack, TextField, Typography, InputAdornment, MenuItem } from "@mui/material";
+import { Controller, Control, useWatch } from "react-hook-form";
 import { DatePicker } from "../../_level_1/tDateControl";
+import { Autocomplete } from "@mui/material";
+import { useState, useEffect } from "react";
 
-const InvoiceForm = ({ 
-  control 
-}: { control: Control }
-  ) => {
+const CURRENCY_OPTIONS = [
+  { code: "USD", symbol: "$", name: "US Dollar" },
+  { code: "EUR", symbol: "€", name: "Euro" },
+  { code: "GBP", symbol: "£", name: "British Pound" },
+  { code: "NGN", symbol: "₦", name: "Nigerian Naira" },
+  { code: "CAD", symbol: "C$", name: "Canadian Dollar" },
+  { code: "JPY", symbol: "¥", name: "Japanese Yen" },
+  { code: "INR", symbol: "₹", name: "Indian Rupee" },
+  { code: "Crypto", symbol: "₿", name: "Cryptocurrency" },
+];
+
+const SUGGESTED_TAGS = [
+  "bill", "paypal", "client", "wire", "confirm",
+  "check", "crypto", "payment", "asap", "urgent",
+  "monthly", "overdue"
+];
+
+interface InvoiceFormProps {
+  control: Control;
+} 
+
+const AmountField = ({ control }: { control: Control }) => {
+  const currency = useWatch({
+    control,
+    name: "currency",
+    defaultValue: "USD",
+  });
+
+  const amountValue = useWatch({ control, name: "amount" });
+  const currencySymbol =
+    CURRENCY_OPTIONS.find((c) => c.code === currency)?.symbol || "$";
+
+  const [displayValue, setDisplayValue] = useState("");
+
+  useEffect(() => {
+    if (!amountValue) {
+      setDisplayValue("");
+      return;
+    }
+
+    setDisplayValue(
+      amountValue.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    );
+  }, [amountValue]);
+
+  const handleInput = (raw: string, onChange: (v: number) => void) => {
+    let input = raw.replace(/[^0-9.]/g, "");
+
+    const parts = input.split(".");
+    if (parts.length > 2) {
+      input = parts[0] + "." + parts.slice(1).join("");
+    }
+
+    const numericValue = parseFloat(input) || 0;
+
+    setDisplayValue(input);
+    onChange(numericValue);
+  };
+
   return (
-    <Stack spacing={2} mt={2}>
-      <Controller 
-        name="title" 
+    <Controller
+      name="amount"
+      control={control}
+      rules={{
+        required: "Amount is required",
+        min: { value: 0.01, message: "Amount must be > 0" },
+      }}
+      render={({ field: { onChange, ...field }, fieldState: { error } }) => (
+        <TextField
+          {...field}
+          value={displayValue} 
+          label="Amount"
+          required
+          onChange={(e) => handleInput(e.target.value, onChange)}
+          error={!!error}
+          helperText={error?.message || "e.g. 1,250,000.00"}
+          placeholder="0.00"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <strong>{currencySymbol}</strong>
+              </InputAdornment>
+            ),
+          }}
+          inputProps={{ inputMode: "decimal" }}
+        />
+      )}
+    />
+  );
+};
+
+export default function InvoiceForm({ control }: InvoiceFormProps) {
+  return (
+    <Stack spacing={3} mt={2}>
+      <Controller
+        name="title"
         control={control}
-        render={({ field }) => 
-          <TextField 
-            label="Invoice Title" 
-            required {...field} 
+        rules={{ required: "Title is required" }}
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            label="Invoice Title"
+            required
+            error={!!error}
+            helperText={error?.message}
+            {...field}
           />
-        } 
+        )}
       />
-      <Controller 
-        name="amount" 
+
+      <AmountField control={control} />
+
+      <Controller
+        name="currency"
         control={control}
-        render={({ field }) => 
-          <TextField 
-            type="number" 
-            label="Amount" 
-            required {...field} 
-          />
-        } 
+        defaultValue="USD"
+        render={({ field }) => (
+          <TextField select label="Currency" {...field}>
+            {CURRENCY_OPTIONS.map(({ code, symbol, name }) => (
+              <MenuItem key={code} value={code}>
+                <Stack direction="row" alignItems="center" gap={1.5}>
+                  <span style={{ fontSize: "1.3em" }}>{symbol}</span>
+                  <span>{code}</span>
+                  <Typography variant="body2" color="text.secondary">
+                    {name}
+                  </Typography>
+                </Stack>
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
       />
-      <Controller 
-        name="currency" 
+
+      <Controller
+        name="description"
         control={control}
-        render={({ field }) => 
-          <TextField 
-            label="Currency" 
-            {...field} 
+        render={({ field }) => (
+          <TextField
+            label="Description (Optional)"
+            multiline
+            rows={2}
+            placeholder="e.g. Annual subscription renewal – Q4 2025"
+            {...field}
           />
-        } 
+        )}
       />
-      <Controller 
-        name="description" 
+
+      <Controller
+        name="tags"
         control={control}
-        render={({ field }) => 
-          <TextField 
-            label="Description" 
-            multiline minRows={2} 
-            {...field} 
+        render={({ field }) => (
+          <Autocomplete
+            multiple
+            freeSolo
+            options={SUGGESTED_TAGS}
+            value={field.value || []}
+            onChange={(_, value) => field.onChange(value)}
+            renderInput={(params) => (
+              <TextField {...params} label="Tags" placeholder="Add tags..." />
+            )}
           />
-        }
+        )}
       />
-      <DatePicker control={control} name="dueDate" />
-      {/* Add client in feature versions */}
+
+      <Controller
+        name="recurrence"
+        control={control}
+        render={({ field }) => (
+          <TextField select label="Recurrence (Optional)" {...field} value={field.value || ""}>
+            <MenuItem value="">None</MenuItem>
+            <MenuItem value="weekly">Weekly</MenuItem>
+            <MenuItem value="monthly">Monthly</MenuItem>
+            <MenuItem value="quarterly">Quarterly</MenuItem>
+            <MenuItem value="yearly">Yearly</MenuItem>
+          </TextField>
+        )}
+      />
+
+      <Stack spacing={2}>
+        <Typography variant="body2" color="text.secondary">
+          Payment Deadline (Optional)
+        </Typography>
+        <DatePicker control={control} name="dueDate" />
+      </Stack>
     </Stack>
   );
 }
-
-export default InvoiceForm

@@ -1,12 +1,19 @@
 'use client';
 
+import { Ticket } from '@/types/ticket';
 import BoardColumn from './boardColumn';
-import { BoardProps } from '@/types/ticket';
 import React, { useState, useMemo, useEffect } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { Box, useTheme, useMediaQuery, Tabs, Tab, IconButton, Tooltip } from '@mui/material';
+
+export interface BoardProps {
+  grouped: Record<string, Ticket[]>;
+  setGrouped: React.Dispatch<React.SetStateAction<Record<string, Ticket[]>>>;
+  openDetail: (id: string | number) => void;
+  isSearching?: boolean 
+}
 
 export default function Board({ grouped, setGrouped, openDetail, isSearching }: BoardProps) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -60,16 +67,14 @@ export default function Board({ grouped, setGrouped, openDetail, isSearching }: 
   const visibleStatusesRaw = isSearching
     ? STATUSES.filter((status) => grouped[status]?.length > 0)
     : STATUSES;
-
   const visibleStatuses = useMemo(() => {
     if (isXs) return [visibleStatusesRaw[activeIndex] || visibleStatusesRaw[0]];
     return visibleStatusesRaw.slice(startIndex, startIndex + visibleCount);
   }, [isXs, visibleStatusesRaw, startIndex, visibleCount, activeIndex]);
-
+  
   const prevStatuses = STATUSES.slice(
     Math.max(0, startIndex - visibleCount), startIndex
   );
-
   const nextStatuses = STATUSES.slice(
     startIndex + visibleCount, startIndex + visibleCount * 2
   );
