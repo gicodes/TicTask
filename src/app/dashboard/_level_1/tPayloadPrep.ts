@@ -15,7 +15,6 @@ export function prepareTicketPayload(
     amount, 
     currency, 
     createdById,
-    assignTo,
     ...extras 
   } = formValues;
 
