@@ -29,10 +29,6 @@ const PlannerPage: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [createDate, setCreateDate] = useState<Date | null>(null);
 
-  useEffect(() => { 
-    fetchTickets(); 
-  }, [fetchTickets]);
-
   useEffect(() => {
     if (typeof window !== 'undefined') localStorage.setItem('planner_view', view);
   }, [view]);
@@ -51,7 +47,6 @@ const PlannerPage: React.FC = () => {
   const onTaskCreated = () => {
     setFormOpen(false);
     setCreateDate(null); 
-    fetchTickets();
   };
 
   const handleSlotSelect = (slotInfo: { start: Date; end: Date }) => {

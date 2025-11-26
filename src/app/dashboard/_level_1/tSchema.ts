@@ -15,6 +15,43 @@ import { GrOptimize, GrPerformance, GrRotateLeft, GrTest } from "react-icons/gr"
 import { MdDesignServices, MdReadMore, MdSecurityUpdateGood, MdWarning } from "react-icons/md";
 import { Bug, Lightbulb, ReceiptText, CalendarClock, CheckSquare, CheckCircle, ToolCase, TicketCheck } from "lucide-react";
 
+export interface TICKET_FORM_PROPS {
+  open: boolean;
+  task?: boolean;
+  defaultDueDate?: Date;
+  onClose: () => void;
+  onCreated?: (t: Ticket | void) => void;
+}
+
+export interface TICKET_WORKSPACE_PROPS { 
+  open: boolean;
+  onClose: () => void;
+  ticket?: Ticket;
+  ticketId?: string | number;
+  onUpdate?: () => void; 
+}
+
+export interface PLANNER_TOOLBAR_PROPS {
+  view: 'calendar' | 'list';
+  setView: (v: 'calendar' | 'list') => void;
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  onOpenCreate: () => void;
+  dateRangeLabel?: string;
+}
+
+export interface TICKET_LIST_PROPS {
+  columns: string[];
+  tickets: Ticket[];
+  onOpen: (id: number) => void;
+}
+
+export interface BOARD_COLUMN { 
+  title: string;
+  tickets: Ticket[];
+  onOpen?: (id: string | number) => void;
+}
+
 export type TicketTypeUnion = TicketType;
 export type PlannerTaskTypeUnion = PlannerTaskType;
 export type FormComponentType = React.ComponentType<{control: Control<FieldValues>; task?: boolean }>;
@@ -26,22 +63,6 @@ export type TicketFormValuesUnion =
   | InvoiceFormValues
   | TaskFormValues
   | EventMeetingFormValues;
-
-export interface TICKET_FORM_TYPES {
-  open: boolean;
-  task?: boolean;
-  defaultDueDate?: Date;
-  onClose: () => void;
-  onCreated?: (t: Ticket | void) => void;
-}
-
-export interface TICKET_WORKSPACE_TYPES { 
-  open: boolean;
-  onClose: () => void;
-  ticket?: Ticket;
-  ticketId?: string | number;
-  onUpdate?: () => void; 
-}
 
 export const TICKET_TYPE_ICONS: Record<TicketsType, React.ComponentType<{ size?: number }>> = {
   BUG: Bug,
@@ -104,7 +125,7 @@ export const invoiceSchema = z.object({
   type: z.literal('INVOICE').optional(),
   title: z.string().min(1, "Title is required"),
   amount: z.number().positive("Amount must be greater than 0"),
-  currency: z.string().default("USD"), // ← This prevents undefined
+  currency: z.string().default("USD"),
   description: z.string().optional(),
   dueDate: z.string().optional(),
   recurrence: z.string().optional(),

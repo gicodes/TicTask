@@ -9,76 +9,54 @@ import { useTickets } from '@/providers/tickets';
 import TicketFormDrawer from '../_level_2/CNTFormsDrawer';
 import TicketDetailDrawer from '../_level_2/TWSMiniDrawer';
 import React, { useEffect, useMemo, useState } from 'react';
-import { TICKET_STATUSES, TICKET_LIST_HEADERS } from '../_level_0/constants';
+import { TICKET_LIST_HEADERS, TICKET_STATUSES } from '../_level_0/constants';
 
-function useDebounce<T>(value: T, delay = 400): T {
+function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
+  
   useEffect(() => {
-    const handler = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(handler);
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
   }, [value, delay]);
+  
   return debounced;
 }
 
 const TicketsPage: React.FC = () => {
   const { tickets, fetchTickets } = useTickets();
-  const [newTickets, setTickets] = useState<Ticket[]>([]);
   const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
   const [selectedTicket, setSelectedTicket] = useState<string | number | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const debouncedQuery = useDebounce(searchQuery, 300);
+  const debouncedQuery = useDebounce(searchQuery);
 
   const [view, setView] = useState<'board' | 'list'>(() => {
-    if (typeof window !== 'undefined') 
-      return (localStorage.getItem('tictask_view') as 'board' | 'list') || 'board';
-    return 'board';
+    if (typeof window === 'undefined') return 'board';
+    
+    return (localStorage.getItem('tictask_view') as 'list' | 'board') || 'board';
   });
 
   useEffect(() => {
-    if (typeof window !== 'undefined') localStorage.setItem('tictask_view', view);
+    localStorage.setItem('tictask_view', view);
   }, [view]);
 
-  useEffect(() => {
-    setTickets(tickets);
-  }, [tickets]);
-
-  useEffect(() => {
-    fetchTickets();
-  }, [fetchTickets]);
-
   const filteredTickets = useMemo(() => {
-    if (!debouncedQuery) return newTickets;
+    if (!debouncedQuery.trim()) return tickets;
     const q = debouncedQuery.toLowerCase();
-
-    return newTickets.filter((t) =>
+    
+    return tickets.filter(t =>
       [t.title, t.description, t.status, t.assignedTo?.name, t.tags?.join(' ')]
-        .filter(Boolean)
-        .some((field) => field?.toLowerCase().includes(q))
+        .filter(Boolean).some(field => field!.toLowerCase().includes(q))
     );
-  }, [newTickets, debouncedQuery]);
+  }, [tickets, debouncedQuery]);
 
   useEffect(() => {
-    const map: Record<string, Ticket[]> = Object.fromEntries(
-      TICKET_STATUSES.map((s) => [s, []])
-    );
+    const map: Record<string, Ticket[]> = {};
+    TICKET_STATUSES.forEach(s => map[s] = []);
 
-    const priorityOrder = { URGENT: 1, HIGH: 2, MEDIUM: 3, LOW: 4 };
-
-    const sorted = [...filteredTickets].sort((a, b) => {
-      if (!a.dueDate && b.dueDate) return 1;
-      if (a.dueDate && !b.dueDate) return -1;
-      if (a.dueDate && b.dueDate) {
-        const diff = new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-        if (diff !== 0) return diff;
-      }
-      const pDiff = priorityOrder[a.priority ?? "MEDIUM"] - priorityOrder[b.priority ?? "MEDIUM"];
-      if (pDiff !== 0) return pDiff;
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
-
-    sorted.forEach((t) => {
-      if (map[t.status]) map[t.status].push(t);
+    filteredTickets.forEach(t => {
+      const status = t.status || 'OPEN';
+      if (map[status]) map[status].push(t);
       else map['OPEN'].push(t);
     });
 
@@ -87,16 +65,15 @@ const TicketsPage: React.FC = () => {
 
   const openDetail = (id: string | number) => setSelectedTicket(id);
   const closeDetail = () => setSelectedTicket(null);
-
-  const onTicketCreated = (t: Ticket | void) => 
-    setTickets((prev) => [t, ...prev] as Ticket[]);
-
-  const refreshTickets = async () => {
-    await fetchTickets();
-  };
+  const refresh = () => fetchTickets(true);
 
   return (
-    <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, minHeight: '75vh' }}>
+    <Box 
+      sx={{ 
+        minHeight: '75vh', 
+        p: { xs: 1, sm: 2, md: 3 }, 
+      }}
+    >
       <Toolbar
         view={view}
         setView={setView}
@@ -108,33 +85,36 @@ const TicketsPage: React.FC = () => {
       {view === 'board' ? (
         <TicketBoard
           grouped={grouped}
-          setGrouped={setGrouped}
+          setGrouped={setGrouped}    
           openDetail={openDetail}
           isSearching={!!debouncedQuery}
         />
       ) : (
-        <TicketsList 
+        <TicketsList
           columns={TICKET_LIST_HEADERS}
-          tickets={filteredTickets} 
-          onOpen={openDetail} 
+          tickets={filteredTickets}
+          onOpen={openDetail}
         />
       )}
 
       <TicketDetailDrawer
         open={!!selectedTicket}
         onClose={closeDetail}
-        ticketId={selectedTicket !== undefined ? String(selectedTicket) : undefined}
-        onUpdate={refreshTickets}
+        ticketId={selectedTicket ? selectedTicket : undefined}
+        onUpdate={refresh}
       />
 
       <TicketFormDrawer
         open={formOpen}
         onClose={() => setFormOpen(false)}
-        onCreated={onTicketCreated}
+        onCreated={() => {
+          setFormOpen(false);
+          refresh();
+        }}
       />
 
-      <Box bottom={0} right={0} display={'flex'} justifyContent={'right'}>
-        <section style={{ position: 'fixed', bottom: 25, right: 25, height: 50, width: 50}} id='ai-assistant-trigger'/>
+      <Box sx={{ position: 'fixed', bottom: 25, right: 25, zIndex: 10 }}>
+        <section id="ai-assistant-trigger" style={{ width: 50, height: 50 }} />
       </Box>
     </Box>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import { extractTicketData } from '../_level_1/tFieldExtract';
-import { TICKET_WORKSPACE_TYPES, TicketFormValuesUnion } from '../_level_1/tSchema';
+import { TICKET_WORKSPACE_PROPS, TicketFormValuesUnion } from '../_level_1/tSchema';
 import { useForm, Controller } from 'react-hook-form';
 import { DatePicker } from '../_level_1/tDateControl';
 import { useTickets } from '@/providers/tickets';
@@ -35,7 +35,7 @@ export default function TWSExtDrawer({
   onClose, 
   ticket, 
   onUpdate 
-}: TICKET_WORKSPACE_TYPES ) {  
+}: TICKET_WORKSPACE_PROPS ) {  
   const { user } = useAuth();
   const { updateTicket } = useTickets();
   const fields = extractTicketData(ticket!);

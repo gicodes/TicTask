@@ -65,26 +65,32 @@ export default function OnboardingUI(props: OnboardingProps) {
     setWebsite,
     bio,
     setBio,
+    authenticated
   } = props;
 
   const ActionGroup = () => 
-    <Stack className={styles.actions}>
-      <Button
-        tone='warm'
-        type="button"
-        onClick={handleBack}
-        disabled={loading}
-      >
-        Back
-      </Button>
-      <Button
-        type="button"
-        onClick={step===3 ? handleSubmit : handleNext}
-        disabled={loading}
-      >
-        {(loading && step===3) ? "Building Profile..." : loading ?  'Saving...' : step===3 ? "Finish" : "Continue"}
-      </Button>
-    </Stack>
+    <>
+      {!authenticated ? <Stack className={styles.actions}>
+        <Button
+          tone='warm'
+          type="button"
+          onClick={handleBack}
+          disabled={loading}
+        >
+          Back
+        </Button>
+        <Button
+          type="button"
+          onClick={step===3 ? handleSubmit : handleNext}
+          disabled={loading}
+        >
+          {loading ?  'Saving...' : step===3 ? "Finish" : "Continue"}
+        </Button>
+      </Stack> 
+      : 
+      <Typography>Building your profile...</Typography>
+    }
+  </>
     
 
   const CountrySelect = ({ accountType }: { accountType: UserType}) =>

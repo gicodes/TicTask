@@ -1,6 +1,7 @@
 import React from "react";
 import { Controller, Control } from "react-hook-form";
 import { TextField, Stack } from "@mui/material";
+import { formatDateTimeLocal } from "../../_level_1/tDateControl";
 
 type Props = { control: Control };
 
@@ -33,14 +34,14 @@ export default function EventMeetingForm({ control }: Props) {
         control={control}
         render={({ field}) =>
           <TextField
-            label="Start
-            time"
+            label="Start time"
             type="datetime-local"
-            InputLabelProps={{
-              shrink:
-              true
-            }}
-            {...field}
+            InputLabelProps={{ shrink: true }}
+            value={formatDateTimeLocal(field.value)}
+            onChange={(e) => field.onChange(e.target.value || null)}
+            onBlur={field.onBlur}
+            name={field.name}
+            inputRef={field.ref}
           />
         }
       />
@@ -49,14 +50,14 @@ export default function EventMeetingForm({ control }: Props) {
         control={control}
         render={({ field }) => 
           <TextField
-            label="End
-            time"
+            label="End time"
             type="datetime-local"
-            InputLabelProps={{
-              shrink:
-              true
-            }}
-            {...field}
+            InputLabelProps={{ shrink: true }}
+            value={formatDateTimeLocal(field.value)}
+            onChange={(e) => field.onChange(e.target.value || null)}
+            onBlur={field.onBlur}
+            name={field.name}
+            inputRef={field.ref}
           />
         }
       />

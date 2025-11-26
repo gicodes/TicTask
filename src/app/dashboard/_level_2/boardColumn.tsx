@@ -1,22 +1,23 @@
+'use client';
+
 import React from 'react';
 import TicketCard from './boardTCard';
-import { Ticket } from '@/types/ticket';
+import NoTickets from '../_level_1/tEmpty';
+import { BOARD_COLUMN } from '../_level_1/tSchema';
 import { Badge, Box, Typography } from '@mui/material';
 
-export const BoardColumn: React.FC<{
-  title: string;
-  tickets: Ticket[];
-  onOpen?: (id: string | number) => void;
-  }> = ({ 
-    title, 
-    tickets, 
-    onOpen 
-  }
-) => {
+export const BoardColumn: React.FC<BOARD_COLUMN> = ({ 
+  title, 
+  tickets, 
+  onOpen 
+}) => {
+  if (!tickets) return <NoTickets />
+    
   return (
     <Box 
       sx={{
-        p: 1, mr: 1,
+        p: 1, 
+        mr: 1,
         maxWidth: 360,
         bgcolor: 'transparent',
         minWidth: { xs: 300, sm: 266, md: 270, lg: 320},
@@ -51,4 +52,4 @@ export const BoardColumn: React.FC<{
   );
 };
 
-export default BoardColumn
+export default BoardColumn;

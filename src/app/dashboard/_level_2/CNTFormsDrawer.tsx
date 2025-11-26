@@ -23,7 +23,7 @@ import {
   TASK_DEFAULTS,
   TicketTypeUnion,
   PlannerTaskTypeUnion,
-  TICKET_FORM_TYPES,
+  TICKET_FORM_PROPS,
 } from '../_level_1/tSchema';
 import {
   Drawer,
@@ -43,7 +43,8 @@ export default function TicketTaskCreateFormsDrawer({
   defaultDueDate,
   onClose, 
   onCreated, 
-}: TICKET_FORM_TYPES) {
+}: TICKET_FORM_PROPS ) {
+  
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const { createTicket } = useTickets();
@@ -90,7 +91,6 @@ export default function TicketTaskCreateFormsDrawer({
       const payloadBase: Record<string, unknown> = { ...(values as Record<string, unknown>) };
 
       if (Array.isArray(payloadBase.tags) === false && typeof payloadBase.tags === 'string') {
-        // if tags were provided as comma string, convert and normalize
         payloadBase.tags = (payloadBase.tags as unknown as string).split(',').map(s => s.trim()).filter(Boolean);
       }
 
@@ -101,9 +101,19 @@ export default function TicketTaskCreateFormsDrawer({
             ? new Date(payloadBase.startTime as string)
             : undefined;
 
+      const startTimeDate = typeof payloadBase.startTime === 'string' && payloadBase.startTime
+        ? new Date(payloadBase.startTime as string)
+        : undefined;
+
+      const endTimeDate = typeof payloadBase.endTime === 'string' && payloadBase.endTime
+        ? new Date(payloadBase.endTime as string)
+        : undefined;
+
       const payload = {
         ...payloadBase,
         dueDate: dueDateIso,
+        startTime: startTimeDate,
+        endTime: endTimeDate,
         createdById: user?.id ?? null,
       } as unknown as Create_Ticket;
 
@@ -118,14 +128,7 @@ export default function TicketTaskCreateFormsDrawer({
 
       methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
       onClose();
-
-      setTimeout(() => {
-        try { 
-          window.location.reload(); 
-        } catch { 
-          console.warn("Timed Out")
-        }
-      }, 2500);
+      
     } catch (e) {
       const message = (e instanceof Error) ? e.message : 'Something went wrong. Please try again.';
       console.error(e);

@@ -38,6 +38,7 @@ export interface OnboardingProps {
   setLogo: (v: File | null) => void;
   bio: string;
   setBio: (v: string) => void;
+  authenticated: boolean
 }
 
 export interface CountrySelectProps {

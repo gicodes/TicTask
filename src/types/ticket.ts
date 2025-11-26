@@ -87,17 +87,17 @@ export interface Create_Ticket {
   amount?: number;
   currency?: string;
   recurrence?: string;
-
   checklist?: string[];
   subtasks?: SubTask[];
   estimatedTimeHours?: number;
   attachments?: string[];
-
   location?: string;
   attendees?: string[];
 
+  createdById: number;
   assignTo?: string;
 }
+
 export enum Ticket_Type {
   GENERAL = 'GENERAL',
   INVOICE = 'INVOICE',
@@ -105,7 +105,6 @@ export enum Ticket_Type {
   EVENT = 'EVENT',
   BUG = 'BUG',
   TASK = "TASK",
-
   TICKET = 'TICKET',
   ISSUE = 'ISSUE',
   TEST = 'TEST',
@@ -130,7 +129,22 @@ export enum Ticket_Priority {
 }
 
 export type TicketImpact = 'LOW' | 'MEDIUM' | 'HIGH';
-
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 export type TicketStatus = 'UPCOMING'| 'OPEN'| 'IN_PROGRESS'| 'RESOLVED'| 'CLOSED'| 'CANCELLED';
 export type TicketType = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' |'SUPPORT'| 'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE';
+
+export const priorityOrder: Record<string, number> = {
+  URGENT: 0,
+  HIGH: 1,
+  MEDIUM: 2,
+  LOW: 3,
+};
+
+export const statusOrder: Record<string, number> = {
+  UPCOMING: 0,
+  IN_PROGRESS: 1,
+  OPEN: 2,
+  RESOLVED: 3,
+  CANCELLED: 4,
+  CLOSED: 5,
+};

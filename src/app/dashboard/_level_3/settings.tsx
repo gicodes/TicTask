@@ -1,7 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
 import Link from 'next/link';
+import { User } from '@/types/users';
+import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { Button } from '@/assets/buttons';
+import { useAuth } from '@/providers/auth';
+import { useAlert } from '@/providers/alert';
+import { useThemeMode } from '@/providers/theme';
+import SettingsCard from '../_level_2/settingsCard';
+import { forgotPassword } from '@/hooks/useForgotPass';
+import { useSubscription } from '@/providers/subscription';
+import { useUpdateWorkspaceName } from '@/hooks/useUpdateWorkSpaceName';
+import { useUpdateEmailNotifSetting } from '@/hooks/useSetGetTNotifsViaEmail';
 import {
   Box,
   Typography,
@@ -12,35 +23,29 @@ import {
   FormControlLabel,
   IconButton,
   Tooltip,
+  CircularProgress,
 } from '@mui/material';
-import {
-  Sun, Moon, Laptop, Bell, Shield, User, Globe, PlugZap, CreditCard,
-} from 'lucide-react';
-import { motion } from 'framer-motion';
-import { Button } from '@/assets/buttons';
-import { useAuth } from '@/providers/auth';
-import { useAlert } from '@/providers/alert';
-import { useThemeMode } from '@/providers/theme';
-import SettingsCard from '../_level_2/settingsCard';
-import { forgotPassword } from '@/hooks/useForgotPass';
-import { useSubscription } from '@/providers/subscription';
+import { Sun, Moon, Laptop, Bell, Shield, User2, Globe, PlugZap, CreditCard, Check } from 'lucide-react';
 
 export default function SettingsPage() {
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const { mode, setThemeMode } = useThemeMode();
-  const [autoSave, setAutoSave] = useState(true);
-  const [emailNotif, setEmailNotif] = useState(true);
-  const [slackNotif, setSlackNotif] = useState(false);
+  const { updateWorkspaceName } = useUpdateWorkspaceName(user?.id);
+  const { updateEmailNotifications, tNotifsLoading } = useUpdateEmailNotifSetting(user?.id);
 
+  const [autoSave, setAutoSave] = useState(true);
+  const [inAppNotfis, setInAppNotfis] = useState(true);
+  const [emailNotif, setEmailNotif] = useState((user as User).getTNotifsViaEmail ?? false);
+  const [isSavingWSN, setIsSavingWSN] = useState(false);
+  const [isEditingWSN, setIsEditingWSN] = useState(false);
   const [language, setLanguage] = useState('English');
-  const [workspaceName, setWorkspaceName] = useState('Acme Inc.');
+  const [workspaceName, setWorkspaceName] = useState((user as User)?.workSpaceName || 'Acme Inc.');
 
   const { subscription, loading } = useSubscription();
   const plan = subscription?.plan || 'Free';
   const expiresAt = subscription?.expiresAt
-    ? new Date(subscription.expiresAt).toLocaleDateString()
-    : '—';
+    ? new Date(subscription.expiresAt).toLocaleDateString() : '—';
 
   const handleForgotPassword = () => {
     const email = user?.email;
@@ -52,6 +57,31 @@ export default function SettingsPage() {
     forgotPassword({ email })
       .then(() => showAlert('Password reset link sent to your email!', 'success'))
       .catch(() => showAlert('Something went wrong!', 'error'));
+  };
+
+  const handleEmailNotifChange = async () => {
+    const next = !emailNotif;
+    setEmailNotif(next);
+
+    await updateEmailNotifications(next)
+      .then( () => showAlert("Ticket notification settings changes detected", 'success'))
+      .catch(() => showAlert('Something went wrong!', 'error'));
+  }
+
+
+  const handleSetWorkSpaceName = async () => {
+    if (!isEditingWSN) return;
+
+    setIsSavingWSN(true);
+    try {
+      await updateWorkspaceName(workspaceName.trim());
+      showAlert("New Workspace name detected", 'success')
+      setIsEditingWSN(false);
+    } catch {
+      showAlert('Something went wrong!', 'error')
+    } finally {
+      setIsSavingWSN(false);
+    }
   };
 
   const INTEGRATION_BUTTON = ({
@@ -118,7 +148,7 @@ export default function SettingsPage() {
       </SettingsCard>
 
       <SettingsCard
-        icon={<User size={18} />}
+        icon={<User2 size={18} />}
         title="Account"
         subtitle="Manage your personal information and credentials."
       >
@@ -139,16 +169,17 @@ export default function SettingsPage() {
       <SettingsCard
         icon={<Bell size={18} />}
         title="Notifications"
-        subtitle="Control how and when you receive updates."
+        subtitle="Control how and when you receive ticket updates."
       >
         <Stack spacing={1}>
           <FormControlLabel
-            control={<Switch checked={emailNotif} onChange={() => setEmailNotif(!emailNotif)} />}
-            label="Email Notifications"
+            control={<Switch checked={inAppNotfis} onChange={() => setInAppNotfis(!inAppNotfis)} />}
+            label="In-App Notifications"
           />
           <FormControlLabel
-            control={<Switch checked={slackNotif} onChange={() => setSlackNotif(!slackNotif)} />}
-            label="Slack Notifications"
+            control={<Switch checked={emailNotif} onChange={handleEmailNotifChange} />}
+            label={tNotifsLoading ? "Saving..." : "Email Notifications"}
+            disabled={tNotifsLoading}
           />
         </Stack>
       </SettingsCard>
@@ -159,11 +190,33 @@ export default function SettingsPage() {
         subtitle="Update your workspace preferences and environment."
       >
         <Stack spacing={2}>
-          <TextField
-            label="Workspace Name"
-            value={workspaceName}
-            onChange={(e) => setWorkspaceName(e.target.value)}
-          />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSetWorkSpaceName();
+            }}
+          >
+            <TextField
+              fullWidth
+              label="Workspace Name"
+              value={workspaceName}
+              onChange={(e) => {
+                setWorkspaceName(e.target.value);
+                setIsEditingWSN(true);
+              }}
+              onBlur={() => {if (isEditingWSN) handleSetWorkSpaceName()}}
+              disabled={isSavingWSN}
+              InputProps={{
+                endAdornment: isSavingWSN ? (
+                  <CircularProgress size={20} />
+                ) : isEditingWSN ? (
+                  <Tooltip title='Save'>
+                    <IconButton type="submit"> <Check fontSize="small" /></IconButton>
+                  </Tooltip>
+                ) : null,
+              }}
+            />
+          </form>
           <TextField
             select
             label="Language"
@@ -238,7 +291,8 @@ export default function SettingsPage() {
                 See Plans & Prices
               </Button>
             </Stack>
-          </Stack>} 
+          </Stack>
+        } 
       </SettingsCard>
     </Box>
   );

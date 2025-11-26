@@ -31,6 +31,8 @@ export default function Onboarding() {
   const [error, setError] = useState<string | null>(null);
   const [userType, setUserType] = useState<UserType>('PERSONAL');
 
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+
   const stepsTotal = 3;
 
   const saveStep = async (
@@ -113,6 +115,7 @@ export default function Onboarding() {
           setError(r.error || 'Invalid credentials');
         } else {
           router.refresh();
+          setAuthenticated(true);
           router.push('/dashboard');
         }      
       } else setError(res.message || "Failed to save final step.");
@@ -160,6 +163,7 @@ export default function Onboarding() {
         setLogo,
         bio,
         setBio,
+        authenticated,
       }}
     />
   );

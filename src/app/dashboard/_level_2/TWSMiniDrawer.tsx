@@ -7,14 +7,14 @@ import { Button } from '@/assets/buttons';
 import { QA_Btn } from '@/assets/QA_button';
 import { useAuth } from '@/providers/auth';
 import { FaEllipsisV } from 'react-icons/fa';
-import { Download, Share2 } from 'lucide-react';
+import { Download, Share2, TicketCheck } from 'lucide-react';
 import { CloseSharp } from '@mui/icons-material';
 import { useTickets } from '@/providers/tickets';
 import React, { useEffect, useState } from 'react';
 import { extractTicketData } from '../_level_1/tFieldExtract';
 import { TICTASK_QUICK_ACTIONS } from '../_level_0/constants';
 import { getTypeColor, priorityColor } from '../_level_1/tColorVariants';
-import { TICKET_WORKSPACE_TYPES, TICKET_TYPE_ICONS } from '../_level_1/tSchema';
+import { TICKET_WORKSPACE_PROPS, TICKET_TYPE_ICONS } from '../_level_1/tSchema';
 import {
   Box,
   Drawer,
@@ -36,7 +36,7 @@ export default function TicketDetailDrawer({
   onClose,
   onUpdate,
   ticketId,
-}: TICKET_WORKSPACE_TYPES) {
+}: TICKET_WORKSPACE_PROPS) {
 
   const { user } = useAuth();
   const { selectedTicket: ticket, selectTicket, updateTicket } = useTickets();
@@ -102,7 +102,7 @@ export default function TicketDetailDrawer({
   const isActive = !['CANCELLED', 'RESOLVED', 'CLOSED'].includes(ticket.status);
   const isTeamAdmin = !!(user as User).teamMemberships && !!(user as User).createdTeams;
   
-  const TypeIcon = TICKET_TYPE_ICONS[ticket.type];
+  const TypeIcon = TICKET_TYPE_ICONS[ticket.type as keyof typeof TICKET_TYPE_ICONS] ?? <TicketCheck />;
 
   return (
     <>
@@ -139,7 +139,7 @@ export default function TicketDetailDrawer({
               )}
               <Box display="flex" width="100%" justifyContent="end" pr={1}>
                 <Typography variant="caption" sx={{ opacity: 0.75 }}>
-                  {user?.name.split(' ').splice(0)}&apos;s mini - workspace
+                  {(user as User).workSpaceName || user?.name.split(' ').splice(0)}&apos;s mini - workspace
                 </Typography>
               </Box>
             </Stack>
@@ -150,7 +150,7 @@ export default function TicketDetailDrawer({
               <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 Updated {ticket.updatedAt ? new Date(ticket.updatedAt).toLocaleString() : ''}
               </Typography>
-              <Box pb={1} gap={0.5} maxWidth={120} display="grid" justifyContent="center">
+              <Box pb={1} gap={0.5} maxWidth={120} display="grid" justifyContent="center" alignItems={'center'}>
                 <Typography variant="body1" sx={{ textAlign: 'center', color: getTypeColor(ticket.type) }}>
                   <TypeIcon size={16} /> <strong>{ticket.type === 'FEATURE_REQUEST' ? 'FEATURE' : ticket.type}</strong>
                 </Typography>

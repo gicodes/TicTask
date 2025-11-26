@@ -79,6 +79,8 @@ export interface FAQRes {
 
 export interface TicketsRes {
   ok: boolean;
+  message: string;
+  ticket: Ticket;
   tickets: Ticket[];
 }
 

@@ -15,17 +15,9 @@ import { motion } from 'framer-motion';
 import { Button } from '@/assets/buttons';
 import { FaPlusCircle } from 'react-icons/fa';
 import { Calendar, List, Search } from 'lucide-react';
+import { PLANNER_TOOLBAR_PROPS } from '../_level_1/tSchema';
 
-interface PlannerToolbarProps {
-  view: 'calendar' | 'list';
-  setView: (v: 'calendar' | 'list') => void;
-  searchQuery: string;
-  setSearchQuery: (q: string) => void;
-  onOpenCreate: () => void;
-  dateRangeLabel?: string;
-}
-
-const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
+const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
   view,
   setView,
   searchQuery,
@@ -132,14 +124,16 @@ const PlannerToolbar: React.FC<PlannerToolbarProps> = ({
         </Tooltip>
 
         <Tooltip title="Create task as event or meeting and set date & time">
-          <><Button
-            onClick={onOpenCreate}
-            tone="action"
-            startIcon={<FaPlusCircle />}
-            sx={{ flexShrink: 0 }}
-          >
-            ADD EVENT
-          </Button></>
+          <div>
+            <Button
+              onClick={onOpenCreate}
+              tone="action"
+              startIcon={<FaPlusCircle />}
+              sx={{ flexShrink: 0 }}
+            >
+              ADD EVENT
+            </Button>
+          </div>
         </Tooltip>
       </Stack>
     </Box>

@@ -1,6 +1,3 @@
-'use client';
-
-import React, { useMemo } from 'react';
 import {
   Box,
   Table,
@@ -25,58 +22,22 @@ import {
   Paperclip,
   Repeat,
 } from 'lucide-react';
-
 import { Ticket } from '@/types/ticket';
+import NoTickets from '../_level_1/tEmpty';
+import { TICKET_LIST_PROPS } from '../_level_1/tSchema';
 import { extractTicketData } from '../_level_1/tFieldExtract';
 import { priorityColor, getStatusColor } from '../_level_1/tColorVariants';
-
-interface TicketsListProps {
-  columns: string[];
-  tickets: Ticket[];
-  onOpen: (id: number) => void;
-}
 
 export default function TicketsList({ 
   columns, 
   tickets, 
   onOpen 
-}: TicketsListProps ) {
-  const sortedTickets = useMemo(() => {
-    return [...tickets].sort((a, b) => {
-      if (a.priority !== b.priority) {
-        const order = { URGENT: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
-        return (order[a.priority ?? 'LOW'] ?? 3) - (order[b.priority ?? 'LOW'] ?? 3);
-      }
-      if (a.dueDate && b.dueDate) {
-        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-      }
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    });
-  }, [tickets]);
-  
-  if (!tickets || tickets.length === 0) {
-    return (
-      <Box
-        mt={6}
-        py={12}
-        textAlign="center"
-        border="1px dashed"
-        borderColor="divider"
-        borderRadius={3}
-        bgcolor="background.paper"
-      >
-        <Typography variant="h6" color="text.secondary">
-          No tickets here yet
-        </Typography>
-        <Typography variant="body2" color="text.disabled">
-          Create one to get started
-        </Typography>
-      </Box>
-    );
-  }
+}: TICKET_LIST_PROPS ) {
+  if (!tickets || tickets.length === 0) return <NoTickets />
 
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return <Typography color="text.disabled">—</Typography>;
+
     const date = new Date(dateStr);
     const now = new Date();
     const isToday = date.toDateString() === now.toDateString();
@@ -84,8 +45,8 @@ export default function TicketsList({
 
     if (isToday) {
       return (
-        <Typography variant='body2' color='primary'>
-          <strong>Today</strong> @{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        <Typography variant='body2' color='warning'>
+          <strong>Today</strong> <span className='font-xxs'>@{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
         </Typography>
       );
     }
@@ -102,7 +63,13 @@ export default function TicketsList({
     return (
       <Stack direction="row" alignItems="center" gap={1}>
         <Typography variant="body2" fontWeight={500}>
-          {ticket.type === 'FEATURE_REQUEST' ? 'Feature' : (ticket.type[0]+ticket.type.slice(1).toLocaleLowerCase())}
+          {ticket.type ? ticket.type === 'FEATURE_REQUEST' 
+            ? 'Feature' 
+            : ticket.type
+                .split(' ')
+                .map(w => w[0] + w.slice(1).toLowerCase())
+                .join(' ')
+          : 'Unknown'}
         </Typography>
       </Stack>
     );
@@ -178,7 +145,6 @@ export default function TicketsList({
 
   const renderExtraInfo = (ticket: Ticket) => {
     const data = extractTicketData(ticket);
-
     return (
       <Stack direction="row" gap={1} flexWrap="wrap">
         {'severity' in data && data.severity && (
@@ -210,10 +176,10 @@ export default function TicketsList({
   };
 
   return (
-    <Box py={3} px={2} maxWidth={'96vw'}>
+    <Box p={1} maxWidth={'96vw'}>
       <Box
         sx={{
-          my: 3,
+          my: 1,
           width: '100%',
           overflowX: 'auto',
           overflowY: 'hidden',
@@ -269,9 +235,9 @@ export default function TicketsList({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sortedTickets.map((ticket, index) => (
+                {tickets.map((ticket, index) => (
                   <TableRow
-                    key={ticket.id}
+                    key={index}
                     hover
                     onClick={() => onOpen(ticket.id)}
                     sx={{

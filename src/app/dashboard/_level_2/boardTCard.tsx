@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Ticket } from '@/types/ticket';
-import { extractTicketData } from '../_level_1/tFieldExtract';
+import { extractTicketData, formatAmount } from '../_level_1/tFieldExtract';
 import { priorityColor, getTypeColor, TYPE_COLORS } from '../_level_1/tColorVariants';
 import {
   Paper,
@@ -21,6 +21,7 @@ import {
   Users,
   Paperclip,
   Repeat,
+  TicketCheck,
 } from 'lucide-react';
 import { FaMoneyBill } from 'react-icons/fa';
 import { TICKET_TYPE_ICONS } from '../_level_1/tSchema';
@@ -32,7 +33,7 @@ interface TicketCardProps {
 
 export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
   const fields = extractTicketData(ticket);
-  const TypeIcon = TICKET_TYPE_ICONS[ticket.type];
+  const IconComponent = TICKET_TYPE_ICONS[ticket.type];
 
   const hasDueDate = !!ticket.dueDate;
   const isOverdue = hasDueDate && new Date(ticket.dueDate!) < new Date();
@@ -61,9 +62,9 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
     >
       <Stack spacing={1.5}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Stack direction="row" alignItems="center" gap={1} flex={1}>
+          <Stack direction="row" alignItems="center" gap={0.5} flex={1}>
             <IconButton size="small" sx={{ p: 0.5, color: TYPE_COLORS[ticket.type]}}>
-              <TypeIcon size={18} />
+              {IconComponent ? <IconComponent size={18} /> : <TicketCheck size={18} />}
             </IconButton>
             <Typography
               variant="subtitle1"
@@ -108,7 +109,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
           </Stack>
         )}
 
-        <Stack direction="row" gap={1} flexWrap="wrap">
+        <Stack direction="row" pl={1} gap={1} flexWrap="wrap">
           {'severity' in fields && fields.severity && (
             <Chip
               icon={<Bug size={14} />}
@@ -134,10 +135,10 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
           {'amount' in fields && fields.amount && (
             <Chip
               icon={<FaMoneyBill size={14} />}
-              label={`${fields.amount} ${fields.currency || 'USD'}`}
+              label={`${formatAmount(fields.amount)} ${fields.currency || 'USD'}`}
               size="small"
               color="success"
-              sx={{ fontSize: '0.65rem' }}
+              sx={{ fontSize: '0.65rem', px: 0.5 }}
             />
           )}
 
@@ -209,8 +210,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
                 color={isOverdue ? 'error' : 'text.secondary'}
               >
                 {isOverdue ? <>
-                  <strong>OVERDUE ⛔️</strong></> 
-                  : <>Due on {dueDateLabel}</>}
+                  <strong>OVERDUE ⛔️</strong></> : <>Due on {dueDateLabel}</>}
               </Typography>
             )}
           </Box>
