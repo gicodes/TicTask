@@ -84,7 +84,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
                 bgcolor: priorityColor(ticket.priority),
                 color: '#fff',
                 fontWeight: 600,
-                fontSize: '0.65rem',
+                fontSize: '0.65rem', px: 0.5,
               }}
             />
           )}
@@ -98,7 +98,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
                 label={tag}
                 size="small"
                 variant="outlined"
-                sx={{ fontSize: '0.65rem', height: 20 }}
+                sx={{ fontSize: '0.65rem', px: 0.5, height: 20 }}
               />
             ))}
             {ticket.tags.length > 3 && (
@@ -117,7 +117,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
               size="small"
               color="error"
               variant="outlined"
-              sx={{ fontSize: '0.65rem' }}
+              sx={{ fontSize: '0.65rem', px: 0.5 }}
             />
           )}
 
@@ -128,7 +128,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
               size="small"
               color="primary"
               variant="outlined"
-              sx={{ fontSize: '0.65rem' }}
+              sx={{ fontSize: '0.65rem', px: 0.5 }}
             />
           )}
 
@@ -147,7 +147,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
               icon={<Clock size={14} />}
               label={`${fields.estimatedTimeHours}h`}
               size="small"
-              sx={{ fontSize: '0.65rem' }}
+              sx={{ fontSize: '0.65rem', px: 0.5 }}
             />
           )}
 
@@ -155,7 +155,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
             <Chip
               label={`${fields.checklist.length} items`}
               size="small"
-              sx={{ fontSize: '0.65rem' }}
+              sx={{ fontSize: '0.65rem', px: 0.5 }}
             />
           ) : null}
 
@@ -163,7 +163,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
             <Chip
               label={`${fields.subtasks.length} subtasks`}
               size="small"
-              sx={{ fontSize: '0.65rem' }}
+              sx={{ fontSize: '0.65rem', px: 0.5 }}
             />
           ) : null}
 
@@ -172,7 +172,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
               icon={<Users size={14} />}
               label={`${fields.attendees.length} attendees`}
               size="small"
-              sx={{ fontSize: '0.65rem' }}
+              sx={{ fontSize: '0.65rem', px: 0.5 }}
             />
           ) : null}
 
@@ -181,7 +181,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
               icon={<Paperclip size={14} />}
               label={`${fields.attachments.length}`}
               size="small"
-              sx={{ fontSize: '0.65rem' }}
+              sx={{ fontSize: '0.65rem', px: 0.5 }}
             />
           ) : null}
 
@@ -191,7 +191,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
               label="Recurring"
               size="small"
               color="secondary"
-              sx={{ fontSize: '0.65rem' }}
+              sx={{ fontSize: '0.65rem', px: 0.5 }}
             />
           )}
         </Stack>

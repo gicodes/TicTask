@@ -103,17 +103,19 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
 
   const createTicket = async (payload: Partial<Ticket>) => {
     try {
-      const created: Ticket = await apiPost(`/tickets`, payload);
-      setTickets(prev => sortTickets([...prev, created]));
+      const created: TicketsRes = await apiPost(`/tickets`, payload);
+      const ticket = created.ticket;
+      
+      setTickets(prev => sortTickets([...prev, ticket]));
 
       AppEvents.emit("ticket:created", { 
-        ticketId: created.id, 
-        type: created.type, 
-        createdBy: created.createdById===user?.id ? "You" : created.createdById, 
-        title: created.title 
+        ticketId: ticket.id, 
+        type: ticket.type, 
+        createdBy: ticket.createdById===user?.id ? "you" : (ticket.createdBy?.name?.split(" ")[0] || 'team admin'), 
+        title: ticket.title 
       });
 
-      return created;
+      return ticket;
     } catch (err) {
       console.error("Create failed:", err);
     }

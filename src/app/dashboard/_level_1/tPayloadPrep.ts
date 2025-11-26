@@ -14,6 +14,8 @@ export function prepareTicketPayload(
     endTime, 
     amount, 
     currency, 
+    createdById,
+    assignTo,
     ...extras 
   } = formValues;
 
@@ -28,6 +30,7 @@ export function prepareTicketPayload(
     endTime: endTime ? new Date(endTime).toISOString() : undefined,
     amount,
     currency,
+    createdById,
     data: extras as Data, 
   };
 }
