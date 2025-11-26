@@ -40,7 +40,7 @@ export default function SettingsPage() {
   const [isSavingWSN, setIsSavingWSN] = useState(false);
   const [isEditingWSN, setIsEditingWSN] = useState(false);
   const [language, setLanguage] = useState('English');
-  const [workspaceName, setWorkspaceName] = useState((user as User)?.workSpaceName || 'Acme Inc.');
+  const [workspaceName, setWorkspaceName] = useState((user as User)?.workSpaceName || (user?.name.split(" ")[0] || "Untitled User"));
 
   const { subscription, loading } = useSubscription();
   const plan = subscription?.plan || 'Free';

@@ -7,8 +7,6 @@ import { Button } from '@/assets/buttons';
 import { QA_Btn } from '@/assets/QA_button';
 import { useAuth } from '@/providers/auth';
 import { FaEllipsisV } from 'react-icons/fa';
-import { Download, Share2, TicketCheck } from 'lucide-react';
-import { CloseSharp } from '@mui/icons-material';
 import { useTickets } from '@/providers/tickets';
 import React, { useEffect, useState } from 'react';
 import { extractTicketData } from '../_level_1/tFieldExtract';
@@ -28,6 +26,8 @@ import {
   Divider,
   Tooltip,
 } from '@mui/material';
+import { ArrowBack, CloseSharp } from '@mui/icons-material';
+import { Download, Share2, TicketCheck } from 'lucide-react';
 
 interface FormValues { dueDate: string; }
 
@@ -150,9 +150,15 @@ export default function TicketDetailDrawer({
               <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 Updated {ticket.updatedAt ? new Date(ticket.updatedAt).toLocaleString() : ''}
               </Typography>
-              <Box pb={1} gap={0.5} maxWidth={120} display="grid" justifyContent="center" alignItems={'center'}>
-                <Typography variant="body1" sx={{ textAlign: 'center', color: getTypeColor(ticket.type) }}>
-                  <TypeIcon size={16} /> <strong>{ticket.type === 'FEATURE_REQUEST' ? 'FEATURE' : ticket.type}</strong>
+              <Box pb={1} gap={0.5} maxWidth={120} display="grid" justifyContent="center">
+                <Typography 
+                  display={'flex'} 
+                  gap={0.5}
+                  alignItems={'center'} 
+                  variant="body1" 
+                  sx={{ color: getTypeColor(ticket.type) }}
+                >
+                  <TypeIcon size={16} /><strong>{ticket.type === 'FEATURE_REQUEST' ? 'FEATURE' : ticket.type}</strong>
                 </Typography>
                 <Tooltip title={`Ticket ${statusRender.toLowerCase()}`}>
                   <Chip label={statusRender} size="small" sx={{ px: 1, maxWidth: 'max-content', mx: 'auto' }} />
@@ -171,20 +177,23 @@ export default function TicketDetailDrawer({
                   <>
                     by{' '}
                     {ticket.createdById === user?.id ? (
-                      <strong className="custom-warm">you</strong>
+                      <strong className="custom-sharp">you</strong>
                     ) : (
                       <span className="custom-warm">{ticket.createdById}</span>
                     )}
                     .
                   </>
                 )}
-                <br /> On {ticket.createdAt ? new Date(ticket.createdAt).toDateString() + `, ${new Date(ticket.createdAt).toLocaleTimeString()}` : ''}
+                <br /> On {ticket.createdAt ? new Date(ticket.createdAt).toDateString() + `, 
+                  ${new Date(ticket.createdAt).toLocaleTimeString()}` : ''}
               </Typography>
 
               <Typography variant="caption" sx={{ opacity: 0.75 }}>
                 {ticket.assignedToId && (
                   <span>
-                    <span>Assigned to</span> {ticket.assignedToId}
+                    <span>Assigned to</span> {ticket.assignedToId === user?.id 
+                    ? <strong className="custom-sharp">you</strong>
+                    : <span className="custom-warm">{ticket.assignedToId}</span>}.
                   </span>
                 )}
                 {ticket.assignedTo && (
@@ -313,11 +322,11 @@ export default function TicketDetailDrawer({
           </Box>
         </Box>
 
-        <Divider sx={{ mt: 5 }} />
+        <Divider sx={{ mt: 5, border: '5px solid var(--disabled)' }} />
         <Stack p={3} direction={{ xs: 'column', sm: 'row' }} spacing={3}>
           {isBusinessOrTeam && isActive && (note || assignee) && <Button onClick={save}>Save Changes</Button>}
-          <Button onClick={onClose} tone="retreat" sx={{ width: 200 }}>
-            ← Back
+          <Button onClick={onClose} tone="inverted" sx={{ width: 125, }} startIcon={<ArrowBack />}>
+            Back
           </Button>
         </Stack>
       </Drawer>
