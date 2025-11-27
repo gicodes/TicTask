@@ -2,12 +2,12 @@ import { Plan } from "@/types/subscription";
 
 export const PLAN_IDS = {
   pro: {
-    monthly: process.env.NEXT_PUBLIC_STRIPE_PLAN_ID_PRO_MM!,
-    yearly: process.env.NEXT_PUBLIC_STRIPE_PLAN_ID_PRO_YY!,
+    monthly: "PRO_MONTH",
+    yearly: "PRO_ANNUAL",
   },
   enterprise: {
-    monthly: process.env.NEXT_PUBLIC_STRIPE_PLAN_ID_ENT_MM!,
-    yearly: process.env.NEXT_PUBLIC_STRIPE_PLAN_ID_ENT_YY!,
+    monthly: "ENTERPRISE_MONTH",
+    yearly: "ENTERPRISE_ANNUAL",
   },
 };
 
