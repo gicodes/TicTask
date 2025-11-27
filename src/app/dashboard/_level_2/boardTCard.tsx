@@ -53,7 +53,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
         mb: 1.5,
         cursor: 'pointer',
         transition: 'all 0.2s ease',
-        borderLeft: `4px solid ${getTypeColor(ticket.type)}`,
+        borderLeft: `5px solid ${getTypeColor(ticket.type)}`,
         '&:hover': {
           boxShadow: 8,
           transform: 'translateY(-2px)',

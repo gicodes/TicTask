@@ -2,7 +2,8 @@
 
 import { SessionProvider, useSession, signIn, signOut, SignInResponse } from 'next-auth/react';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { User, Role, UserType, Subscription } from '@/types/users';
+import { User, Role, UserType } from '@/types/users';
+import { Subscription } from '@/types/subscription';
 import { UserProfileRes } from '@/types/axios';
 import { AppEvents } from './events';
 import { apiGet } from '@/lib/api';

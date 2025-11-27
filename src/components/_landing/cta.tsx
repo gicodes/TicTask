@@ -5,28 +5,33 @@ import styles from "@/app/page.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
-import { useGetPro } from "@/hooks/useGetPro";
+import { useSubscription } from "@/providers/subscription";
 
 const whiteDot = <span className="custom-bw">.</span>;
 
 const CTA = () => {
   const router = useRouter()
   const { user } = useAuth();
-  const { getPro } = useGetPro();
   const { showAlert } = useAlert();
+  const { subscription } = useSubscription();
 
-  const GetPro = () => {
+  const GetPro = async () => {
     if (!user) {
       showAlert("Sign in to continue", "warning");
-      setTimeout(() => router.push('/auth/login'), 3000);
-
+      setTimeout(() => router.push('/auth/login?returnUrl=/product/pricing'), 3000);
       return
     };
 
-    const subscriptionStatus = getPro(user.id);
-    if (subscriptionStatus===null) showAlert("Something went wrong. Please try again or contact admin", "warning");
-    if (!subscriptionStatus===null && !subscriptionStatus===undefined) showAlert("You have an active Pro Subscription running!");
-      else showAlert("Unauthorized! Kindly contact admin", "warning");
+    if (!subscription || !subscription.active) {
+      showAlert("You are being redirected to pricing to complete your product/ plan purchase", "info");
+      setInterval(() => router.push('/product/pricing'), 3000)
+    }
+
+    if (subscription && subscription.active){
+      showAlert("You have an active Pro Subscription running!");
+      return;
+    }
+    else showAlert("Unauthorized! Kindly contact admin", "warning");
   }
   
   return (

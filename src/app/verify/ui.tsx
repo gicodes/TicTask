@@ -1,10 +1,12 @@
 'use client';
 
+import Link from "next/link";
 import { apiPost } from "@/lib/api"; 
-import { ChevronLeft } from "@mui/icons-material";
+import { Button } from "@/assets/buttons";
+import { ArrowBack } from "@mui/icons-material";
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Alert, Box, Button, Toolbar, Typography } from "@mui/material";
+import { Alert, Box, Toolbar, Typography } from "@mui/material";
 import { ConfirmVerificationRequest, ConfirmVerificationResponse } from "@/types/axios";
 
 export const VerifyPage = () => {
@@ -31,8 +33,7 @@ export const VerifyPage = () => {
 
       try {
         const res = await apiPost<ConfirmVerificationResponse, ConfirmVerificationRequest>(
-          "/auth/confirm-verification",
-          { token }
+          "/auth/confirm-verification", { token }
         );
 
         setStatus("success");
@@ -43,8 +44,7 @@ export const VerifyPage = () => {
             router.push("/auth/login/admin");
           } else if (res.role === "USER") {
             router.push(
-              "/onboarding?role=USER" +
-                "&token=" + encodeURI(res.token || token)
+              "/onboarding?role=USER" + "&token=" + encodeURI(res.token || token)
             );
           }
         }, 2000);
@@ -56,12 +56,14 @@ export const VerifyPage = () => {
             console.warn("Email already verified or exists, redirecting to onboarding...");
             setMessage("Email already verified or exists, redirecting to onboarding...");
             router.push("/onboarding?email=" + encodeURIComponent(email || "") + "&token=" + encodeURIComponent(token));
+            
             return;
           }
           setMessage(message ?? "Verification failed");
         } else {
           setMessage("Verification failed");
         }
+
         setStatus("error");
       }
     };
@@ -71,10 +73,11 @@ export const VerifyPage = () => {
 
   return (
     <Box 
-      minHeight="75vh" 
-      mt={10} p={2}
+      p={2}
+      mt={10}
       mx="auto" 
       minWidth={200} 
+      minHeight="75vh" 
       maxWidth={'fit-content'}
     >
       <Alert severity={status==="error" ? 'error' : status==="success" ? 'success' : 'info'}>
@@ -82,10 +85,11 @@ export const VerifyPage = () => {
         {status === "success" && <Typography>{message} Redirecting...</Typography>}
         {status === "error" && <Typography className="text-red-500">{message}</Typography>}
       </Alert>
+
       <Toolbar />
+
       { status==="error" &&
-        <Button variant="text" href="/"> 
-          <ChevronLeft/>&nbsp; 
+        <Button component={Link} variant="text" href="/" startIcon={<ArrowBack/>}> 
           Go Home
         </Button>
       }

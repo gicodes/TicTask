@@ -32,12 +32,14 @@ export const AuthVerifyPage = () => {
     const m = Math.floor(seconds / 60)
       .toString()
       .padStart(2, "0");
+
     const s = (seconds % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
 
   const handleResend = async () => {
     if (!email) return setError("Missing email");
+
     setLoading(true);
     setError(null);
     setInfo(null);
@@ -47,6 +49,7 @@ export const AuthVerifyPage = () => {
         "/auth/resend-verification",
         { email, role }
       );
+      
       setInfo(res.message);
       setTimeLeft(15 * 60);
     } catch (err) {

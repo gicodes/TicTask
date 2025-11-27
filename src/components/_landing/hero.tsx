@@ -5,10 +5,10 @@ import styles from "@/app/page.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
-import { useStartTrial } from "@/hooks/useFreeTrial";
+import { useSubscription } from "@/providers/subscription";
 
 const Hero = () => {
-  const { startTrial } = useStartTrial();
+  const { startFreeTrial } = useSubscription();
   const { showAlert } = useAlert();
   const router = useRouter();
   const { user } = useAuth();
@@ -16,27 +16,34 @@ const Hero = () => {
   const handleStartTrial = async () => {
     if (!user) {
       showAlert("Sign in to start your free trial", "warning");
-      setTimeout(() => router.push("/auth/login"), 2000);
+
+      setTimeout(() => {
+        const returnUrl = encodeURIComponent("/#get-started"); 
+        router.push(`/auth/login?returnUrl=${returnUrl}`);
+      }, 1500);
 
       return;
     }
 
-    const trial = await startTrial(user.id);
+    const trial = await startFreeTrial(14);
 
-    if (trial===null) showAlert("Something went wrong. Please try again or contact admin", "warning");
-    if (!trial===null && !trial===undefined) showAlert("You have an active Pro Subscription running!");
-      else showAlert("Unauthorized! Kindly contact admin", "warning");
+    if (!trial) {
+      showAlert( "Something went wrong. Please try again or contact admin", "warning");
+      return;
+    }
+    if (trial.active) {
+      showAlert("You already have an active Pro subscription!", "info");
+      return;
+    }
+
+    showAlert("Unauthorized! Kindly contact admin", "warning");
   };
 
   return (
-    <>
+    <section id="get-started">
       <div className={styles.heroTitle}>
-        <h2>
-          Ticket <span className="font-xl">&</span> Task Management System
-        </h2>
-        <h2>
-          <span className="custom-warm">Driven by AI</span>, Designed for Everyone
-        </h2>
+        <h2> Ticket <span className="font-xl">&</span> Task Management System </h2>
+        <h2> <span className="custom-warm">Driven by AI</span>, Designed for Everyone </h2>
       </div>
 
       <div className={styles.heroSubtitle}>
@@ -46,19 +53,12 @@ const Hero = () => {
 
       <div className={styles.heroActions}>
         <div className={styles.btnGroup}>
-          <Button onClick={handleStartTrial}>
-            Start free trial
-          </Button>
-          <Button tone='secondary'>
-            Watch demo video
-          </Button>
+          <Button onClick={handleStartTrial}> Start free trial </Button>
+          <Button tone='secondary'> Watch demo video</Button>
         </div>
-
-        <p className={styles.trialText}>
-          14-day free trial. No credit card required.
-        </p>
+        <p className={styles.trialText}> 14-day free trial. No credit card required.</p>
       </div>
-    </>
+    </section>
   );
 };
 

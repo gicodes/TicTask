@@ -1,10 +1,10 @@
+import { Subscription } from "./subscription";
 import { Ticket, TicketHistory, TicketNote } from "./ticket";
 
 export type Role = 'ADMIN' | 'USER';
 export type UserType = 'PERSONAL' | 'BUSINESS';
 export type TeamRole = 'OWNER' | 'ADMIN' | 'MEMBER';
 export type AdminLevel = 'BASIC' | 'FULL' | 'SUPER';
-export type Plan = 'FREE' | 'STANDARD' | 'PRO' | 'ENTERPRISE';
 
 export type User = {
   id: number;
@@ -91,19 +91,6 @@ export type Invitation = {
   teamId: number;
   invitedById: number;
   
-  createdAt: string;
-};
-
-export type Subscription = {
-  id: number;
-  plan: Plan;
-  active: boolean;
-  teamId: number;
-  userId: number;
-  
-  startedAt: string;
-  expiresAt: string;
-
   createdAt: string;
 };
 

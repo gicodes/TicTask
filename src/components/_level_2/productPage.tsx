@@ -5,7 +5,6 @@ import { Button } from "@/assets/buttons";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
-import { useGetPro } from "@/hooks/useGetPro";
 import { FEATURES } from "@/constants/product";
 import { Box, Typography, Grid, Stack, Divider } from "@mui/material";
 
@@ -59,6 +58,7 @@ export const ProductShowcase = () => {
         <Typography variant="h4" fontWeight={700}> Everything you need to move faster</Typography>
         <Typography variant="body1" my={2}> TicTask turns thoughts to tasks. Plans to Projects. Deliverables to Done.</Typography>
         <Divider sx={{  background: 'var(--dull-gray)', width: '100%', maxWidth: 200, my: 1}} />
+        
         <Grid
           mt={5}
           container
@@ -99,19 +99,17 @@ export const ProductShowcase = () => {
 export const ProductCTA = () => {
   const { user } = useAuth();
   const router = useRouter();
-  const { getPro } = useGetPro();
   const { showAlert } = useAlert();
 
-  const GetStarted = () => {
-    if (!user) router.push('/auth/login');
-    if (user && user.userType==="PERSONAL"){ 
-      showAlert("Go Pro? Great Choice! Redirecting to subscription page...")
-      setTimeout(() => router.push('/dashboard/subscription'), 5000) 
-    };
-    if (user && user.userType==="BUSINESS") { 
-      showAlert("Redirecting to subscription page. Initiating TicTask Pro...")
-      setTimeout(() => router.push('/dashboard/subscription'), 10000); 
-      getPro(user?.id); 
+  const GetStarted = async () => {
+    if (!user) {
+      showAlert("You must be logged in. Redirecting to login page")
+      setTimeout(() => router.push('/auth/login'), 2000);
+    }
+
+    if (user && (user.userType==="PERSONAL" || user.userType==="BUSINESS")){ 
+      showAlert("Go Pro? Great Choice! Redirecting to pricing...")
+      setTimeout(() => router.push('/product/pricing'), 2000) 
     };
   }
 

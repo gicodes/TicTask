@@ -6,7 +6,7 @@ import { useAlert } from '@/providers/alert';
 import { GiArmorUpgrade } from 'react-icons/gi';
 import { CreditCard } from '@mui/icons-material';
 import { useSubscription } from '@/providers/subscription';
-import { useCreateCheckoutSession } from '@/hooks/useCreateCheckout';
+import { useCreateCheckoutSession } from '@/hooks/useCreateStripeCheckout';
 import { Box, Stack, Typography, Card, CardContent, Button, Divider, Grid, LinearProgress, CircularProgress } from '@mui/material';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
