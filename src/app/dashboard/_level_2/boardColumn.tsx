@@ -26,7 +26,6 @@ export const BoardColumn: React.FC<BOARD_COLUMN> = ({
       <Typography variant="h6" 
         sx={{ 
           p: 1,
-          mb: 1, 
           gap: 1, 
           display: 'flex', 
           fontWeight: 700, 
@@ -41,7 +40,7 @@ export const BoardColumn: React.FC<BOARD_COLUMN> = ({
         </span>
       </Typography>
       
-      <Box>
+      <Box mt={3}>
         {tickets?.map((t, i) => (
           <Box mb={5} key={i}>
             <TicketCard ticket={t} onOpen={onOpen} />

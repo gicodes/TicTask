@@ -9,9 +9,14 @@ import { ReactNode, useEffect, useState } from 'react';
 import { FaUserTie, FaUserShield } from 'react-icons/fa6';
 import NotificationDrop from '../_level_2/notificationDrop';
 import { useNotifications } from '@/providers/notifications';
-import { Login, Menu as MenuIcon, Notifications } from '@mui/icons-material';
 import { FaExternalLinkAlt, FaUserAstronaut, FaUserSecret, FaUsers } from 'react-icons/fa';
-import { AUTH_ITEMS, getFilteredNav, MORE_NAV_ITEMS, NavbarAvatar, NewFeatureBadge } from '../_level_1/navItems';
+import { 
+  AUTH_ITEMS, 
+  getFilteredNav, 
+  MORE_NAV_ITEMS, 
+  NavbarAvatar, 
+  NewFeatureBadge 
+} from '../_level_1/navItems';
 import { 
   AppBar,
   Toolbar, 
@@ -31,6 +36,7 @@ import {
   Typography,
   LinearProgress
 } from '@mui/material';
+import { Login, Menu as MenuIcon, Notifications } from '@mui/icons-material';
 
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -58,8 +64,10 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
     </Box>
   );
 
-  const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => setNotificationDrop(event.currentTarget);
-  const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+  const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => 
+    setNotificationDrop(event.currentTarget);
+  const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => 
+    setAnchorEl(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorEl(null);
   const handleCloseNotification = () => setNotificationDrop(null);
   const handleMoreMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -184,7 +192,9 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                         onClick={handleCloseUserMenu}
                       >
                         <Typography variant='caption'>{user?.name || 'Not Available'}</Typography>
-                        <Typography className='font-xxs custom-dull'>{user?.email || 'please sign in'}</Typography>
+                        <Typography className='font-xxs custom-dull'>
+                          {user?.email || 'please sign in'}
+                        </Typography>
                       </Link>
                     </Tooltip>
                     <UserRole />
@@ -269,7 +279,11 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         <Toolbar />
         <List sx={{ pt: 5, minWidth: 234}}>
           {filteredNav.map(item => (
-            <Link href={item.path} key={item.path} onClick={item?.more ? handleMoreMenu : () => setOpen(!open)}>
+            <Link 
+              href={item.path} 
+              key={item.path} 
+              onClick={item?.more ? handleMoreMenu : () => setOpen(!open)}
+            >
               <ListItemButton selected={pathname === item.path}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText 
@@ -359,11 +373,17 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         </List>
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, minHeight: '100vh', height: '100%', pb: 5}}>
+      <Box component="main" sx={{ flexGrow: 1, minHeight: '100vh', pb: 5}}>
         <Toolbar />
         {children}
         <Box textAlign={'center'} mt={5}>
-          <Typography fontFamily={'serif'} fontWeight={501} className='custom-dull'><i>Unleash the power of your mind— one task at a time</i></Typography>
+          <Typography 
+            variant='subtitle2' 
+            fontFamily={'serif'} 
+            className='custom-dull'
+          >
+            <strong><i>Unlock the power of workflow— one task at a time</i></strong>
+          </Typography>
         </Box>
         <AiAssistantDrawer />
       </Box>

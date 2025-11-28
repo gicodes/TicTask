@@ -131,12 +131,12 @@ export default function SubscriptionPage() {
                       </Button>
 
                       <Button
-                        startIcon={<GiArmorUpgrade color='var(--special)' />}
+                        startIcon={<GiArmorUpgrade color='var(--accent)' />}
                         variant="contained"
                         tone='action'
                         onClick={() => handleUpgrade("enterprise_month")}
                       >
-                        Go Enterprise
+                        Enterprise
                       </Button>
                     </Stack>
                   )}

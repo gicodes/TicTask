@@ -31,13 +31,12 @@ export interface TICKET_WORKSPACE_PROPS {
   onUpdate?: () => void; 
 }
 
-export interface PLANNER_TOOLBAR_PROPS {
-  view: 'calendar' | 'list';
-  setView: (v: 'calendar' | 'list') => void;
+export interface TICKET_TOOLBAR_PROPS {
+  view: 'board' | 'list'; 
+  setView: (v: 'board' | 'list') => void; 
+  onOpenCreate: () => void;
   searchQuery: string;
   setSearchQuery: (q: string) => void;
-  onOpenCreate: () => void;
-  dateRangeLabel?: string;
 }
 
 export interface TICKET_LIST_PROPS {
@@ -46,6 +45,15 @@ export interface TICKET_LIST_PROPS {
   onOpen: (id: number) => void;
 }
 
+
+export interface PLANNER_TOOLBAR_PROPS {
+  view: 'calendar' | 'list';
+  setView: (v: 'calendar' | 'list') => void;
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  onOpenCreate: () => void;
+  dateRangeLabel?: string;
+}
 export interface BOARD_COLUMN { 
   title: string;
   tickets: Ticket[];

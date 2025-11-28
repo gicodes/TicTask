@@ -80,7 +80,7 @@ export default function Board({ grouped, setGrouped, openDetail, isSearching }: 
   );
 
   return (
-    <Box sx={{ width: '100%', overflow: 'hidden', maxWidth: '99vw' }}>
+    <Box sx={{ width: '100%', overflow: 'hidden', maxWidth: '96vw' }}>
       {isXs && (
         <Tabs
           value={activeIndex}

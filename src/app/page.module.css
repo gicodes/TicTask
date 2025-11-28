@@ -314,10 +314,10 @@ a.secondary {
 }
 
 .btnWithStartIcon > span {
-  margin-left: 0.35rem;
+  margin-left: 0.5rem;
 }
 .btnWithEndIcon > span {
-  margin-right: 0.35rem;
+  margin-right: 0.5rem;
 }
 
 .btnIconWrapper {

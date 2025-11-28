@@ -17,9 +17,11 @@ export default function Page() {
 
   if (loading) return <Box textAlign="center" p={4}>Loading...</Box>;
 
-  if (!isAuthenticated) return <Box textAlign="center" px={2} py={10}>
-    Please log in to access dashboard. <br/><br/> If you recently logged in on this device, swipe down or refresh to restore your last session.
-  </Box>;
+  if (!isAuthenticated) return (
+    <Box textAlign="center" px={2} py={10}>
+      Please log in to access dashboard. <br/><br/> If you recently logged in on this device, swipe down or refresh to restore your last session.
+    </Box>
+  );
 
   return (
     <Box py={1}>
@@ -27,8 +29,6 @@ export default function Page() {
       <Box
         px={3}
         py={1}
-        gap={1}
-        mx="auto"
         width="100%"
         alignItems="center"
         display={{ xs: 'grid', md: 'flex' }}

@@ -8,21 +8,14 @@ import {
   InputAdornment,
 } from '@mui/material';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
+import { TICKET_TOOLBAR_PROPS } from '../_level_1/tSchema';
 import { FaPlusCircle, FaList } from 'react-icons/fa';
 import SearchIcon from '@mui/icons-material/Search';
 import { Button } from '@/assets/buttons';
 import { motion } from 'framer-motion';
 import React from 'react';
 
-interface ToolbarProps {
-  view: 'board' | 'list'; 
-  setView: (v: 'board' | 'list') => void; 
-  onOpenCreate: () => void;
-  searchQuery: string;
-  setSearchQuery: (q: string) => void;
-}
-
-const Toolbar: React.FC<ToolbarProps> = ({ 
+const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({ 
   view, 
   setView, 
   onOpenCreate, 
@@ -49,7 +42,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
             >
               Tickets Overview
             </Typography>
-            <Typography variant="body1" sx={{ opacity: 0.7 }} minWidth={{ lg: 400}}>
+            <Typography sx={{ opacity: 0.7 }} minWidth={{ sm: 360 }}>
               Create new ticket, change view from kanban to list and search for tickets. 
             </Typography>
           </Stack>
