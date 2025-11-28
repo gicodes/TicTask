@@ -12,6 +12,7 @@ export type Subscription = {
   plan: Plan;
   active: boolean;
   duration: number;
+  trial: boolean;
   
   interval: "monthly" | 'yearly';
   startedAt: string;

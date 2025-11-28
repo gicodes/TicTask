@@ -104,12 +104,12 @@ export const ProductCTA = () => {
   const GetStarted = async () => {
     if (!user) {
       showAlert("You must be logged in. Redirecting to login page")
-      setTimeout(() => router.push('/auth/login'), 2000);
+      setTimeout(() => router.push('/auth/login'), 1000);
     }
 
     if (user && (user.userType==="PERSONAL" || user.userType==="BUSINESS")){ 
-      showAlert("Go Pro? Great Choice! Redirecting to pricing...")
-      setTimeout(() => router.push('/product/pricing'), 2000) 
+      showAlert("Go Pro? Great Choice! Redirecting you to checkout from pricing")
+      setTimeout(() => router.push('/product/pricing'), 1200) 
     };
   }
 

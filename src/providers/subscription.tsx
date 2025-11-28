@@ -2,13 +2,9 @@
 
 import { useAuth } from "@/providers/auth";
 import { apiGet, apiPost } from "@/lib/api";
-import type { Subscription } from "@/types/subscription";
+import type { Subscription, Plan } from "@/types/subscription";
 import React, { createContext, useContext } from "react";
-import { 
-  useQuery, 
-  useMutation, 
-  useQueryClient 
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { 
   GenericAPIRes, 
   StripeCheckOutSessionRequest, 
@@ -20,13 +16,14 @@ import { resolveIntervalFromPlan } from "@/lib/pricing";
 interface SubscriptionContextProps {
   subscription: Subscription | null;
   loading: boolean;
+
   isPro: boolean;
-  isFreeTrial: boolean;
   isEnterprise: boolean;
+  isFreeTrial: boolean;
 
   refresh: () => Promise<void>;
   cancelSubscription: () => Promise<boolean>;
-  upgradeToCheckout: (priceId: string) => Promise<{ url: string }>;
+  upgradeToCheckout: (planId: string) => Promise<{ url: string }>;
   startFreeTrial: (durationDays?: number) => Promise<Subscription | null>;
 }
 
@@ -47,7 +44,7 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
       return (res.data as Subscription) ?? null;
     },
     enabled: !!user?.id,
-    staleTime: 60 * 1000,
+    staleTime: 60_000,
   });
 
   const startTrial = useMutation<Subscription | null, Error, number>({
@@ -59,13 +56,12 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
         plan: "FREE",
         duration: durationDays,
       });
-      if (!res.ok) throw new Error(res.error?.message || "Failed to start trial");
 
+      if (!res.ok) throw new Error(res.error?.message || "Failed to start trial");
+      
       return (res.data as Subscription) ?? null;
     },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["subscription", user?.id] });
-    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["subscription", user?.id] }),
   });
 
   const createCheckout = useMutation<
@@ -81,54 +77,58 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
         plan: planId,
       };
 
-      const res = await apiPost<
-        StripeCheckOutSessionResponse, 
-        StripeCheckOutSessionRequest
-      >("/subscription/stripe/checkout", body);
+      const res = await apiPost<StripeCheckOutSessionResponse, StripeCheckOutSessionRequest>(
+        "/subscription/stripe/checkout", body
+      );
 
-      if (!res.ok || !res.data)
-        throw new Error(res.error?.message || "Failed to create checkout session");
-
+      if (!res.ok || !res.data) throw new Error(res.error?.message || "Failed to create checkout session");
       return res.data;
     },
   });
-  
+
   const cancelSub = useMutation<boolean, Error>({
     mutationFn: async () => {
       if (!user?.id) throw new Error("Not authenticated");
 
       const res = await apiPost<GenericAPIRes>("/subscription/cancel", { id: user.id });
-      if (!res.ok) throw new Error(res.error?.message || "Failed to cancel subscription");
 
+      if (!res.ok) throw new Error(res.error?.message || "Failed to cancel subscription");
       return true;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["subscription", user?.id] }),
   });
 
-  const plan = (subscription?.plan ?? "FREE").toUpperCase();
+  const plan = (subscription?.plan ?? "FREE") as Plan;
   const isActive = !!subscription?.active;
-  if (isActive) subscription.interval = resolveIntervalFromPlan(subscription.plan) ?? 14;
+
+  if (isActive) subscription.interval = resolveIntervalFromPlan(plan);
+  if (isActive && subscription.plan==="FREE") subscription.trial = true;
+
+  const isPro = ["PRO_MONTH", "PRO_ANNUAL"].includes(plan) && isActive;
+  const isFreeTrial = plan === "FREE" && isActive && !!subscription?.trial;
+  const isEnterprise = ["ENTERPRISE_MONTH", "ENTERPRISE_ANNUAL"].includes(plan) && isActive;
 
   const ctxValue: SubscriptionContextProps = {
     subscription: subscription ?? null,
     loading: isLoading,
-    isPro: plan === "PRO" && isActive,
-    isFreeTrial: plan === "FREE" && isActive,
-    isEnterprise: plan === "ENTERPRISE" && isActive,
+
+    isPro,
+    isEnterprise,
+    isFreeTrial,
 
     refresh: async () => {
       await refetch();
     },
-
+    
     startFreeTrial: async (days = 14) => {
       return await startTrial.mutateAsync(days);
     },
-
-    upgradeToCheckout: async (priceId: string) => {
-      const data = await createCheckout.mutateAsync(priceId);
+    
+    upgradeToCheckout: async (planId: string) => {
+      const data = await createCheckout.mutateAsync(planId);
       return { url: data.url };
     },
-
+    
     cancelSubscription: async () => {
       await cancelSub.mutateAsync();
       return true;

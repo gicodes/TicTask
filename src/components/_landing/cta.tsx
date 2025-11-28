@@ -18,13 +18,13 @@ const CTA = () => {
   const GetPro = async () => {
     if (!user) {
       showAlert("Sign in to continue", "warning");
-      setTimeout(() => router.push('/auth/login?returnUrl=/product/pricing'), 3000);
+      setTimeout(() => router.push('/auth/login?returnUrl=/product/pricing'), 1200);
       return
     };
 
     if (!subscription || !subscription.active) {
       showAlert("You are being redirected to pricing to complete your product/ plan purchase", "info");
-      setInterval(() => router.push('/product/pricing'), 3000)
+      setInterval(() => router.push('/product/pricing'), 1200)
     }
 
     if (subscription && subscription.active){
