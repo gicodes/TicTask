@@ -131,13 +131,12 @@ export default function SubscriptionPage() {
                       </Button>
 
                       <Button
-                        startIcon={<GiArmorUpgrade />}
+                        startIcon={<GiArmorUpgrade color='var(--special)' />}
                         variant="contained"
                         tone='action'
-                        sx={{ background: 'var(--special)', color: 'var(--surface-1)'}}
                         onClick={() => handleUpgrade("enterprise_month")}
                       >
-                        Enterprise
+                        Go Enterprise
                       </Button>
                     </Stack>
                   )}
@@ -182,7 +181,7 @@ export default function SubscriptionPage() {
                     variant="outlined"
                     size="small"
                     tone='retreat'
-                    endIcon={<FaExternalLinkAlt size={12.5} />}
+                    endIcon={<FaExternalLinkAlt size={12.5} color='var(--flair)' />}
                     sx={{ textTransform: 'none' }}
                   >
                     See All Plans
@@ -214,7 +213,7 @@ export default function SubscriptionPage() {
             </CardContent> 
           </Card>           
         </motion.div>
-        
+
       </Stack>
     </Box>
   );
