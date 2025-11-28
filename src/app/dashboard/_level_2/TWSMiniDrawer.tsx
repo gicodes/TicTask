@@ -110,7 +110,7 @@ export default function TicketDetailDrawer({
         anchor="right"
         open={open}
         onClose={onClose}
-        sx={{ '& .MuiDrawer-paper': { width: { xs: '100%', md: 500, lg: 600 } } }}
+        sx={{ '& .MuiDrawer-paper': { width: { xs: '100%', md: 500, lg: 555 } } }}
       >
         <Toolbar />
         <Box display="grid" gap={2}>

@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+'use client'
+
+import React, { useEffect, useRef, useState } from 'react';
 import { useTickets } from '@/providers/tickets';
 import { Create_Ticket } from '@/types/ticket';
 import { useAlert } from '@/providers/alert';
@@ -44,13 +46,31 @@ export default function TicketTaskCreateFormsDrawer({
   onClose, 
   onCreated, 
 }: TICKET_FORM_PROPS ) {
-  
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const { createTicket } = useTickets();
 
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+
+  const typeSelectorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const element = typeSelectorRef.current;
+    if (!element) return;
+
+    void element.offsetWidth;
+
+    element.style.animation = 'highlightPulse 1.8s ease-out';
+
+    const timer = setTimeout(() => {
+      element.style.animation = '';
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [open]);
 
   type LocalType = TicketTypeUnion | PlannerTaskTypeUnion;
   
@@ -140,8 +160,8 @@ export default function TicketTaskCreateFormsDrawer({
 
   return (
     <Drawer 
-      anchor="right" 
       open={open} 
+      anchor="right" 
       onClose={onClose} 
       sx={{ 
         '& .MuiDrawer-paper': { width: { xs: '100%', md: 600 },} 
@@ -164,22 +184,50 @@ export default function TicketTaskCreateFormsDrawer({
             justifyContent={'space-between'}
             display={{ xs: 'block', sm: 'flex' }}
           >
-            <Typography 
-              pb={1}
-              variant="h6" 
-              fontWeight={600}
-              minWidth={{ sm: 200}}
-              textAlign={{ xs: 'center', sm: 'left'}} 
-            >
-              Create new {itemType === 'TASK' ? 'task' : 'ticket'}
-            </Typography>
-            <Box width={'100%'}>
-              <TextField 
-                select 
-                label="Type" 
-                value={String(itemType)} 
-                onChange={(e) => setItemType(e.target.value as LocalType)} 
+            <Stack mr={1}>
+              <Typography 
+                variant="h6" 
+                fontWeight={600}
+                minWidth={{ sm: 200}}
+                textAlign={{ xs: 'center', sm: 'left'}} 
+              >
+                Create new {itemType === 'TASK' ? 'task' : 'ticket'}
+              </Typography>
+              <Typography 
+                variant='caption' 
+                pb={{ xs: 2, md: 0}}
+                textAlign={{ xs: 'center', sm: 'left'}} 
+               sx={{ opacity: 0.5 }}
+              >
+                Choose from {itemType !== 'TASK' ? 'General, Invoice, etc' : 'Task, Event, etc'}
+              </Typography>
+            </Stack>
+            
+            <Box
+              ref={typeSelectorRef}
+              width={'100%'}
+              sx={{
+                animation: 'none',
+                '& .MuiOutlinedInput-root': {
+                  transition: 'all 0.3s ease',
+                },
+              }}
+              className='highlight-glow'
+              >
+              <TextField
+                select
+                label="Type"
+                value={String(itemType)}
+                onChange={(e) => setItemType(e.target.value as LocalType)}
                 fullWidth
+                slotProps={{
+                  input: {
+                    sx: {
+                      fontWeight: 600,
+                      backgroundColor: 'background.paper',
+                    },
+                  },
+                }}
               >
                 {Object.keys(registryForms).map((k) => (
                   <MenuItem key={k} value={k}>

@@ -23,7 +23,7 @@ function useDebounce<T>(value: T, delay = 300): T {
 }
 
 const TicketsPage: React.FC = () => {
-  const { tickets, fetchTickets } = useTickets();
+  const { tickets, fetchTickets, updateTicket } = useTickets();
   const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
   const [selectedTicket, setSelectedTicket] = useState<string | number | null>(null);
   const [formOpen, setFormOpen] = useState(false);
@@ -88,6 +88,7 @@ const TicketsPage: React.FC = () => {
           setGrouped={setGrouped}    
           openDetail={openDetail}
           isSearching={!!debouncedQuery}
+          updateTicket={() => updateTicket}
         />
       ) : (
         <TicketsList

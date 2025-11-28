@@ -31,14 +31,13 @@ export default function PricingSection() {
   const router = useRouter();
   const { user } = useAuth();
   const { showAlert } = useAlert();
-  const { subscription, upgradeToCheckout } = useSubscription();
+  const { subscription, upgradeToCheckout, interval } = useSubscription();
   const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
   const isBusiness = user?.userType === "BUSINESS";
 
   const plans = isBusiness
     ? PLANS.filter((p) => ["Pro", "Enterprise"].includes(p.name)) : PLANS;
     
-  const interval = subscription?.interval;
   const activePlan = subscription?.plan?.toLowerCase();
 
   const getButtonLabel = (plan: string) => {
@@ -99,7 +98,7 @@ export default function PricingSection() {
           </ToggleButtonGroup>
         </Stack>
 
-        <Grid container spacing={isBusiness ? 20 : 5} justifyContent="center">
+        <Grid container spacing={{ xs: 10, sm: isBusiness ? 20 : 5}} justifyContent="center">
           {plans.map((plan, i) => (
             <Grid key={plan.name}>
               <motion.div

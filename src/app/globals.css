@@ -5,7 +5,7 @@
   --surface-2: #eaeaea;
   --accent: #f38600;
   --success: forestgreen;
-  --flair: rgb(100, 180, 180);
+  --flair: rgb(100, 150, 180);
   --secondary: #999;
   --disabled: #cccccc;
   --accent-contrast: #ffffff;
@@ -28,11 +28,11 @@
     --foreground: #ededed;
     --surface-1: rgb(36, 34, 43);
     --surface-2: rgb(28, 28, 33);
-    --special: #735df0;
+    --special: #a094e1;
     --accent: #f38600;
     --error: #e75900;
     --danger: #e53935;
-    --success: #4caf50; 
+    --success: #64b566; 
     --info: skyblue;    
     --flair: rgb(69, 107, 139);     
     --secondary: #777;
@@ -165,12 +165,14 @@ h6 { font-size: 1.5rem; }
 .mb-1 { margin-bottom: 0.5rem; }
 .mb-2 { margin-bottom: 1rem; }
 
-.hoverBg {
-  border-radius: 5;
-
+.hover-bg-effect {
   &:hover {
     background: var(--surface-1);
     color: var(--bw);
+    padding-left: 25;
+    border-radius: 5;
+    box-shadow: 2px 2px 1px 1px rgba(0, 0, 0, 1);
+    transform: scale(1);
   }
 }
 
@@ -205,4 +207,23 @@ h6 { font-size: 1.5rem; }
   0% { color: #888; }
   50% { color: #00bfa5; }
   100% { color: #888; }
+}
+
+.highlight-glow {
+  animation: glowPulse 20s ease-out forwards;
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px 8px rgba(33, 150, 243, 0.3);
+    transform: scale(1.01);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    transform: scale(1);
+  }
 }

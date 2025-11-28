@@ -20,6 +20,7 @@ interface SubscriptionContextProps {
   isPro: boolean;
   isEnterprise: boolean;
   isFreeTrial: boolean;
+  interval: "monthly" | 'yearly' | undefined;
 
   refresh: () => Promise<void>;
   cancelSubscription: () => Promise<boolean>;
@@ -47,18 +48,19 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
     staleTime: 60_000,
   });
 
-  const startTrial = useMutation<Subscription | null, Error, number>({
+    const startTrial = useMutation<Subscription | null, Error, number>({
     mutationFn: async (durationDays = 14) => {
       if (!user?.id) throw new Error("Not authenticated");
 
+      if (subscription && subscription.active && subscription.plan !== "FREE") {
+        throw new Error("Paid subscription already active");
+      }
       const res = await apiPost<GenericAPIRes>(`/subscription`, {
         id: user.id,
         plan: "FREE",
         duration: durationDays,
       });
-
       if (!res.ok) throw new Error(res.error?.message || "Failed to start trial");
-      
       return (res.data as Subscription) ?? null;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["subscription", user?.id] }),
@@ -101,12 +103,10 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
   const plan = (subscription?.plan ?? "FREE") as Plan;
   const isActive = !!subscription?.active;
 
-  if (isActive) subscription.interval = resolveIntervalFromPlan(plan);
-  if (isActive && subscription.plan==="FREE") subscription.trial = true;
-
-  const isPro = ["PRO_MONTH", "PRO_ANNUAL"].includes(plan) && isActive;
-  const isFreeTrial = plan === "FREE" && isActive && !!subscription?.trial;
-  const isEnterprise = ["ENTERPRISE_MONTH", "ENTERPRISE_ANNUAL"].includes(plan) && isActive;
+  const interval = isActive ? resolveIntervalFromPlan(plan) : undefined;
+  const isPro = isActive && ["PRO_MONTH", "PRO_ANNUAL"].includes(plan);
+  const isFreeTrial = isActive && plan === "FREE";
+  const isEnterprise = isActive && ["ENTERPRISE_MONTH", "ENTERPRISE_ANNUAL"].includes(plan);
 
   const ctxValue: SubscriptionContextProps = {
     subscription: subscription ?? null,
@@ -115,20 +115,20 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
     isPro,
     isEnterprise,
     isFreeTrial,
+    interval,
 
     refresh: async () => {
       await refetch();
     },
-    
     startFreeTrial: async (days = 14) => {
       return await startTrial.mutateAsync(days);
     },
-    
-    upgradeToCheckout: async (planId: string) => {
-      const data = await createCheckout.mutateAsync(planId);
+    upgradeToCheckout: async (priceId: string) => {
+      const data = await createCheckout.mutateAsync(priceId);
+
       return { url: data.url };
     },
-    
+
     cancelSubscription: async () => {
       await cancelSub.mutateAsync();
       return true;

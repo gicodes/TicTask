@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Button } from '@/assets/buttons';
 import { useAlert } from '@/providers/alert';
-import { GiArmorUpgrade } from 'react-icons/gi';
 import { CreditCard } from '@mui/icons-material';
 import { useSubscription } from '@/providers/subscription';
 import { 
@@ -17,20 +16,31 @@ import {
   Grid, 
   LinearProgress 
 } from '@mui/material';
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { useAuth } from '@/providers/auth';
+import { VscLinkExternal } from 'react-icons/vsc';
+import { SiAwsorganizations } from 'react-icons/si';
+import { GiArmorUpgrade, GiTeamIdea} from 'react-icons/gi';
 
 export default function SubscriptionPage() {
   const { showAlert } = useAlert();
-  const { subscription, isPro, isEnterprise, isFreeTrial, loading, upgradeToCheckout, cancelSubscription } = useSubscription();
+  const { user } = useAuth();
+  const { 
+    subscription, 
+    isPro, 
+    isEnterprise, 
+    isFreeTrial, 
+    loading, 
+    upgradeToCheckout, 
+    cancelSubscription 
+  } = useSubscription();
 
-  if (loading)
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
-        <Typography variant="body1" sx={{ opacity: 0.7 }}>
-          Loading your subscription...
-        </Typography>
-      </Box>
-    );
+  if (loading) return (
+    <Box sx={{ display: 'flex', justifyContent: 'center', minHeight: 400 }}>
+      <Typography variant="body1" sx={{ opacity: 0.7 }}>
+        Loading your subscription...
+      </Typography>
+    </Box>
+  );
 
   const handleUpgrade = async (planId: string) => {
     try {
@@ -58,14 +68,26 @@ export default function SubscriptionPage() {
     plan.endsWith("_MONTH") ? "Monthly" :
     plan.endsWith("_ANNUAL") ? "Annual" : "";
 
-  const aiCredits = isEnterprise ? 1000 : isPro ? 500 : isFreeTrial ? 100 : 10;
-  const usedCredits = 30; // TODO: fetch usage
+  const aiCredits = isEnterprise ? 1000 : isPro ? 500 : 100;
+  const usedCredits = 0; // Feature updates will fetch usage
   const automationRuns = isEnterprise ? 1000 : isPro ? 200 : 20;
 
   return (
-    <Box sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, md: 4 } }}>
-      <Stack spacing={4} maxWidth="900px" mx="auto">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
+    <Box 
+      sx={{ 
+        py: { xs: 6, md: 10 }, 
+        px: { xs: 2, md: 4 } 
+      }}
+    >
+      <Stack 
+        mx="auto"
+        spacing={4} 
+        maxWidth="900px" 
+      >
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }} 
+          animate={{ opacity: 1, y: 0 }}
+        >
           <Stack spacing={1} textAlign={{ xs: 'center', sm: 'inherit' }}>
             <Typography variant="h4" fontWeight={700}>
               Manage Subscription
@@ -76,7 +98,11 @@ export default function SubscriptionPage() {
           </Stack>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.1 }}
+        >
           <Card sx={{ borderRadius: 4, boxShadow: '0 6px 20px rgba(0,0,0,0.08)' }}>
             <CardContent>
               <Stack
@@ -107,7 +133,11 @@ export default function SubscriptionPage() {
 
                 <Stack direction="row" spacing={2}>
                   {isPro || isEnterprise ? (
-                    <Stack direction={{ xs: 'column', sm: 'row'}} spacing={{xs: 1, sm: 2}}>
+                    <Stack 
+                      direction={{ 
+                        xs: 'column', sm: 'row'}} 
+                        spacing={{xs: 1, sm: 2}}
+                      >
                       <Button 
                         variant="outlined" 
                         startIcon={<CreditCard />} 
@@ -116,25 +146,30 @@ export default function SubscriptionPage() {
                         Manage Billing
                       </Button>
 
-                      <Button variant="text" color="error" onClick={cancelSubscription}>
+                      <Button variant="text" tone="error" onClick={cancelSubscription}>
                         Cancel
                       </Button>
                     </Stack>
                   ) : (
-                    <Stack direction={{ xs: 'column', sm: 'row'}} spacing={{xs: 1, sm: 2}}>
+                    <Stack 
+                      py={1} 
+                      spacing={{ xs: 1.5, sm: 2 }}
+                      direction={{ xs: 'column', sm: 'row' }} 
+                    >
                       <Button
-                        startIcon={<GiArmorUpgrade />}
+                        startIcon={user?.userType==="BUSINESS" ? <GiTeamIdea /> : <GiArmorUpgrade />}
                         variant="contained"
-                        onClick={() => handleUpgrade("pro_month")}
+                        onClick={() => handleUpgrade("PRO_MONTH")}
                       >
                         Upgrade to Pro
                       </Button>
 
                       <Button
-                        startIcon={<GiArmorUpgrade color='var(--accent)' />}
+                        startIcon={<SiAwsorganizations color='var(--secondary)' />}
                         variant="contained"
                         tone='action'
-                        onClick={() => handleUpgrade("enterprise_month")}
+                        weight='normal'
+                        onClick={() => handleUpgrade("ENTERPRISE_MONTH")}
                       >
                         Enterprise
                       </Button>
@@ -146,18 +181,21 @@ export default function SubscriptionPage() {
           </Card>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.2 }}
+        >
           <Card sx={{ borderRadius: 4 }}>
             <CardContent>
               <Stack spacing={2}>
                 <Typography variant="h6" fontWeight={700}>
                   Usage Overview
                 </Typography>
-
                 <Divider sx={{ opacity: 0.2 }} />
-
+                
                 <Grid container spacing={3}>
-                  <Grid>
+                  <Grid display={'grid'} gap={0.5}>
                     <Typography variant="body2">AI Credits</Typography>
                     <LinearProgress variant="determinate" value={(usedCredits / aiCredits) * 100} />
                     <Typography variant="caption" sx={{ opacity: 0.7 }}>
@@ -165,7 +203,7 @@ export default function SubscriptionPage() {
                     </Typography>
                   </Grid>
 
-                  <Grid>
+                  <Grid display={'grid'} gap={0.5}>
                     <Typography variant="body2">Automation Runs</Typography>
                     <LinearProgress variant="determinate" value={(automationRuns / 1000) * 100} />
                     <Typography variant="caption" sx={{ opacity: 0.7 }}>
@@ -179,9 +217,9 @@ export default function SubscriptionPage() {
                 <Link href="/product/pricing">
                   <Button
                     variant="outlined"
-                    size="small"
                     tone='retreat'
-                    endIcon={<FaExternalLinkAlt size={12.5} color='var(--flair)' />}
+                    weight='light'
+                    endIcon={<VscLinkExternal size={15} color='var(--disabled)' />}
                     sx={{ textTransform: 'none' }}
                   >
                     See All Plans
@@ -199,7 +237,7 @@ export default function SubscriptionPage() {
         > 
           <Card sx={{ borderRadius: 4, bgcolor: 'rgba(0,0,0,0.02)' }}> 
             <CardContent> 
-              <Stack spacing={1.5}> 
+              <Stack spacing={3}> 
                 <Typography variant="body2" sx={{ opacity: 0.8 }}> 
                   Need help fixing an issue with your billing or subscription? 
                 </Typography> 
@@ -213,7 +251,6 @@ export default function SubscriptionPage() {
             </CardContent> 
           </Card>           
         </motion.div>
-
       </Stack>
     </Box>
   );

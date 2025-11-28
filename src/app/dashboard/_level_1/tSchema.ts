@@ -39,12 +39,19 @@ export interface TICKET_TOOLBAR_PROPS {
   setSearchQuery: (q: string) => void;
 }
 
+export interface KANBAN_BOARD_PROPS {
+  grouped: Record<string, Ticket[]>;
+  setGrouped: React.Dispatch<React.SetStateAction<Record<string, Ticket[]>>>;
+  openDetail: (id: string | number) => void;
+  isSearching?: boolean;
+  updateTicket: (id: string | number, updates: Partial<Ticket>) => void;
+}
+
 export interface TICKET_LIST_PROPS {
   columns: string[];
   tickets: Ticket[];
   onOpen: (id: number) => void;
 }
-
 
 export interface PLANNER_TOOLBAR_PROPS {
   view: 'calendar' | 'list';
@@ -54,10 +61,12 @@ export interface PLANNER_TOOLBAR_PROPS {
   onOpenCreate: () => void;
   dateRangeLabel?: string;
 }
+
 export interface BOARD_COLUMN { 
   title: string;
   tickets: Ticket[];
   onOpen?: (id: string | number) => void;
+  isDragDisabled: boolean;
 }
 
 export type TicketTypeUnion = TicketType;

@@ -20,6 +20,12 @@ export const BUTTON_SIZES = {
   Xlarge: styles.btnXLarge
 };
 
+export const BUTTON_WEIGHT = {
+  normal: styles.btnNormal,
+  light: styles.btnLight,
+  xLight: styles.btnXLight,
+}
+
 export const BUTTON_VARIANTS = {
   contained: styles.btnContained,
   outlined: styles.btnOutlined,
@@ -40,6 +46,7 @@ const sxToStyle = (sx?: SxProps): React.CSSProperties => {
 type ButtonBaseProps = {
   tone?: keyof typeof BUTTON_STYLES;
   size?: keyof typeof BUTTON_SIZES;
+  weight?: keyof typeof BUTTON_WEIGHT;
   variant?: keyof typeof BUTTON_VARIANTS;
   loading?: boolean;
   fullWidth?: boolean;
@@ -59,6 +66,7 @@ export const Button = <C extends React.ElementType = "button">({
   tone = 'primary',
   size = "medium",
   variant = "filled",
+  weight="normal",
   loading = false,
   fullWidth = false,
   disabled,
@@ -74,6 +82,7 @@ export const Button = <C extends React.ElementType = "button">({
     styles.btnBase,
     BUTTON_STYLES[tone],
     BUTTON_SIZES[size],
+    BUTTON_WEIGHT[weight],
     BUTTON_VARIANTS[variant],
     fullWidth && BUTTON_FULLWIDTH,
     loading && BUTTON_LOADING,

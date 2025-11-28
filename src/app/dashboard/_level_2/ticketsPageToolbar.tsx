@@ -1,10 +1,10 @@
 import { 
-  Stack, 
-  TextField, 
-  ButtonGroup, 
   Box, 
-  Typography, 
+  Stack, 
   Tooltip, 
+  TextField,
+  Typography,  
+  ButtonGroup, 
   InputAdornment,
 } from '@mui/material';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
@@ -27,14 +27,22 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
       px={1}
       pb={2}
       gap={1}
+      width={'100%'}
       alignItems="center"
       flexWrap={{ md: 'wrap'}}
       display={{ xs: 'grid', md: 'flex' }}
-      justifyContent={{ xs: 'center', sm: 'space-between' }}
+      justifyContent={{ xs: 'center', md: 'space-between' }}
     >
       <section id='tickets'>
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
-          <Stack spacing={1} my={2} textAlign={{ xs: 'center', sm: 'inherit'}}>
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }} 
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <Stack 
+            my={2} 
+            spacing={1} 
+            textAlign={{ xs: 'center', sm: 'inherit'}}
+          >
             <Typography
               variant="h4"
               fontWeight={600}
@@ -53,8 +61,9 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
         justifyContent={{ xs: 'center', sm: "space-between"}}
         direction={{ xs: 'column', sm: 'row' }}
         display={{ xs: 'grid', sm: 'flex' }}
-        spacing={{ xs: 2, sm: 4, lg: 5}}
+        gap={{ xs: 1, sm: 2, md: 3, lg: 5 }}
         alignItems="center"
+        width={'100%'}
       >
         <section id='search'>
           <TextField
@@ -62,7 +71,10 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search tickets..."
             size="small"
-            sx={{ minWidth: { xs: 313, sm: 212, md: 250, lg: 300 }}}
+            sx={{ 
+              minWidth: { xs: 300, sm: 150, lg: 360 }, 
+              maxWidth: { xs: 321, sm: 234, lg: 420 }
+            }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -111,27 +123,20 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
         </section>
 
         <section id="new-ticket-btn">
-          <Box 
-            sx={{ 
-              display: { xs: 'block', sm: 'none'}
-            }} 
-          > 
-            <br/>
-          </Box>
+          <Box sx={{ display: { xs: 'block', sm: 'none', minHeight: 15 }}} />
           <Tooltip title="Create New Ticket as Task, Invoice or Issue">
             <div>
               <Button
                 startIcon={<FaPlusCircle />}
                 onClick={onOpenCreate}
                 tone='action'
-                sx={{ marginInline: 'auto', display: 'flex' }}
+                sx={{ margin: '0 auto', display: 'flex', minWidth: 196 }}
               >
                 NEW TICKET
               </Button>
             </div>
           </Tooltip>
         </section>
-
       </Stack>
     </Box>
   );

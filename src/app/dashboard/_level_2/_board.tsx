@@ -2,52 +2,62 @@
 
 import { Ticket } from '@/types/ticket';
 import BoardColumn from './boardColumn';
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
-import { Box, useTheme, useMediaQuery, Tabs, Tab, IconButton, Tooltip } from '@mui/material';
+import {
+  Box,
+  useTheme,
+  useMediaQuery,
+  Tabs,
+  Tab,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
+import { unknown } from 'zod';
+import { KANBAN_BOARD_PROPS } from '../_level_1/tSchema';
 
-export interface BoardProps {
-  grouped: Record<string, Ticket[]>;
-  setGrouped: React.Dispatch<React.SetStateAction<Record<string, Ticket[]>>>;
-  openDetail: (id: string | number) => void;
-  isSearching?: boolean 
-}
-
-export default function Board({ grouped, setGrouped, openDetail, isSearching }: BoardProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [startIndex, setStartIndex] = useState(0);
-  const STATUSES = Object.keys(grouped);
+export default function Board({
+  grouped,
+  setGrouped,
+  openDetail,
+  isSearching,
+  updateTicket,
+}: KANBAN_BOARD_PROPS) {
   const theme = useTheme();
-
   const isXs = useMediaQuery(theme.breakpoints.only('xs'));
-  const isSm = useMediaQuery(theme.breakpoints.only('sm'));
-  const isMd = useMediaQuery(theme.breakpoints.only('md'));
+  const isSmxMd = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
+  const isSmOrLarger = !isXs;
 
-  useEffect(() => {
-    if (isXs) localStorage.setItem('tictask_activeStatus', STATUSES[activeIndex]);
-  }, [isXs, activeIndex, STATUSES]);
+  const STATUSES = Object.keys(grouped);
 
-  useEffect(() => {
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const [startIndex, setStartIndex] = React.useState(0);
+
+  const visibleCount = isXs ? 1 : isSmxMd ? 2 : 3;
+  const visibleStatusesRaw = isSearching
+    ? STATUSES.filter((status) => grouped[status]?.length > 0)
+    : STATUSES;
+
+  const visibleStatuses = useMemo(() => {
     if (isXs) {
-      const last = localStorage.getItem('tictask_activeStatus');
-      const idx = STATUSES.indexOf(last || '');
-      if (idx >= 0) setActiveIndex(idx);
+      return [visibleStatusesRaw[activeIndex] || visibleStatusesRaw[0] || 'OPEN'];
     }
-  }, [isXs, STATUSES]);
+    return visibleStatusesRaw.slice(startIndex, startIndex + visibleCount);
+  }, [isXs, visibleStatusesRaw, activeIndex, startIndex, visibleCount]);
 
-  const visibleCount = isXs ? 1 : (isSm || isMd) ? 2 : 3;
+  const handlePrevColumns = () =>
+    setStartIndex((prev) => Math.max(prev - visibleCount, 0));
 
-  const handleNextColumns = () => {
+  const handleNextColumns = () =>
     setStartIndex((prev) =>
       Math.min(prev + visibleCount, STATUSES.length - visibleCount)
     );
-  };
-
-  const handlePrevColumns = () => setStartIndex((prev) => Math.max(prev - visibleCount, 0));
 
   const handleDragEnd = (result: DropResult) => {
+    if (isXs) return;
+
     const { source, destination } = result;
     if (!destination) return;
 
@@ -58,115 +68,102 @@ export default function Board({ grouped, setGrouped, openDetail, isSearching }: 
 
     setGrouped((prev) => {
       const newGrouped = structuredClone(prev);
-      const [moved] = newGrouped[sourceStatus].splice(source.index, 1);
-      newGrouped[destStatus].splice(destination.index, 0, moved);
+
+      newGrouped[sourceStatus] ??= [];
+      newGrouped[destStatus] ??= [];
+
+      const [movedTicket] = newGrouped[sourceStatus].splice(source.index, 1);
+
+      if (movedTicket.status !== destStatus) {
+        updateTicket(movedTicket.id, { status: destStatus as Ticket['status'] });
+      }
+
+      newGrouped[destStatus].splice(destination.index, 0, movedTicket);
+
       return newGrouped;
     });
   };
 
-  const visibleStatusesRaw = isSearching
-    ? STATUSES.filter((status) => grouped[status]?.length > 0)
-    : STATUSES;
-  const visibleStatuses = useMemo(() => {
-    if (isXs) return [visibleStatusesRaw[activeIndex] || visibleStatusesRaw[0]];
-    return visibleStatusesRaw.slice(startIndex, startIndex + visibleCount);
-  }, [isXs, visibleStatusesRaw, startIndex, visibleCount, activeIndex]);
-  
-  const prevStatuses = STATUSES.slice(
-    Math.max(0, startIndex - visibleCount), startIndex
-  );
-  const nextStatuses = STATUSES.slice(
-    startIndex + visibleCount, startIndex + visibleCount * 2
-  );
+  const prevStatuses = STATUSES.slice(Math.max(0, startIndex - visibleCount), startIndex);
+  const nextStatuses = STATUSES.slice(startIndex + visibleCount);
 
   return (
-    <Box sx={{ width: '100%', overflow: 'hidden', maxWidth: '96vw' }}>
+    <Box 
+      sx={{ 
+        width: '100%', 
+        overflow: 'hidden', 
+        maxWidth: { xs: '96vw', sm: 'none'} 
+      }}
+    >
       {isXs && (
         <Tabs
           value={activeIndex}
           onChange={(_, v) => setActiveIndex(v)}
           variant="scrollable"
           scrollButtons="auto"
-          sx={{ marginTop: 2}}
+          sx={{ mt: 2 }}
         >
-          {isSearching ? visibleStatusesRaw.map((status, idx) => (
-            <Tab key={status} label={status==='IN_PROGRESS' ? `IN PROGRESS (${grouped[status].length})` : `${status} (${grouped[status].length})`} value={idx} />
-          )) : STATUSES.map((status, idx) => (
-            <Tab key={status} label={status==='IN_PROGRESS' ? `IN PROGRESS (${grouped[status].length})` : `${status} (${grouped[status].length})`} value={idx} />
+          {visibleStatusesRaw.map((status, idx) => (
+            <Tab
+              key={status}
+              label={
+                status === 'IN_PROGRESS'
+                  ? `IN PROGRESS (${grouped[status]?.length ?? 0})`
+                  : `${status} (${grouped[status]?.length ?? 0})`
+              }
+              value={idx}
+            />
           ))}
         </Tabs>
       )}
-      <DragDropContext onDragEnd={handleDragEnd}>
+
+      <DragDropContext onDragEnd={isSmOrLarger ? handleDragEnd : unknown as typeof handleDragEnd}>
         <Box
           sx={{
             position: 'relative',
             display: 'flex',
             alignItems: 'flex-start',
-            justifyContent: 'space-between',
             width: '100%',
-            pb: 2,
           }}
         >
           {!isXs && startIndex > 0 && (
-            <Box
-              sx={{
-                marginTop: 2,
-                display: 'flex',
-                justifyContent: 'center',
-                zIndex: 9999,
-                border: '0.1px solid var(--disabled)',
-                borderRadius: '50%'
-              }}
-            >
-              <Tooltip title={prevStatuses.length ? 
-                `See ${prevStatuses.join(', ').toLowerCase()} tickets` : ''}
-              >
-                <IconButton onClick={handlePrevColumns}>
-                  <ChevronLeftIcon fontSize="large" />
-                </IconButton>
-              </Tooltip>
+            <Box mr={5}>
+              <Box sx={{ position: 'absolute', left: 0, top: 16, zIndex: 10 }}>
+                <Tooltip title={`See ${prevStatuses.join(', ').toLowerCase()}`}>
+                  <IconButton onClick={handlePrevColumns}>
+                    <ChevronLeftIcon fontSize="large" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
             </Box>
           )}
-          {visibleStatuses.map((status, i) => (
-            <Droppable droppableId={status} key={i}>
+
+          {visibleStatuses.map((status) => (
+            <Droppable key={status} droppableId={status}>
               {(provided) => (
                 <Box
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   sx={{
-                    flex: 1,
-                    minWidth: 0,
-                    borderRadius: 2,
-                    p: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
+                    flex: isXs ? 1 : '1 0 0',
+                    mx: isXs ? 2 : 1,
                   }}
                 >
                   <BoardColumn
                     title={status}
-                    tickets={grouped[status]}
+                    tickets={grouped[status] || []}
                     onOpen={openDetail}
+                    isDragDisabled={isXs}
                   />
                   {provided.placeholder}
                 </Box>
               )}
             </Droppable>
           ))}
+
           {!isXs && startIndex + visibleCount < STATUSES.length && (
-            <Box
-              sx={{       
-                position: 'absolute',         
-                marginTop: 2,
-                display: 'flex',
-                justifyContent: 'center',
-                right: 0,
-                border: '0.1px solid var(--disabled)',
-                borderRadius: '50%'
-              }}
-            >
-              <Tooltip title={nextStatuses.length ? 
-                `See ${nextStatuses.join(', ').toLowerCase()} tickets` : ''}
-              >
+            <Box sx={{ position: 'absolute', right: 0, top: 16, zIndex: 10 }}>
+              <Tooltip title={`See ${nextStatuses.join(', ').toLowerCase()}`}>
                 <IconButton onClick={handleNextColumns}>
                   <ChevronRightIcon fontSize="large" />
                 </IconButton>

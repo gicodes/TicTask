@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import TicketCard from './boardTCard';
 import NoTickets from '../_level_1/tEmpty';
@@ -15,15 +13,14 @@ export const BoardColumn: React.FC<BOARD_COLUMN> = ({
     
   return (
     <Box 
-      sx={{
-        p: 1, 
-        mr: 1,
-        maxWidth: 360,
-        bgcolor: 'transparent',
-        minWidth: { xs: 300, sm: 266, md: 270, lg: 320},
-      }}
+      px={1} 
+      mr={1}
+      mt={{ sm: 2 }}
+      maxWidth={360}
+      minWidth={{ xs: 300, sm: 234, md: 250 }}
     >
-      <Typography variant="h6" 
+      <Typography 
+        variant="h6" 
         sx={{ 
           p: 1,
           gap: 1, 
@@ -40,13 +37,11 @@ export const BoardColumn: React.FC<BOARD_COLUMN> = ({
         </span>
       </Typography>
       
-      <Box mt={3}>
-        {tickets?.map((t, i) => (
-          <Box mb={5} key={i}>
-            <TicketCard ticket={t} onOpen={onOpen} />
-          </Box>
-        ))}
-      </Box>
+      {tickets?.map((t, i) => (
+        <Box my={5} key={i}>
+          <TicketCard ticket={t} onOpen={onOpen} />
+        </Box>
+      ))}
     </Box>
   );
 };

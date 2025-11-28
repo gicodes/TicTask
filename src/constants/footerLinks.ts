@@ -15,7 +15,7 @@ export const FOOTER_LINKS = {
   COMPANY: [
     {title: "About", link: '/company'}, 
     {title: "Careers", link: '/company/careers'},  // *
-    {title: "Become a Partner", link: '/company/partner/register'}, 
+    {title: "Partnership", link: '/company/partner/register'}, 
     {title: "Be a Contributor", link: '/collab'},  // *
     {title: "Contact Us", link: '/company/contact-us'}
   ],

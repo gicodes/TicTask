@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/assets/buttons";
 import { useAuth } from "@/providers/auth";
@@ -25,7 +26,11 @@ export const ProductHero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          style={{ fontSize: "2.75rem", fontWeight: 700, marginBottom: "1.5rem" }}
+          style={{ 
+            fontSize: "2.75rem", 
+            fontWeight: 700, 
+            marginBottom: "1.5rem" 
+          }}
         >
           Everything your team needs to move faster.
         </motion.h1>
@@ -117,6 +122,7 @@ export const ProductCTA = () => {
     <section>
       <Box
         py={12}
+        gap={5}
         textAlign="center"
         display="flex"
         flexDirection="column"
@@ -131,10 +137,35 @@ export const ProductCTA = () => {
           </Typography>
           <Button onClick={GetStarted}>Get Started</Button>
         </Stack>
+
+        <Divider 
+          sx={{ 
+            maxWidth: { xs: 234, sm: 360},
+            width: '100%',
+            mx: 'auto', 
+          }} 
+        />
+
+        <Stack spacing={3} alignItems="center" maxWidth="sm">
+          <Typography variant="h5" fontWeight={700}>
+            Want to know what&apos;s best for your team?
+          </Typography>
+          <Typography variant="body1" sx={{ opacity: 0.65 }}>
+            See reasons why being on paid plans can elevate your TicTask experience, and compare your options.
+          </Typography>
+          <Button 
+            tone="secondary"
+            component={Link} 
+            href={'/product/pricing'}
+          >
+            Browse Pricing
+          </Button>
+        </Stack>
       </Box>
     </section>
   );
 };
+
 
 export default function ProductsSection() {
   return (

@@ -36,8 +36,8 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
         alignItems: isMobile ? 'stretch' : 'center',
         justifyContent: 'space-between',
         gap: 2,
-        mt: { xs: 3, sm: 2, md: 1},
         mb: 5,
+        mt: { xs: 3, sm: 2, md: 1},
       }}
     >
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
@@ -53,88 +53,94 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
             Plan with time in mind. Calendar shows task and tickets with a due date.
           </Typography>
           {dateRangeLabel && (
-            <Typography
-              color="var(--secondary)"
-              sx={{ fontWeight: 500 }}
-            >
+            <Typography color="var(--secondary)" sx={{ fontWeight: 500 }}>
               {dateRangeLabel}
             </Typography>
           )}
         </Stack>
       </motion.div>
 
-      <TextField
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search tasks..."
-        size="small"
-        fullWidth={isMobile}
-        sx={{
-          flex: isMobile ? '1 1 auto' : '0 0 300px',
-          backgroundColor: 'background.paper',
-          borderRadius: 2,
-        }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Search size={18} />
-            </InputAdornment>
-          ),
-        }}
-      />
-
-      <Stack
-        direction="row"
-        spacing={1}
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{
-          maxWidth: 300,
-          mx: { xs: 'auto', sm: 0 },
-          pl: 0.5,
-          boxShadow: 2,
-          borderRadius: 999,
-          backgroundColor: 'rgba(255, 255, 255, 0.05)',
-        }}
+      <Stack 
+        direction={{ xs: 'column', sm: 'row'}} 
+        justifyContent={'space-between'}
+        width={'100%'}
+        spacing={2}
       >
-        <Tooltip title="Calendar shows task and tickets with a due date">
-          <IconButton
-            onClick={() => setView('calendar')}
-            color={view === 'calendar' ? 'success' : 'inherit'}
+        <TextField
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search tasks..."
+          size="small"
+          fullWidth={isMobile}
+          sx={{
+            flex: isMobile ? '1 1 auto' : '0 0 300px',
+            backgroundColor: 'background.paper',
+            borderRadius: 2,
+          }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search size={18} />
+              </InputAdornment>
+            ),
+          }}
+        />
+
+        <Box display={'flex'} justifyContent={{ xs: 'center', sm: 'end'}}>
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            justifyContent="space-between"
             sx={{
-              p: 1.5,
-              backgroundColor: view === 'calendar' ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+              maxWidth: 300,
+              mx: { xs: '0 auto', sm: 0 },
+              pl: 0.5,
+              boxShadow: 2,
+              borderRadius: 999,
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
             }}
           >
-            <Calendar size={20} />
-          </IconButton>
-        </Tooltip>
+            <Tooltip title="Calendar shows task and tickets with a due date">
+              <IconButton
+                onClick={() => setView('calendar')}
+                color={view === 'calendar' ? 'success' : 'inherit'}
+                sx={{
+                  p: 1.5,
+                  backgroundColor: view === 'calendar' ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+                }}
+              >
+                <Calendar size={20} />
+              </IconButton>
+            </Tooltip>
 
-        <Tooltip title="List all task and tickets created on this workspace">
-          <IconButton
-            onClick={() => setView('list')}
-            color={view === 'list' ? 'success' : 'inherit'}
-            sx={{
-              p: 1.5,
-              backgroundColor: view === 'list' ? 'rgba(255, 255, 255, 0.25)' : 'transparent',
-            }}
-          >
-            <List size={20} />
-          </IconButton>
-        </Tooltip>
+            <Tooltip title="List all task and tickets created on this workspace">
+              <IconButton
+                onClick={() => setView('list')}
+                color={view === 'list' ? 'success' : 'inherit'}
+                sx={{
+                  p: 1.5,
+                  backgroundColor: view === 'list' ? 'rgba(255, 255, 255, 0.25)' : 'transparent',
+                }}
+              >
+                <List size={20} />
+              </IconButton>
+            </Tooltip>
 
-        <Tooltip title="Create task as event or meeting and set date & time">
-          <div>
-            <Button
-              onClick={onOpenCreate}
-              tone="action"
-              startIcon={<FaPlusCircle />}
-              sx={{ flexShrink: 0 }}
-            >
-              ADD EVENT
-            </Button>
-          </div>
-        </Tooltip>
+            <Tooltip title="Create task as event or meeting and set date & time">
+              <div>
+                <Button
+                  onClick={onOpenCreate}
+                  tone="action"
+                  startIcon={<FaPlusCircle />}
+                  sx={{ flexShrink: 0 }}
+                >
+                  ADD EVENT
+                </Button>
+              </div>
+            </Tooltip>
+          </Stack>
+        </Box>
       </Stack>
     </Box>
   );

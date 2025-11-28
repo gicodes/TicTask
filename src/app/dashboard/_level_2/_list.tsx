@@ -35,7 +35,7 @@ export default function TicketsList({
 }: TICKET_LIST_PROPS ) {
   if (!tickets || tickets.length === 0) return <NoTickets />
 
-  const formatDate = (dateStr: string | null) => {
+  const formatDate = (dateStr: string | null, isDisabled: boolean) => {
     if (!dateStr) return <Typography color="text.disabled">—</Typography>;
 
     const date = new Date(dateStr);
@@ -52,7 +52,7 @@ export default function TicketsList({
     }
 
     return (
-      <Typography color={isOverdue ? 'error' : 'text.primary'} variant='body2'>
+      <Typography color={isDisabled ? 'var(--disabled)' : isOverdue ? 'error' : 'inherit'} variant='body2'>
         {isOverdue && 'OVERDUE • '}
         {date.toLocaleDateString([], { month: 'short', day: 'numeric' })}
       </Typography>
@@ -145,6 +145,7 @@ export default function TicketsList({
 
   const renderExtraInfo = (ticket: Ticket) => {
     const data = extractTicketData(ticket);
+    
     return (
       <Stack direction="row" gap={1} flexWrap="wrap">
         {'severity' in data && data.severity && (
@@ -265,7 +266,13 @@ export default function TicketsList({
                       {renderPriorityCell(ticket)}
                     </TableCell>}
                     {columns?.includes('Due Date') && <TableCell>
-                      {formatDate(ticket.dueDate)}
+                      {formatDate(
+                        ticket.dueDate, 
+                        (ticket.status==="CANCELLED" || 
+                        ticket.status==="CLOSED" || 
+                        ticket.status==="RESOLVED"
+                        ) ? true : false)
+                      }
                     </TableCell>}
                     {columns?.includes('Status') && <TableCell>
                       {renderStatusCell(ticket)}

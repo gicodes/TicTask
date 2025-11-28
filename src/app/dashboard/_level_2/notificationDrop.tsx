@@ -87,17 +87,37 @@ const NotificationDropDown = ({
                   } 
                 </Stack>
 
-                <Stack pl={1}>
-                  <Typography fontSize={{ xs: 12.5, sm: 13, lg: 13.5}}>{n.message}</Typography>
-                  
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Typography fontSize={{ xs: 10.5, sm: 11, lg: 11.5}} color="text.secondary">
+                <Stack pl={1} spacing={-1} display={'grid'}>
+                  <Typography 
+                    fontSize={{ 
+                      xs: 12.5, 
+                      sm: 13, 
+                      lg: 13.5
+                    }}
+                  >
+                    {n.message}
+                  </Typography>
+                  <Box 
+                    display="flex" 
+                    alignItems="center" 
+                    justifyContent="space-between"
+                  >
+                    <Typography 
+                      fontSize={{ 
+                        xs: 10.5, 
+                        sm: 11, 
+                        lg: 11.5
+                      }} 
+                      color="text.secondary"
+                    >
                       {new Date(n.createdAt).toLocaleString()}
                     </Typography>
-                    <IconButton onClick={() => removeNotification}>
-                      <Delete fontSize='small' color='error' />
-                    </IconButton>
-                  </Stack>
+                    <Tooltip title='Remove notification'>
+                      <IconButton onClick={() => removeNotification}>
+                        <Delete fontSize='small' color='warning' />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                 </Stack>
               </Box>
             ))}

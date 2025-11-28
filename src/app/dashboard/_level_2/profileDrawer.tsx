@@ -6,7 +6,6 @@ import { apiGet, apiPatch } from '@/lib/api';
 import { UserProfileRes } from '@/types/axios';
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Drawer,
   Box,
   Typography,
@@ -22,13 +21,15 @@ import {
   Skeleton,
   CircularProgress,
   TextField,
+  Divider,
 } from '@mui/material';
 import Link from 'next/link';
 import { SiAwsorganizations } from 'react-icons/si';
 import { Check, Download, Share2,} from 'lucide-react';
 import { MdEmail, MdWorkspacesFilled } from 'react-icons/md';
-import { CloseSharp, Language, Groups3, EditOutlined } from '@mui/icons-material';
 import { FaBriefcase, FaLocationDot, FaPhone, FaEllipsisVertical } from 'react-icons/fa6';
+import { CloseSharp, Language, Groups3, EditOutlined, ArrowBack } from '@mui/icons-material';
+import { Button } from '@/assets/buttons';
 
 export default function ProfileDetailDrawer() {
   const { user } = useAuth();
@@ -140,7 +141,6 @@ export default function ProfileDetailDrawer() {
       sx={{
         '& .MuiDrawer-paper': {
           width: { xs: '100%', md: 440 },
-          px: 3,
           borderTopLeftRadius: 16,
           boxShadow: '-6px 0px 20px rgba(0,0,0,0.1)',
         },
@@ -148,7 +148,7 @@ export default function ProfileDetailDrawer() {
     >
       <Toolbar />
       <Fade in>
-        <Box>
+        <Box px={3}>
           <Stack direction="row" alignItems="center" justifyContent="space-between" minHeight={64}>
             <Typography variant="h6" fontWeight={600} color='textDisabled'>
               {isEditing ? 'Editing Profile' : isBusiness ? 'Business Profile' : 'User Profile'}
@@ -335,6 +335,7 @@ export default function ProfileDetailDrawer() {
                     </Typography>
                   </Stack>
                 )}
+                {(user as User).workSpaceName && <Typography variant='body2'>{(user as User).workSpaceName}</Typography>}
               </Stack>
             </Paper>
           )}
@@ -357,11 +358,10 @@ export default function ProfileDetailDrawer() {
                       fullWidth
                     />
                   ) : (
-                    <Typography variant="body2">
-                      {profile?.position || 'Position not specified'}
-                    </Typography>
+                    <Typography variant="body2"> {profile?.position || 'Position not specified'}</Typography>
                   )}
                 </Stack>
+                {(user as User).workSpaceName && <Typography variant='body2'>{(user as User).workSpaceName}</Typography>}
               </Stack>
             </Paper>
           )}
@@ -369,7 +369,8 @@ export default function ProfileDetailDrawer() {
             <Paper
               variant="outlined"
               sx={{
-                p: 2, mb: 2,
+                p: 2, 
+                mb: 2,
                 borderRadius: 3,
                 bgcolor: theme.palette.warning.light + '15',
               }}
@@ -386,12 +387,22 @@ export default function ProfileDetailDrawer() {
               </Typography>
             </Paper>
           )}
-          
-          <Link href="/dashboard" onClick={closeDetail} style={{ padding: 20}}>
-            <Button fullWidth color="inherit" variant="contained"> ← &nbsp; Back </Button>
-          </Link>
         </Box>
       </Fade>
+
+      <Divider sx={{ width: '100%', border: '5px solid var(--disabled)'}} />
+      
+      <Box p={3}>
+        <Button 
+          onClick={closeDetail} 
+          tone='inverted'
+          component={Link} href="/dashboard" 
+          startIcon={<ArrowBack />}
+          sx={{ maxWidth: 250 }}
+        > 
+          Back 
+        </Button>
+      </Box>
     </Drawer>
   );
 }

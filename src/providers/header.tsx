@@ -198,7 +198,7 @@ const Header = () => {
               {authLinks.map((link) => (
                 <ListItem key={link.href}>
                   <Button
-                    tone="retreat"
+                    tone={link.cta ? 'secondary' : "retreat"}
                     component={Link}
                     href={link.href}
                     variant={link.cta ? "contained" : 'text'}

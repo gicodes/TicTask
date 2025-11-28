@@ -188,7 +188,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                           padding: '5px 10px',
                           minWidth: 180
                         }} 
-                        className='hoverBg'
+                        className='hover-bg-effect'
                         onClick={handleCloseUserMenu}
                       >
                         <Typography variant='caption'>{user?.name || 'Not Available'}</Typography>

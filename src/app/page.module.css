@@ -177,6 +177,18 @@ a.secondary {
   font-size: 14px;
 }
 
+.btnNornal {
+  font-weight: 500;
+}
+
+.btnLight {
+  font-weight: 400;
+}
+
+.btnXLight {
+  font-weight: 100;
+}
+
 .btnMedium {
   height: 44px;
   padding: 5px 18px;
