@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/providers/auth';
+import { redirect } from "next/navigation";
 import { useEffect, useState } from 'react';
 import TicketsPage from './_level_3/ticket';
 import DashboardOnboarding from './_level_0/onboardTips';
@@ -22,6 +23,10 @@ export default function Page() {
       Please log in to access dashboard. <br/><br/> If you recently logged in on this device, swipe down or refresh to restore your last session.
     </Box>
   );
+
+  if (user?.role === "ADMIN") {
+    return redirect("/dashboard/admin");
+  }
 
   return (
     <Box py={1}>

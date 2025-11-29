@@ -2,16 +2,17 @@ import { AuthUser } from "@/providers/auth";
 import { CgMenuGridR } from "react-icons/cg"
 import { RiRobot2Fill } from "react-icons/ri";;
 import { SiAwsorganizations } from "react-icons/si";
-import { GrResources, GrUpdate } from "react-icons/gr";
 import { GiHelp, GiThreeFriends } from 'react-icons/gi';
 import { Avatar, Box, Typography, Badge } from '@mui/material';
 import { Logout, CorporateFare, WorkSharp } from '@mui/icons-material';
+import { GrConsole, GrResources, GrUpdate, GrTicket } from "react-icons/gr";
 import { BsFillCreditCard2BackFill, BsCalendar2Date } from "react-icons/bs";
 import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle, FaBlog, FaPeopleCarry } from 'react-icons/fa';
 import { FcInvite, FcSerialTasks, FcDocument, FcBearish, FcDataEncryption } from "react-icons/fc";
 import { MdCategory, MdSettings, MdPaid, MdCampaign, MdQuestionAnswer, MdSwitchAccount } from "react-icons/md";
 
 export const NAV_ITEMS = [
+  { label: 'Console', path: '/dashboard/admin', icon: <GrConsole/>},
   { label: 'Tickets', path: '/dashboard/', icon: <FcSerialTasks/> },
   { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
   { label: 'Planner', path: '/dashboard/planner', icon: <BsCalendar2Date/>},
@@ -27,6 +28,7 @@ export const NAV_ITEMS = [
   
   { label: 'All Users', path: '/dashboard/users', icon: <FaUsers /> },
   { label: 'Careers', path: '/dashboard/careers', icon: <WorkSharp />},
+  { label: 'All Tickets', path: '/dashboard/tickets', icon: <GrTicket /> },
   { label: 'Partners', path: '/dashboard/partners', icon: <GiThreeFriends />},
   { label: 'Organizations', path: '/dashboard/organizations', icon: <CorporateFare /> },
   { label: 'Resources', path: '/resources', icon: <GrResources />},

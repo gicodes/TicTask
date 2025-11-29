@@ -2,11 +2,11 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { CssBaseline } from "@mui/material";
+import { AuthProvider } from "@/providers/auth";
 import { AlertProvider } from "@/providers/alert";
 import ThemeRegistry from '@/emotion/ThemeRegistry';
 import ConditionalLayout from "@/providers/_layout";
 import { Geist, Geist_Mono } from "next/font/google";
-import { AuthProvider } from "@/providers/auth";
 import AppProviders from "@/providers/stripeClient";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });

@@ -165,7 +165,7 @@ export default function SubscriptionPage() {
                       </Button>
 
                       <Button
-                        startIcon={<SiAwsorganizations color='var(--secondary)' />}
+                        startIcon={<SiAwsorganizations color='var(--special)' style={{ opacity: 0.85}} />}
                         variant="contained"
                         tone='action'
                         weight='normal'
@@ -219,7 +219,7 @@ export default function SubscriptionPage() {
                     variant="outlined"
                     tone='retreat'
                     weight='light'
-                    endIcon={<VscLinkExternal size={15} color='var(--disabled)' />}
+                    endIcon={<VscLinkExternal size={14} color='var(--secondary)' />}
                     sx={{ textTransform: 'none' }}
                   >
                     See All Plans

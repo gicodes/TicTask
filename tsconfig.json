@@ -27,6 +27,6 @@
     "**/*.tsx", 
     ".next/types/**/*.ts", 
     "src/types/**/*.d.ts"
-  ],
+, "src/app/dashboard/admin/_level_2"  ],
   "exclude": ["node_modules"]
 }
