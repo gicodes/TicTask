@@ -9,7 +9,6 @@ const client = new ApolloClient({
     uri: `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
     headers: {
       "Content-Type": "application/json",
-      // other Authorization headers depending on scale
     },
   }),
   cache: new InMemoryCache(),
@@ -50,6 +49,35 @@ export const ADMIN_OVERVIEW_QUERY = gql`
         failedPayments
       }
     }
+  }
+`;
+
+export const ADMIN_TICKETS_QUERY = gql`
+  query AdminTickets($first: Int!, $after: String, $filter: TicketsFilter) {
+    adminTickets(first: $first, after: $after, filter: $filter) {
+      totalCount
+      edges {
+        node {
+          id
+          title
+          priority
+          status
+          createdAt
+          updatedAt
+        }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+`;
+
+export const DELETE_TICKET_MUTATION = gql`
+  mutation AdminDeleteTicket($id: ID!) {
+    adminDeleteTicket(id: $id)
   }
 `;
 

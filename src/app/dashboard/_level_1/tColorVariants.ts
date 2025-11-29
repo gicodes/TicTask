@@ -27,6 +27,16 @@ export const priorityColor = (p: string) => {
   }
 };
 
+export const getPriorityColor = (priority: string) => {
+  switch (priority) {
+    case 'URGENT': return { bgcolor: '#ef4444', color: 'white' }; // red-500
+    case 'HIGH':   return { bgcolor: '#f97316', color: 'white' }; // orange-500
+    case 'MEDIUM': return { bgcolor: '#eab308', color: 'white' }; // yellow-500
+    case 'LOW':    return { bgcolor: '#22c55e', color: 'white' }; // green-500
+    default:       return { bgcolor: '#6b7280', color: 'white' };
+  }
+};
+
 export const getTypeColor = (type: string) => {
   switch (type?.toLocaleUpperCase()) {
     case 'GENERAL' : return 'var(--bw)';
