@@ -115,9 +115,9 @@ export default function AdminTicketsPage() {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-        <div>
-          <Typography variant="h4" fontWeight="bold">
+      <Box display="flex" justifyContent="space-between" alignItems="start" mb={4}>
+        <div className='grid gap-1'>
+          <Typography variant="h5" fontWeight="bold">
             Tickets
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -125,7 +125,7 @@ export default function AdminTicketsPage() {
           </Typography>
         </div>
         <Typography variant="body2" color="text.secondary">
-          Total: <strong>{totalCount}</strong> tickets
+          Total: <strong>{totalCount}</strong>
         </Typography>
       </Box>
 

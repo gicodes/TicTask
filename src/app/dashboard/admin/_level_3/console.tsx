@@ -1,5 +1,7 @@
 'use client';
 
+import Link from "next/link";
+import { ReactNode } from "react";
 import { Button } from "@/assets/buttons";
 import { AdminOverviewData } from "../_level_1/types";
 import { useAdminOverview } from "../_level_1/graphQL";
@@ -13,10 +15,10 @@ import {
   Grid,
   Divider,
   Stack,
+  Card,
 } from "@mui/material";
-import { Redo, Settings } from "lucide-react";
-import Link from "next/link";
 import { GiTicket } from "react-icons/gi";
+import { Redo, Settings } from "lucide-react";
 
 export default function AdminOverviewPage() {
   const { data, loading, error, refetch } = useAdminOverview() as {
@@ -26,23 +28,47 @@ export default function AdminOverviewPage() {
     refetch: () => void;
   };
 
-  if (loading)
+  const FeedbackCard = ({ children }: {children: ReactNode}) => {
     return (
-      <Container maxWidth="lg" sx={{ py: 12, px: 1 }}>
-        <Typography>Loading admin overview…</Typography>
-      </Container>
-    );
+      <Box p={1}>    
+        <Card  
+          sx={{ 
+            maxWidth: "lg",
+            mx: 'auto', 
+            px: { xs: 2, sm: 4, md: 6},
+            py: 6,
+            gap: 6,
+            display: 'grid',
+            borderRadius: 3,
+          }}
+        >
+          {children}
+        </Card> 
+      </Box>
+    )
+  }
 
-  if (error)
-    return (
-      <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Typography color="error" py={6} px={1} textAlign={{ xs: 'center', sm: 'left'}}>
-          Failed to load overview. Try again later!
-        </Typography>
-        <br/>
-        <Button endIcon={<Redo size={15} />} onClick={() => refetch()}>Retry</Button>
-      </Container>
-    );
+  if (loading) return (
+    <FeedbackCard>
+      <Typography>Loading admin overview…</Typography>
+    </FeedbackCard>
+  )
+
+  if (error) return (
+    <FeedbackCard>
+      <Typography color="error" px={1} textAlign={{ xs: 'center', sm: 'left'}}>
+        Failed to load overview. Try again later!
+      </Typography>
+      <Box mx={{ xs: 'auto', sm: 0}}>
+        <Button 
+          endIcon={<Redo size={15} />} 
+          onClick={() => refetch()}
+        >
+          Retry
+        </Button>
+      </Box>
+    </FeedbackCard>
+  );
 
   if (!data) return null;
 
