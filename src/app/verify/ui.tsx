@@ -41,7 +41,7 @@ export const VerifyPage = () => {
 
         setTimeout(() => {
           if (res.role === "ADMIN") {
-            router.push("/auth/login/admin");
+            router.push("/auth/login");
           } else if (res.role === "USER") {
             router.push(
               "/onboarding?role=USER" + "&token=" + encodeURI(res.token || token)

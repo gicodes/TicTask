@@ -9,8 +9,8 @@ import { useRouter } from 'next/navigation';
 import { useAlert } from '@/providers/alert';
 import SignInOptions from '../_level_1/signInOptions';
 import { AuthDivider } from '../_level_1/orAuthDivider';
-import { VerifyEmailResponse, VerifyEmailRequest } from '@/types/axios'
 import { VisibilityOff, Visibility } from '@mui/icons-material';
+import { VerifyEmailResponse, VerifyEmailRequest } from '@/types/axios';
 import { Box, Stack, Fade, TextField, Typography, Divider, Card, IconButton, InputAdornment } from '@mui/material';
 
 export const Join = ({ roleParam }: { roleParam: Role }) => {

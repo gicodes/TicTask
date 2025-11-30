@@ -1,14 +1,24 @@
 'use client';
 
+import { useEffect } from "react";
 import { useAuth } from '@/providers/auth';
-import { redirect } from "next/navigation";
+import { Typography } from '@mui/material';
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const { user } = useAuth();
- 
-  if (user?.role === "ADMIN") {
-    return redirect("/dashboard/admin");
-  }
+  const router = useRouter();
 
-  return redirect("/dashboard/tickets");
+  useEffect(() => {
+    if (!user) return;
+
+    if (user.role === "ADMIN") {
+      console.log("Admin Console Redirect Detected...");
+      router.replace("/dashboard/admin");
+    } else {
+      router.replace("/dashboard/tickets");
+    }
+  }, [user, router]);
+
+  return <Typography py={12} textAlign={'center'}>Loading...</Typography>;
 }
