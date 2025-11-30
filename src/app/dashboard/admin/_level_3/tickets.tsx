@@ -118,10 +118,10 @@ export default function AdminTicketsPage() {
       <Box display="flex" justifyContent="space-between" alignItems="start" mb={4}>
         <div className='grid gap-1'>
           <Typography variant="h5" fontWeight="bold">
-            Tickets
+            All Tickets
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Manage and monitor all support tickets
+            Manage and monitor all active tickets
           </Typography>
         </div>
         <Typography variant="body2" color="text.secondary">

@@ -17,7 +17,6 @@ import {
   Stack,
   Card,
 } from "@mui/material";
-import { GiTicket } from "react-icons/gi";
 import { Redo, Settings } from "lucide-react";
 
 export default function AdminOverviewPage() {
@@ -49,9 +48,7 @@ export default function AdminOverviewPage() {
   }
 
   if (loading) return (
-    <FeedbackCard>
-      <Typography>Loading admin overview…</Typography>
-    </FeedbackCard>
+    <FeedbackCard> <Typography>Loading admin overview…</Typography> </FeedbackCard>
   )
 
   if (error) return (
@@ -76,7 +73,7 @@ export default function AdminOverviewPage() {
     data.adminOverview ?? {};
 
   return (
-    <Container maxWidth="xl" sx={{ py: 6 }}>
+    <Container maxWidth="xl" sx={{ pt: 3, pb: 6 }}>
       <Box
         borderBottom={'1px solid var(--disabled)'}
         display={{ xs: 'grid', sm: "flex"}}
@@ -100,7 +97,7 @@ export default function AdminOverviewPage() {
           <Chip label="Admin" color="secondary" sx={{ px: 2, fontWeight: 600}} />
           <Tooltip title="Open admin settings">
             <div>
-              <Button size="small" startIcon={<Settings size={14} />}>Settings</Button>
+              <Button component={Link} href={'/dashboard/settings'} size="small" startIcon={<Settings size={14} />}>Settings</Button>
             </div>
           </Tooltip>
         </Box>
@@ -168,18 +165,16 @@ export default function AdminOverviewPage() {
               <Tooltip title="Go to tickets page">
                 <div>
                   <Button component={Link} variant="text" tone="retreat" href={'/dashboard/admin/tickets'}>
-                    <GiTicket size={20} />
+                    <AdminComponents.Icons.Tickets />
                   </Button>
                 </div>
               </Tooltip>
             </Stack>
-            <Typography variant="body2" sx={{ opacity: 0.75}}>
-              Summary of the most recent tickets 
-            </Typography>
+            <Typography variant="body2" sx={{ opacity: 0.75}}> Summary of the most recent tickets </Typography>
           </Box>
           
           <Box display="flex" gap={1} py={1}>
-            <Button component={Link} href={'/dashboard/'}>New ticket</Button>
+            <Button component={Link} href={'/dashboard/tickets'}>New ticket</Button>
             <Button tone="secondary" variant="outlined">Bulk actions</Button>
           </Box>
         </Stack>

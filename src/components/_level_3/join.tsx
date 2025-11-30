@@ -10,7 +10,8 @@ import { useAlert } from '@/providers/alert';
 import SignInOptions from '../_level_1/signInOptions';
 import { AuthDivider } from '../_level_1/orAuthDivider';
 import { VerifyEmailResponse, VerifyEmailRequest } from '@/types/axios'
-import { Box, Stack, Fade, TextField, Typography, Divider, Card } from '@mui/material';
+import { VisibilityOff, Visibility } from '@mui/icons-material';
+import { Box, Stack, Fade, TextField, Typography, Divider, Card, IconButton, InputAdornment } from '@mui/material';
 
 export const Join = ({ roleParam }: { roleParam: Role }) => {
   const router = useRouter();
@@ -23,6 +24,7 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
     password: '', 
     name: '' 
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (roleParam === 'ADMIN') setRole('ADMIN');
@@ -107,14 +109,41 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
                     />
                     <TextField
                       label="Password"
-                      type="password"
-                      variant="outlined"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
                       value={formData.password}
                       onChange={handleChange}
-                      sx={{ bgcolor: 'whitesmoke', borderRadius: 2 }}
-                      fullWidth required
+                      fullWidth
+                      required
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={() => setShowPassword(!showPassword)}
+                                onMouseDown={(e) => e.preventDefault()}
+                                edge="end"
+                                size="small"
+                              >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                          sx: {
+                            bgcolor: 'whitesmoke',
+                            borderRadius: 2,
+                            color: '#000',
+                            '&:-webkit-autofill': {
+                              WebkitTextFillColor: '#000 !important',
+                              caretColor: '#000 !important',
+                            },
+                          },
+                        },
+                      }}
                     />
-                  </>}
+                  </>
+                  }
 
                   <Box display="flex" gap={2} justifyContent="space-between" pt={2}>
                     <span>{error && (<Typography color="error" variant='caption'>{error}</Typography>)}</span>

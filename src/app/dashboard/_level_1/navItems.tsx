@@ -1,38 +1,40 @@
 import { AuthUser } from "@/providers/auth";
-import { CgMenuGridR } from "react-icons/cg"
-import { RiRobot2Fill } from "react-icons/ri";;
+import { CgMenuGridR } from "react-icons/cg";
+import { RiRobot2Fill } from "react-icons/ri";
 import { SiAwsorganizations } from "react-icons/si";
 import { GiHelp, GiThreeFriends } from 'react-icons/gi';
 import { Avatar, Box, Typography, Badge } from '@mui/material';
-import { Logout, CorporateFare, WorkSharp } from '@mui/icons-material';
-import { GrConsole, GrResources, GrUpdate, GrTicket } from "react-icons/gr";
+import { GrResources, GrUpdate, GrTasks } from "react-icons/gr";
 import { BsFillCreditCard2BackFill, BsCalendar2Date } from "react-icons/bs";
 import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle, FaBlog, FaPeopleCarry } from 'react-icons/fa';
-import { FcInvite, FcSerialTasks, FcDocument, FcBearish, FcDataEncryption } from "react-icons/fc";
-import { MdCategory, MdSettings, MdPaid, MdCampaign, MdQuestionAnswer, MdSwitchAccount } from "react-icons/md";
+import { FcInvite, FcSerialTasks, FcDocument, FcBearish, FcDataEncryption, FcMoneyTransfer, FcParallelTasks } from "react-icons/fc";
+import { MdCategory, MdSettings, MdPaid, MdCampaign, MdQuestionAnswer, MdSwitchAccount, MdWorkHistory, MdLogout } from "react-icons/md";
 
 export const NAV_ITEMS = [
-  { label: 'Console', path: '/dashboard/admin', icon: <GrConsole/>},
-  { label: 'Tickets', path: '/dashboard/', icon: <FcSerialTasks/> },
+  { label: 'Console', path: '/dashboard/admin', icon: <GrTasks/>},
+  { label: 'Tickets', path: '/dashboard/tickets', icon: <FcSerialTasks/> },
   { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
   { label: 'Planner', path: '/dashboard/planner', icon: <BsCalendar2Date/>},
   { label: 'Team', path: '/dashboard/team', icon: <SiAwsorganizations />},
   { label: 'Subscription', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
-  { label: "Metrics", path: '/dashboard/metrics', icon: <FcDataEncryption /> },
-  { label: 'Marketing', path: '/dashboard/marketing', icon: <MdCampaign /> },
-  { label: 'Invite', path: '/dashboard/invite', icon: <FcInvite /> },
   { label: 'Settings', path: '/dashboard/settings', icon: <MdSettings /> }, 
+  { label: 'Invite', path: '/dashboard/invite', icon: <FcInvite /> },
+  
+  { label: 'All Tickets', path: '/dashboard/admin/tickets', icon: <FcParallelTasks /> },
+  { label: 'All Users', path: '/dashboard/admin/users', icon: <FaUsers /> },
+  { label: 'Finances', path: '/dashboard/admin/finances', icon: <FcMoneyTransfer /> },
+  { label: 'Organizations', path: '/dashboard/admin/organizations', icon: <SiAwsorganizations /> },
+  
+  { label: 'Marketing', path: '/dashboard/marketing', icon: <MdCampaign /> },
+  { label: 'Careers', path: '/dashboard/admin/careers', icon: <MdWorkHistory />},
+  { label: "Metrics", path: '/dashboard/metrics', icon: <FcDataEncryption /> },
+  { label: 'Partners', path: '/dashboard/admin/partners', icon: <GiThreeFriends />},
   { label: 'Products', path: '/product', icon: <MdCategory />, external: true },
   { label: 'Legal', path: '/legal', icon: <FcDocument />, external: true},
   { label: 'More', path: '#', icon: <CgMenuGridR />, more: true }, // more includes Docs, FAQ, blog, community and register Go to Signup
-  
-  { label: 'All Users', path: '/dashboard/users', icon: <FaUsers /> },
-  { label: 'Careers', path: '/dashboard/careers', icon: <WorkSharp />},
-  { label: 'All Tickets', path: '/dashboard/tickets', icon: <GrTicket /> },
-  { label: 'Partners', path: '/dashboard/partners', icon: <GiThreeFriends />},
-  { label: 'Organizations', path: '/dashboard/organizations', icon: <CorporateFare /> },
+
+  { label: 'System Logs', path: '/dashboard/admin/logs', icon: <FcBearish /> },
   { label: 'Resources', path: '/resources', icon: <GrResources />},
-  { label: 'System Logs', path: '/dashboard/logs', icon: <FcBearish /> },
 ];
 
 export const MORE_NAV_ITEMS = [
@@ -55,13 +57,15 @@ export const getFilteredNav = (user: AuthUser | null) => {
   const allowed = [
     'Tickets', 'AI assistant', 'Planner', 'Products',
     'Invite', 'Legal', 'Subscription', 'Settings',
-    'More'
   ];
 
-  if (user?.partner) allowed.push('Marketing');
+  if (user?.role==="USER") allowed.push('More')
+  if (user?.partner) allowed.push('Marketing', 'More');
   if (user?.userType==="BUSINESS") allowed.push('Team', 'Metrics'); 
   if (user?.role === 'ADMIN') {
-    return NAV_ITEMS;
+    return NAV_ITEMS.filter(
+      (item) => !['More', 'Invite', 'Team'].includes(item.label)    
+    );
   }
 
   const uniqueAllowed = [...new Set(allowed)];
@@ -83,7 +87,7 @@ export const AUTH_ITEMS: LinkItem[] = [
   { label: <div className='flex gap-2 items-center'><GiHelp/>  Get support</div>, href: "/company/#contact-us"},
   { label: <div className='flex gap-2 items-center'><FaDonate/>  Donations</div>, href: "#", cta: true},
   { label: <div className='flex gap-2 items-center'><FaHome/> Back to home </div>, href: "/" },
-  { label: <div className='flex gap-2 items-center'><Logout fontSize='inherit'/>Logout</div>, href: "#", cta: true },
+  { label: <div className='flex gap-2 items-center'><MdLogout fontSize='inherit'/>Logout</div>, href: "#", cta: true },
 ]
 
 export const menuItems = [

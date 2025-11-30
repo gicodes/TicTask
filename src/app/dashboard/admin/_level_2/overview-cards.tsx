@@ -1,4 +1,5 @@
 import React from "react";
+import { StatCardProps, DataTableProps } from "../_level_1/types";
 import {
   Box,
   Paper,
@@ -18,12 +19,12 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { BiUser } from "react-icons/bi";
-import { SiAwsorganizations } from "react-icons/si";
 import { Download, Refresh, Search } from "@mui/icons-material";
-import { FcSerialTasks, FcDataEncryption } from "react-icons/fc";
+import { BiUser } from "react-icons/bi";
+import { GiTicket } from "react-icons/gi";
+import { SiAwsorganizations } from "react-icons/si";
 import { FaUsers, FaUserGroup, FaAddressBook } from "react-icons/fa6";
-import { StatCardProps, DataTableProps } from "../_level_1/types";
+import { FcSerialTasks, FcDataEncryption, FcParallelTasks } from "react-icons/fc";
 
 export function StatCardGrid({ cards }: { cards: StatCardProps[] }) {
   return (
@@ -294,7 +295,9 @@ export function SelectField({
 }
 
 export const Icons = {
-  Tickets: () => <FcSerialTasks size={24} />,
+  Tickets: () => <FcParallelTasks size={24} />,
+  Ticket: () => <FcSerialTasks size={24} />,
+  SupportTicket: () => <GiTicket size={24} />,
   Money: () => <FcDataEncryption size={24} />,
   Teams: () => <SiAwsorganizations size={24} />,
   Users: () => <FaUserGroup size={24} />,

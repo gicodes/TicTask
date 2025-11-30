@@ -171,7 +171,7 @@ export default function SubscriptionPage() {
                         weight='normal'
                         onClick={() => handleUpgrade("ENTERPRISE_MONTH")}
                       >
-                        Enterprise
+                        Go Enterprise
                       </Button>
                     </Stack>
                   )}
