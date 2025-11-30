@@ -1,6 +1,7 @@
 import { AuthUser } from "@/providers/auth";
 import { CgMenuGridR } from "react-icons/cg";
 import { RiRobot2Fill } from "react-icons/ri";
+import { FaUserGroup } from "react-icons/fa6";
 import { SiAwsorganizations } from "react-icons/si";
 import { GiHelp, GiThreeFriends } from 'react-icons/gi';
 import { Avatar, Box, Typography, Badge } from '@mui/material';
@@ -15,19 +16,19 @@ export const NAV_ITEMS = [
   { label: 'Tickets', path: '/dashboard/tickets', icon: <FcSerialTasks/> },
   { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
   { label: 'Planner', path: '/dashboard/planner', icon: <BsCalendar2Date/>},
-  { label: 'Team', path: '/dashboard/team', icon: <SiAwsorganizations />},
+  { label: 'Team', path: '/dashboard/team', icon: <FaUsers />},
   { label: 'Subscription', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
   { label: 'Settings', path: '/dashboard/settings', icon: <MdSettings /> }, 
   { label: 'Invite', path: '/dashboard/invite', icon: <FcInvite /> },
   
   { label: 'All Tickets', path: '/dashboard/admin/tickets', icon: <FcParallelTasks /> },
-  { label: 'All Users', path: '/dashboard/admin/users', icon: <FaUsers /> },
+  { label: 'All Users', path: '/dashboard/admin/users', icon: <FaUserGroup /> },
   { label: 'Finances', path: '/dashboard/admin/finances', icon: <FcMoneyTransfer /> },
   { label: 'Organizations', path: '/dashboard/admin/organizations', icon: <SiAwsorganizations /> },
   
   { label: 'Marketing', path: '/dashboard/marketing', icon: <MdCampaign /> },
-  { label: 'Careers', path: '/dashboard/admin/careers', icon: <MdWorkHistory />},
   { label: "Metrics", path: '/dashboard/metrics', icon: <FcDataEncryption /> },
+  { label: 'Careers', path: '/dashboard/admin/careers', icon: <MdWorkHistory />},
   { label: 'Partners', path: '/dashboard/admin/partners', icon: <GiThreeFriends />},
   { label: 'Products', path: '/product', icon: <MdCategory />, external: true },
   { label: 'Legal', path: '/legal', icon: <FcDocument />, external: true},
@@ -64,7 +65,7 @@ export const getFilteredNav = (user: AuthUser | null) => {
   if (user?.userType==="BUSINESS") allowed.push('Team', 'Metrics'); 
   if (user?.role === 'ADMIN') {
     return NAV_ITEMS.filter(
-      (item) => !['More', 'Invite', 'Team'].includes(item.label)    
+      (item) => !['More', 'Invite', 'Subscription'].includes(item.label)    
     );
   }
 

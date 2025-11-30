@@ -330,7 +330,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
         }}
       >
         <Toolbar />
-        <List sx={{ pt: 5}}>
+        <List sx={{ py: 1}}>
           {filteredNav.map((item, i) => (
             <Link
               key={i}
