@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { Redo, Settings } from "lucide-react";
 import Link from "next/link";
+import { GiTicket } from "react-icons/gi";
 
 export default function AdminOverviewPage() {
   const { data, loading, error, refetch } = useAdminOverview() as {
@@ -135,9 +136,18 @@ export default function AdminOverviewPage() {
           mb={2}
           px={1}
         >
-          <Box display={'grid'} gap={0.5}>
-            <Typography variant="h5" fontWeight={600}>Tickets</Typography>
-            <Typography variant="body2">Quickly Create New Tickets </Typography>
+          <Box>
+            <Stack direction={'row'}  alignContent={'center'} spacing={0.5}>
+              <Typography variant="h5" fontWeight={600}>Tickets</Typography>
+              <Tooltip title="Go to tickets page">
+                <div>
+                  <Button component={Link} variant="text" tone="retreat" href={'/dashboard/admin/tickets'}>
+                    <GiTicket size={20} />
+                  </Button>
+                </div>
+              </Tooltip>
+            </Stack>
+            <Typography variant="body2" sx={{ opacity: 0.75}}>Summary of the most recent tickets </Typography>
           </Box>
           
           <Box display="flex" gap={1} py={1}>

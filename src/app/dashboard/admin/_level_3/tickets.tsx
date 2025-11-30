@@ -1,5 +1,6 @@
 'use client';
 
+import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useQuery, useMutation } from '@apollo/client/react';
@@ -26,7 +27,6 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import { format } from 'date-fns';
 import { Button } from '@/assets/buttons';
 import {
   Loader2,
@@ -106,7 +106,7 @@ export default function AdminTicketsPage() {
     });
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: number) => {
     if (!confirm('Are you sure you want to delete this ticket?')) return;
     deleteTicket({ variables: { id } });
   };
@@ -150,7 +150,6 @@ export default function AdminTicketsPage() {
               />
             </Box>
 
-            {/* Priority Filter */}
             <FormControl sx={{ minWidth: 180 }}>
               <InputLabel>Priority</InputLabel>
               <Select value={priority} label="Priority" onChange={(e) => setPriority(e.target.value)}>
@@ -224,13 +223,13 @@ export default function AdminTicketsPage() {
                         </TableCell>
                         <TableCell>
                           <Typography variant="body2" color="text.secondary">
-                            {format(new Date(node.createdAt), 'MMM d, yyyy')}
-                          </Typography>
+                            {format(new Date(Number(node.createdAt)), "MMM dd, yyyy")}
+                           </Typography>
                         </TableCell>
                         <TableCell align="right">
                           <Tooltip title="Delete ticket">
                             <IconButton
-                              onClick={() => handleDelete(node.id)}
+                              onClick={() => handleDelete(Number(node.id))}
                               disabled={deleting}
                               color="error"
                             >
