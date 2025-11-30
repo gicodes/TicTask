@@ -23,8 +23,8 @@ export const NAV_ITEMS = [
   
   { label: 'All Tickets', path: '/dashboard/admin/tickets', icon: <FcParallelTasks /> },
   { label: 'All Users', path: '/dashboard/admin/users', icon: <FaUserGroup /> },
-  { label: 'Finances', path: '/dashboard/admin/finances', icon: <FcMoneyTransfer /> },
-  { label: 'Organizations', path: '/dashboard/admin/organizations', icon: <SiAwsorganizations /> },
+  { label: 'Subscriptions', path: '/dashboard/admin/finances', icon: <FcMoneyTransfer /> },
+  { label: 'All Teams', path: '/dashboard/admin/organizations', icon: <SiAwsorganizations /> },
   
   { label: 'Marketing', path: '/dashboard/marketing', icon: <MdCampaign /> },
   { label: "Metrics", path: '/dashboard/metrics', icon: <FcDataEncryption /> },

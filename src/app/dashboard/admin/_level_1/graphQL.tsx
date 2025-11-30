@@ -10,6 +10,7 @@ const client = new ApolloClient({
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
   }),
   cache: new InMemoryCache(),
 });
