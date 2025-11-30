@@ -28,15 +28,15 @@ export default function AdminOverviewPage() {
 
   if (loading)
     return (
-      <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Typography variant="h6">Loading admin overview…</Typography>
+      <Container maxWidth="lg" sx={{ py: 12, px: 1 }}>
+        <Typography>Loading admin overview…</Typography>
       </Container>
     );
 
   if (error)
     return (
       <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Typography color="error" variant="h6">
+        <Typography color="error" py={6} px={1} textAlign={{ xs: 'center', sm: 'left'}}>
           Failed to load overview. Try again later!
         </Typography>
         <br/>
@@ -147,7 +147,9 @@ export default function AdminOverviewPage() {
                 </div>
               </Tooltip>
             </Stack>
-            <Typography variant="body2" sx={{ opacity: 0.75}}>Summary of the most recent tickets </Typography>
+            <Typography variant="body2" sx={{ opacity: 0.75}}>
+              Summary of the most recent tickets 
+            </Typography>
           </Box>
           
           <Box display="flex" gap={1} py={1}>

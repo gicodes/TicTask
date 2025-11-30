@@ -36,6 +36,7 @@ import {
 } from 'lucide-react';
 import { ADMIN_TICKETS_QUERY, DELETE_TICKET_MUTATION } from '../_level_1/graphQL';
 import { getPriorityColor, getStatusColor, priorityColor } from '../../_level_1/tColorVariants';
+import { useAlert } from '@/providers/alert';
 
 interface TicketNode {
   id: string;
@@ -60,6 +61,7 @@ interface TicketsData {
 export default function AdminTicketsPage() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
+  const { showAlert } = useAlert();
   const [priority, setPriority] = useState<string>('');
   const [status, setStatus] = useState<string>('');
 
@@ -76,11 +78,11 @@ export default function AdminTicketsPage() {
 
   const [deleteTicket, { loading: deleting }] = useMutation(DELETE_TICKET_MUTATION, {
     onCompleted: () => {
-      alert('Ticket deleted successfully');
+      showAlert('Ticket deleted successfully', 'success');
       queryClient.invalidateQueries({ queryKey: ['AdminTickets'] });
     },
     onError: (err) => {
-      alert('Failed to delete ticket');
+      showAlert('Failed to delete ticket', 'error');
       console.error(err);
     },
   });

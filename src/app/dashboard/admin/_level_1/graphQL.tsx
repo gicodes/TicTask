@@ -76,7 +76,7 @@ export const ADMIN_TICKETS_QUERY = gql`
 `;
 
 export const DELETE_TICKET_MUTATION = gql`
-  mutation AdminDeleteTicket($id: ID!) {
+  mutation AdminDeleteTicket($id: Int!) {
     adminDeleteTicket(id: $id)
   }
 `;
