@@ -92,6 +92,7 @@ export default function AdminUsersPage() {
   const handleDelete = (id: number) => {
     if (!confirm('Are you sure you want to delete this user?')) return;
     deleteUser({ variables: { id }});
+    window.location.reload();
   };
 
   return (
@@ -111,7 +112,7 @@ export default function AdminUsersPage() {
         </Typography>
       </Box>
       
-      <Card>
+      <Card sx={{ pt: {xs: 1, sm: 0}}}>
         <AdminComponents.Filters>
           <AdminComponents.SearchField 
             value={searchQuery}

@@ -110,6 +110,7 @@ export default function AdminTicketsPage() {
   const handleDelete = (id: number) => {
     if (!confirm('Are you sure you want to delete this ticket?')) return;
     deleteTicket({ variables: { id } });
+    window.location.reload();
   };
 
   return (
@@ -130,10 +131,11 @@ export default function AdminTicketsPage() {
 
       <Card>
         <Box 
+          gap={2}
           display="flex" 
+          pt={{ xs: 1, sm: 0 }}
           justifyContent={'space-between'}
           flexDirection={{ xs: 'column', md: 'row' }} 
-          gap={2}
         >
           <AdminComponents.Filters>
             <AdminComponents.SearchField 
@@ -282,11 +284,9 @@ export default function AdminTicketsPage() {
               {pageInfo?.hasNextPage && (
                 <Box mt={4} textAlign="center">
                   <Button onClick={handleLoadMore} disabled={loading}>
-                    {loading ? (
-                      <> Loading more... </>
-                    ) : (
-                      'Load More Tickets'
-                    )}
+                    { loading ? <> Loading more... </>
+                      : 'Load More Tickets'
+                    }
                   </Button>
                 </Box>
               )}
