@@ -15,8 +15,8 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
+  TableHead,
   Paper,
   Typography,
   Box,
@@ -28,18 +28,21 @@ import {
 } from '@mui/material';
 import { Button } from '@/assets/buttons';
 import { useAlert } from '@/providers/alert';
+import { Ticket_Status, Ticket_Type } from '@/types/ticket';
 import { useDebounce } from '../../_level_3/ticket';
 import AdminComponents from '../_level_2/overview-cards';
 import { Loader2, Trash2, AlertCircle } from 'lucide-react';
-import { getPriorityColor, getStatusColor } from '../../_level_1/tColorVariants';
+import { getStatusColor } from '../../_level_1/tColorVariants';
 import { ADMIN_TICKETS_QUERY, DELETE_TICKET_MUTATION } from '../_level_1/graphQL';
 
 interface TicketNode {
   id: string;
   title: string;
+  type: Ticket_Type;
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
   status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
   createdAt: string;
+  createdById: number;
   updatedAt: string;
 }
 
@@ -59,9 +62,8 @@ export default function AdminTicketsPage() {
   const { showAlert } = useAlert();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [priority, setPriority] = useState<string>('');
-  const [status, setStatus] = useState<string>('');
-
+  const [typeFilter, setTypeFilter] = useState<Ticket_Type | ''>('');
+  const [statusFilter, setStatusFilter] = useState<Ticket_Status | ''>('');
   const debouncedSearch = useDebounce(searchQuery, 500);
 
   const { data, loading, error, fetchMore } = useQuery<TicketsData>(ADMIN_TICKETS_QUERY, {
@@ -69,8 +71,8 @@ export default function AdminTicketsPage() {
       first: 20,
       filter: {
         search: debouncedSearch || null,
-        priority: priority || null,
-        status: status || null,
+        type: typeFilter || null,
+        status: statusFilter || null,
       },
     },
   });
@@ -131,7 +133,6 @@ export default function AdminTicketsPage() {
 
       <Card>
         <Box 
-          gap={2}
           display="flex" 
           pt={{ xs: 1, sm: 0 }}
           justifyContent={'space-between'}
@@ -147,35 +148,45 @@ export default function AdminTicketsPage() {
 
           <Stack  
             px={3} 
-            gap={1.5}
             display="flex" 
+            gap={{ sm: 1}}
             direction={{ xs: 'column', sm: 'row'}}
             flexDirection={{ xs: 'column', md: 'row' }}
           >
             <Stack py={1}>
-              <FormControl sx={{ minWidth: 180 }} size='small'>
-                <InputLabel sx={{ height: 'auto'}}>Priority</InputLabel>
-                <Select value={priority} label="Priority" onChange={(e) => setPriority(e.target.value)}>
-                  <MenuItem value="">All Priorities</MenuItem>
-                  <MenuItem value="URGENT">Urgent</MenuItem>
-                  <MenuItem value="HIGH">High</MenuItem>
-                  <MenuItem value="MEDIUM">Medium</MenuItem>
-                  <MenuItem value="LOW">Low</MenuItem>
+              <FormControl sx={{ minWidth: 180 }} size="small">
+                <InputLabel>Ticket Type</InputLabel>
+                <Select
+                  value={typeFilter}
+                  label="Ticket Type"
+                  onChange={(e) => setTypeFilter(e.target.value as Ticket_Type | '')}
+                >
+                  <MenuItem value="">All Types</MenuItem>
+                  {Object.values(Ticket_Type).map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type === 'FEATURE_REQUEST' ? 'Feature' : type.slice(0,1)+type.slice(1).toLowerCase()}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Stack>
 
             <Stack py={1}>
-              <FormControl sx={{ minWidth: 180 }} size='small'>
-                <InputLabel>Status</InputLabel>
-                <Select value={status} label="Status" onChange={(e) => setStatus(e.target.value)}>
-                  <MenuItem value="">All Statuses</MenuItem>
-                  <MenuItem value="OPEN">Open</MenuItem>
-                  <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
-                  <MenuItem value="RESOLVED">Resolved</MenuItem>
-                  <MenuItem value="CLOSED">Closed</MenuItem>
-                </Select>
-              </FormControl>
+              <FormControl sx={{ minWidth: 180 }} size="small">
+              <InputLabel>Status</InputLabel>
+              <Select
+                value={statusFilter}
+                label="Status"
+                onChange={(e) => setStatusFilter(e.target.value as Ticket_Status | '')}
+              >
+                <MenuItem value="">All Statuses</MenuItem>
+                {Object.values(Ticket_Status).map((status) => (
+                  <MenuItem key={status} value={status}>
+                    {status === 'IN_PROGRESS' ? 'In Progress' : status.slice(0,1)+status.slice(1).toLowerCase()}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             </Stack>
           </Stack>
         </Box>
@@ -231,9 +242,10 @@ export default function AdminTicketsPage() {
                       <TableHead>
                         <TableRow>
                           <TableCell><strong>Title</strong></TableCell>
-                          <TableCell><strong>Priority</strong></TableCell>
+                          <TableCell><strong>Type</strong></TableCell>
                           <TableCell><strong>Status</strong></TableCell>
                           <TableCell><strong>Created</strong></TableCell>
+                          <TableCell><strong>Created By</strong></TableCell>
                           <TableCell align="right"><strong>Actions</strong></TableCell>
                         </TableRow>
                       </TableHead>
@@ -245,9 +257,8 @@ export default function AdminTicketsPage() {
                             </TableCell>
                             <TableCell>
                               <Chip
-                                label={node.priority}
+                                label={node.type}
                                 size="small"
-                                sx={{ ...getPriorityColor(node.priority), fontWeight: 600 }}
                               />
                             </TableCell>
                             <TableCell>
@@ -261,6 +272,9 @@ export default function AdminTicketsPage() {
                               <Typography variant="body2" color="text.secondary">
                                 {format(new Date(node.createdAt), 'MMM dd, yyyy')}
                               </Typography>
+                            </TableCell>
+                            <TableCell>
+                              {node.createdById}
                             </TableCell>
                             <TableCell align="right">
                               <Tooltip title="Delete ticket">

@@ -48,7 +48,7 @@ export default function AdminOverviewPage() {
   }
 
   if (loading) return (
-    <FeedbackCard> <Typography>Loading admin overview…</Typography> </FeedbackCard>
+    <FeedbackCard> <Typography>Setting up Admin Overview…</Typography> </FeedbackCard>
   )
 
   if (error) return (
@@ -98,7 +98,7 @@ export default function AdminOverviewPage() {
             Admin Overview
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Cummulated Overview Of Tickets, Users, Teams and Subscriptions
+            Cummulated Overview Featuring Tickets, Users, Teams, Subscriptions and more
           </Typography>
         </Stack>
 
@@ -230,7 +230,7 @@ export default function AdminOverviewPage() {
         </Stack>
 
         <AdminComponents.DataTable
-          columns={["id", "title", "priority", "status"]}
+          columns={[ 'id', "title", "type", "status", "createdAt"]}
           rows={ticketsSummary?.recent ?? []}
         />
       </Box>
@@ -269,7 +269,7 @@ export default function AdminOverviewPage() {
         </Stack>
 
         <AdminComponents.DataTable
-          columns={['id', 'name', 'email', 'role']}
+          columns={['id', 'name', 'email', 'role', 'createdAt']}
           rows={usersSummary?.recent ?? []}
         />
       </Box>

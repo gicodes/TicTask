@@ -19,15 +19,18 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { Download, Refresh, Search } from "@mui/icons-material";
+import { format } from 'date-fns';
 import { BiUser } from "react-icons/bi";
 import { TbLogs } from "react-icons/tb";
 import { RiBloggerLine } from "react-icons/ri";
 import { SiAwsorganizations } from "react-icons/si";
+import { Download, Refresh, Search } from "@mui/icons-material";
 import { MdQuestionAnswer, MdWorkHistory } from "react-icons/md";
 import { FaUsers, FaUserGroup, FaAddressBook } from "react-icons/fa6";
 import { GiMoneyStack, GiThreeFriends, GiTicket } from "react-icons/gi";
 import { FcSerialTasks, FcDataEncryption, FcParallelTasks, FcMoneyTransfer } from "react-icons/fc";
+
+export const handleSavePDF = () => window.print();
 
 export function StatCardGrid({ cards }: { cards: StatCardProps[] }) {
   return (
@@ -103,12 +106,36 @@ export function StatCard({ title, value, delta, icon, meta, element }: StatCardP
   );
 }
 
-export function DataTable({ columns, rows }: DataTableProps) {
+
+const formatHeader = (key: string): string => {
+  return key
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
+const formatCellValue = (value: unknown): string => {
+  if (value === null || value === undefined) return '-';
+
+  if (typeof value === 'string' || typeof value === 'number') {
+    const date = new Date(value);
+    if (!isNaN(date.getTime())) {
+      return format(date, 'MMM dd, yyyy • h:mm a');
+    }
+  }
+
+  if (typeof value === 'boolean') {
+    return value ? 'Yes' : 'No';
+  }
+
+  return String(value);
+};
+
+export function DataTable<T extends Record<string, unknown>>({ columns, rows }: DataTableProps<T>) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box p={1} maxWidth={'96vw'}>
+    <Box p={1} maxWidth="96vw">
       <Box
         sx={{
           my: 1,
@@ -125,39 +152,25 @@ export function DataTable({ columns, rows }: DataTableProps) {
             backgroundColor: 'var(--secondary)',
             borderRadius: 10,
           },
-          '@media (max-width: 600px)': {
-            display: 'block',
-            maxWidth: '90vw',
-          },
         }}
       >
-        <Box
-          sx={{
-            minWidth: 750,
-            width: '100%',
-            borderCollapse: 'collapse',
-            tableLayout: 'auto',
-          }}
-        >
-          <TableContainer
-            component={Paper}
-            elevation={0}
-          >
-            <Table size={isMobile ? "small" : "medium"} stickyHeader>
+        <Box sx={{ minWidth: 750, width: '100%' }}>
+          <TableContainer component={Paper} elevation={0}>
+            <Table size={isMobile ? 'small' : 'medium'} stickyHeader>
               <TableHead>
                 <TableRow>
-                  {columns.map((c) => (
+                  {columns.map((col) => (
                     <TableCell
-                      key={c}
+                      key={String(col)}
                       sx={{
                         fontWeight: 600,
-                        bgcolor: "background.paper",
-                        whiteSpace: "nowrap",
-                        fontSize: { xs: "0.875rem", sm: "1rem" },
-                        height: 44,
+                        bgcolor: 'background.paper',
+                        whiteSpace: 'nowrap',
+                        fontSize: { xs: '0.875rem', sm: '1rem' },
+                        height: 48,
                       }}
                     >
-                      {c}
+                      {formatHeader(String(col))}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -165,25 +178,36 @@ export function DataTable({ columns, rows }: DataTableProps) {
               <TableBody>
                 {rows.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={columns.length} align="center" sx={{ py: 4 }}>
-                      <Typography color="text.secondary">No data available</Typography>
+                    <TableCell colSpan={columns.length} align="center" sx={{ py: 6 }}>
+                      <Typography color="text.secondary" variant="body2">
+                        No data available
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 ) : (
-                  rows.map((r, idx) => (
-                    <TableRow key={idx} hover>
-                      {columns.map((c) => (
-                        <TableCell
-                          key={c}
-                          sx={{
-                            whiteSpace: { xs: "nowrap", sm: "normal" },
-                            fontSize: { xs: "0.875rem", sm: "1rem" },
-                            height: 40
-                          }}
-                        >
-                          {String(r[c] ?? "")}
-                        </TableCell>
-                      ))}
+                  rows.map((row, rowIdx) => (
+                    <TableRow key={rowIdx} hover>
+                      {columns.map((col) => {
+                        const value = row[col];
+                        const formattedValue = formatCellValue(value);
+
+                        return (
+                          <TableCell
+                            key={String(col)}
+                            sx={{
+                              whiteSpace: { xs: 'nowrap', sm: 'normal' },
+                              fontSize: { xs: '0.875rem', sm: '1rem' },
+                              height: 48,
+                              color:
+                                typeof value === 'string' && value.includes('At')
+                                  ? 'text.secondary'
+                                  : 'text.primary',
+                            }}
+                          >
+                            {formattedValue}
+                          </TableCell>
+                        );
+                      })}
                     </TableRow>
                   ))
                 )}
@@ -192,8 +216,8 @@ export function DataTable({ columns, rows }: DataTableProps) {
           </TableContainer>
         </Box>
       </Box>
-    </Box>  
-  )
+    </Box>
+  );
 }
 
 export function Filters({ children }: { children?: React.ReactNode }) {
@@ -236,10 +260,10 @@ export function Filters({ children }: { children?: React.ReactNode }) {
         }}
       >
         <IconButton size={isMobile ? "medium" : "small"} aria-label="export">
-          <Download />
+          <Download onClick={handleSavePDF} />
         </IconButton>
         <IconButton size={isMobile ? "medium" : "small"} aria-label="refresh">
-          <Refresh />
+          <Refresh onClick={() => window.location.reload} />
         </IconButton>
       </Box>
     </Box>

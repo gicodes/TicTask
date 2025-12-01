@@ -128,6 +128,15 @@ export enum Ticket_Priority {
   URGENT = "URGENT"
 }
 
+export enum Ticket_Status {
+  UPCOMING = 'UPCOMING',
+  OPEN = 'OPEN',
+  IN_PROGRESS = 'IN_PROGRESS',
+  RESOLVED = 'RESOLVED',
+  CLOSED = 'CLOSED',
+  CANCELLED = 'CANCELLED'
+}
+
 export type TicketImpact = 'LOW' | 'MEDIUM' | 'HIGH';
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 export type TicketStatus = 'UPCOMING'| 'OPEN'| 'IN_PROGRESS'| 'RESOLVED'| 'CLOSED'| 'CANCELLED';

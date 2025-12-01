@@ -1,7 +1,7 @@
 'use client';
 
 import React from "react";
-import { ApolloProvider, useQuery, useMutation } from "@apollo/client/react";
+import { ApolloProvider, useQuery } from "@apollo/client/react";
 import { ApolloClient, InMemoryCache, HttpLink , gql} from "@apollo/client";
 
 const client = new ApolloClient({
@@ -25,6 +25,7 @@ export const ADMIN_OVERVIEW_QUERY = gql`
           id
           title
           priority
+          type
           status
           createdAt
         }
@@ -145,6 +146,7 @@ export const ADMIN_TICKETS_QUERY = gql`
           priority
           status
           tags
+          type
           dueDate
           amount
           currency

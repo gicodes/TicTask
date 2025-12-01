@@ -116,7 +116,7 @@ export default function AdminUsersPage() {
         <AdminComponents.Filters>
           <AdminComponents.SearchField 
             value={searchQuery}
-            placeholder="Search tickets…" 
+            placeholder="Search users" 
             onChange={setSearchQuery}
           />
           <AdminComponents.SelectField

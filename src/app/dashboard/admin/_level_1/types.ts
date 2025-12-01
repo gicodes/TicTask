@@ -3,7 +3,7 @@ export type AdminOverviewData = {
     ticketsSummary: {
       total: number;
       escalatedCount: number;
-      recent: [];
+      recent: AdminOverviewTicketRows[];
     };
     usersSummary: {
       totalUsers: number;
@@ -59,7 +59,15 @@ export type StatCardProps = {
   element?: React.ReactNode;
 };
 
-export type DataTableProps = {
-  columns: string[];
-  rows: Record<string, unknown>[];
-};
+export type AdminOverviewTicketRows = {
+  id: number;
+  title: string;
+  type: string;
+  status: string;
+  createdAt: Date;
+}
+
+export interface DataTableProps<T extends Record<string, unknown>> {
+  columns: (keyof T)[];
+  rows: T[];
+}
