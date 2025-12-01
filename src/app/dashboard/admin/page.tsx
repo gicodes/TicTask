@@ -16,9 +16,9 @@ export default function Page() {
     </Box>
   );
 
-  // if (user?.role === "USER") {
-  //   return redirect("/dashboard");
-  // }
+  if (user?.role === "USER") {
+    return redirect("/dashboard");
+  }
 
   return (
     <Box>

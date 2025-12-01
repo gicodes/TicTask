@@ -1,16 +1,16 @@
 'use client';
 
 import React from "react";
-import { ApolloProvider, useQuery, } from "@apollo/client/react";
+import { ApolloProvider, useQuery, useMutation } from "@apollo/client/react";
 import { ApolloClient, InMemoryCache, HttpLink , gql} from "@apollo/client";
 
 const client = new ApolloClient({
   link: new HttpLink({
     uri: `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include",
   }),
   cache: new InMemoryCache(),
 });
@@ -35,12 +35,26 @@ export const ADMIN_OVERVIEW_QUERY = gql`
         newThisWeek
         inTrial
         suspended
+        recent {
+          id
+          name
+          email
+          role
+          createdAt
+        }
       }
       teamsSummary {
         totalTeams
         averageMembers
         newThisWeek
         highActivityOrgs
+        recent {
+          id
+          name
+          slug
+          memberCount
+          createdAt
+        }
       }
       subsSummary {
         mrr
@@ -48,29 +62,98 @@ export const ADMIN_OVERVIEW_QUERY = gql`
         trials
         churnPercent
         failedPayments
+        recent {
+          id
+          plan
+          active
+          amount
+          userId
+          teamId
+          expiresAt
+        }
+      }
+      blogSummary {
+        total
+        published
+        drafts
+        recent {
+          id
+          title
+          slug
+          createdAt
+        }
+      }
+      changelogSummary {
+        total
+        recent {
+          id
+          version
+          date
+        }
+      }
+      faqSummary {
+        total
+        answered
+        missingAnswers
+        recent {
+          id
+          question
+          createdAt
+        }
+      }
+      partnerSummary {
+        total
+        approved
+        pending
+        recent {
+          id
+          name
+          email
+          createdAt
+        }
+      }
+      careerSummary {
+        total
+        open
+        closed
+        recent {
+          id
+          role
+          open
+          createdAt
+        }
       }
     }
   }
 `;
 
+// 2. TICKETS
 export const ADMIN_TICKETS_QUERY = gql`
-  query AdminTickets($first: Int!, $after: String, $filter: TicketsFilter) {
+  query AdminTickets($first: Int = 20, $after: String, $filter: TicketsFilter) {
     adminTickets(first: $first, after: $after, filter: $filter) {
       totalCount
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       edges {
+        cursor
         node {
           id
           title
+          description
           priority
           status
+          tags
+          dueDate
+          amount
+          currency
           createdAt
           updatedAt
+          createdById
+          assignedToId
+          clientId
         }
-        cursor
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
       }
     }
   }
@@ -82,45 +165,163 @@ export const DELETE_TICKET_MUTATION = gql`
   }
 `;
 
+// 3. USERS - FULL CRUD
+export const ADMIN_USERS_QUERY = gql`
+  query AdminUsers($first: Int = 20, $after: String, $filter: UsersFilter) {
+    adminUsers(first: $first, after: $after, filter: $filter) {
+      totalCount
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          id
+          name
+          email
+          role
+          isVerified
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+
+export const CREATE_USER_MUTATION = gql`
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
+      id
+      name
+      email
+      role
+      isVerified
+      createdAt
+    }
+  }
+`;
+
+export const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      id
+      name
+      email
+      role
+      isVerified
+    }
+  }
+`;
+
+export const DELETE_USER_MUTATION = gql`
+  mutation AdminDeleteUser($id: Int!) {
+    adminDeleteUser(id: $id)
+  }
+`;
+
+// 4. TEAMS - FULL CRUD
+export const ADMIN_TEAMS_QUERY = gql`
+  query AdminTeams($first: Int = 20, $after: String, $filter: TeamsFilter) {
+    adminTeams(first: $first, after: $after, filter: $filter) {
+      totalCount
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          id
+          name
+          slug
+          ownerId
+          memberCount
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+
+export const CREATE_TEAM_MUTATION = gql`
+  mutation CreateTeam($input: CreateTeamInput!) {
+    createTeam(input: $input) {
+      id
+      name
+      slug
+      ownerId
+      createdAt
+    }
+  }
+`;
+
+export const UPDATE_TEAM_MUTATION = gql`
+  mutation UpdateTeam($input: UpdateTeamInput!) {
+    updateTeam(input: $input) {
+      id
+      name
+      slug
+    }
+  }
+`;
+
+export const DELETE_TEAM_MUTATION = gql`
+  mutation AdminDeleteTeam($id: Int!) {
+    adminDeleteTeam(id: $id)
+  }
+`;
+
+// 5. SUBSCRIPTIONS - FULL CRUD
+export const ADMIN_SUBSCRIPTIONS_QUERY = gql`
+  query AdminSubscriptions($first: Int = 20, $after: String, $filter: SubscriptionsFilter) {
+    adminSubscriptions(first: $first, after: $after, filter: $filter) {
+      totalCount
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          id
+          plan
+          active
+          amount
+          startedAt
+          expiresAt
+          userId
+          teamId
+          stripeSubscriptionId
+        }
+      }
+    }
+  }
+`;
+
+export const CANCEL_SUBSCRIPTION_MUTATION = gql`
+  mutation CancelSubscription($id: Int!) {
+    cancelSubscription(id: $id) {
+      id
+      active
+    }
+  }
+`;
+
+export const DELETE_SUBSCRIPTION_MUTATION = gql`
+  mutation AdminDeleteSubscription($id: Int!) {
+    adminDeleteSubscription(id: $id)
+  }
+`;
+
 export function useAdminOverview() {
-  const result = useQuery(ADMIN_OVERVIEW_QUERY, {
+  return useQuery(ADMIN_OVERVIEW_QUERY, {
     fetchPolicy: "cache-and-network",
   });
-
-  return {
-    ...result,
-    data:
-      result.data ??
-      ({
-        adminOverview: {
-          ticketsSummary: { total: 0, escalatedCount: 0, recent: [] },
-          usersSummary: {
-            totalUsers: 0,
-            activated: 0,
-            newThisWeek: 0,
-            inTrial: 0,
-            suspended: 0,
-          },
-          teamsSummary: {
-            totalTeams: 0,
-            averageMembers: 0,
-            newThisWeek: 0,
-            highActivityOrgs: 0,
-          },
-          subsSummary: {
-            mrr: 0,
-            activePaying: 0,
-            trials: 0,
-            churnPercent: 0,
-            failedPayments: 0,
-          },
-        },
-      } as const),
-  };
 }
 
-export const AdminApolloProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const AdminApolloProvider = ({ children }: { children: React.ReactNode }) => {
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

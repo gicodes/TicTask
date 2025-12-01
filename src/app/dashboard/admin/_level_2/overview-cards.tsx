@@ -21,10 +21,13 @@ import {
 } from "@mui/material";
 import { Download, Refresh, Search } from "@mui/icons-material";
 import { BiUser } from "react-icons/bi";
-import { GiTicket } from "react-icons/gi";
+import { TbLogs } from "react-icons/tb";
+import { RiBloggerLine } from "react-icons/ri";
 import { SiAwsorganizations } from "react-icons/si";
+import { MdQuestionAnswer, MdWorkHistory } from "react-icons/md";
 import { FaUsers, FaUserGroup, FaAddressBook } from "react-icons/fa6";
-import { FcSerialTasks, FcDataEncryption, FcParallelTasks } from "react-icons/fc";
+import { GiMoneyStack, GiThreeFriends, GiTicket } from "react-icons/gi";
+import { FcSerialTasks, FcDataEncryption, FcParallelTasks, FcMoneyTransfer } from "react-icons/fc";
 
 export function StatCardGrid({ cards }: { cards: StatCardProps[] }) {
   return (
@@ -42,7 +45,7 @@ export function StatCardGrid({ cards }: { cards: StatCardProps[] }) {
   );
 }
 
-export function StatCard({ title, value, delta, icon, meta }: StatCardProps) {
+export function StatCard({ title, value, delta, icon, meta, element }: StatCardProps) {
   return (
     <Paper
       elevation={1}
@@ -81,7 +84,7 @@ export function StatCard({ title, value, delta, icon, meta }: StatCardProps) {
 
         <Box sx={{ display: "flex", alignItems: "baseline", gap: 1, mt: 0.5 }}>
           <Typography variant="h5" fontWeight={600}>
-            {value}
+            {element && element}{value==="undefined" ? "___" : value}
           </Typography>
           {delta && (
             <Typography variant="body2" color="success.main" fontWeight={500}>
@@ -92,7 +95,7 @@ export function StatCard({ title, value, delta, icon, meta }: StatCardProps) {
 
         {meta && (
           <Typography variant="caption" color="text.secondary" display="block" mt={0.5}>
-            {meta}
+            {meta==="undefined" ? "___" : meta}
           </Typography>
         )}
       </Box>
@@ -298,10 +301,17 @@ export const Icons = {
   Tickets: () => <FcParallelTasks size={24} />,
   Ticket: () => <FcSerialTasks size={24} />,
   SupportTicket: () => <GiTicket size={24} />,
-  Money: () => <FcDataEncryption size={24} />,
+  Metrics: () => <FcDataEncryption size={24} />,
+  Revenue: () => <FcMoneyTransfer size={24} />,
+  Money: () => <GiMoneyStack size={24} />,
   Teams: () => <SiAwsorganizations size={24} />,
   Users: () => <FaUserGroup size={24} />,
   User: () => <BiUser size={24} />,
+  Logs: () => <TbLogs size={24} />,
+  Partners: () => <GiThreeFriends size={24} />,
+  Careers: () => <MdWorkHistory size={24} />,
+  Blog: () => <RiBloggerLine size={24} />,
+  FAQ: () => <MdQuestionAnswer size={24} />,
   Team: () => <FaUsers size={24} />,
   Contact: () => <FaAddressBook size={24} />,
 };

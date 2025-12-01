@@ -13,11 +13,8 @@ export default function Page() {
     if (!user) return;
 
     if (user.role === "ADMIN") {
-      console.log("Admin Console Redirect Detected...");
       router.replace("/dashboard/admin");
-    } else {
-      router.replace("/dashboard/tickets");
-    }
+    } else router.replace("/dashboard/tickets");
   }, [user, router]);
 
   return <Typography py={12} textAlign={'center'}>Loading...</Typography>;

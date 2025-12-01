@@ -69,8 +69,17 @@ export default function AdminOverviewPage() {
 
   if (!data) return null;
 
-  const { ticketsSummary, usersSummary, teamsSummary, subsSummary } =
-    data.adminOverview ?? {};
+  const { 
+    ticketsSummary, 
+    usersSummary, 
+    teamsSummary, 
+    subsSummary, 
+    changelogSummary, 
+    blogSummary, 
+    faqSummary, 
+    partnerSummary, 
+    careerSummary 
+  } = data.adminOverview ?? {};
 
   return (
     <Container maxWidth="xl" sx={{ pt: 3, pb: 6 }}>
@@ -139,10 +148,51 @@ export default function AdminOverviewPage() {
 
         <Grid>
           <AdminComponents.StatCard
-            title="MRR"
-            value={`$${subsSummary?.mrr.toLocaleString()}`}
-            meta={`${subsSummary?.activePaying} paying`}
-            icon={<AdminComponents.Icons.Money />}
+            title="Revenue"
+            element={<span className="font-xs">$ {' '}</span>}
+            value={`${subsSummary?.mrr.toLocaleString()}`}
+            meta={`${subsSummary?.activePaying} paid`}
+            icon={<AdminComponents.Icons.Revenue />}
+          />
+        </Grid>
+        <Grid>
+          <AdminComponents.StatCard
+            title="Changelogs"
+            value={`${changelogSummary?.total}`}
+            meta={`${changelogSummary?.recent} recent`}
+            icon={<AdminComponents.Icons.Logs />}
+          />
+        </Grid>
+        <Grid>
+          <AdminComponents.StatCard
+            title="Blogs"
+            value={`${blogSummary?.total}`}
+            meta={`${blogSummary?.published} recent`}
+            icon={<AdminComponents.Icons.Blog />}
+          />
+        </Grid>
+        <Grid>
+          <AdminComponents.StatCard
+            title="FAQs"
+            value={`${faqSummary?.total}`}
+            meta={`${faqSummary?.answered} answered`}
+            icon={<AdminComponents.Icons.FAQ />}
+          />
+        </Grid>
+        <Grid>
+          <AdminComponents.StatCard
+            title="Career"
+            value={`${careerSummary?.total}`}
+            meta={`${careerSummary?.open} open`}
+            icon={<AdminComponents.Icons.Careers />}
+          />
+        </Grid>
+        <Grid>
+          <AdminComponents.StatCard
+            title="Partners"
+            value={`${partnerSummary?.approved}`}
+            meta={`${partnerSummary?.pending} pending`}
+            icon={<AdminComponents.Icons.Partners />}
           />
         </Grid>
       </Grid>
@@ -191,6 +241,45 @@ export default function AdminOverviewPage() {
         <AdminComponents.DataTable
           columns={["id", "title", "priority", "status"]}
           rows={ticketsSummary?.recent ?? []}
+        />
+      </Box>
+
+      <Box mb={4}>
+        <Stack
+          display={{ xs: 'grid', sm: "flex"}}
+          direction={{ xs: 'column', sm: 'row'}}
+          alignItems="center"
+          spacing={1}
+          justifyContent="space-between"
+          mb={2}
+          px={1}
+        >
+          <Box>
+            <Stack direction="row" spacing={0.5}>
+              <Typography variant="h5" fontWeight={600}>Users</Typography>
+              <Tooltip title="Go to users page">
+                <div>
+                  <Button
+                    component={Link}
+                    variant="text"
+                    tone="retreat"
+                    href="/dashboard/admin/users"
+                  >
+                    <AdminComponents.Icons.Users />
+                  </Button>
+                </div>
+              </Tooltip>
+            </Stack>
+
+            <Typography variant="body2" sx={{ opacity: 0.75 }}>
+              Summary of recent users
+            </Typography>
+          </Box>
+        </Stack>
+
+        <AdminComponents.DataTable
+          columns={['id', 'name', 'email', 'role']}
+          rows={usersSummary?.recent ?? []}
         />
       </Box>
     </Container>
