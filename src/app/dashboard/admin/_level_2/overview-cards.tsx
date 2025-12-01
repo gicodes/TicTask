@@ -209,7 +209,7 @@ export function Filters({ children }: { children?: React.ReactNode }) {
         alignItems: { xs: "stretch", md: "center" },
         justifyContent: "space-between",
         mb: 3,
-        px: 1,
+        px: 3,
       }}
     >
       <Box
@@ -248,19 +248,19 @@ export function Filters({ children }: { children?: React.ReactNode }) {
 
 export function SearchField({
   placeholder = "Search...",
-  value = "",
+  value='',
   onChange,
 }: {
   placeholder?: string;
   value?: string;
-  onChange?: (v: string) => void;
+  onChange: (v: string) => void;
 }) {
   return (
     <TextField
       size="small"
       placeholder={placeholder}
       value={value}
-      onChange={(e) => onChange?.(e.target.value)}
+      onChange={(e) => onChange(e.target.value)}
       InputProps={{
         startAdornment: <Search fontSize="small" sx={{ mr: 1, color: "text.disabled" }} />,
       }}

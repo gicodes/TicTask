@@ -11,7 +11,7 @@ import TicketDetailDrawer from '../_level_2/TWSMiniDrawer';
 import React, { useEffect, useMemo, useState } from 'react';
 import { TICKET_LIST_HEADERS, TICKET_STATUSES } from '../_level_0/constants';
 
-function useDebounce<T>(value: T, delay = 300): T {
+export function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
   
   useEffect(() => {

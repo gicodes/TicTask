@@ -229,15 +229,6 @@ export default function AdminOverviewPage() {
           </Box>
         </Stack>
 
-        <AdminComponents.Filters>
-          <AdminComponents.SearchField placeholder="Search tickets…" />
-          <AdminComponents.SelectField
-            value=""
-            onChange={() => {}}
-            options={["All statuses", "Open", "Pending", "Escalated", "Closed"]}
-          />
-        </AdminComponents.Filters>
-
         <AdminComponents.DataTable
           columns={["id", "title", "priority", "status"]}
           rows={ticketsSummary?.recent ?? []}
