@@ -313,8 +313,8 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             onSelectSlot={(slot) => onSelectSlot?.(slot)}
             onSelectEvent={(ev) => onSelectTask(String((ev as PlannerEvent).id))}
             onRangeChange={(range) => {
-              if (!Array.isArray(range) && range && (range as any).start && (range as any).end) {
-                onDateChange?.((range as any).start, (range as any).end);
+              if (!Array.isArray(range) && range && range.start && range.end) {
+                onDateChange?.(range.start, range.end);
               }
             }}
             eventPropGetter={eventPropGetter}
