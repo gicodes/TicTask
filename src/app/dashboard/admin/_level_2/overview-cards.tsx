@@ -113,10 +113,10 @@ const formatHeader = (key: string): string => {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
-const formatCellValue = (value: unknown): string => {
+const formatCellValue = (id: number, value: unknown): string => {
   if (value === null || value === undefined) return '-';
 
-  if (typeof value === 'string' || typeof value === 'number') {
+  if ((typeof value === 'string' || typeof value === 'number') && typeof id !== 'number') {
     const date = new Date(value);
     if (!isNaN(date.getTime())) {
       return format(date, 'MMM dd, yyyy • h:mm a');
@@ -189,7 +189,7 @@ export function DataTable<T extends Record<string, unknown>>({ columns, rows }: 
                     <TableRow key={rowIdx} hover>
                       {columns.map((col) => {
                         const value = row[col];
-                        const formattedValue = formatCellValue(value);
+                        const formattedValue = formatCellValue(rowIdx, value);
 
                         return (
                           <TableCell
@@ -198,10 +198,9 @@ export function DataTable<T extends Record<string, unknown>>({ columns, rows }: 
                               whiteSpace: { xs: 'nowrap', sm: 'normal' },
                               fontSize: { xs: '0.875rem', sm: '1rem' },
                               height: 48,
-                              color:
-                                typeof value === 'string' && value.includes('At')
-                                  ? 'text.secondary'
-                                  : 'text.primary',
+                              color: typeof value === 'string' && value.includes('At')
+                                ? 'text.secondary'
+                                : 'text.primary',
                             }}
                           >
                             {formattedValue}
@@ -263,7 +262,7 @@ export function Filters({ children }: { children?: React.ReactNode }) {
           <Download onClick={handleSavePDF} />
         </IconButton>
         <IconButton size={isMobile ? "medium" : "small"} aria-label="refresh">
-          <Refresh onClick={() => window.location.reload} />
+          <Refresh onClick={() => window.location.reload()} />
         </IconButton>
       </Box>
     </Box>

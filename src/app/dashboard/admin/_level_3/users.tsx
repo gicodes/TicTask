@@ -176,7 +176,9 @@ export default function AdminUsersPage() {
                     <Table>
                       <TableHead>
                         <TableRow>
+                          <TableCell><strong>No.</strong></TableCell>
                           <TableCell><strong>Name</strong></TableCell>
+                          <TableCell><strong>ID</strong></TableCell>
                           <TableCell><strong>Email</strong></TableCell>
                           <TableCell><strong>Role</strong></TableCell>
                           <TableCell><strong>Joined</strong></TableCell>
@@ -184,9 +186,13 @@ export default function AdminUsersPage() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {users.map(({ node }) => (
-                          <TableRow key={node.id} hover>
+                        {users.map(({ node }, i) => (
+                          <TableRow key={i} hover>
+                            <TableCell>
+                              {i+1}.
+                            </TableCell>
                             <TableCell>{node.name || '-'}</TableCell>
+                            <TableCell>{node.id}</TableCell>
                             <TableCell>{node.email}</TableCell>
                             <TableCell>
                               {node.role.charAt(0) + node.role.slice(1).toLowerCase()}

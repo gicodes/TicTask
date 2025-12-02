@@ -230,7 +230,7 @@ export default function AdminOverviewPage() {
         </Stack>
 
         <AdminComponents.DataTable
-          columns={[ 'id', "title", "type", "status", "createdAt"]}
+          columns={[ "id", "title", "type", "status", "createdAt"]}
           rows={ticketsSummary?.recent ?? []}
         />
       </Box>

@@ -6,11 +6,11 @@ import {
   Typography,  
   ButtonGroup, 
   InputAdornment,
+  useMediaQuery,
 } from '@mui/material';
-import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
+import { Search, ViewKanban } from '@mui/icons-material';
 import { TICKET_TOOLBAR_PROPS } from '../_level_1/tSchema';
 import { FaPlusCircle, FaList } from 'react-icons/fa';
-import SearchIcon from '@mui/icons-material/Search';
 import { Button } from '@/assets/buttons';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -22,6 +22,8 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
   searchQuery, 
   setSearchQuery 
 }) => {  
+  const isMobile = useMediaQuery('(max-width:600px)');
+
   return (
     <Box
       px={1}
@@ -58,12 +60,11 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
       </section>
 
       <Stack
-        justifyContent={{ xs: 'center', sm: "space-between"}}
         direction={{ xs: 'column', sm: 'row' }}
-        display={{ xs: 'grid', sm: 'flex' }}
-        gap={{ xs: 1, sm: 2, md: 3, lg: 5 }}
-        alignItems="center"
+        justifyContent={"space-between"}
+        spacing={{ xs: 1, sm: 2, md: 3, lg: 5 }}
         width={'100%'}
+        alignItems={{sm: 'center'}}
       >
         <section id='search'>
           <TextField
@@ -71,14 +72,17 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search tickets..."
             size="small"
-            sx={{ 
-              minWidth: { xs: 300, sm: 150, lg: 360 }, 
-              maxWidth: { xs: 321, sm: 234, lg: 420 }
+            fullWidth
+            sx={{
+              flex: isMobile ? '1 1 auto' : '0 0 300px',
+              backgroundColor: 'background.paper',
+              borderRadius: 2,
+              minWidth: { sm: 222, lg: 360 }
             }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon color="disabled" />
+                  <Search />
                 </InputAdornment>
               ),
             }}
@@ -87,13 +91,13 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
         
         <section id='view-toggle'>
           <ButtonGroup sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Tooltip title="View tickets in Kanban board mode" arrow>
+            <Tooltip title="Show tickets in Kanban board view" arrow>
               <div>
                 <Button
                   onClick={() => setView('board')}
                   tone={view === 'board' ? "primary" : 'action'}
                   variant={view === 'board' ? 'contained' : 'outlined'}
-                  startIcon={<ViewKanbanIcon />}
+                  startIcon={<ViewKanban />}
                   sx={{
                     borderTopRightRadius: 0,
                     borderBottomRightRadius: 0,
@@ -103,7 +107,7 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
                 </Button>
               </div>
             </Tooltip>
-            <Tooltip title="View tickets in tabular list mode" arrow>
+            <Tooltip title="Show tickets in tabular list view" arrow>
               <div>
                 <Button
                   tone={view === 'list' ? 'primary' : "action"}
@@ -123,8 +127,8 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
         </section>
 
         <section id="new-ticket-btn">
-          <Box sx={{ display: { xs: 'block', sm: 'none', minHeight: 15 }}} />
-          <Tooltip title="Create New Ticket as Task, Invoice or Issue">
+          <Box sx={{ display: { xs: 'block', sm: 'none', minHeight: 10 }}} />
+          <Tooltip title="Create New Ticket as Support, Invoice or Issue">
             <div>
               <Button
                 startIcon={<FaPlusCircle />}

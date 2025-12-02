@@ -241,6 +241,7 @@ export default function AdminTicketsPage() {
                     <Table>
                       <TableHead>
                         <TableRow>
+                          <TableCell><strong>No.</strong></TableCell>
                           <TableCell><strong>Title</strong></TableCell>
                           <TableCell><strong>Type</strong></TableCell>
                           <TableCell><strong>Status</strong></TableCell>
@@ -250,8 +251,11 @@ export default function AdminTicketsPage() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {tickets.map(({ node }) => (
-                          <TableRow key={node.id} hover>
+                        {tickets.map(({ node }, i) => (
+                          <TableRow key={i} hover>
+                            <TableCell>
+                              {i+1}.
+                            </TableCell>
                             <TableCell sx={{ maxWidth: 400, overflow: 'hidden', textOverflow: 'ellipsis' }}>
                               <Typography noWrap>{node.title}</Typography>
                             </TableCell>
@@ -274,7 +278,7 @@ export default function AdminTicketsPage() {
                               </Typography>
                             </TableCell>
                             <TableCell>
-                              {node.createdById}
+                              User {node.createdById}
                             </TableCell>
                             <TableCell align="right">
                               <Tooltip title="Delete ticket">
