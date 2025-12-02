@@ -9,6 +9,7 @@ import React, {
   KeyboardEvent,
 } from 'react';
 import moment from 'moment';
+import { format } from 'date-fns';
 import { Box, useTheme } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
@@ -166,7 +167,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   const headerTitle = useMemo(() => {
     const m = moment(currentDate);
     if (bigCalendarView === 'month') return m.format('MMMM YYYY');
-    if (bigCalendarView === 'week' && internalView === 'thisWeek') return 'This Week';
+    if (bigCalendarView === 'week' && internalView === 'thisWeek') return format(new Date(), 'MMM dd');
     return isMobile ? m.format('MMM D, YY') : m.format('MMMM D, YYYY');
   }, [currentDate, bigCalendarView, internalView, isMobile]);
 
@@ -256,7 +257,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           hasThisWeek={hasInitialised.current}
         />
         <NavControls
-          headerTitle={headerTitle}
+          todaysDate={headerTitle}
           onPrev={() => handleNavigate('PREV')}
           onNext={() => handleNavigate('NEXT')}
           onToday={() => handleNavigate('TODAY')}

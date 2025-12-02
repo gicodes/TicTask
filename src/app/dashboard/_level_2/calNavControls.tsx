@@ -1,14 +1,14 @@
 import { Button } from '@/assets/buttons';
-import { Stack, IconButton, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Stack, IconButton, Typography, Tooltip } from '@mui/material';
 
 export default function NavControls({
-  headerTitle,
+  todaysDate,
   onPrev,
   onNext,
   onToday,
 }: {
-  headerTitle: string;
+  todaysDate: string;
   onPrev: () => void;
   onNext: () => void;
   onToday: () => void;
@@ -19,19 +19,20 @@ export default function NavControls({
         <IconButton aria-label="previous" onClick={onPrev}>
           <ChevronLeft size={25} />
         </IconButton>
-        <Typography 
-          variant="h6" 
-          minWidth={75}
-          fontSize={{xs: 15, sm: 18}}
-          sx={{ fontWeight: 600, textAlign: 'center' }}
-        >
-          {headerTitle}
-        </Typography>
+        <Tooltip title="Displays today and toggles according to your view">
+          <Typography 
+            variant="h6" 
+            minWidth={75}
+            fontSize={{xs: 15, sm: 18}}
+            sx={{ fontWeight: 600, textAlign: 'center' }}
+          >
+            {todaysDate}
+          </Typography>
+        </Tooltip>
         <IconButton aria-label="next" onClick={onNext}>
           <ChevronRight size={25} />
         </IconButton>
       </Stack>
-
        <Button
         size='small'
         tone='retreat'
