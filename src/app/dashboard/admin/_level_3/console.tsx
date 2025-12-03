@@ -48,7 +48,11 @@ export default function AdminOverviewPage() {
   }
 
   if (loading) return (
-    <FeedbackCard> <Typography>Setting up Admin Overview…</Typography> </FeedbackCard>
+    <FeedbackCard> 
+      <Typography variant="h6" textAlign={'center'}>
+        Setting up Admin Overview…
+      </Typography> 
+    </FeedbackCard>
   )
 
   if (error) return (
@@ -98,7 +102,7 @@ export default function AdminOverviewPage() {
             Admin Overview
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Cummulated Overview Featuring Tickets, Users, Teams, Subscriptions and more
+            Analytics on Tickets, Users, Teams, Revenue and More...
           </Typography>
         </Stack>
 
@@ -106,7 +110,13 @@ export default function AdminOverviewPage() {
           <Chip label="Admin" color="secondary" sx={{ px: 2, fontWeight: 600}} />
           <Tooltip title="Open admin settings">
             <div>
-              <Button component={Link} href={'/dashboard/settings'} size="small" startIcon={<Settings size={14} />}>Settings</Button>
+              <Button 
+                component={Link} href={'/dashboard/settings'} 
+                size="small" 
+                startIcon={<Settings size={15} />}
+              >
+                Settings
+              </Button>
             </div>
           </Tooltip>
         </Box>
@@ -230,7 +240,7 @@ export default function AdminOverviewPage() {
         </Stack>
 
         <AdminComponents.DataTable
-          columns={[ "id", "title", "type", "status", "createdAt"]}
+          columns={[ "id", "title", "type", "status", "createdAt", "updatedAt"]}
           rows={ticketsSummary?.recent ?? []}
         />
       </Box>
@@ -269,7 +279,7 @@ export default function AdminOverviewPage() {
         </Stack>
 
         <AdminComponents.DataTable
-          columns={['id', 'name', 'email', 'role', 'createdAt']}
+          columns={['id', 'name', 'email', 'role', 'createdAt', "origin"]}
           rows={usersSummary?.recent ?? []}
         />
       </Box>

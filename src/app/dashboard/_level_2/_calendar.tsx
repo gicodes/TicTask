@@ -20,7 +20,7 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 
 import NavControls from './calNavControls';
 import CalendarSkeleton from './calSkeleton';
-import ViewSelect from './plannerViewSelect';
+import ViewSelect from './calViewSelect';
 import EventRenderer, { TicketEvent } from './calEventRenderer';
 import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
 
@@ -254,11 +254,14 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       color: 'var(--accent)',
       background: 'var(--accent-light)',
     },
-    '& .rbc-month-view .rbc-date-cell.rbc-today, & .rbc-month-view .rbc-day-slot .rbc-today': {
-      border: '2px solid var(--accent)',
-      borderRadius: 6,
+    '& .rbc-month-view .rbc-today': {
+      border: '3px solid var(--accent)',
+      borderRadius: 0,
       background: 'var(--accent-light)',
       color: 'var(--accent)',
+      fontWeight: 700,
+    },
+    '& .rbc-today .rbc-day-slot': {
       fontWeight: 700,
     },
   };

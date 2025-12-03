@@ -53,7 +53,7 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
               Tickets Overview
             </Typography>
             <Typography sx={{ opacity: 0.7 }} minWidth={{ sm: 360 }}>
-              Create new ticket, change view from kanban to list and search for tickets. 
+              Create and manage tickets in easy mode. 
             </Typography>
           </Stack>
         </motion.div>
@@ -91,7 +91,7 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
         
         <section id='view-toggle'>
           <ButtonGroup sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Tooltip title="Show tickets in Kanban board view" arrow>
+            <Tooltip title={view==="board" ? "Showing tickets in kanban. Currently on this view" : "Switch to view tickets in kanban board"} arrow>
               <div>
                 <Button
                   onClick={() => setView('board')}
@@ -107,7 +107,7 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
                 </Button>
               </div>
             </Tooltip>
-            <Tooltip title="Show tickets in tabular list view" arrow>
+            <Tooltip title={view==="list" ? "Showing tickets as list. Currently on this view" : "Switch to view tickets in tabular list"} arrow>
               <div>
                 <Button
                   tone={view === 'list' ? 'primary' : "action"}

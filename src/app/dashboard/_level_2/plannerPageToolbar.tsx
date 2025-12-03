@@ -47,11 +47,11 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
             fontWeight={600}
             sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}
           >
-            Planner & Calendar
+            Task Manager
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.7 }}>
-            Plan with time in mind. Calendar shows task and tickets with a due date.
-          </Typography>
+            Manage your time, plan with a timeline in mind.
+          </Typography> {/* Gi: Planner gives you a different experience */}
           {dateRangeLabel && (
             <Typography color="var(--secondary)" sx={{ fontWeight: 500 }}>
               {dateRangeLabel}
@@ -101,7 +101,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
               backgroundColor: 'rgba(255, 255, 255, 0.05)',
             }}
           >
-            <Tooltip title="Calendar shows task and tickets with a due date">
+            <Tooltip title={view==="calendar" ? "Showing planner on calendar. Currently on this view" : "View planner on big calendar. Only show items with date"}>
               <IconButton
                 onClick={() => setView('calendar')}
                 color={view === 'calendar' ? 'success' : 'inherit'}
@@ -114,7 +114,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="List all task and tickets created on this workspace">
+            <Tooltip title={view==="list" ? "Showing planner as list items. Currently on this view" :  "Switch to list all items created on this workspace"}>
               <IconButton
                 onClick={() => setView('list')}
                 color={view === 'list' ? 'success' : 'inherit'}

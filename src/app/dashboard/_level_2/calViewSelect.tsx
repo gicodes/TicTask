@@ -42,11 +42,11 @@ export default function ViewSelect({
 
   return (
     <FormControl size="small" sx={{ minWidth: { xs: 100, sm: 125, md: 150, lg: 180 } }}>
-      <InputLabel id="view-select-label">View</InputLabel>
+      <InputLabel id="view-select-label">Calendar Timeline</InputLabel>
       <Select
         labelId="view-select-label"
         value={internalView}
-        label="View"
+        label="Calendar Timeline"
         onChange={handleSelect}
         renderValue={(selected) => (
           <Stack direction="row" alignItems="center" gap={3} px={{xs: 1, sm: 0}}>

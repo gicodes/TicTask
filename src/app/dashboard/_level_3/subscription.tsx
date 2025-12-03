@@ -218,7 +218,6 @@ export default function SubscriptionPage() {
                   <Button
                     variant="outlined"
                     tone='retreat'
-                    weight='light'
                     endIcon={<VscLinkExternal size={14} color='var(--secondary)' />}
                     sx={{ textTransform: 'none' }}
                   >

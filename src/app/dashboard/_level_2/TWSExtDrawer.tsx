@@ -96,7 +96,7 @@ export default function TWSExtDrawer({
 
       <Toolbar>
         <Typography flexGrow={1}>
-          Extended Workspace: <strong>{ticket!.title}</strong>
+          Extended Workspace ➣: <strong>{ticket!.title}</strong>
         </Typography>
         <IconButton onClick={onClose}>
           <CloseSharp />

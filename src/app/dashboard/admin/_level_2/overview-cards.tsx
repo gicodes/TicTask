@@ -79,12 +79,10 @@ export function StatCard({ title, value, delta, icon, meta, element }: StatCardP
       >
         {icon}
       </Box>
-
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Typography variant="subtitle2" color="text.secondary" noWrap>
           {title}
         </Typography>
-
         <Box sx={{ display: "flex", alignItems: "baseline", gap: 1, mt: 0.5 }}>
           <Typography variant="h5" fontWeight={600}>
             {element && element}{value==="undefined" ? "___" : value}
@@ -106,19 +104,25 @@ export function StatCard({ title, value, delta, icon, meta, element }: StatCardP
   );
 }
 
-
 const formatHeader = (key: string): string => {
-  return key
+  let title: string = '';
+  title = key;
+
+  if (key.includes("At")) {
+    title = title.split('At').join(" At");
+  }
+
+  return title
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
-const formatCellValue = (id: number, value: unknown): string => {
+const formatCellValue = (value: unknown): string => {
   if (value === null || value === undefined) return '-';
 
-  if ((typeof value === 'string' || typeof value === 'number') && typeof id !== 'number') {
+  if (typeof value === 'string' || typeof value === 'number') {
     const date = new Date(value);
-    if (!isNaN(date.getTime())) {
+    if (!isNaN(date.getTime()) && typeof value !== "number" ) {
       return format(date, 'MMM dd, yyyy • h:mm a');
     }
   }
@@ -185,11 +189,11 @@ export function DataTable<T extends Record<string, unknown>>({ columns, rows }: 
                     </TableCell>
                   </TableRow>
                 ) : (
-                  rows.map((row, rowIdx) => (
-                    <TableRow key={rowIdx} hover>
+                  rows.map((row, i) => (
+                    <TableRow key={i} hover>
                       {columns.map((col) => {
                         const value = row[col];
-                        const formattedValue = formatCellValue(rowIdx, value);
+                        const formattedValue = formatCellValue(value);
 
                         return (
                           <TableCell

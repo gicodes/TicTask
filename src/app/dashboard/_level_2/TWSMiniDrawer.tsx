@@ -154,11 +154,13 @@ export default function TicketDetailDrawer({
                 <Typography 
                   display={'flex'} 
                   gap={0.5}
-                  alignItems={'center'} 
+                  alignItems={'center'}
+                  justifyContent={'center'} 
                   variant="body1" 
                   sx={{ color: getTypeColor(ticket.type) }}
                 >
-                  <TypeIcon size={16} /><strong>{ticket.type === 'FEATURE_REQUEST' ? 'FEATURE' : ticket.type}</strong>
+                  <TypeIcon size={16} />
+                    <strong>{ticket.type === 'FEATURE_REQUEST' ? 'FEATURE' : ticket.type}</strong>
                 </Typography>
                 <Tooltip title={`Ticket ${statusRender.toLowerCase()}`}>
                   <Chip label={statusRender} size="small" sx={{ px: 1, maxWidth: 'max-content', mx: 'auto' }} />

@@ -65,6 +65,7 @@ export type AdminOverviewTicketRows = {
   type: string;
   status: string;
   createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface DataTableProps<T extends Record<string, unknown>> {

@@ -214,7 +214,7 @@ export default function ProfileDetailDrawer() {
                   isBusiness
                     ? theme.palette.primary.main
                     : isModerator
-                    ? theme.palette.warning.main
+                    ? `var(--special)`
                     : theme.palette.success.main
                 }`,
               }}
@@ -233,7 +233,10 @@ export default function ProfileDetailDrawer() {
             <Stack direction="row" spacing={1} display={'flex'} alignItems={'center'}>
               <Chip 
                 label={profile?.role || 'USER'}
-                color={isModerator ? 'warning' : 'default'}
+                sx={{
+                  bgcolor: isModerator ? 'var(--special)' : 'default',
+                  color: 'white'
+                }}
               />
               <Chip
                 label={profile?.userType}
@@ -329,7 +332,7 @@ export default function ProfileDetailDrawer() {
                   <Stack direction="row" alignItems="center" spacing={1}>
                     <Language fontSize="small" />
                     <Typography variant="body2" color="primary">
-                      <a href={profile.website} target="_blank" rel="noopener noreferrer">
+                      <a href={(!profile.website.includes("http")) ? `https://${profile.website}` : profile.website} target="_blank" rel="noopener noreferrer">
                         {profile.website}
                       </a>
                     </Typography>
