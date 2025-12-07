@@ -15,7 +15,7 @@ const Page = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (loading) return <Box textAlign="center" p={4}>Loading...</Box>;
+  if (loading) return <Box textAlign="center" p={4}>Loading Tickets View...</Box>;
 
   if (!isAuthenticated) return (
     <Box textAlign="center" px={2} py={10}>

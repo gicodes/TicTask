@@ -19,9 +19,11 @@ export const handleSendAI = async ({ setMessages, setInput, input }: HandleSendP
   setInput('');
 
   try {
+    const body = { type: "reply", payload: newMessage }
+    // Newer features will include other body types such as rewrite, summarize, classify and triage
     const res = await api<{ reply: string }>("/v1/ai/generate", {
       method: "POST",
-      body: JSON.stringify({ message: newMessage }),
+      body: JSON.stringify(body),
     });
 
     if (!res) return;
