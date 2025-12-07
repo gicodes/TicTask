@@ -128,7 +128,7 @@ export const ADMIN_OVERVIEW_QUERY = gql`
   }
 `;
 
-// 2. TICKETS
+// TICKETS
 export const ADMIN_TICKETS_QUERY = gql`
   query AdminTickets($first: Int = 20, $after: String, $filter: TicketsFilter) {
     adminTickets(first: $first, after: $after, filter: $filter) {
@@ -167,7 +167,7 @@ export const DELETE_TICKET_MUTATION = gql`
   }
 `;
 
-// 3. USERS - FULL CRUD
+// USERS
 export const ADMIN_USERS_QUERY = gql`
   query AdminUsers($first: Int = 20, $after: String, $filter: UsersFilter) {
     adminUsers(first: $first, after: $after, filter: $filter) {
@@ -183,6 +183,7 @@ export const ADMIN_USERS_QUERY = gql`
           name
           email
           role
+          userType
           isVerified
           createdAt
           updatedAt
@@ -223,7 +224,7 @@ export const DELETE_USER_MUTATION = gql`
   }
 `;
 
-// 4. TEAMS - FULL CRUD
+// TEAMS
 export const ADMIN_TEAMS_QUERY = gql`
   query AdminTeams($first: Int = 20, $after: String, $filter: TeamsFilter) {
     adminTeams(first: $first, after: $after, filter: $filter) {
@@ -276,7 +277,7 @@ export const DELETE_TEAM_MUTATION = gql`
   }
 `;
 
-// 5. SUBSCRIPTIONS - FULL CRUD
+// SUBSCRIPTIONS
 export const ADMIN_SUBSCRIPTIONS_QUERY = gql`
   query AdminSubscriptions($first: Int = 20, $after: String, $filter: SubscriptionsFilter) {
     adminSubscriptions(first: $first, after: $after, filter: $filter) {

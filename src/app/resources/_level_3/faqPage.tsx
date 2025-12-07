@@ -4,7 +4,7 @@ import { ResourceHero } from ".";
 import { FAQRes } from "@/types/axios";
 import { Button } from "@/assets/buttons";
 import { useAuth } from "@/providers/auth";
-import { apiGet, apiPost } from "@/lib/api";
+import { apiGet, apiPost } from "@/lib/axios";
 import { useAlert } from "@/providers/alert";
 import { FAQProps } from "@/types/resources";
 import React, { useEffect, useState } from "react";

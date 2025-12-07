@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { apiPost, apiDelete } from "@/lib/api";
+import { apiPost, apiDelete } from "@/lib/axios";
 import { GenericAPIRes } from "@/types/axios";
 import { useAlert } from "@/providers/alert";
 import { Team, User } from "@/types/users";

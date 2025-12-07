@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { apiGet } from "@/lib/api";
+import { apiGet } from "@/lib/axios";
 import { Button } from "@/assets/buttons";
 import { useAuth } from "@/providers/auth";
 import { AllBlogsRes } from "@/types/axios";

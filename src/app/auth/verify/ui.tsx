@@ -1,6 +1,6 @@
 "use client";
 
-import { apiPost } from "@/lib/api";
+import { apiPost } from "@/lib/axios";
 import { Button } from "@/assets/buttons";
 import styles from "@/app/page.module.css";
 import { useState, useEffect } from "react";

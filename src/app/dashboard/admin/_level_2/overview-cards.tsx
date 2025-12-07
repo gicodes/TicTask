@@ -18,6 +18,7 @@ import {
   IconButton,
   useTheme,
   useMediaQuery,
+  Stack,
 } from "@mui/material";
 import { format } from 'date-fns';
 import { BiUser } from "react-icons/bi";
@@ -34,13 +35,15 @@ export const handleSavePDF = () => window.print();
 
 export function StatCardGrid({ cards }: { cards: StatCardProps[] }) {
   return (
-    <Box sx={{ display: "grid", gap: 2, mb: 4,
-      gridTemplateColumns: {
-        xs: "1fr",
-        sm: "repeat(2, 1fr)",
-        md: "repeat(4, 1fr)",
-      },
-    }}>
+    <Box 
+      sx={{ display: "grid", gap: 2, mb: 4,
+        gridTemplateColumns: {
+          xs: "1fr",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(4, 1fr)",
+        },
+      }}
+    >
       {cards.map((card, i) => (
         <StatCard key={i} {...card} />
       ))}
@@ -299,28 +302,61 @@ export function SearchField({
   );
 }
 
+type Option =
+  | string
+  | {
+      label: string;
+      value: string;
+    };
+
+interface SelectFieldProps {
+  value: string;                          
+  onChange: (value: string) => void;      
+  options: Option[];                      
+  label?: string;
+  emptyLabel?: string;                    
+}
+
 export function SelectField({
   value,
   onChange,
   options,
-  label = "Filter",
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  options: string[];
-  label?: string;
-}) {
+  label = 'Filter',
+  emptyLabel = 'All',
+}: SelectFieldProps) {
+  const normalizedOptions = options.map((opt) => {
+    if (typeof opt === 'string') {
+      return { label: opt, value: opt } 
+    };
+
+    return opt;
+  });
+
   return (
-    <FormControl size="small" fullWidth={useMediaQuery("(max-width:600px)")} sx={{ minWidth: { xs: "100%", sm: 160 } }}>
-      <InputLabel>{label}</InputLabel>
-      <Select value={value} label={label} onChange={(e) => onChange(e.target.value as string)}>
-        {options.map((o) => (
-          <MenuItem key={o} value={o}>
-            {o}
+   <Stack p={1} width={'100%'}>
+      <FormControl
+        size="small"
+        sx={{ minWidth: { xs: '100%', sm: 160 } }}
+      >
+        <InputLabel>{label}</InputLabel>
+        <Select
+          value={value}
+          label={label}
+          onChange={(e) => onChange(e.target.value as string)}
+          fullWidth
+        >
+          <MenuItem value="">
+            <em>{emptyLabel}</em>
           </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+
+          {normalizedOptions.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value}>
+              {opt.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Stack>
   );
 }
 

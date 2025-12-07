@@ -6,7 +6,7 @@ import { User, Role, UserType } from '@/types/users';
 import { Subscription } from '@/types/subscription';
 import { UserProfileRes } from '@/types/axios';
 import { AppEvents } from './events';
-import { apiGet } from '@/lib/api';
+import { apiGet } from '@/lib/axios';
 
 export interface AuthUser {
   id: number;

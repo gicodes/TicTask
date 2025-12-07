@@ -73,7 +73,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     }
 
     hasInitialised.current = true;
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     if (!tasks) return;

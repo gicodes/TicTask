@@ -1,4 +1,4 @@
-import { apiPatch } from "@/lib/api";
+import { apiPatch } from "@/lib/axios";
 import { useAuth } from "@/providers/auth";
 import { useState, useCallback } from "react";
 import { GenericAPIRes } from "@/types/axios";

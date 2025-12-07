@@ -1,6 +1,6 @@
 'use client';
 
-import { apiPost } from '@/lib/api';
+import { apiPost } from '@/lib/axios';
 import { useAuth } from '@/providers/auth';
 import { useMutation } from '@tanstack/react-query';
 import { StripeCheckOutSessionRequest, StripeCheckOutSessionResponse } from '@/types/axios';

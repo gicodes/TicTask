@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Trash2 } from "lucide-react";
-import { apiDelete } from "@/lib/api";
+import { apiDelete } from "@/lib/axios";
 import { useAlert } from "@/providers/alert";
 import { Card, IconButton, Tooltip } from "@mui/material";
 

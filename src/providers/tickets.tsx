@@ -11,7 +11,7 @@ import {
 import { useAuth } from "./auth";
 import { AppEvents } from "./events";
 import { TicketsRes } from "@/types/axios";
-import { apiGet, apiPatch, apiPost } from "@/lib/api";
+import { apiGet, apiPatch, apiPost } from "@/lib/axios";
 import { Ticket, priorityOrder, statusOrder } from "@/types/ticket";
 
 export const sortTickets = (list: Ticket[]): Ticket[] => {

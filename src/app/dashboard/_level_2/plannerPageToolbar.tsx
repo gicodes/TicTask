@@ -108,6 +108,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
                 sx={{
                   p: 1.5,
                   backgroundColor: view === 'calendar' ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+                  boxShadow: view === 'calendar' ? 2 : '',
                 }}
               >
                 <Calendar size={20} />
@@ -121,6 +122,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
                 sx={{
                   p: 1.5,
                   backgroundColor: view === 'list' ? 'rgba(255, 255, 255, 0.25)' : 'transparent',
+                  boxShadow: view === 'list' ? 2 : '',
                 }}
               >
                 <List size={20} />

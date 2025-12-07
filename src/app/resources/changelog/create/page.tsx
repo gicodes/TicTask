@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/auth";
 import { Button } from "@/assets/buttons";
 import React, { useState } from "react";
-import { apiPost } from "@/lib/api";
+import { apiPost } from "@/lib/axios";
 
 export default function CreateChangelog() {
   const { showAlert } = useAlert();

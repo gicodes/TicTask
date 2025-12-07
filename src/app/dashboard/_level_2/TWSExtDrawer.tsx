@@ -1,14 +1,14 @@
 'use client';
 
-import { extractTicketData } from '../_level_1/tFieldExtract';
 import { TICKET_WORKSPACE_PROPS, TicketFormValuesUnion } from '../_level_1/tSchema';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, FieldValues } from 'react-hook-form';
+import { extractTicketData } from '../_level_1/tFieldExtract';
+import { Create_Ticket, Ticket } from '@/types/ticket';
 import { DatePicker } from '../_level_1/tDateControl';
 import { useTickets } from '@/providers/tickets';
 import { Button } from '@/assets/buttons';
 import { useAuth } from '@/providers/auth';
 import React, { useState } from 'react';
-import { Ticket } from '@/types/ticket';
 import { User } from '@/types/users';
 import {
   Box,
@@ -36,6 +36,7 @@ export default function TWSExtDrawer({
   ticket, 
   onUpdate 
 }: TICKET_WORKSPACE_PROPS ) {  
+
   const { user } = useAuth();
   const { updateTicket } = useTickets();
   const fields = extractTicketData(ticket!);
@@ -46,10 +47,32 @@ export default function TWSExtDrawer({
   const isActive = !['CANCELLED', 'RESOLVED', 'CLOSED'].includes(ticket!.status);
   const isTeamAdmin = !!(user as User).teamMemberships && !!(user as User).createdTeams;
 
-  const onSubmit = async (data: TicketFormValuesUnion) => {
-    await updateTicket(Number(ticket!.id), data as Partial<Ticket>);
+  const onSubmit = async (data: FieldValues) => {
+    const dueDateIso = (data?.dueDate) === 'string' && data.dueDate
+      ? new Date(data.dueDate as string)
+      : typeof data.startTime === 'string' && data.startTime
+        ? new Date(data.startTime as string)
+        : undefined;
+
+    const startTimeDate = typeof data.startTime === 'string' && data.startTime
+      ? new Date(data.startTime as string)
+      : undefined;
+
+    const endTimeDate = typeof data.endTime === 'string' && data.endTime
+      ? new Date(data.endTime as string)
+      : undefined;
+
+    const payload: FieldValues | TicketFormValuesUnion = {
+      ...data,
+      dueDate: dueDateIso,
+      startTime: startTimeDate,
+      endTime: endTimeDate,
+      createdById: user?.id ?? null,
+    } as unknown as Partial<Create_Ticket>;
+        
+    await updateTicket(Number(ticket!.id), payload as Partial<Ticket>);
     onUpdate?.();
-    reset(data);
+    reset(payload);
   };
 
   const addNote = async () => {
@@ -93,7 +116,6 @@ export default function TWSExtDrawer({
       }}
     >
       <Toolbar />
-
       <Toolbar>
         <Typography flexGrow={1}>
           Extended Workspace ➣ <strong>{ticket!.title}</strong>

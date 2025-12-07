@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+
 import DashboardIndex from './_level_5/_shell';
 import { AuthProvider } from '@/providers/auth';
 import { AlertProvider } from '@/providers/alert';
@@ -10,12 +11,17 @@ import { NotificationsProvider } from '@/providers/notifications';
 
 export const metadata: Metadata = {
   title: "TicTask",
-  description: "Welcome to your dashboard - manage your tickets and tasks efficiently with TicTask",
+  description: `Your Dashboard, More Than A Workspace •
+    Manage your tickets & tasks with lightweight but effective tools 🧰 •
+    Manage clients, teams and workflow efficiently with powerful workspaces and advanced automation 🤖
+  `,
 };
 
 export default function DashboardLayout({ 
   children 
-}: Readonly<{ children: React.ReactNode }>) { 
+}: Readonly<{ 
+  children: React.ReactNode 
+}>) { 
   return (
     <ThemeProvider>
       <AlertProvider>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import { apiPost } from "@/lib/api";
+import { apiPost } from "@/lib/axios";
 import { Button } from "@/assets/buttons";
 import { ContactUs } from "@/types/axios";
 import { useAlert } from "@/providers/alert";

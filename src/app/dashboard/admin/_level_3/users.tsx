@@ -19,7 +19,9 @@ import {
   CircularProgress,
   IconButton,
   Tooltip,
+  Stack,
 } from '@mui/material';
+import { User_Type } from '@/types/users';
 import { Button } from '@/assets/buttons';
 import { useAlert } from '@/providers/alert';
 import { useDebounce } from '../../_level_3/ticket';
@@ -52,11 +54,18 @@ export default function AdminUsersPage() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearch = useDebounce(searchQuery, 500);
+  const [roleFilter, setRoleFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState<User_Type | string>('');
 
   const { data, loading, error, fetchMore } = useQuery<UsersData>(ADMIN_USERS_QUERY, {
     variables: {
       first: 20,
-      search: debouncedSearch || null,
+      after: null,
+      filter: {
+        search: debouncedSearch || undefined,
+        userType: typeFilter === "All users" || !typeFilter ? undefined : typeFilter === "Business" ? "BUSINESS" : "PERSONAL",
+        role: roleFilter || undefined,
+      },
     },
   });
 
@@ -97,7 +106,13 @@ export default function AdminUsersPage() {
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" my={4} px={3}>
+      <Box 
+        display="flex" 
+        justifyContent="space-between" 
+        alignItems="start" 
+        my={3} 
+        px={3}
+      >
         <div className="grid gap-1">
           <Typography variant="h5" fontWeight="bold">
             All Users
@@ -106,26 +121,49 @@ export default function AdminUsersPage() {
             Manage all platform users
           </Typography>
         </div>
-
         <Typography variant="body2" color="text.secondary">
           Total: <strong>{totalCount}</strong>
         </Typography>
       </Box>
       
-      <Card sx={{ pt: {xs: 1, sm: 0}}}>
-        <AdminComponents.Filters>
-          <AdminComponents.SearchField 
-            value={searchQuery}
-            placeholder="Search users" 
-            onChange={setSearchQuery}
-          />
-          <AdminComponents.SelectField
-            value=""
-            onChange={() => {}}
-            options={["All users", "Active", "Pending"]}
-          />
-        </AdminComponents.Filters>
+      <Card sx={{ boxShadow: 0, py: 1}}>
+        <Box 
+          display="flex" 
+          pt={1}
+          justifyContent={'space-between'}
+          flexDirection={{ xs: 'column', md: 'row' }} 
+        >
+          <AdminComponents.Filters>
+            <AdminComponents.SearchField
+              value={searchQuery}
+              placeholder="Search users"
+              onChange={setSearchQuery}
+            />
+          </AdminComponents.Filters>
 
+          <Stack direction={{ xs: 'column', sm: 'row'}}>
+            <AdminComponents.SelectField
+              label="Type"
+              value={typeFilter}
+              onChange={setTypeFilter}
+              emptyLabel="All users"
+              options={[
+                { label: 'Business', value: 'BUSINESS' },
+                { label: 'Personal', value: 'PERSONAL' },
+              ]}
+            />
+            <AdminComponents.SelectField
+              label="Role"
+              value={roleFilter}
+              onChange={setRoleFilter}
+              emptyLabel="Any"
+              options={[
+                { label: 'User', value: 'USER' },
+                { label: 'Admin', value: 'ADMIN' },
+              ]}
+            />
+          </Stack>
+        </Box>
         <CardContent>
           {loading && users.length === 0 ? (
             <Box textAlign="center" py={10}>
@@ -141,7 +179,7 @@ export default function AdminUsersPage() {
               <Typography>No users found</Typography>
             </Box>
           ) : (
-            <Box p={1} maxWidth={'96vw'}>
+            <Box px={1} maxWidth={'96vw'}>
               <Box
                 sx={{
                   my: 1,

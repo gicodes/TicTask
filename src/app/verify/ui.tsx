@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { apiPost } from "@/lib/api"; 
+import { apiPost } from "@/lib/axios"; 
 import { Button } from "@/assets/buttons";
 import { ArrowBack } from "@mui/icons-material";
 import { useEffect, useState, useRef } from "react";

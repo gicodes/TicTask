@@ -4,7 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import SlackProvider from 'next-auth/providers/slack';
 import XProvider from 'next-auth/providers/twitter';
 import type { NextAuthOptions } from 'next-auth';
-import { nextAuthApiPost } from './api';
+import { nextAuthApiPost } from './axios';
 import { User } from '@/types/users';
 
 export const authOptions: NextAuthOptions = {

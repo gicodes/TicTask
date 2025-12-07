@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { apiPost } from "@/lib/api";
+import { apiPost } from "@/lib/axios";
 import { Role } from '@/types/users';
 import { Button } from '@/assets/buttons';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,18 @@ import SignInOptions from '../_level_1/signInOptions';
 import { AuthDivider } from '../_level_1/orAuthDivider';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { VerifyEmailResponse, VerifyEmailRequest } from '@/types/axios';
-import { Box, Stack, Fade, TextField, Typography, Divider, Card, IconButton, InputAdornment } from '@mui/material';
+import { 
+  Box, 
+  Stack, 
+  Fade, 
+  TextField, 
+  Typography, 
+  Divider, 
+  Card, 
+  IconButton, 
+  InputAdornment, 
+  Alert
+} from '@mui/material';
 
 export const Join = ({ roleParam }: { roleParam: Role }) => {
   const router = useRouter();
@@ -19,10 +30,12 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<Role>('USER');
-  const [formData, setFormData] = useState({
+  const [showToken, setShowToken] = useState(false);
+  const [formData, setFormData] = useState({ 
     email: '', 
     password: '', 
-    name: '' 
+    name: '', 
+    adminToken: ''
   });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -31,7 +44,8 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
     else setRole('USER');
   }, [roleParam]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => 
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,7 +111,11 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
                   />
 
                   { role === "ADMIN" && <>
-                    <Typography mt={3}>Let us know your preferred name(s)</Typography>
+                    <Alert sx={{ display: 'flex', alignItems: 'center'}} severity='info'>
+                      All credentials must be correct and valid.
+                      <br/>
+                      Admins validate, authorize via secure invite tokens.
+                    </Alert>
                     <TextField
                       label="Full Name"
                       name="name"
@@ -142,8 +160,42 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
                         },
                       }}
                     />
-                  </>
-                  }
+                    <TextField
+                      label="Invite Token"
+                      name="adminToken"
+                      type={showToken ? 'text' : 'password'}
+                      value={formData.adminToken}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={() => setShowToken(!showToken)}
+                                onMouseDown={(e) => e.preventDefault()}
+                                edge="end"
+                                size="small"
+                              >
+                                {showToken ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                          sx: {
+                            bgcolor: 'whitesmoke',
+                            borderRadius: 2,
+                            color: '#000',
+                            '&:-webkit-autofill': {
+                              WebkitTextFillColor: '#000 !important',
+                              caretColor: '#000 !important',
+                            },
+                          },
+                        },
+                      }}
+                    />
+                  </>}
 
                   <Box display="flex" gap={2} justifyContent="space-between" pt={2}>
                     <span>{error && (<Typography color="error" variant='caption'>{error}</Typography>)}</span>
@@ -161,11 +213,10 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
           </Stack>
         </Box>
 
-        {role === 'USER' && <>
-            <AuthDivider />
-            <SignInOptions />
-          </>
-        }
+        { role === 'USER' && <>
+          <AuthDivider />
+          <SignInOptions />
+        </>}
 
         <Stack mt={10} gap={2} direction="row" justifyContent="space-around" alignItems="center">
           <Typography variant="subtitle2"> Have an account? &nbsp;

@@ -91,7 +91,7 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
         
         <section id='view-toggle'>
           <ButtonGroup sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Tooltip title={view==="board" ? "Showing tickets in kanban. Currently on this view" : "Switch to view tickets in kanban board"} arrow>
+            <Tooltip title={view==="board" ? "Showing tickets in kanban. Currently on this view" : "Switch to kanban for board view"} arrow>
               <div>
                 <Button
                   onClick={() => setView('board')}
@@ -107,7 +107,7 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
                 </Button>
               </div>
             </Tooltip>
-            <Tooltip title={view==="list" ? "Showing tickets as list. Currently on this view" : "Switch to view tickets in tabular list"} arrow>
+            <Tooltip title={view==="list" ? "Showing tickets as list. Currently on this view" : "Switch to list, see tickets in table view"} arrow>
               <div>
                 <Button
                   tone={view === 'list' ? 'primary' : "action"}

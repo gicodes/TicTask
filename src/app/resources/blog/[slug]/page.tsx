@@ -1,5 +1,5 @@
 import { BlogRes } from "@/types/axios";
-import { nextAuthApiGet } from "@/lib/api";
+import { nextAuthApiGet } from "@/lib/axios";
 import { notFound } from "next/navigation";
 import { BlogCardProps } from "@/types/resources";
 import { BlogSlugPage } from "../../_level_3/blogSlug";

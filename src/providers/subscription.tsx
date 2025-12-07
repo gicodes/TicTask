@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from "@/providers/auth";
-import { apiGet, apiPost } from "@/lib/api";
+import { apiGet, apiPost } from "@/lib/axios";
 import type { Subscription, Plan } from "@/types/subscription";
 import React, { createContext, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";

@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import { Ticket } from '@/types/ticket';
 import TicketsList from '../_level_2/_list';
 import TicketBoard from '../_level_2/_board';
+import { useAlert } from '@/providers/alert';
 import Toolbar from '../_level_2/ticketsPageToolbar';
 import { useTickets } from '@/providers/tickets';
 import TicketFormDrawer from '../_level_2/CNTFormsDrawer';
@@ -23,22 +24,24 @@ export function useDebounce<T>(value: T, delay = 300): T {
 }
 
 const TicketsPage: React.FC = () => {
+  const { showAlert } = useAlert();
   const { tickets, fetchTickets, updateTicket } = useTickets();
+
+  const [formOpen, setFormOpen] = useState(false);
   const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
   const [selectedTicket, setSelectedTicket] = useState<string | number | null>(null);
-  const [formOpen, setFormOpen] = useState(false);
+  const [view, setView] = useState<'board' | 'list'>(() => {
+    if (typeof window === 'undefined') return 'board';
+    return (localStorage.getItem('tictask_view') as 'list' | 'board') || 'board';
+  });
+  
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedQuery = useDebounce(searchQuery);
 
-  const [view, setView] = useState<'board' | 'list'>(() => {
-    if (typeof window === 'undefined') return 'board';
-    
-    return (localStorage.getItem('tictask_view') as 'list' | 'board') || 'board';
-  });
-
   useEffect(() => {
+    showAlert(`Setting up workspace in ${view} view. Set to default ✔️`)
     localStorage.setItem('tictask_view', view);
-  }, [view]);
+  }, [view, showAlert]);
 
   const filteredTickets = useMemo(() => {
     if (!debouncedQuery.trim()) return tickets;

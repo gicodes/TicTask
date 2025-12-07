@@ -107,3 +107,8 @@ export type Client = {
 
   createdAt: Date | string;
 }
+
+export enum User_Type {
+  BUSINESS = 'BUSINESS',
+  PERSONAL = 'PERSONAL'
+}

@@ -101,6 +101,11 @@ export interface SubscriptionRes {
   data: Subscription | null;
 }
 
+export interface GenericAPIReq {
+  message?: string;
+  data?: string;
+}
+
 export interface GenericAPIRes {
   ok?: boolean;
   message: string;
@@ -112,6 +117,7 @@ export interface GenericAPIRes {
   error?: {
     message: string;
   }
+  reply?: string
 }
 
 export interface StripeCheckOutSessionRequest {

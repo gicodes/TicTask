@@ -7,7 +7,10 @@ import { Box, Paper, Stack, Typography, TextField, IconButton, Chip, Avatar,} fr
 
 export default function AiAssistantPage() { 
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "👋 Hey there! I am your AI Assistant. How can I help you today?" },
+    { 
+      role: 'assistant', 
+      content: "👋 Hey there! I am T, your AI Assistant. How can I help you today?" 
+    },
   ]);
   const [input, setInput] = useState('');
 

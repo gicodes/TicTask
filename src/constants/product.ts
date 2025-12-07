@@ -1,21 +1,21 @@
 export const FEATURES = [
-    {
-      title: "Smart Tasks",
-      desc: "Assign, prioritize, and track tasks that stay in sync with your team’s goals.",
-    },
-    {
-      title: "Visual Workflows",
-      desc: "Plan projects with Kanban boards, lists, or timelines—whatever suits your flow.",
-    },
-    {
-      title: "Real-time Collaboration",
-      desc: "Chat, comment, and co-edit tasks—all within context.",
-    },
-    {
-      title: "Integrations",
-      desc: "Connect Slack, Google Drive, Notion, and more—work in one place, not ten.",
-    },
-  ];
+  {
+    title: "Smart Tasks",
+    desc: "Assign, prioritize, and track tasks that stay in sync with your team’s goals.",
+  },
+  {
+    title: "Visual Workflows",
+    desc: "Plan projects with Kanban boards, lists, or timelines—whatever suits your flow.",
+  },
+  {
+    title: "Real-time Collaboration",
+    desc: "Chat, comment, and co-edit tasks—all within context.",
+  },
+  {
+    title: "Integrations",
+    desc: "Connect Slack, Google Drive, Notion, and more—work in one place, not ten.",
+  },
+];
 
 export const FEATURES_2 = [
   {
@@ -57,35 +57,55 @@ export const PLANS = [
   {
     name: "Personal",
     plan: "FREE",
-    desc: "For individuals and small projects getting started.",
+    desc: "For individuals and small projects getting started",
     priceMonthly: 0,
     priceYearly: 0,
     features: [
       "Free workspace forever",
-      "Up to 30 projects (tickets)",
+      "Up to 20 tickets",
       "Kanban & Calendar playgrounds",
-      "AI assistance",
-      "Basic analytics",
-      "In-app real-time Notifications",
+      "Free, limited AI assistance",
+      "Basic metrics",
+      "In-app real-time notifications",
       "Community support",
     ],
     buttonLabel: "Get Started",
     highlight: false,
   },
   {
-    name: "Pro",
-    plan: "PRO",
-    desc: "For professionals and growing teams collaborating.",
+
+    name: "Standard",
+    plan: "STANDARD",
+    desc: "For business personel and growing teams collaborating",
     priceMonthly: 5,
     priceYearly: 50,
     features: [
       "Team workspace",
-      "Unlimited projects (tickets)",
-      "Single Sign-On (SSO)",
-      "Advanced AI assistance",
-      "Targeted analytics & metrics",
-      "Push Notifications",
+      "Up to 100 projects (tickets)",
+      "1000 free credits",
+      "Standard AI assistance",
+      "Analytics & metrics",
+      "Push notifications",
       "Priority support",
+    ],
+    buttonLabel: "Start Free Trial",
+    highlight: true,
+  },
+  {
+    name: "Pro",
+    plan: "PRO",
+    desc: "For professionals and pro teams with a workflow",
+    priceMonthly: 12,
+    priceYearly: 120,
+    features: [
+      "Up to 2 team workspaces",
+      "Unlimited projects",
+      "5000 free credits",
+      "Advanced AI assistance",
+      "Download/ print analytics & metrics",
+      "Custom Notifications",
+      "Key team roles & permissions",
+      "Single Sign-On (SSO)",
     ],
     buttonLabel: "Start Free Trial",
     highlight: true,
@@ -93,17 +113,19 @@ export const PLANS = [
   {
     name: "Enterprise",
     plan: "ENTERPRISE",
-    desc: "For large organizations with custom workflows.",
-    priceMonthly: 12,
-    priceYearly: 120,
+    desc: "For large organizations with custom workflows",
+    priceMonthly: 36,
+    priceYearly: 360,
     features: [
-      "Everything on Standard, Pro",
+      "Everything on Standard & Pro",
+      "Up to 4 team workspaces",
       "Unlimited everything",
       "Timeline & Gantt view",
       "Advanced task automation",
-      "Custom roles & permissions",
       "AI workflow with node automation",
       "Integrations (Slack, GitHub, Drive)",
+      "Custom notification settings across all workspaces",
+      "Custom roles & permissions",
       "Audit logs & compliance",
     ],
     buttonLabel: "Contact Sales",

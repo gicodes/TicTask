@@ -114,7 +114,7 @@ const NotificationDropDown = ({
                     </Typography>
                     <Tooltip title='Remove notification'>
                       <IconButton onClick={() => removeNotification}>
-                        <Delete fontSize='small' color='warning' />
+                        <Delete fontSize='small' color='disabled' />
                       </IconButton>
                     </Tooltip>
                   </Box>

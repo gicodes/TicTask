@@ -2,7 +2,7 @@
 
 import type { User } from '@/types/users';
 import { useAuth } from '@/providers/auth';
-import { apiGet, apiPatch } from '@/lib/api';
+import { apiGet, apiPatch } from '@/lib/axios';
 import { UserProfileRes } from '@/types/axios';
 import React, { useEffect, useState } from 'react';
 import {

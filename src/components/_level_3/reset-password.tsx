@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react';
-import { apiPost } from '@/lib/api';
+import { apiPost } from '@/lib/axios';
 import { useAlert } from '@/providers/alert';
 import { GenericAPIRes } from '@/types/axios';
 import { useSearchParams, useRouter } from "next/navigation";

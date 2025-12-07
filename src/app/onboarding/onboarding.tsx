@@ -5,7 +5,7 @@ import { GenericAPIRes } from '@/types/axios';
 import { UserType } from '@/types/onboarding';
 import { useAlert } from '@/providers/alert';
 import { signIn } from 'next-auth/react';
-import { apiPost } from '@/lib/api';
+import { apiPost } from '@/lib/axios';
 import { useState } from 'react';
 import OnboardingUI from './ui';
 

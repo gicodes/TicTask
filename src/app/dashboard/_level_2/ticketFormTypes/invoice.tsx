@@ -26,45 +26,24 @@ interface InvoiceFormProps {
 } 
 
 const AmountField = ({ control }: { control: Control }) => {
-  const currency = useWatch({
-    control,
-    name: "currency",
-    defaultValue: "USD",
-  });
-
-  const amountValue = useWatch({ control, name: "amount" });
+  const currency = useWatch({ control, name: "currency", defaultValue: "USD" });
   const currencySymbol =
     CURRENCY_OPTIONS.find((c) => c.code === currency)?.symbol || "$";
 
+  const amountValue = useWatch({ control, name: "amount" });
   const [displayValue, setDisplayValue] = useState("");
 
   useEffect(() => {
-    if (!amountValue) {
+    if (amountValue == null || amountValue === "") {
       setDisplayValue("");
-      return;
     }
-
-    setDisplayValue(
-      amountValue.toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })
-    );
   }, [amountValue]);
 
-  const handleInput = (raw: string, onChange: (v: number) => void) => {
-    let input = raw.replace(/[^0-9.]/g, "");
-
-    const parts = input.split(".");
-    if (parts.length > 2) {
-      input = parts[0] + "." + parts.slice(1).join("");
-    }
-
-    const numericValue = parseFloat(input) || 0;
-
-    setDisplayValue(input);
-    onChange(numericValue);
-  };
+  const formatValue = (num: number) =>
+    num.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
   return (
     <Controller
@@ -74,16 +53,15 @@ const AmountField = ({ control }: { control: Control }) => {
         required: "Amount is required",
         min: { value: 0.01, message: "Amount must be > 0" },
       }}
-      render={({ field: { onChange, ...field }, fieldState: { error } }) => (
+      render={({ field: { onChange, onBlur, ...field }, fieldState: { error } }) => (
         <TextField
           {...field}
-          value={displayValue} 
+          value={displayValue}
           label="Amount"
           required
-          onChange={(e) => handleInput(e.target.value, onChange)}
+          placeholder="0.00"
           error={!!error}
           helperText={error?.message || "e.g. 1,250,000.00"}
-          placeholder="0.00"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -92,6 +70,25 @@ const AmountField = ({ control }: { control: Control }) => {
             ),
           }}
           inputProps={{ inputMode: "decimal" }}
+
+          onChange={(e) => {
+            const raw = e.target.value.replace(/[^0-9.]/g, "");
+            setDisplayValue(raw);
+
+            const numeric = parseFloat(raw);
+            if (!isNaN(numeric)) onChange(numeric);
+          }}
+
+          onBlur={() => {
+            if (displayValue === "") return;
+            const numeric = parseFloat(displayValue);
+            if (!isNaN(numeric)) {
+              const formatted = formatValue(numeric);
+              setDisplayValue(formatted);
+              onChange(numeric);
+            }
+            onBlur();
+          }}
         />
       )}
     />

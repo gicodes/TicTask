@@ -1,6 +1,6 @@
 'use client';
 
-import { apiPost } from '@/lib/api';
+import { apiPost } from '@/lib/axios';
 import { Typography } from '@mui/material';
 import { useAuth } from '@/providers/auth';
 import { useCallback, useEffect, useState } from 'react';

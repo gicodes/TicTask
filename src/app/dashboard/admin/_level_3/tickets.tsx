@@ -28,9 +28,9 @@ import {
 } from '@mui/material';
 import { Button } from '@/assets/buttons';
 import { useAlert } from '@/providers/alert';
-import { Ticket_Status, Ticket_Type } from '@/types/ticket';
 import { useDebounce } from '../../_level_3/ticket';
 import AdminComponents from '../_level_2/overview-cards';
+import { Ticket_Status, Ticket_Type } from '@/types/ticket';
 import { Loader2, Trash2, AlertCircle } from 'lucide-react';
 import { getStatusColor } from '../../_level_1/tColorVariants';
 import { ADMIN_TICKETS_QUERY, DELETE_TICKET_MUTATION } from '../_level_1/graphQL';
@@ -117,7 +117,13 @@ export default function AdminTicketsPage() {
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="start" my={4} px={3}>
+      <Box 
+        display="flex" 
+        justifyContent="space-between" 
+        alignItems="start" 
+        my={3} 
+        px={3}
+      >
         <div className="grid gap-1">
           <Typography variant="h5" fontWeight="bold">
             All Tickets
@@ -131,10 +137,10 @@ export default function AdminTicketsPage() {
         </Typography>
       </Box>
 
-      <Card>
+      <Card sx={{ boxShadow: 0, py: 1}}>
         <Box 
           display="flex" 
-          pt={{ xs: 1, sm: 0 }}
+          pt={1}
           justifyContent={'space-between'}
           flexDirection={{ xs: 'column', md: 'row' }} 
         >
@@ -206,7 +212,7 @@ export default function AdminTicketsPage() {
               <Typography>No tickets found</Typography>
             </Box>
           ) : (
-            <Box p={1} maxWidth={'96vw'}>
+            <Box px={1} maxWidth={'96vw'}>
               <Box
                 sx={{
                   my: 1,

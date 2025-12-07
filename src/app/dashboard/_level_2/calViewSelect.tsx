@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   FormControl,
   InputLabel,
@@ -10,6 +9,7 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import { InternalView } from './_calendar';
+import { useAlert } from '@/providers/alert';
 import { Calendar, CalendarDays, Clock } from 'lucide-react';
 
 const viewIcon = (v: InternalView) => {
@@ -36,17 +36,25 @@ export default function ViewSelect({
   onChange: (val: InternalView) => void;
   hasThisWeek: boolean;
 }) {
+  const { showAlert } = useAlert();
   const handleSelect = (e: SelectChangeEvent<InternalView>) => {
-    onChange(e.target.value as InternalView);
-  };
+  const newView = e.target.value as InternalView;
+
+  onChange(newView);
+  showAlert(`Calendar view changed to ${newView}. Set as default`, "success");
+};
+
 
   return (
-    <FormControl size="small" sx={{ minWidth: { xs: 100, sm: 125, md: 150, lg: 180 } }}>
-      <InputLabel id="view-select-label">Calendar Timeline</InputLabel>
+    <FormControl 
+      size="small" 
+      sx={{ minWidth: { xs: 100, sm: 125, md: 150, lg: 180 } }}
+    >
+      <InputLabel id="view-select-label">Calendar View</InputLabel>
       <Select
         labelId="view-select-label"
         value={internalView}
-        label="Calendar Timeline"
+        label="Calendar View"
         onChange={handleSelect}
         renderValue={(selected) => (
           <Stack direction="row" alignItems="center" gap={3} px={{xs: 1, sm: 0}}>

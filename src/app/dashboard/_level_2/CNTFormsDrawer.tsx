@@ -6,7 +6,6 @@ import { Create_Ticket } from '@/types/ticket';
 import { useAlert } from '@/providers/alert';
 import { useAuth } from '@/providers/auth';
 import { Button } from '@/assets/buttons';
-
 import { 
   useForm, 
   FormProvider, 
@@ -62,7 +61,6 @@ export default function TicketTaskCreateFormsDrawer({
     if (!element) return;
 
     void element.offsetWidth;
-
     element.style.animation = 'highlightPulse 1.8s ease-out';
 
     const timer = setTimeout(() => {

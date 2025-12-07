@@ -30,8 +30,9 @@ const PlannerPage: React.FC = () => {
   const [createDate, setCreateDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') localStorage.setItem('planner_view', view);
-  }, [view]);
+    showAlert(`Setting up workspace in ${view} view. Set as default ✔️`)
+    localStorage.setItem('planner_view', view);
+  }, [view, showAlert]);
 
   const filteredTickets = useMemo(() => {
     if (!search) return tickets;

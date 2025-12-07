@@ -9,7 +9,7 @@ import { ChangeLostRes } from "@/types/axios";
 import { useAuth } from "@/providers/auth";
 import { ResourceHero } from "../_level_3";
 import { Button } from "@/assets/buttons";
-import { apiGet } from "@/lib/api";
+import { apiGet } from "@/lib/axios";
 import Link from "next/link";
 
 export default function ChangelogList() {
