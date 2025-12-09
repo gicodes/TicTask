@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Message } from '@/types/ai';
 import { handleSendAI } from '../_level_1/aiSend';
 import {
   Box,
@@ -15,18 +16,31 @@ import {
   Avatar,
   Toolbar,
   Tooltip,
+  MenuItem,
+  Select,
 } from '@mui/material';
+import { 
+  SmartToy, 
+  Send, 
+  Chat, 
+  ArrowBackIosNew 
+} from '@mui/icons-material';
 import { usePathname } from 'next/navigation';
-import { SmartToy, Send, Chat, ArrowBackIosNew } from '@mui/icons-material';
-import { Message } from '@/types/ai';
 
 export default function AiAssistantDrawer() {
   const [open, setOpen] = useState(false);
-  const [input, setInput] = useState<string>('');
-  const [messages, setMessages] = useState<Message[]>([{ 
-    role: 'assistant', 
-    content: "👋  Hey there, I'm your AI Assistant. How can I help you today?" 
-  },]);
+  const AI_OPTIONS = {
+    tictask: { label: "TicTask", icon: "🤖" },
+    skyler: { label: "Skyler", icon: "⛅️" },
+    kros: { label: "Krōs", icon: "➕" },
+  };
+  const [aiName, setAiName] = useState<keyof typeof AI_OPTIONS>("kros");
+  const [messages, setMessages] = useState<Message[]>([{
+    role: "assistant",
+    aiName: AI_OPTIONS[aiName].label,
+    content: `Hi there! I am ${AI_OPTIONS[aiName].label}, your AI Assistant. How can I help you?`,
+  }]);
+  const [input, setInput] = useState('');
 
   const pathname = usePathname();
   const isAiPage = pathname.startsWith('/dashboard/ai');
@@ -110,6 +124,20 @@ export default function AiAssistantDrawer() {
                         : 'text.primary',
                   }}
                 >
+                   <Box display={'flex'} justifyContent={'left'}>
+                    <Select
+                      size="small"
+                      value={aiName}
+                      onChange={(e) => setAiName(e.target.value as keyof typeof AI_OPTIONS)}
+                      sx={{ minWidth: 150, m: 0.5 }}
+                    >
+                      {Object.entries(AI_OPTIONS).map(([key, ai]) => (
+                        <MenuItem key={key} value={key}>
+                          {ai.icon} {ai.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Box>
                   <Typography variant="body2">{msg.content}</Typography>
                 </Paper>
               </Stack>
@@ -148,9 +176,12 @@ export default function AiAssistantDrawer() {
             variant="outlined"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSendAI({ setMessages, setInput, input })}
+            onKeyDown={(e) => e.key === 'Enter' && handleSendAI({ setMessages, setInput, input, aiName })}
           />
-          <IconButton color="info" onClick={() => handleSendAI({ setMessages, setInput, input })}>
+          <IconButton 
+            color="info" 
+            onClick={() => handleSendAI({ setMessages, setInput, input, aiName })}
+          >
             <Send />
           </IconButton>
         </Box>

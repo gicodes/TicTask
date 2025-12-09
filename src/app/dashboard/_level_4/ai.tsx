@@ -4,15 +4,20 @@ import { useState } from 'react';
 import { Message } from '@/types/ai';
 import { handleSendAI } from '../_level_1/aiSend';
 import { Send, SmartToy, Person } from '@mui/icons-material';
-import { Box, Paper, Stack, Typography, TextField, IconButton, Chip, Avatar,} from '@mui/material';
+import { Box, Paper, Stack, Typography, TextField, IconButton, Chip, Avatar, MenuItem, Select,} from '@mui/material';
 
 export default function AiAssistantPage() { 
-  const [messages, setMessages] = useState<Message[]>([
-    { 
-      role: 'assistant', 
-      content: "Hi there! I am Krôs, your AI Assistant. How can I help you?" 
-    },
-  ]);
+  const AI_OPTIONS = {
+    tictask: { label: "TicTask", icon: "🤖" },
+    skyler: { label: "Skyler", icon: "⛅️" },
+    kros: { label: "Krōs", icon: "➕" },
+  };
+  const [aiName, setAiName] = useState<keyof typeof AI_OPTIONS>("kros");
+  const [messages, setMessages] = useState<Message[]>([{
+    role: "assistant",
+    aiName: AI_OPTIONS[aiName].label,
+    content: `Hi there! I am ${AI_OPTIONS[aiName].label}, your AI Assistant. How can I help you?`,
+  }]);
   const [input, setInput] = useState('');
 
   return (
@@ -56,6 +61,21 @@ export default function AiAssistantPage() {
           />
         </Box>
 
+        <Box display={'flex'} justifyContent={'left'} pt={{ xs: 1, sm: 0}}>
+          <Select
+            size="small"
+            value={aiName}
+            onChange={(e) => setAiName(e.target.value as keyof typeof AI_OPTIONS)}
+            sx={{ minWidth: 180, m: 0.5 }}
+          >
+            {Object.entries(AI_OPTIONS).map(([key, ai]) => (
+              <MenuItem key={key} value={key}>
+                {ai.icon} {ai.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
+        
         <Box
           flex={1}
           py={2}
@@ -84,12 +104,10 @@ export default function AiAssistantPage() {
                     maxWidth: '80%',
                     bgcolor:
                       msg.role === 'user'
-                        ? 'primary.main'
-                        : 'background.paper',
+                        ? 'primary.main' : 'background.paper',
                     color:
                       msg.role === 'user'
-                        ? 'info.contrastText'
-                        : 'text.info',
+                        ? 'info.contrastText' : 'text.info',
                   }}
                 >
                   <Typography 
@@ -115,11 +133,11 @@ export default function AiAssistantPage() {
             size="small"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSendAI({ setMessages, setInput, input })}
+            onKeyDown={(e) => e.key === 'Enter' && handleSendAI({ setMessages, setInput, input, aiName })}
           />
           <IconButton
             color="info"
-            onClick={() => handleSendAI({ setMessages, setInput, input })}
+            onClick={() => handleSendAI({ setMessages, setInput, input, aiName })}
             sx={{ borderRadius: 2 }}
           >
             <Send />

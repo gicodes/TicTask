@@ -1,23 +1,35 @@
 import { api } from "@/lib/apiFetch";
-import { getSession } from "next-auth/react";
 import { AIRefinedResponse, HandleSendProps, Message } from "@/types/ai";
+import { getSession } from "next-auth/react";
 
-export const handleSendAI = async ({ setMessages, setInput, input }: HandleSendProps) => {
+export const handleSendAI = async ({ 
+  setMessages, 
+  setInput, 
+  input, 
+  aiName = "TicTask",
+  type = "reply"
+}: HandleSendProps & { aiName?: string; type?: string }) => {
+
   const session = await getSession();
   const user = session?.user;
   if (!user || !input.trim()) return;
 
-  const newMessage: Message = { role: 'user', content: input };
+  const newMessage: Message = { 
+    role: "user",
+    content: input,
+  };
+
   setMessages((prev) => [...prev, newMessage]);
-  setInput('');
+  setInput("");
 
   try {
-    const body = { // Newer features will include other body types such as rewrite, summarize, classify and triage
-      type: "reply", 
-      userId: user?.id,
-      userName: user?.name?.split(" ").splice(0,1),
-      payload: newMessage 
-    }
+    const body = {
+      type, // New Features will include other prompt types such as rewrite, summarize, classify and triage                          
+      aiName,                                
+      userId: user.id,
+      humanName: user.name?.split(" ")[0],   
+      payload: newMessage
+    };
 
     const res = await api<AIRefinedResponse>("/v1/ai/generate", {
       method: "POST",
@@ -26,19 +38,25 @@ export const handleSendAI = async ({ setMessages, setInput, input }: HandleSendP
 
     if (!res) return;
 
-    setMessages((prev: Message[]) => [
+    setMessages((prev) => [
       ...prev,
-      { 
-        role: 'assistant',
-        content: res?.text ?? "No response from ➕ AI" 
-      }
+      {
+        role: "assistant",
+        aiName,
+        content: res.text ?? "No response from AI.",
+      },
     ]);
   } catch (err) {
     console.error(err);
 
-    setMessages((prev: Message[]) => [
+    setMessages((prev) => [
       ...prev,
-      { role: 'assistant', content: "⚠️ Error connecting to ➕ AI ..", idle: true }
+      {
+        role: "assistant",
+        aiName,
+        content: `⚠️ Error connecting to ${aiName}.`,
+        idle: true,
+      },
     ]);
   }
-}
+};

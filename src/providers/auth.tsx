@@ -2,6 +2,7 @@
 
 import { SessionProvider, useSession, signIn, signOut, SignInResponse } from 'next-auth/react';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+
 import { User, Role, UserType } from '@/types/users';
 import { Subscription } from '@/types/subscription';
 import { UserProfileRes } from '@/types/axios';
@@ -23,6 +24,15 @@ export interface AuthUser {
   subscription?: Subscription;
 }
 
+interface LoginProps {
+  email: string, 
+  password: string, 
+  provider?: string, 
+  ip?: string, 
+  device?: string,
+  returnUrl?: string,
+}
+
 interface AuthContextProps {
   user: AuthUser | null;
   loading: boolean;
@@ -30,13 +40,7 @@ interface AuthContextProps {
   isAdmin: boolean;
   isUser: boolean;
   isBusiness: boolean;
-  login: (
-    email: string, 
-    password: string, 
-    provider?: string, 
-    ip?: string, 
-    device?: string
-  ) => Promise<SignInResponse | void>;
+  login: ({ email, password,  provider, ip, device, returnUrl }: LoginProps) => Promise<SignInResponse | void>;
   notifyNewDevice: (email: string, device: string, ip?: string) => Promise<void>;
   changeRole: (email: string, fromRole: string, toRole: string, changedBy?: string) => Promise<void>;
   inviteUser: (email: string, invitedBy?: string) => Promise<void>;
@@ -81,20 +85,27 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [session]);
 
-  const login = useCallback(async (
-    email: string, 
-    password: string, 
-    provider = 'credentials', 
-    ip?: string, 
-    device?: string
-  ) => {
+  const login = useCallback(async ({
+    email,
+    password,
+    provider = "credentials",
+    ip,
+    device,
+    returnUrl,
+  }: LoginProps) => {
     const res = await signIn(provider, {
       redirect: false,
       email,
       password,
+      callbackUrl: returnUrl,
     });
 
-    AppEvents.emit("auth:login", { email, ip, device, at: Date.now() });
+    AppEvents.emit("auth:login", {
+      email,
+      ip,
+      device,
+      at: Date.now(),
+    });
 
     return res;
   }, []);

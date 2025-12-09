@@ -48,13 +48,15 @@ export async function apiFetch(input: RequestInfo, init?: RequestInit): Promise<
         });
       } else {
         await signOut({ redirect: false });
-        window.location.href = "/auth/login";
+
+        const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+        window.location.href = `/auth/login?returnUrl=${returnUrl}`;
+
         return new Response(null, { status: 401 });
       }
     } catch (err) {
       console.error("Refresh failed:", err);
-      await signOut({ redirect: false });
-      window.location.href = "/auth/login";
+      // do nothing
       return new Response(null, { status: 401 });
     }
   }

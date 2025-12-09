@@ -1,21 +1,27 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { LoginRequest, LoginResponse } from '@/types/axios';
+
 import GoogleProvider from 'next-auth/providers/google';
 import SlackProvider from 'next-auth/providers/slack';
 import XProvider from 'next-auth/providers/twitter';
+
 import type { NextAuthOptions } from 'next-auth';
 import { nextAuthApiPost } from './axios';
 import { User } from '@/types/users';
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/login",
+  },
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-      },
+      }, 
       async authorize(credentials) {
         try {
           const res = await nextAuthApiPost<LoginResponse, LoginRequest>("/auth/login", credentials!);

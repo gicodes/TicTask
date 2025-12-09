@@ -8,12 +8,9 @@ import { Box, Stack, Typography } from '@mui/material';
 import { AuthDivider } from '../_level_1/orAuthDivider';
 import { CredentialsForm } from '../_level_2/userLogin';
 
-interface LoginProps { 
-  role?: Role; 
-}
 
-export const Login = ({role}: LoginProps) => {
-  const isUser = role === "USER";
+export const Login = ({ roleParam }: { roleParam: Role }) => {
+  const isUser = roleParam === "USER";
 
   return (
     <Box mt={5} minHeight={'75vh'}>
@@ -28,7 +25,7 @@ export const Login = ({role}: LoginProps) => {
               <AuthDivider />
               <SSOArea />
             </>
-            : (role === "ADMIN" || role === "AGENT") && <AdminLogin />
+            : (roleParam === "ADMIN" || roleParam === "AGENT") && <AdminLogin />
           }
         </Stack>
 

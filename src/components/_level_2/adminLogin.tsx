@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import LoginTemplate from './loginTemplate';
+import LoginTemplate from '../_level_1/loginTemplate';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 

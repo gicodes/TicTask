@@ -3,12 +3,14 @@ export interface Message {
   role: 'user' | 'assistant';
   content: string;
   idle?: boolean;
+  aiName?: string;
 }
 
 export interface HandleSendProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   setInput: React.Dispatch<React.SetStateAction<string>>;
   input: string;
+  aiName: string;
 }
 
 export interface AIChatCompletionResponse {
