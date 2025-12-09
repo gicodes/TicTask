@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { handleSendAI, Message } from '../_level_1/aiSend';
+import { handleSendAI } from '../_level_1/aiSend';
 import {
   Box,
   Drawer,
@@ -18,11 +18,12 @@ import {
 } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { SmartToy, Send, Chat, ArrowBackIosNew } from '@mui/icons-material';
+import { Message } from '@/types/ai';
 
 export default function AiAssistantDrawer() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState<string>('');
-  const [messages, setMessages] = useState<Message []>([{ 
+  const [messages, setMessages] = useState<Message[]>([{ 
     role: 'assistant', 
     content: "👋  Hey there, I'm your AI Assistant. How can I help you today?" 
   },]);

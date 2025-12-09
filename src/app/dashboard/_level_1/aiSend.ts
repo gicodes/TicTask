@@ -15,7 +15,7 @@ export const handleSendAI = async ({ setMessages, setInput, input }: HandleSendP
     const body = { // Newer features will include other body types such as rewrite, summarize, classify and triage
       type: "reply", 
       userId: user?.id,
-      userName: user?.name,
+      userName: user?.name?.split(" ").splice(0,1),
       payload: newMessage 
     }
 
