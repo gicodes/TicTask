@@ -31,13 +31,13 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<Role>('USER');
   const [showToken, setShowToken] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ 
     email: '', 
     password: '', 
     name: '', 
     adminToken: ''
   });
-  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (roleParam === 'ADMIN') setRole('ADMIN');
@@ -56,7 +56,7 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
       const payload: VerifyEmailRequest = {
         email: formData.email,
         role,
-        ...(role === "ADMIN" ? { name: formData.name, password: formData.password } : {}),
+        ...(role === "ADMIN" ? { name: formData.name, password: formData.password, adminToken: formData.adminToken } : {}),
       };
 
       await apiPost<VerifyEmailResponse, VerifyEmailRequest>(
@@ -116,6 +116,7 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
                       <br/>
                       Admins validate, authorize via secure invite tokens.
                     </Alert>
+
                     <TextField
                       label="Full Name"
                       name="name"
@@ -125,6 +126,7 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2 }}
                       fullWidth required
                     />
+
                     <TextField
                       label="Password"
                       name="password"
@@ -160,6 +162,7 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
                         },
                       }}
                     />
+
                     <TextField
                       label="Invite Token"
                       name="adminToken"

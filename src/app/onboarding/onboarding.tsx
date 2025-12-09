@@ -1,10 +1,10 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
+import { signIn, useSession, signOut } from 'next-auth/react';
 import { GenericAPIRes } from '@/types/axios';
 import { UserType } from '@/types/onboarding';
 import { useAlert } from '@/providers/alert';
-import { signIn } from 'next-auth/react';
 import { apiPost } from '@/lib/axios';
 import { useState } from 'react';
 import OnboardingUI from './ui';
@@ -30,8 +30,14 @@ export default function Onboarding() {
   const [photo, setPhoto] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [userType, setUserType] = useState<UserType>('PERSONAL');
-
   const [authenticated, setAuthenticated] = useState<boolean>(false);
+  
+  const checkUserPrevSignedIn = async () => {
+    const { data, status } = useSession();
+    if (data?.user || status==="loading" ) await signOut({ redirect: false});
+    else return;
+  };
+  checkUserPrevSignedIn();
 
   const stepsTotal = 3;
 
@@ -50,8 +56,8 @@ export default function Onboarding() {
       );
       return res;
     } catch (err: unknown) {
-      console.error(err);
-      setError('Something went wrong. Please try again.');
+      if (typeof err === "object" && err!==null && "message" in err) 
+        setError(err.message as string)
       return { ok: false, message: 'Something went wrong.' };
     } finally {
       setLoading(false);
@@ -107,7 +113,6 @@ export default function Onboarding() {
       
       if (res.ok) {
         const email = res?.user?.email;
-
         showAlert("Onboarding Complete. Signing in may take a few seconds...", "success")
 
         const r = await signIn('credentials', { redirect: false, email, password });
@@ -125,6 +130,11 @@ export default function Onboarding() {
       setLoading(false)
     }
   };
+
+  if(!token) {
+    showAlert("You are not authorized to use onboarding... Redirecting to authentication", "error")
+    setTimeout(() => router.push('/auth/login'), 2500)
+  }
 
   return (
     <OnboardingUI
