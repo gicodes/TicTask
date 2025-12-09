@@ -4,8 +4,23 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/providers/auth';
 import { useAlert } from '@/providers/alert';
-import { Share, PersonAdd, ContentCopy, CheckCircle } from '@mui/icons-material';
-import { Box, Stack, Typography, Card, CardContent, Button, TextField, IconButton } from '@mui/material';
+import { 
+  Share, 
+  PersonAdd, 
+  ContentCopy, 
+  CheckCircle 
+} from '@mui/icons-material';
+import { 
+  Stack, 
+  Typography, 
+  Card, 
+  CardContent, 
+  Button, 
+  TextField, 
+  IconButton 
+} from '@mui/material';
+import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
+import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 
 export default function ReferPage() {
   const { user } = useAuth();
@@ -51,28 +66,28 @@ export default function ReferPage() {
   const handleInviteEmail = () => {
     if (!user) return;
     const subject = encodeURIComponent('Join me on TicTask 🚀');
-    const body = encodeURIComponent(
-      `Hey!\n\nI’m inviting you to join me on TicTask — a powerful ticket & task management platform.\n\nUse my referral link to sign up:\n${inviteLink}\n\nSee you inside!\n\n${user.name || ''}`
-    );
+    const body = encodeURIComponent(`
+      Hey!\n\nI’m inviting you to join me on TicTask — 
+      A powerful ticket & task management platform.\n\n
+      Use my referral link to sign up:\n${inviteLink}\n\nSee you inside!\n\n${user.name || ''}
+    `);
 
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
 
   return (
-    <Box sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, md: 4 } }}>
+    <GenericGridPageLayout>
       <Stack spacing={4} maxWidth="800px" mx="auto">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
-          <Stack spacing={1} textAlign={{xs: 'center', sm: 'inherit'}}>
-            <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}>
-              Invite & Earn Rewards
-            </Typography>
-            <Typography variant="body1" sx={{ opacity: 0.7 }}>
-              Bring your colleagues to TicTask and earn credits or discounts when they subscribe.
-            </Typography>
-          </Stack>
-        </motion.div>
+        <GenericDashboardPagesHeader
+          title='Invite & Earn Rewards'
+          description='Bring your colleagues to TicTask and earn credits or discounts when they subscribe.'
+        />
 
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.1 }}
+        >
           <Card sx={{ borderRadius: 4, boxShadow: '0 6px 20px rgba(0,0,0,0.08)' }}>
             <CardContent>
               <Stack spacing={3}>
@@ -127,6 +142,6 @@ export default function ReferPage() {
           </Card>
         </motion.div>
       </Stack>
-    </Box>
+    </GenericGridPageLayout>
   );
 }

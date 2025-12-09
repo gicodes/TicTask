@@ -4,9 +4,8 @@ import { Box } from '@mui/material';
 import { Ticket } from '@/types/ticket';
 import TicketsList from '../_level_2/_list';
 import TicketBoard from '../_level_2/_board';
-import { useAlert } from '@/providers/alert';
-import Toolbar from '../_level_2/ticketsPageToolbar';
 import { useTickets } from '@/providers/tickets';
+import Toolbar from '../_level_2/ticketsPageToolbar';
 import TicketFormDrawer from '../_level_2/CNTFormsDrawer';
 import TicketDetailDrawer from '../_level_2/TWSMiniDrawer';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -24,9 +23,7 @@ export function useDebounce<T>(value: T, delay = 300): T {
 }
 
 const TicketsPage: React.FC = () => {
-  const { showAlert } = useAlert();
   const { tickets, fetchTickets, updateTicket } = useTickets();
-
   const [formOpen, setFormOpen] = useState(false);
   const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
   const [selectedTicket, setSelectedTicket] = useState<string | number | null>(null);
@@ -39,9 +36,8 @@ const TicketsPage: React.FC = () => {
   const debouncedQuery = useDebounce(searchQuery);
 
   useEffect(() => {
-    showAlert(`Setting up workspace in ${view} view. Set to default ✔️`)
     localStorage.setItem('tictask_view', view);
-  }, [view, showAlert]);
+  }, [view]);
 
   const filteredTickets = useMemo(() => {
     if (!debouncedQuery.trim()) return tickets;
@@ -117,7 +113,7 @@ const TicketsPage: React.FC = () => {
         }}
       />
 
-      <Box sx={{ position: 'fixed', bottom: 25, right: 25, zIndex: 10 }}>
+      <Box sx={{ position: 'fixed', bottom: 50, right: 25, zIndex: 10 }}>
         <section id="ai-assistant-trigger" style={{ width: 50, height: 50 }} />
       </Box>
     </Box>

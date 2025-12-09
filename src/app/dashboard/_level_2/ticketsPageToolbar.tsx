@@ -1,19 +1,17 @@
+import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
+import { Button } from '@/assets/buttons';
 import { 
   Box, 
   Stack, 
   Tooltip, 
   TextField,
-  Typography,  
   ButtonGroup, 
   InputAdornment,
   useMediaQuery,
 } from '@mui/material';
+import { FaPlusCircle, FaList } from 'react-icons/fa';
 import { Search, ViewKanban } from '@mui/icons-material';
 import { TICKET_TOOLBAR_PROPS } from '../_level_1/tSchema';
-import { FaPlusCircle, FaList } from 'react-icons/fa';
-import { Button } from '@/assets/buttons';
-import { motion } from 'framer-motion';
-import React from 'react';
 
 const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({ 
   view, 
@@ -26,45 +24,29 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
 
   return (
     <Box
-      px={1}
-      pb={2}
-      gap={1}
-      width={'100%'}
-      alignItems="center"
-      flexWrap={{ md: 'wrap'}}
-      display={{ xs: 'grid', md: 'flex' }}
-      justifyContent={{ xs: 'center', md: 'space-between' }}
+       sx={{
+        display: 'flex',
+        flexWrap: { sm: 'wrap'},
+        flexDirection: isMobile ? 'column' : 'row',
+        alignItems: isMobile ? 'stretch' : 'center',
+        justifyContent: 'space-between',
+        gap: 2,
+        mb: 5,
+        pt: { xs: 1, sm: 0 }
+      }}
     >
       <section id='tickets'>
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }} 
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <Stack 
-            my={2} 
-            spacing={1} 
-            textAlign={{ xs: 'center', sm: 'inherit'}}
-          >
-            <Typography
-              variant="h4"
-              fontWeight={600}
-              sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}
-            >
-              Tickets Overview
-            </Typography>
-            <Typography sx={{ opacity: 0.7 }} minWidth={{ sm: 360 }}>
-              Create and manage tickets in easy mode. 
-            </Typography>
-          </Stack>
-        </motion.div>
+        <GenericDashboardPagesHeader
+          title='Tickets Hub'
+          description='Create and manage tickets in easy mode.'
+        />
       </section>
 
       <Stack
+        spacing={{ xs: 1, sm: 2, md: 3, lg: 5 }}
         direction={{ xs: 'column', sm: 'row' }}
         justifyContent={"space-between"}
-        spacing={{ xs: 1, sm: 2, md: 3, lg: 5 }}
         width={'100%'}
-        alignItems={{sm: 'center'}}
       >
         <section id='search'>
           <TextField
@@ -72,12 +54,12 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search tickets..."
             size="small"
-            fullWidth
+            fullWidth={isMobile}
             sx={{
-              flex: isMobile ? '1 1 auto' : '0 0 300px',
+              width: { sm: 212, md: 234, lg: 360 },
+              flex: isMobile ? '1 1 auto' : '',
               backgroundColor: 'background.paper',
               borderRadius: 2,
-              minWidth: { sm: 222, lg: 360 }
             }}
             InputProps={{
               startAdornment: (

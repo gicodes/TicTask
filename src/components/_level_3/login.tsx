@@ -1,15 +1,16 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
 import { Role } from '@/types/users';
+import SSOArea from '../_level_1/signInOptions';
 import { AdminLogin } from '../_level_2/adminLogin';
-import SignInOptions from '../_level_1/signInOptions';
 import { Box, Stack, Typography } from '@mui/material';
 import { AuthDivider } from '../_level_1/orAuthDivider';
 import { CredentialsForm } from '../_level_2/userLogin';
 
-interface LoginProps { role?: Role; }
+interface LoginProps { 
+  role?: Role; 
+}
 
 export const Login = ({role}: LoginProps) => {
   const isUser = role === "USER";
@@ -23,9 +24,9 @@ export const Login = ({role}: LoginProps) => {
           </Stack>
           { isUser ? 
             <>
-              <SignInOptions />
-              <AuthDivider />
               <CredentialsForm /> 
+              <AuthDivider />
+              <SSOArea />
             </>
             : (role === "ADMIN" || role === "AGENT") && <AdminLogin />
           }
@@ -33,7 +34,13 @@ export const Login = ({role}: LoginProps) => {
 
         <Typography variant="subtitle2" textAlign={'center'}>
           Don&apos;t have an account? &nbsp;
-          <Link href={`/auth/join/user`} style={{ paddingBottom: 5, borderBottom: '1px solid var(--special)'}}>
+          <Link 
+            href={`/auth/join/user`} 
+            style={{ 
+              paddingBottom: 5, 
+              borderBottom: '1px solid var(--special)'
+            }}
+          >
             Register here
           </Link>
         </Typography>

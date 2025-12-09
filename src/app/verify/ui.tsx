@@ -53,7 +53,6 @@ export const VerifyPage = () => {
           const message = (err as { message?: string }).message;
           
           if (message === "Email already registered") {
-            console.warn("Email already verified or exists, redirecting to onboarding...");
             setMessage("Email already verified or exists, redirecting to onboarding...");
             router.push("/onboarding?email=" + encodeURIComponent(email || "") + "&token=" + encodeURIComponent(token));
             

@@ -15,7 +15,6 @@ export default function NavControls({
   onToday: () => void;
   bigCalendarView: 'day' | 'week' | 'month' | string;
 }) {
-
   const prevTip =
     bigCalendarView === 'month'
       ? 'Previous Month'
@@ -24,7 +23,7 @@ export default function NavControls({
         : bigCalendarView === 'day'
           ? 'Previous Day'
           : 'Previous';
-
+          
   const nextTip =
     bigCalendarView === 'month'
       ? 'Next Month'
@@ -65,10 +64,8 @@ export default function NavControls({
         <div>
           <Button
             size="small"
-            tone="retreat"
-            variant="outlined"
+            tone="warm"
             onClick={onToday}
-            sx={{ color: 'var(--accent)', padding: '0 20px' }}
           >
             See Today
           </Button>

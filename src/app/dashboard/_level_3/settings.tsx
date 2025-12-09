@@ -1,9 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { User } from '@/types/users';
-import { motion } from 'framer-motion';
-import React, { useState } from 'react';
 import { Button } from '@/assets/buttons';
 import { useAuth } from '@/providers/auth';
 import { useAlert } from '@/providers/alert';
@@ -26,6 +25,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { Sun, Moon, Laptop, Bell, Shield, User2, Globe, PlugZap, CreditCard, Check } from 'lucide-react';
+import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
+import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 
 export default function SettingsPage() {
   const { user } = useAuth();
@@ -85,38 +86,22 @@ export default function SettingsPage() {
   };
 
   const INTEGRATION_BUTTON = ({
-    title,
-    i,
-    action,
+    title, action,
   }: {
     title: string;
-    i: string;
     action?: () => void;
   }) => (
-    <Button tone='secondary' onClick={action} key={i}>
+    <Button tone='secondary' onClick={action}>
       Connect {title}
     </Button>
   );
 
   return (
-    <Box 
-      sx={{ 
-        maxWidth: 900, 
-        mx: 'auto', 
-        py: 4, 
-        px: 2 
-      }}
-    >
-      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
-        <Stack spacing={1} textAlign={{xs: 'center', sm: 'inherit'}} mb={3}>
-          <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}>
-            App Settings
-          </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.7 }}>
-            Customize your Appearance, Account, Notifications, Workspace and more ...
-          </Typography>
-        </Stack>
-      </motion.div>
+    <GenericGridPageLayout>
+      <GenericDashboardPagesHeader
+        title='Settings'
+        description='Customize your Appearance, Account, Notifications, Workspace and more ...'
+      />
 
       <SettingsCard
         icon={<Sun size={18} />}
@@ -257,7 +242,7 @@ export default function SettingsPage() {
         <Stack spacing={1} sx={{ mt: 3 }}>
           {['Slack', 'Github', 'Google Drive'].map((i) => (
             <Box key={i} p={0.5}>
-              <INTEGRATION_BUTTON title={i} i={i} />
+              <INTEGRATION_BUTTON title={i} />
             </Box>
           ))}
         </Stack>
@@ -294,6 +279,6 @@ export default function SettingsPage() {
           </Stack>
         } 
       </SettingsCard>
-    </Box>
+    </GenericGridPageLayout>
   );
 }

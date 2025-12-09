@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { handleSendAI, Message } from '../_level_1/aiSend';
+import { Message } from '@/types/ai';
+import { handleSendAI } from '../_level_1/aiSend';
 import { Send, SmartToy, Person } from '@mui/icons-material';
 import { Box, Paper, Stack, Typography, TextField, IconButton, Chip, Avatar,} from '@mui/material';
 
@@ -9,7 +10,7 @@ export default function AiAssistantPage() {
   const [messages, setMessages] = useState<Message[]>([
     { 
       role: 'assistant', 
-      content: "👋 Hey there! I am T, your AI Assistant. How can I help you today?" 
+      content: "Hi there! I am Krôs, your AI Assistant. How can I help you?" 
     },
   ]);
   const [input, setInput] = useState('');
@@ -91,7 +92,10 @@ export default function AiAssistantPage() {
                         : 'text.info',
                   }}
                 >
-                  <Typography variant="body2">{msg.content}</Typography>
+                  <Typography 
+                    variant="body2" 
+                    className={msg.idle ? 'text-italic' : ''}
+                  >{msg.content}</Typography>
                 </Paper>
                 {msg.role === 'user' && (
                   <Avatar sx={{ bgcolor: 'grey.500' }}>

@@ -10,12 +10,11 @@ import {
   Tooltip,
   useMediaQuery,
 } from '@mui/material';
-import React from 'react';
-import { motion } from 'framer-motion';
 import { Button } from '@/assets/buttons';
 import { FaPlusCircle } from 'react-icons/fa';
 import { Calendar, List, Search } from 'lucide-react';
 import { PLANNER_TOOLBAR_PROPS } from '../_level_1/tSchema';
+import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 
 const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
   view,
@@ -37,28 +36,18 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
         justifyContent: 'space-between',
         gap: 2,
         mb: 5,
-        mt: { xs: 3, sm: 2, md: 1},
+        pt: { xs: 2, sm: 1 }
       }}
     >
-      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
-        <Stack spacing={1} my={2} textAlign={{ xs: 'center', sm: 'inherit'}}>
-          <Typography
-            variant="h4"
-            fontWeight={600}
-            sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}
-          >
-            Task Manager
+      <GenericDashboardPagesHeader 
+        title="Task Manager"
+        description="Manage your time, plan with a timeline in mind."
+        extras={dateRangeLabel && (
+          <Typography color="var(--secondary)" sx={{ fontWeight: 500 }}>
+            {dateRangeLabel}
           </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.7 }}>
-            Manage your time, plan with a timeline in mind.
-          </Typography> {/* Gi: Planner gives you a different experience */}
-          {dateRangeLabel && (
-            <Typography color="var(--secondary)" sx={{ fontWeight: 500 }}>
-              {dateRangeLabel}
-            </Typography>
-          )}
-        </Stack>
-      </motion.div>
+        )}
+      />
 
       <Stack 
         direction={{ xs: 'column', sm: 'row'}} 
@@ -76,6 +65,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
             flex: isMobile ? '1 1 auto' : '0 0 300px',
             backgroundColor: 'background.paper',
             borderRadius: 2,
+            minWidth: { sm: 300, md: 360 }
           }}
           InputProps={{
             startAdornment: (
@@ -95,7 +85,6 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
             sx={{
               maxWidth: 300,
               mx: { xs: '0 auto', sm: 0 },
-              pl: 0.5,
               boxShadow: 2,
               borderRadius: 999,
               backgroundColor: 'rgba(255, 255, 255, 0.05)',

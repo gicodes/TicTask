@@ -6,7 +6,7 @@ import { useAlert } from '@/providers/alert';
 import { useTickets } from '@/providers/tickets';
 import PlannerCalendar from '../_level_2/_calendar';
 import TaskFormDrawer from '../_level_2/CNTFormsDrawer';
-import PlannerToolbar from '../_level_2/plannerPageToolbar';
+import PlannerToolbar from '../_level_2/taskPageToolbar';
 import TaskDetailDrawer from '../_level_2/TWSMiniDrawer';
 import { TASK_LIST_HEADERS } from '../_level_0/constants';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -15,24 +15,20 @@ import { DateSelectDialog } from '../_level_2/CNTonClickDialog';
 const PlannerPage: React.FC = () => {
   const { showAlert } = useAlert()
   const { tickets, fetchTickets } = useTickets();
-
   const [view, setView] = useState<'calendar' | 'list'>(() => {
-    if (typeof window !== 'undefined')
-      return (localStorage.getItem('planner_view') as 'calendar' | 'list') || 'calendar';
+    if (typeof window !== 'undefined') 
+      return (localStorage.getItem('planner_view') as 'calendar' | 'list') || 'calendar';        
     return 'calendar';
   });
-
   const [search, setSearch] = useState<string>('');
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string | number | null>(null);
-
   const [dialogOpen, setDialogOpen] = useState(false);
   const [createDate, setCreateDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    showAlert(`Setting up workspace in ${view} view. Set as default ✔️`)
     localStorage.setItem('planner_view', view);
-  }, [view, showAlert]);
+  }, [view]);
 
   const filteredTickets = useMemo(() => {
     if (!search) return tickets;
@@ -57,16 +53,20 @@ const PlannerPage: React.FC = () => {
 
   const handleCreateConfirm = (date: Date) => {
     if (new Date > new Date(date)) {
-      showAlert("Cannot plan for the past. Heh!", 'warning')
+      showAlert("Cannot plan for the past!", 'warning')
       return;
     }
-
     setCreateDate(date);
     setFormOpen(true);
   };
 
   return (
-    <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, minHeight: '75vh' }}>
+    <Box 
+      sx={{ 
+        p: { xs: 1, sm: 2, md: 3 }, 
+        minHeight: '75vh' 
+      }}
+    >
       <PlannerToolbar
         view={view}
         setView={setView}

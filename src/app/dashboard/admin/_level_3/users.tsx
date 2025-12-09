@@ -1,7 +1,7 @@
 'use client';
 
+import { useState } from 'react';
 import { format } from 'date-fns';
-import React, { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useQuery, useMutation } from '@apollo/client/react';
 import {

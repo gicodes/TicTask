@@ -13,12 +13,12 @@ import { MdCategory, MdSettings, MdPaid, MdCampaign, MdQuestionAnswer, MdSwitchA
 
 export const NAV_ITEMS = [
   { label: 'Console', path: '/dashboard/admin', icon: <GrTasks/>},
-  { label: 'Tickets', path: '/dashboard/tickets', icon: <FcSerialTasks/> },
-  { label: 'Tasks', path: '/dashboard/tasks', icon: <BsCalendar2Date/>},
+  { label: 'Tickets Hub', path: '/dashboard/tickets', icon: <FcSerialTasks/> },
+  { label: 'Task Manager', path: '/dashboard/tasks', icon: <BsCalendar2Date/>},
   { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
-  { label: 'Team', path: '/dashboard/team', icon: <FaUsers />},
   { label: 'Subscription', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
   { label: 'Settings', path: '/dashboard/settings', icon: <MdSettings /> }, 
+  { label: 'Team Manager', path: '/dashboard/team', icon: <FaUsers />},
   { label: 'Invite', path: '/dashboard/invite', icon: <FcInvite /> },
   
   { label: 'All Tickets', path: '/dashboard/admin/tickets', icon: <FcParallelTasks /> },
@@ -49,20 +49,20 @@ export const MORE_NAV_ITEMS = [
 export const getFilteredNav = (user: AuthUser | null) => {
   if (!user) {
     const allowed = [
-      'Tickets', 'AI assistant', 'Tasks', 'Products',
+      'Tickets Hub', 'Task Manager', 'AI assistant', 'Products',
       'Invite', 'Legal', 'Settings'
     ];
     return NAV_ITEMS.filter(item => allowed.includes(item.label));
   }
 
   const allowed = [
-    'Tickets', 'AI assistant', 'Tasks', 'Products',
+    'Tickets Hub', 'Task Manager', 'AI assistant', 'Products',
     'Invite', 'Legal', 'Subscription', 'Settings',
   ];
 
   if (user?.role==="USER") allowed.push('More')
   if (user?.partner) allowed.push('Marketing', 'More');
-  if (user?.userType==="BUSINESS") allowed.push('Team', 'Metrics'); 
+  if (user?.userType==="BUSINESS") allowed.push('Team Manager', 'Metrics'); 
   if (user?.role === 'ADMIN') {
     return NAV_ITEMS.filter(
       (item) => !['More', 'Invite', 'Subscription'].includes(item.label)    
@@ -87,7 +87,7 @@ export const AUTH_ITEMS: LinkItem[] = [
   { label: <div className='flex gap-2 items-center'><MdPaid/>  See pricing</div>, href: "/product/pricing"},
   { label: <div className='flex gap-2 items-center'><GiHelp/>  Get support</div>, href: "/company/#contact-us"},
   { label: <div className='flex gap-2 items-center'><FaDonate/>  Donations</div>, href: "#", cta: true},
-  { label: <div className='flex gap-2 items-center'><FaHome/> Back to home </div>, href: "/" },
+  { label: <div className='flex gap-2 items-center'><FaHome/> Go to landing </div>, href: "/" },
   { label: <div className='flex gap-2 items-center'><MdLogout fontSize='inherit'/>Logout</div>, href: "#", cta: true },
 ]
 
