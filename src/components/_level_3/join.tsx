@@ -203,6 +203,7 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
                       tone='action'
                       type="submit"
                       disabled={loading}
+                      sx={{ width: '100%', maxWidth: 180}}
                     >
                       {loading ? 'Processing...' : 'Verify Email'}
                     </Button>
