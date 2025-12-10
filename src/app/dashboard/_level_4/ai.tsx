@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { Message } from '@/types/ai';
+import { useEffect, useState } from 'react';
 import { handleSendAI } from '../_level_1/aiSend';
 import { Send, SmartToy, Person } from '@mui/icons-material';
 import { Box, Paper, Stack, Typography, TextField, IconButton, Chip, Avatar, MenuItem, Select,} from '@mui/material';
@@ -13,12 +13,20 @@ export default function AiAssistantPage() {
     kros: { label: "Krōs", icon: "➕" },
   };
   const [aiName, setAiName] = useState<keyof typeof AI_OPTIONS>("kros");
+  const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([{
     role: "assistant",
-    aiName: AI_OPTIONS[aiName].label,
-    content: `Hi there! I am ${AI_OPTIONS[aiName].label}, your AI Assistant. How can I help you?`,
+    aiName: AI_OPTIONS["kros"].label,
+    content: `Hi there! I am ${AI_OPTIONS["kros"].label}, your AI Assistant. How can I help you?`,
   }]);
-  const [input, setInput] = useState('');
+
+  useEffect(() => {
+    setMessages([{
+      role: "assistant",
+      aiName: AI_OPTIONS[aiName].label,
+      content: `Hi there! I am ${AI_OPTIONS[aiName].label}, your AI Assistant. How can I help you?`,
+    }]);
+  }, [aiName]);
 
   return (
     <Box display="flex" justifyContent="center" p={{ sm: 1, md: 2, lg: 3}}>

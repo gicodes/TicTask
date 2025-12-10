@@ -235,7 +235,7 @@ export default function ProfileDetailDrawer() {
                 label={profile?.role || 'USER'}
                 sx={{
                   bgcolor: isModerator ? 'var(--special)' : 'default',
-                  color: 'white'
+                  color: isModerator ? 'white' : 'black'
                 }}
               />
               <Chip

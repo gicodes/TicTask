@@ -1,5 +1,4 @@
 import PricingSection from '@/components/_level_2/pricing'
-import React from 'react';
 
 const Page = () => {
   return (
@@ -7,4 +6,4 @@ const Page = () => {
   )
 }
 
-export default Page
+export default Page;

@@ -184,7 +184,7 @@ export const ADMIN_USERS_QUERY = gql`
           email
           role
           userType
-          isVerified
+          isOnboarded
           createdAt
           updatedAt
         }
@@ -200,7 +200,7 @@ export const CREATE_USER_MUTATION = gql`
       name
       email
       role
-      isVerified
+      isOnboarded
       createdAt
     }
   }
@@ -213,7 +213,7 @@ export const UPDATE_USER_MUTATION = gql`
       name
       email
       role
-      isVerified
+      isOnboarded
     }
   }
 `;

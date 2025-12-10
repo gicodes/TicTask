@@ -36,7 +36,7 @@ export default function PricingSection() {
   const isBusiness = user?.userType === "BUSINESS";
 
   const plans = isBusiness
-    ? PLANS.filter((p) => ["Pro", "Enterprise"].includes(p.name)) : PLANS;
+    ? PLANS.filter((p) => ["Standard", "Pro", "Enterprise"].includes(p.name)) : PLANS;
     
   const activePlan = subscription?.plan?.toLowerCase();
 
@@ -98,7 +98,7 @@ export default function PricingSection() {
           </ToggleButtonGroup>
         </Stack>
 
-        <Grid container spacing={{ xs: 10, sm: isBusiness ? 20 : 5}} justifyContent="center">
+        <Grid container spacing={{ xs: 10, sm: isBusiness ? 10 : 5}} justifyContent="center">
           {plans.map((plan, i) => (
             <Grid key={plan.name}>
               <motion.div

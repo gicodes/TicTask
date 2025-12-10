@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { Message } from '@/types/ai';
+import { useEffect, useState } from 'react';
 import { handleSendAI } from '../_level_1/aiSend';
 import {
   Box,
@@ -35,12 +35,20 @@ export default function AiAssistantDrawer() {
     kros: { label: "Krōs", icon: "➕" },
   };
   const [aiName, setAiName] = useState<keyof typeof AI_OPTIONS>("kros");
+  const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([{
     role: "assistant",
-    aiName: AI_OPTIONS[aiName].label,
-    content: `Hi there! I am ${AI_OPTIONS[aiName].label}, your AI Assistant. How can I help you?`,
+    aiName: AI_OPTIONS["kros"].label,
+    content: `Hi there! I am ${AI_OPTIONS["kros"].label}, your AI Assistant. How can I help you?`,
   }]);
-  const [input, setInput] = useState('');
+
+  useEffect(() => {
+    setMessages([{
+      role: "assistant",
+      aiName: AI_OPTIONS[aiName].label,
+      content: `Hi there! I am ${AI_OPTIONS[aiName].label}, your AI Assistant. How can I help you?`,
+    }]);
+  }, [aiName]);
 
   const pathname = usePathname();
   const isAiPage = pathname.startsWith('/dashboard/ai');
@@ -95,8 +103,22 @@ export default function AiAssistantDrawer() {
           <Chip label="BETA" size="small" variant="outlined" sx={{ fontWeight: 600, bgcolor: 'orange', color: 'var(--surface-1)', p: 1.5}} />
         </Box>
 
-        <Box flex={1} p={2} overflow="auto" sx={{ flexGrow: 1 }}>
+        <Box flex={1} p={1} overflow="auto" sx={{ flexGrow: 1 }}>
           <Stack spacing={2}>
+            <Box display={'flex'} justifyContent={'left'}>
+              <Select
+                size="small"
+                value={aiName}
+                onChange={(e) => setAiName(e.target.value as keyof typeof AI_OPTIONS)}
+                sx={{ minWidth: 150 }}
+              >
+                {Object.entries(AI_OPTIONS).map(([key, ai]) => (
+                  <MenuItem key={key} value={key}>
+                    {ai.icon} {ai.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
             {messages.map((msg, idx) => (
               <Stack
                 key={idx}
@@ -124,20 +146,6 @@ export default function AiAssistantDrawer() {
                         : 'text.primary',
                   }}
                 >
-                   <Box display={'flex'} justifyContent={'left'}>
-                    <Select
-                      size="small"
-                      value={aiName}
-                      onChange={(e) => setAiName(e.target.value as keyof typeof AI_OPTIONS)}
-                      sx={{ minWidth: 150, m: 0.5 }}
-                    >
-                      {Object.entries(AI_OPTIONS).map(([key, ai]) => (
-                        <MenuItem key={key} value={key}>
-                          {ai.icon} {ai.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </Box>
                   <Typography variant="body2">{msg.content}</Typography>
                 </Paper>
               </Stack>

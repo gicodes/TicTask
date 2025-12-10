@@ -88,7 +88,7 @@ export const VerifyPage = () => {
       <Toolbar />
 
       { status==="error" &&
-        <Button component={Link} variant="text" href="/" startIcon={<ArrowBack/>}> 
+        <Button component={Link} href="/" startIcon={<ArrowBack/>}> 
           Go Home
         </Button>
       }
