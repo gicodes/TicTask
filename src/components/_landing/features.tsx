@@ -26,9 +26,9 @@ const features = [
     description:
       "Use TicTask to capture and organize tasks as they come to your mind. Then, easily convert them into actionable events.",
     bulletPoints: [
-      "Quickly jot down tasks and ideas",
-      "Organize tasks with tags and priorities",
-      "Set deadlines and reminders",
+      "Quickly jot down ideas, tasks as (new) tickets & tasks",
+      "Organize your tasks with tags and priorities",
+      "Set deadlines and reminders with due date",
       "Convert tasks into calendar events seamlessly",
     ],
   },
@@ -37,7 +37,7 @@ const features = [
     imageUrl: "/features/security.jpeg",
     title: "Security First",
     description:
-      "Your data is safe with us. We prioritize your privacy and security with robust measures.",
+      "Consistently update our systems and software to ensure your experience is safe and secure.",
     bulletPoints: [
       "End-to-end encryption",
       "Regular security audits",

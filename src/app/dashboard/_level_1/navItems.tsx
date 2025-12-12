@@ -87,7 +87,7 @@ export const AUTH_ITEMS: LinkItem[] = [
   { label: <div className='flex gap-2 items-center'><MdPaid/>  See pricing</div>, href: "/product/pricing"},
   { label: <div className='flex gap-2 items-center'><GiHelp/>  Get support</div>, href: "/company/#contact-us"},
   { label: <div className='flex gap-2 items-center'><FaDonate/>  Donations</div>, href: "#", cta: true},
-  { label: <div className='flex gap-2 items-center'><FaHome/> Go to landing </div>, href: "/" },
+  { label: <div className='flex gap-2 items-center'><FaHome/> Go to main page </div>, href: "/" },
   { label: <div className='flex gap-2 items-center'><MdLogout fontSize='inherit'/>Logout</div>, href: "#", cta: true },
 ]
 

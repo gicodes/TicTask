@@ -264,6 +264,7 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     subtasks: [],
     dueDate: defaultDueDate ? format(defaultDueDate, "yyyy-MM-dd'T'HH:mm") : undefined,
   }),
+  
   MEETING: (defaultDueDate?: Date) => ({
     type: 'MEETING',
     title: '',
@@ -274,6 +275,7 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     attendees: [],
     tags: [],
   }),
+
   EVENT: (defaultDueDate?: Date) => ({
     type: 'EVENT',
     title: '',
@@ -285,5 +287,6 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     tags: [],
   }),
   RELEASE: () => ({ type: 'RELEASE', title: '', description: '' }),
+
   DEPLOYMENT: () => ({ type: 'DEPLOYMENT', title: '', description: '' }),
 };

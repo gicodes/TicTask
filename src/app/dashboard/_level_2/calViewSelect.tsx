@@ -48,7 +48,7 @@ export default function ViewSelect({
   return (
     <FormControl 
       size="small" 
-      sx={{ minWidth: { xs: 100, sm: 125, md: 150, lg: 180 } }}
+      sx={{ minWidth: { xs: 120, sm: 150, md: 180, lg: 200 } }}
     >
       <InputLabel id="view-select-label">Calendar View</InputLabel>
       <Select

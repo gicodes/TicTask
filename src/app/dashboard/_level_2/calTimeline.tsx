@@ -2,7 +2,7 @@ import { Button } from '@/assets/buttons';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Stack, IconButton, Typography, Tooltip } from '@mui/material';
 
-export default function NavControls({
+export default function CalendarTimeline({
   calControlDes,
   onPrev,
   onNext,
@@ -42,16 +42,14 @@ export default function NavControls({
           </IconButton>
         </Tooltip>
 
-        <Tooltip title="Display and toggles according to your set view">
-          <Typography
-            variant="h6"
-            minWidth={75}
-            fontSize={{ xs: 15, sm: 18 }}
-            sx={{ fontWeight: 600, textAlign: 'center' }}
-          >
-            {calControlDes}
-          </Typography>
-        </Tooltip>
+        <Typography
+          variant="h6"
+          minWidth={75}
+          fontSize={{ xs: 15, sm: 18 }}
+          sx={{ fontWeight: 600, textAlign: 'center' }}
+        >
+          {calControlDes}
+        </Typography>
 
         <Tooltip title={nextTip}>
           <IconButton aria-label="next" onClick={onNext}>

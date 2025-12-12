@@ -1,7 +1,7 @@
-import React from "react";
-import { Controller, Control } from "react-hook-form";
 import { TextField, Stack } from "@mui/material";
-import { formatDateTimeLocal } from "../../_level_1/tDateControl";
+import { Controller, Control } from "react-hook-form";
+import { DatePicker } from "../../_level_1/tDateControl";
+import EventMeetingAttendeesInput from "../../_level_1/tEvenMeetingAttd";
 
 type Props = { control: Control };
 
@@ -29,38 +29,8 @@ export default function EventMeetingForm({ control }: Props) {
           />
         } 
       />
-      <Controller
-        name="startTime"
-        control={control}
-        render={({ field}) =>
-          <TextField
-            label="Start time"
-            type="datetime-local"
-            InputLabelProps={{ shrink: true }}
-            value={formatDateTimeLocal(field.value)}
-            onChange={(e) => field.onChange(e.target.value || null)}
-            onBlur={field.onBlur}
-            name={field.name}
-            inputRef={field.ref}
-          />
-        }
-      />
-      <Controller
-        name="endTime"
-        control={control}
-        render={({ field }) => 
-          <TextField
-            label="End time"
-            type="datetime-local"
-            InputLabelProps={{ shrink: true }}
-            value={formatDateTimeLocal(field.value)}
-            onChange={(e) => field.onChange(e.target.value || null)}
-            onBlur={field.onBlur}
-            name={field.name}
-            inputRef={field.ref}
-          />
-        }
-      />
+      <DatePicker control={control} name="startTime" label="Start Time" />
+      <DatePicker control={control} name="endTime" label="End Time" />
       <Controller
         name="location"
         control={control}
@@ -74,13 +44,14 @@ export default function EventMeetingForm({ control }: Props) {
       <Controller
         name="attendees"
         control={control}
-        render={({ field }) =>
-        <TextField
-          label="Attendees (comma separated emails)" 
-          value={(field.value || []).join(',')} 
-          onChange={(e) => field.onChange(e.target.value.split(',').map(s=>s.trim()).filter(Boolean))} 
+        defaultValue={[]}
+        render={({ field }) => (
+          <EventMeetingAttendeesInput
+            value={field.value}
+            onChange={(arr) => field.onChange(arr)}
+            onBlur={field.onBlur}
           />
-        } 
+        )}
       />
     </Stack>
   );

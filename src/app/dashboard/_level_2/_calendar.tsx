@@ -8,28 +8,28 @@ import React, {
   useCallback,
   KeyboardEvent,
 } from 'react';
+import ViewSelect from './calViewSelect';
+import CalendarTimeline from './calTimeline';
+import CalendarSkeleton from './calSkeleton';
+import EventRenderer, { TicketEvent } from './calEventRenderer';
+import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
+import { getStatusColor, priorityColor, getTypeColor } from '../_level_1/tColorVariants';
+
 import moment from 'moment';
+import { format, addDays } from 'date-fns';
 import { Box, useTheme } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { format, isSameMonth, isSameYear, addDays } from 'date-fns';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { Calendar as BigCalendar, momentLocalizer, View } from 'react-big-calendar';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 
-import NavControls from './calNavControls';
-import CalendarSkeleton from './calSkeleton';
-import ViewSelect from './calViewSelect';
-import EventRenderer, { TicketEvent } from './calEventRenderer';
-import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
-
 export type InternalView = View | 'thisWeek';
 
+const LOCAL_VIEW_KEY = 'plannerView';
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop<PlannerEvent, object>(BigCalendar);
-
-const LOCAL_VIEW_KEY = 'plannerView';
 
 const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   tasks,
@@ -44,9 +44,15 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [eventsState, setEventsState] = useState<PlannerEvent[]>([]);
   const [internalView, setInternalView] = useState<InternalView>('week');
+  const [ready, setReady] = useState(false); 
 
   const hasInitialised = useRef(false);
   const hasSetMobileView = useRef(false);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     if (isMobile && !hasSetMobileView.current) {
@@ -62,9 +68,8 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
 
     const saved = typeof window !== 'undefined' ? localStorage.getItem(LOCAL_VIEW_KEY) : null;
     if (saved && (saved === 'day' || saved === 'week' || saved === 'month' || saved === 'thisWeek')) {
-      if (isMobile) {
-        setInternalView('day');
-      } else setInternalView(saved as InternalView);
+      if (isMobile) setInternalView('day');
+      else setInternalView(saved as InternalView);
 
       if (saved === 'thisWeek') setCurrentDate(new Date());
     } else {
@@ -90,6 +95,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
 
     const mapped = tasks.map((t) => ({
       id: t.id,
+      type: t.type,
       title: t.title,
       start: new Date(t.dueDate!),
       end: new Date(new Date(t.dueDate!).getTime() + 60 * 60 * 1000),
@@ -99,8 +105,9 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     setEventsState(mapped);
   }, [tasks]);
 
-  const bigCalendarView = useMemo<View>(
-    () => (internalView === 'thisWeek' ? 'week' : (internalView as View)),
+  const bigCalendarView = useMemo<View>(() => (
+    internalView === 'thisWeek' ? 'week' : (internalView as View)
+  ),
     [internalView]
   );
 
@@ -118,8 +125,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
         setInternalView('week');
         try {
           localStorage.setItem(LOCAL_VIEW_KEY, 'week');
-        } catch {
-        }
+        } catch {}
       }
 
       const unit =
@@ -133,15 +139,11 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
 
   const handleViewChange = useCallback((val: InternalView) => {
     setInternalView(val);
-
     try {
       localStorage.setItem(LOCAL_VIEW_KEY, val);
-    } catch {
-    }
+    } catch {}
 
-    if (val === 'thisWeek') {
-      setCurrentDate(new Date());
-    }
+    if (val === 'thisWeek') setCurrentDate(new Date());
   }, []);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -151,62 +153,80 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   };
 
   const onEventDrop = useCallback(
-    ({ event, start, end }: { event: PlannerEvent; start: Date | string; end: Date | string}) => {
+    ({ event, start, end }: { event: PlannerEvent; start: Date | string; end: Date | string }) => {
       setEventsState((prev) =>
-        prev.map((ev) =>
-          ev.id === event.id
-            ? { ...ev, start, end }
-            : ev
-        )
+        prev.map((ev) => (ev.id === event.id ? { ...ev, start, end } : ev))
       );
       onDateChange?.(start, end);
     },
     [onDateChange]
   );
 
-  const control = useMemo(() => {
+  const timeline = useMemo(() => {
     const date = new Date(currentDate);
+    const start = currentDate;
+    const end = addDays(start, 6);
+    const currentYear = new Date().getFullYear();
 
-    if (bigCalendarView === 'month') return format(date, isMobile ? 'MMM yyyy' : 'MMMM yyyy');
+    const mobileFormat = (d: Date) => {
+      const year = d.getFullYear();
+      return year === currentYear ? format(d, "EEE d MMM") : format(d, "d MMM, yy");
+    };
 
-    if (bigCalendarView === 'week' && internalView === 'thisWeek') {
-      const start = new Date();
-      const end = addDays(start, 6);
-      if (isSameMonth(start, end)) return `${format(start, 'MMM d')} - ${format(end, 'd')}`;
-      if (isSameYear(start, end)) return `${format(start, 'MMM d')} - ${format(end, 'MMM d')}`;
-      return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;
+    const desktopFormat = (d: Date) => {
+      const year = d.getFullYear();
+      return year === currentYear ? format(d, "EEEE, d MMM") : format(d, "EEEE, d MMM, yyyy");
+    };
+
+    if (bigCalendarView === "month")
+      return isMobile ? format(date, "MMM yyyy") : format(date, "MMMM yyyy");
+
+    if (bigCalendarView === "week" && internalView === "thisWeek") {
+      const today = new Date();
+      const weekEnd = addDays(today, 6);
+
+      if (isMobile) {
+        const s = mobileFormat(today);
+        const e = mobileFormat(weekEnd);
+        return `${s} - ${e}`;
+      }
+      return `${desktopFormat(today)} - ${desktopFormat(weekEnd)}`;
     }
 
-    if (bigCalendarView === 'week') {
-      const start = currentDate;
-      const end = addDays(start, 6);
-      if (isSameMonth(start, end)) return `${format(start, 'MMM d')} - ${format(end, 'd')}`;
-      if (isSameYear(start, end)) return `${format(start, 'MMM d')} - ${format(end, 'MMM d')}`;
-      return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;
+    if (bigCalendarView === "week") {
+      if (isMobile) {
+        const s = mobileFormat(start);
+        const e = mobileFormat(end);
+        return `${s} - ${e}`;
+      }
+      return `${desktopFormat(start)} - ${desktopFormat(end)}`;
     }
 
-    return isMobile
-      ? format(date, 'MMM d, yy')
-      : format(date, 'MMMM d, yyyy');
+    return isMobile ? mobileFormat(date) : desktopFormat(date);
   }, [currentDate, bigCalendarView, internalView, isMobile]);
 
   const eventPropGetter = useCallback((event: TicketEvent) => {
-    const colors: Record<string, string> = {
-      URGENT: '#b00020',
-      HIGH: '#e53935',
-      MEDIUM: '#ff9800',
-      LOW: '#999',
-    };
+    const todaysDate = new Date().toLocaleDateString();
+    const dueDate = new Date(event.start || event.end).toLocaleDateString();
+
+    const color = dueDate === todaysDate
+      ? getStatusColor('TODAY').color : event.priority
+      ? priorityColor(event.priority) : getTypeColor(event.type);
 
     return {
       style: {
-        backgroundColor: colors[event.priority ?? 'LOW'],
+        backgroundColor: color,
         border: 'none',
-        borderRadius: 6,
-        padding: '8px 8px',
+        borderRadius: 0,
+        padding: '5px 10px',
+        margin: '0 5px',
         fontSize: '0.85rem',
         fontWeight: 600,
-        maxWidth: 220,
+        maxWidth: 250,
+        height: 'auto',
+        minHeight: 55,
+        maxHeight: 75,
+        transition: 'background-color 0.2s ease',
       },
     };
   }, []);
@@ -214,7 +234,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
   const calendarStyle = {
     height: '100%',
     overflow: 'hidden',
-
     '@media (max-width: 900px)': {
       overflowX: 'auto',
       maxWidth: '96vw',
@@ -228,27 +247,18 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       fontSize: 20,
       alignContent: 'center',
     },
-    '& .rbc-off-range-bg': {},
-    '& .rbc-time-view': {},
-    '& .rbc-time-gutter': {},
     '& .rbc-timeslot-group': {
       padding: '0 10px',
       display: 'grid',
       alignContent: 'center',
     },
-    '& .rbc-time-slot': {},
     '& .rbc-time-slot.rbc-now': { background: 'var(--accent)' },
     '& .rbc-time-header': { height: 60 },
     '& .rbc-current-time-indicator': { background: 'var(--accent)' },
-    '& .rbc-event': {},
     '& .rbc-event-content': {
       height: 'fit-content',
       width: 'auto',
     },
-    '& .rbc-date-cell': {},
-    '& .rbc-row-bg': {},
-    '& .rbc-month-view': {},
-    '& .rbc-allday-cell': {},
     '& .rbc-today': {
       fontWeight: 'bold',
       color: 'var(--accent)',
@@ -278,26 +288,48 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
         width={'100%'}
         justifyContent={'space-between'}
         alignItems={{ xs: 'flex-start', sm: 'center' }}
-        sx={{ py: 2, px: { xs: 1, md: 0 }, gap: { xs: 2, sm: 0 } }}
+        sx={{ 
+          py: 2, 
+          px: { xs: 1, md: 0 }, 
+          gap: { xs: 2, sm: 0 } 
+        }}
       >
         <ViewSelect
           internalView={internalView}
           onChange={handleViewChange}
           hasThisWeek={hasInitialised.current}
         />
-        <NavControls
-          calControlDes={control}
+        <CalendarTimeline
+          calControlDes={timeline}
           onPrev={() => handleNavigate('PREV')}
           onNext={() => handleNavigate('NEXT')}
           onToday={() => handleNavigate('TODAY')}
           bigCalendarView={bigCalendarView}
         />
       </Box>
-
-      {loading ? (
-        <CalendarSkeleton />
-      ) : (
-        <Box sx={calendarStyle}>
+      <Box sx={{ position: 'relative' }}>
+        {loading && (
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 10,
+              background: theme.palette.background.paper,
+              opacity: 0.85,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CalendarSkeleton />
+          </Box>
+        )}
+        <Box
+          sx={{
+            ...calendarStyle,
+            visibility: ready ? 'visible' : 'hidden',
+          }}
+        >
           <DnDCalendar
             localizer={localizer}
             events={eventsState}
@@ -308,8 +340,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
               setInternalView(v as InternalView);
               try {
                 localStorage.setItem(LOCAL_VIEW_KEY, v as string);
-              } catch {
-              }
+              } catch {}
             }}
             onNavigate={(d) => setCurrentDate(d)}
             selectable
@@ -326,7 +357,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             style={{ fontFamily: theme.typography.fontFamily }}
           />
         </Box>
-      )}
+      </Box>
     </Box>
   );
 };

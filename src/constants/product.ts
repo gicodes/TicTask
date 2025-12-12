@@ -62,7 +62,7 @@ export const PLANS = [
     priceYearly: 0,
     features: [
       "Free workspace forever",
-      "Up to 20 tickets",
+      "Up to 10 tickets",
       "Kanban & Calendar playgrounds",
       "Free, limited AI assistance",
       "Basic metrics",
@@ -78,10 +78,10 @@ export const PLANS = [
     plan: "STANDARD",
     desc: "For business personel and growing teams collaborating",
     priceMonthly: 5,
-    priceYearly: 50,
+    priceYearly: 60,
     features: [
       "Team workspace",
-      "Up to 100 projects (tickets)",
+      "Up to 50 projects (tickets)",
       "1000 free credits",
       "Standard AI assistance",
       "Analytics & metrics",
@@ -98,8 +98,8 @@ export const PLANS = [
     priceMonthly: 12,
     priceYearly: 120,
     features: [
-      "Up to 2 team workspaces",
-      "Unlimited projects",
+      "2 team workspaces",
+      "Up to 180 projects",
       "5000 free credits",
       "Advanced AI assistance",
       "Download/ print analytics & metrics",
@@ -119,7 +119,7 @@ export const PLANS = [
     features: [
       "Everything on Standard & Pro",
       "Up to 4 team workspaces",
-      "Unlimited everything",
+      "Up to 360 Projects",
       "Timeline & Gantt view",
       "Advanced task automation",
       "AI workflow with node automation",

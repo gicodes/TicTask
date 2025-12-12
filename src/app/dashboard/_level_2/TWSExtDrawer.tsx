@@ -6,10 +6,10 @@ import { extractTicketData } from '../_level_1/tFieldExtract';
 import { Create_Ticket, Ticket } from '@/types/ticket';
 import { DatePicker } from '../_level_1/tDateControl';
 import { useTickets } from '@/providers/tickets';
-import { Button } from '@/assets/buttons';
 import { useAuth } from '@/providers/auth';
-import React, { useState } from 'react';
+import { Button } from '@/assets/buttons';
 import { User } from '@/types/users';
+import { useState } from 'react';
 import {
   Box,
   Drawer,
@@ -36,7 +36,6 @@ export default function TWSExtDrawer({
   ticket, 
   onUpdate 
 }: TICKET_WORKSPACE_PROPS ) {  
-
   const { user } = useAuth();
   const { updateTicket } = useTickets();
   const fields = extractTicketData(ticket!);
@@ -117,8 +116,10 @@ export default function TWSExtDrawer({
     >
       <Toolbar />
       <Toolbar>
-        <Typography flexGrow={1}>
-          Extended Workspace ➣ <strong>{ticket!.title}</strong>
+        <Typography flexGrow={1} variant='body2' color='text.disabled'>
+          Extended Workspace 
+          <IconButton size='small'>➣ </IconButton>
+          <Chip label={ticket!.title} />
         </Typography>
         <IconButton onClick={onClose}>
           <CloseSharp />
@@ -130,7 +131,7 @@ export default function TWSExtDrawer({
         <form onSubmit={handleSubmit(onSubmit)}>
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography>Unique Fields</Typography>
+              <Typography><strong>Unique Fields</strong></Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Stack gap={2}>
@@ -215,21 +216,21 @@ export default function TWSExtDrawer({
                   </Stack>
                 )}
                 {['EVENT', 'MEETING'].includes(ticket!.type) && 'startTime' in fields && (
-                  <Controller 
-                    name="startTime" 
+                  <DatePicker 
                     control={control} 
-                    render={({ field }) => 
-                      <DatePicker control={control} disabled={!isActive} {...field} />
-                    } 
+                    name="startTime" 
+                    defaultValue={fields.startTime ?? ""} 
+                    disabled={!isActive}
+                    label="Start Time"
                   />
                 )}
                 {['EVENT', 'MEETING'].includes(ticket!.type) && 'endTime' in fields && (
-                  <Controller 
-                    name="endTime" 
-                    control={control} 
-                    render={({ field }) => 
-                      <DatePicker control={control} disabled={!isActive} {...field} />
-                    } 
+                  <DatePicker
+                    control={control}
+                    name="endTime"
+                    defaultValue={fields.endTime ?? ""}
+                    disabled={!isActive}
+                    label="End Time"
                   />
                 )}
                 {['EVENT', 'MEETING'].includes(ticket!.type) && 'location' in fields && (
@@ -237,17 +238,27 @@ export default function TWSExtDrawer({
                     <TextField label="Location" disabled={!isActive} {...field} />} />
                 )}
                 {['EVENT', 'MEETING'].includes(ticket!.type) && 'attendees' in fields && (
-                  <Stack gap={1}>
-                    <Typography>Attendees</Typography>
-                    {fields.attendees?.map((attendee, idx) => <Chip key={idx} label={attendee} />)}
+                  <Stack gap={1} p={1}>
+                    <Typography><strong>Attendees</strong></Typography>
+                    {fields.attendees &&
+                      <Stack direction={'row'} flexWrap={'wrap'} gap={1}>
+                        {fields.attendees?.map((attendee, idx) => 
+                          <Chip key={idx} label={attendee} sx={{ maxWidth: 'fit-content'}}/>
+                        )}
+                      </Stack>
+                    }
                     {isActive && <TextField placeholder="Add attendee" />}
                   </Stack>
                 )}
-                <Controller 
-                  name="dueDate" 
-                  control={control} 
-                  render={({ field }) => 
-                    <DatePicker control={control} disabled={!isActive} {...field} />} />
+                {'dueDate' in fields && 
+                  <DatePicker
+                    control={control}
+                    name="dueDate"
+                    defaultValue={fields.dueDate ?? ""}
+                    disabled={!isActive}
+                    label="Due Date"
+                  />
+                }
                 {isActive && <Button type="submit">Save Fields</Button>}
               </Stack>
             </AccordionDetails>
@@ -257,7 +268,13 @@ export default function TWSExtDrawer({
             <AccordionSummary expandIcon={<ExpandMore />}>
               <Typography>Notes ({ticket!.notes?.length ?? 0})</Typography>
             </AccordionSummary>
+            <Box px={2} my={-1}>
+              {(ticket!.notes?.length===0 || !ticket?.notes) && 
+                <Typography variant='caption' color='text.disabled'>You have no notes on this ticket</Typography>
+              }
+            </Box>
             <AccordionDetails>
+              {/* Newer features will enforce a boundary with either user.userType, user.subscription or both */}
               <List>
                 {ticket!.notes?.map((note, idx) => (
                   <ListItem key={idx}>

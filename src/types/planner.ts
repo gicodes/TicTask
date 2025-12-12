@@ -1,7 +1,8 @@
-import { Ticket, TicketPriority, TicketStatus } from "./ticket";
+import { Ticket, TicketPriority, TicketStatus, TicketType } from "./ticket";
 
 export interface PlannerEvent {
   id: string | number;
+  type: Partial<TicketType>;
   title: string;
   start: Date | string;
   end: Date | string;
