@@ -77,9 +77,12 @@ export default function TicketTaskCreateFormsDrawer({
 
   const registryForms = task ? TASK_FORMS : TICKET_FORMS;
   const registrySchemas = task ? TASK_SCHEMAS : TICKET_SCHEMAS;
+  
   const registryDefaults = (task ? TASK_DEFAULTS : TICKET_DEFAULTS) as Record<
     LocalType, (d?: Date) => Record<string, unknown>>;
-  const currentSchema: ZodType<FieldValues, FieldValues> = registrySchemas[itemType as keyof typeof registrySchemas];
+
+  const currentSchema: ZodType<FieldValues, FieldValues> = 
+    registrySchemas[itemType as keyof typeof registrySchemas];
   const defaultValues = registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate);
 
   const methods = useForm<FieldValues>({
@@ -87,7 +90,9 @@ export default function TicketTaskCreateFormsDrawer({
     defaultValues: defaultValues as Record<string, unknown>,
   });
 
-  const FormComponent = registryForms[itemType as keyof typeof registryForms] as React.ComponentType<{ control: Control<FieldValues>; task?: boolean }>;
+  const FormComponent = registryForms[itemType as keyof typeof registryForms] as React.ComponentType<{ 
+    control: Control<FieldValues>; task?: boolean 
+  }>;
 
   useEffect(() => {
     methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
@@ -130,8 +135,8 @@ export default function TicketTaskCreateFormsDrawer({
       const payload = {
         ...payloadBase,
         dueDate: dueDateIso,
-        startTime: startTimeDate,
         endTime: endTimeDate,
+        startTime: startTimeDate,
         createdById: user?.id ?? null,
       } as unknown as Create_Ticket;
 
@@ -166,7 +171,6 @@ export default function TicketTaskCreateFormsDrawer({
       }}
     >
       <Toolbar />
-
       <Box display="grid" gap={2}>
         <Card 
           sx={{
@@ -189,15 +193,15 @@ export default function TicketTaskCreateFormsDrawer({
                 minWidth={{ sm: 200}}
                 textAlign={{ xs: 'center', sm: 'left'}} 
               >
-                Create new {itemType === 'TASK' ? 'task' : 'ticket'}
+                Create new {task ? 'task' : 'ticket'}
               </Typography>
               <Typography 
                 variant='caption' 
                 pb={{ xs: 2, md: 0}}
+                sx={{ opacity: 0.5 }}
                 textAlign={{ xs: 'center', sm: 'left'}} 
-               sx={{ opacity: 0.5 }}
               >
-                Choose from {itemType !== 'TASK' ? 'General, Invoice, etc' : 'Task, Event, etc'}
+                Choose from {!task ? 'General, Invoice, etc' : 'Task, Event, etc'}
               </Typography>
             </Stack>
             
@@ -239,7 +243,10 @@ export default function TicketTaskCreateFormsDrawer({
         
         <Box px={3}>
           <FormProvider {...methods}>
-            <form key={String(itemType)} onSubmit={methods.handleSubmit(onSubmit)}>
+            <form 
+              key={String(itemType)} 
+              onSubmit={methods.handleSubmit(onSubmit)}
+            >
               <FormComponent control={methods.control} task={task} />
               <Stack gap={2} py={3} px={{ xs: 4, sm: 5, md: 6, }}>
                 <Button 
@@ -267,8 +274,13 @@ export default function TicketTaskCreateFormsDrawer({
           </FormProvider>
         </Box>
         
-        {err && <Alert severity="error" sx={{ mt: 2 }}>{err}</Alert>}
-        {methods.formState.errors && Object.keys(methods.formState.errors).length > 0 && (
+        { err && 
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {err}
+          </Alert>
+        }
+        { methods.formState.errors && Object.keys(
+          methods.formState.errors).length > 0 && (
           <Alert severity="warning" sx={{ mt: 2 }}>
             Please fix the errors above
           </Alert>

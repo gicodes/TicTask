@@ -38,7 +38,6 @@ export interface Ticket {
 
   createdAt: string;
   updatedAt: string;
-
   createdById: number;
   createdBy: User;
   assignedToId: number | null;
@@ -52,6 +51,7 @@ export interface Ticket {
 export type Data = {
   amount?: number;
   currency?: string;
+  extClient: string;
   severity?: TicketPriority,
   steps?: string,
   impact?: TicketImpact,
@@ -93,6 +93,7 @@ export interface Create_Ticket {
   attachments?: string[];
   location?: string;
   attendees?: string[];
+  extClient: string;
 
   createdById: number;
   assignTo?: string;
@@ -140,7 +141,7 @@ export enum Ticket_Status {
 export type TicketImpact = 'LOW' | 'MEDIUM' | 'HIGH';
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 export type TicketStatus = 'UPCOMING'| 'OPEN'| 'IN_PROGRESS'| 'RESOLVED'| 'CLOSED'| 'CANCELLED';
-export type TicketType = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' |'SUPPORT'| 'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE';
+export type TicketType = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' |'SUPPORT'| 'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE' | 'MEETING';
 
 export const priorityOrder: Record<string, number> = {
   URGENT: 0,

@@ -17,6 +17,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  useTheme
 } from "@mui/material";
 import { Button } from "@/assets/buttons";
 import { PLAN_IDS } from "@/lib/pricing";
@@ -28,6 +29,7 @@ import { useAlert } from "@/providers/alert";
 import { useSubscription } from "@/providers/subscription";
 
 export default function PricingSection() {
+  const theme = useTheme();
   const router = useRouter();
   const { user } = useAuth();
   const { showAlert } = useAlert();
@@ -65,7 +67,7 @@ export default function PricingSection() {
   };
 
   return (
-    <Box component="section" sx={{ py: { xs: 10, md: 16 } }}>
+    <Box component="section" sx={{ py: { xs: 10, md: 16 }, bgcolor: theme.palette.mode }}>
       <Container maxWidth="xl">
         <Stack spacing={2} alignItems="center" mb={6}>
           <Typography variant="h3" fontWeight={700} textAlign="center">
@@ -136,7 +138,6 @@ export default function PricingSection() {
                       {plan.desc}
                     </Typography>
                     <Divider sx={{ my: 1, opacity: 0.2 }} />
-
                     <Typography variant="h3" fontWeight={800}>
                       {plan.priceMonthly === 0
                         ? "Free"
@@ -153,7 +154,7 @@ export default function PricingSection() {
                         </Typography>
                       )}
                     </Typography>
-
+                    
                     <List dense>
                       {plan.features.map((feat) => (
                         <ListItem key={feat} disablePadding sx={{ py: 0.5 }}>

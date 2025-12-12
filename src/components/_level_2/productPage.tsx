@@ -130,12 +130,18 @@ export const ProductCTA = () => {
       >
         <Stack spacing={3} alignItems="center" maxWidth="sm">
           <Typography variant="h4" fontWeight={700}>
-            Ready to bring your team into flow?
+            Find the right product
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.65 }}>
-            Get started with TicTask and experience a calmer, more focused way to collaborate.
+            See options and compare features that elevate your TicTask experience.
           </Typography>
-          <Button onClick={GetStarted}>Get Started</Button>
+          <Button 
+            tone="secondary"
+            component={Link} 
+            href={'/product/pricing'}
+          >
+            Browse Pricing
+          </Button>
         </Stack>
 
         <Divider 
@@ -147,20 +153,15 @@ export const ProductCTA = () => {
         />
 
         <Stack spacing={3} alignItems="center" maxWidth="sm">
-          <Typography variant="h5" fontWeight={700}>
-            Want to know what&apos;s best for your team?
+          <Typography variant="h4" fontWeight={700}>
+            Ready to bring your team into flow?
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.65 }}>
-            See reasons why being on paid plans can elevate your TicTask experience, and compare your options.
+            Get started today and experience a calmer, more focused way to collaborate.
           </Typography>
-          <Button 
-            tone="secondary"
-            component={Link} 
-            href={'/product/pricing'}
-          >
-            Browse Pricing
-          </Button>
+          <Button onClick={GetStarted}>Get Started</Button>
         </Stack>
+
       </Box>
     </section>
   );

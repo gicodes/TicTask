@@ -1,25 +1,9 @@
 import { Stack, TextField, Typography, InputAdornment, MenuItem } from "@mui/material";
+import { CURRENCY_OPTIONS, SUGGESTED_TAGS } from "../../_level_1/tSchema";
 import { Controller, Control, useWatch } from "react-hook-form";
 import { DatePicker } from "../../_level_1/tDateControl";
 import { Autocomplete } from "@mui/material";
 import { useState, useEffect } from "react";
-
-const CURRENCY_OPTIONS = [
-  { code: "USD", symbol: "$", name: "US Dollar" },
-  { code: "EUR", symbol: "€", name: "Euro" },
-  { code: "GBP", symbol: "£", name: "British Pound" },
-  { code: "NGN", symbol: "₦", name: "Nigerian Naira" },
-  { code: "CAD", symbol: "C$", name: "Canadian Dollar" },
-  { code: "JPY", symbol: "¥", name: "Japanese Yen" },
-  { code: "INR", symbol: "₹", name: "Indian Rupee" },
-  { code: "Crypto", symbol: "₿", name: "Cryptocurrency" },
-];
-
-const SUGGESTED_TAGS = [
-  "bill", "paypal", "client", "wire", "confirm",
-  "check", "crypto", "payment", "asap", "urgent",
-  "monthly", "overdue"
-];
 
 interface InvoiceFormProps {
   control: Control;
@@ -150,6 +134,14 @@ export default function InvoiceForm({ control }: InvoiceFormProps) {
         )}
       />
 
+      <Controller 
+        name="extClient"
+        control={control}
+        render={({ field }) => (
+          <TextField label="Bill to [client email]  (Optional)" {...field} />
+        )}
+      />
+
       <Controller
         name="tags"
         control={control}
@@ -161,7 +153,7 @@ export default function InvoiceForm({ control }: InvoiceFormProps) {
             value={field.value || []}
             onChange={(_, value) => field.onChange(value)}
             renderInput={(params) => (
-              <TextField {...params} label="Tags" placeholder="Add tags..." />
+              <TextField {...params} label="Tags (Optional)" placeholder="Add tags..." />
             )}
           />
         )}

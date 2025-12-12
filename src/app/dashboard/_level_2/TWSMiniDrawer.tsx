@@ -41,10 +41,10 @@ export default function TicketDetailDrawer({
   const { user } = useAuth();
   const { selectedTicket: ticket, selectTicket, updateTicket } = useTickets();
   const { reset, getValues } = useForm<FormValues>({ defaultValues: { dueDate: '' } });
-  const [moreOptions, setMoreOptions] = useState(false);
   const [assignee, setAssignee] = useState<number | null>();
-  const [note, setNote] = useState('');
   const [extDrawerOpen, setExtDrawerOpen] = useState(false);
+  const [moreOptions, setMoreOptions] = useState(false);
+  const [note, setNote] = useState('');
 
   useEffect(() => {
     selectTicket(ticketId ?? null);
@@ -66,6 +66,7 @@ export default function TicketDetailDrawer({
       ...(assignee && { assignedToId: assignee }),
       ...(note && { note }),
     });
+
     onUpdate?.();
     setNote('');
     setAssignee(null);
@@ -239,16 +240,21 @@ export default function TicketDetailDrawer({
                   color="success"
                   variant="outlined"
                 />}
+                {'extClient' in fields && <Chip label={`${fields.extClient}`} size="small" color="info"/>}
                 {'estimatedTimeHours' in fields && fields.estimatedTimeHours && <Chip label={`${fields.estimatedTimeHours}h est.`} size="small" />}
                 {'subtasks' in fields && fields.subtasks?.length && <Chip label={`${fields.subtasks.length} subtasks`} size="small" />}
                 {'checklist' in fields && fields.checklist?.length && <Chip label={`${fields.checklist.length} checklist items`} size="small" />}
-                {'attendees' in fields && fields.attendees?.length && <Chip label={`${fields.attendees.length} attendees`} size="small" />}
+                {'attendees' in fields && (fields.attendees && fields.attendees.length > 0) && <Chip label={`${fields.attendees.length} attendees`} size="small" />}
                 {'attachments' in fields && fields.attachments?.length && <Chip label={`${fields.attachments.length} attachments`} size="small" />}
                 {'steps' in fields && fields.steps && <Chip label="Steps provided" size="small" />}
                 {'recurrence' in fields && fields.recurrence && <Chip label={`Recurs: ${fields.recurrence}`} size="small" />}
                 {'location' in fields && fields.location && <Chip label={`Location: ${fields.location}`} size="small" />}
-                {'startTime' in fields && fields.startTime && <Chip label={`Start: ${new Date(fields.startTime).toLocaleTimeString()}`} size="small" />}
-                {'endTime' in fields && fields.endTime && <Chip label={`End: ${new Date(fields.endTime).toLocaleTimeString()}`} size="small" />}
+                <Stack direction={'row'} flexWrap="wrap" gap={1} alignItems={'end'}>
+                  {'startTime' in fields && fields.startTime && <Chip label={`Start: ${new Date(fields.startTime).toLocaleTimeString()}`} size="small" />}
+                  {'startTime' in fields && fields.startTime && <Typography variant='body2' fontSize={12}>{new Date(fields.startTime).toDateString()}</Typography>}
+                  {'endTime' in fields && fields.endTime && <Chip label={`End: ${new Date(fields.endTime).toLocaleTimeString()}`} size="small" />}
+                  {'endTime' in fields && fields.endTime && <Typography variant='body2' fontSize={12}>{new Date(fields.endTime).toDateString()}</Typography>}
+                </Stack>
               </Stack>
 
               <Button 
@@ -326,8 +332,17 @@ export default function TicketDetailDrawer({
 
         <Divider sx={{ mt: 5, border: '5px solid var(--disabled)' }} />
         <Stack p={3} direction={{ xs: 'column', sm: 'row' }} spacing={3}>
-          {isBusinessOrTeam && isActive && (note || assignee) && <Button onClick={save}>Save Changes</Button>}
-          <Button onClick={onClose} tone="inverted" sx={{ width: 125, }} startIcon={<ArrowBack />}>
+          {isBusinessOrTeam && 
+            isActive && 
+              (note || assignee) && 
+                <Button onClick={save}>Save Changes</Button>
+          }
+          <Button 
+            onClick={onClose} 
+            tone="inverted" 
+            sx={{ width: 125 }} 
+            startIcon={<ArrowBack />}
+          >
             Back
           </Button>
         </Stack>

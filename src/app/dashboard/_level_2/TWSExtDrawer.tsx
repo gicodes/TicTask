@@ -115,16 +115,18 @@ export default function TWSExtDrawer({
       }}
     >
       <Toolbar />
-      <Toolbar>
-        <Typography flexGrow={1} variant='body2' color='text.disabled'>
-          Extended Workspace 
-          <IconButton size='small'>➣ </IconButton>
+      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+        <Stack direction={'row'} alignItems={'center'} py={1} pl={3}>
+          <Typography flexGrow={1} variant='body2' color='text.disabled'>
+            Extended Workspace 
+          </Typography>
+          <IconButton>➣ </IconButton>
           <Chip label={ticket!.title} />
-        </Typography>
-        <IconButton onClick={onClose}>
+        </Stack>
+        <IconButton onClick={onClose} sx={{ height: 'fit-content'}}>
           <CloseSharp />
         </IconButton>
-      </Toolbar>
+      </Box>
       <Divider />
 
       <Box p={3} display="grid" gap={3}>
@@ -240,6 +242,9 @@ export default function TWSExtDrawer({
                 {['EVENT', 'MEETING'].includes(ticket!.type) && 'attendees' in fields && (
                   <Stack gap={1} p={1}>
                     <Typography><strong>Attendees</strong></Typography>
+                    {!fields.attendees || fields.attendees.length < 1 && 
+                      <Typography variant='body2' sx={{ opacity: 0.75}}>No attendees for this event</Typography>
+                    }
                     {fields.attendees &&
                       <Stack direction={'row'} flexWrap={'wrap'} gap={1}>
                         {fields.attendees?.map((attendee, idx) => 
@@ -250,7 +255,7 @@ export default function TWSExtDrawer({
                     {isActive && <TextField placeholder="Add attendee" />}
                   </Stack>
                 )}
-                {'dueDate' in fields && 
+                {(ticket!.type !== 'EVENT') && (ticket!.type !== 'MEETING') && 'dueDate' in fields && fields.dueDate &&
                   <DatePicker
                     control={control}
                     name="dueDate"
@@ -300,6 +305,11 @@ export default function TWSExtDrawer({
             <AccordionSummary expandIcon={<ExpandMore />}>
               <Typography>History ({ticket!.history?.length ?? 0})</Typography>
             </AccordionSummary>
+            <Box px={2} my={-1}>
+              {(ticket!.history?.length===0 || !ticket?.history) && 
+                <Typography variant='caption' color='text.disabled'>You have no history on this ticket</Typography>
+              }
+            </Box>
             <AccordionDetails>
               <List>
                 {ticket!.history?.map((hist, idx) => (

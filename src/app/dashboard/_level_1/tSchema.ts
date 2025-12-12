@@ -143,6 +143,7 @@ export const invoiceSchema = z.object({
   title: z.string().min(1, "Title is required"),
   amount: z.number().positive("Amount must be greater than 0"),
   currency: z.string().default("USD"),
+  extClient: z.email().optional(),
   description: z.string().optional(),
   dueDate: z.string().optional(),
   recurrence: z.string().optional(),
@@ -184,7 +185,6 @@ export const TICKET_FORMS: Record<TicketTypeUnion, FormComponentType> = {
   BUG: BugFixForm,
   FEATURE_REQUEST: FeatureForm,
   INVOICE: InvoiceForm,
-
   DOCUMENTATION: GeneralForm,
   SUPPORT: GeneralForm,
   ISSUE: GeneralForm,
@@ -203,7 +203,6 @@ export const TICKET_SCHEMAS: Record<TicketTypeUnion, ZodTypeAny> = {
   BUG: bugSchema,
   FEATURE_REQUEST: featureSchema,
   INVOICE: invoiceSchema,
-
   DOCUMENTATION: generalSchema,
   SUPPORT: generalSchema,
   ISSUE: generalSchema,
@@ -222,7 +221,6 @@ export const TICKET_DEFAULTS: Record<TicketTypeUnion, (defaultDueDate?: Date) =>
   BUG: () => ({ type: 'BUG', title: '', severity: 'HIGH', steps: '', priority: 'HIGH', tags: [] }),
   FEATURE_REQUEST: () => ({ type: 'FEATURE_REQUEST', title: '', impact: 'MEDIUM', description: '' }),
   INVOICE: () => ({ type: 'INVOICE', title: '', amount: 0, currency: 'USD', description: '' }),
-
   DOCUMENTATION: () => ({ type: 'DOCUMENTATION', title: '', description: '' }),
   SUPPORT: () => ({ type: 'SUPPORT', title: '', description: '' }),
   ISSUE: () => ({ type: 'ISSUE', title: '', description: '' }),
@@ -264,7 +262,6 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     subtasks: [],
     dueDate: defaultDueDate ? format(defaultDueDate, "yyyy-MM-dd'T'HH:mm") : undefined,
   }),
-  
   MEETING: (defaultDueDate?: Date) => ({
     type: 'MEETING',
     title: '',
@@ -275,7 +272,6 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     attendees: [],
     tags: [],
   }),
-
   EVENT: (defaultDueDate?: Date) => ({
     type: 'EVENT',
     title: '',
@@ -287,6 +283,20 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     tags: [],
   }),
   RELEASE: () => ({ type: 'RELEASE', title: '', description: '' }),
-
   DEPLOYMENT: () => ({ type: 'DEPLOYMENT', title: '', description: '' }),
 };
+
+export const CURRENCY_OPTIONS = [
+  { code: "USD", symbol: "$", name: "US Dollar" },
+  { code: "EUR", symbol: "€", name: "Euro" },
+  { code: "GBP", symbol: "£", name: "British Pound" },
+  { code: "NGN", symbol: "₦", name: "Nigerian Naira" },
+  { code: "CAD", symbol: "C$", name: "Canadian Dollar" },
+  { code: "JPY", symbol: "¥", name: "Japanese Yen" },
+  { code: "INR", symbol: "₹", name: "Indian Rupee" },
+  { code: "Crypto", symbol: "₿", name: "Cryptocurrency" },
+];
+
+export const SUGGESTED_TAGS = [
+  "bill", "paypal", "client", "wire", "confirm","check", "crypto", "payment", "asap", "urgent","monthly", "overdue"
+];

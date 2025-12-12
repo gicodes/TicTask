@@ -32,7 +32,8 @@ export function extractTicketData(ticket: Ticket): TicketFormValuesUnion {
       };
     case 'INVOICE':
       return {
-        ...base,
+        ...base,    
+        extClient: data.extClient,
         recurrence: data.recurrence ?? '',
       };
     case 'TASK':
