@@ -1,15 +1,14 @@
 'use client';
 
 import { TICKET_WORKSPACE_PROPS, TicketFormValuesUnion } from '../_level_1/tSchema';
+import { Create_Ticket, Ticket, Ticket_Impact, TicketHistory, TicketNote } from '@/types/ticket';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
 import { extractTicketData } from '../_level_1/tFieldExtract';
-import { Create_Ticket, Ticket } from '@/types/ticket';
 import { DatePicker } from '../_level_1/tDateControl';
 import { useTickets } from '@/providers/tickets';
 import { useAuth } from '@/providers/auth';
 import { Button } from '@/assets/buttons';
 import { User } from '@/types/users';
-import { useState } from 'react';
 import {
   Box,
   Drawer,
@@ -27,8 +26,13 @@ import {
   Divider,
   Chip,
   Switch,
+  MenuItem,
+  Avatar,
+  Alert,
 } from '@mui/material';
 import { CloseSharp, ExpandMore } from '@mui/icons-material';
+import { useAlert } from '@/providers/alert';
+import { useEffect, useState } from 'react';
 
 export default function TWSExtDrawer({ 
   open, 
@@ -37,70 +41,108 @@ export default function TWSExtDrawer({
   onUpdate 
 }: TICKET_WORKSPACE_PROPS ) {  
   const { user } = useAuth();
-  const { updateTicket } = useTickets();
+  const { showAlert } = useAlert();
+  const { updateTicket, addTicketComment, fetchTicketNote, fetchTicketHistory, addTicketHistory } = useTickets();
+  
   const fields = extractTicketData(ticket!);
+  const [ newNote, setNewNote ] = useState('');
+  const [ isUpdating, setIsUpdating ] = useState(false);
+  const [ newHistoryAction, setNewHistoryAction] = useState({
+    formfields: {
+      action: '',
+      oldValue: '',
+      newValue: ''
+    }
+  });
+  const [ ticketNotes, setTicketNotes ] = useState<TicketNote[] | null>();
+  const [ ticketHistory, setTicketHistory ] = useState<TicketHistory[] | null>();
   const { control, handleSubmit, reset } = useForm<TicketFormValuesUnion>({ defaultValues: fields });
-  const [newNote, setNewNote] = useState('');
-  const [newHistoryAction, setNewHistoryAction] = useState('');
+
+  useEffect(() => {
+    if (!ticket) return;
+
+    const setNotes = async () => {
+      const notes = await fetchTicketNote(ticket.id)
+      setTicketNotes(notes);
+    }
+
+    const setHisory = async () => {
+      const history = await fetchTicketHistory(ticket.id)
+      setTicketHistory(history);
+    }
+
+    setNotes();
+    setHisory();
+  }, [ticket, setTicketNotes])
 
   const isActive = !['CANCELLED', 'RESOLVED', 'CLOSED'].includes(ticket!.status);
   const isTeamAdmin = !!(user as User).teamMemberships && !!(user as User).createdTeams;
 
   const onSubmit = async (data: FieldValues) => {
-    const dueDateIso = (data?.dueDate) === 'string' && data.dueDate
-      ? new Date(data.dueDate as string)
-      : typeof data.startTime === 'string' && data.startTime
-        ? new Date(data.startTime as string)
-        : undefined;
+    try {
+      setIsUpdating(true);
 
-    const startTimeDate = typeof data.startTime === 'string' && data.startTime
-      ? new Date(data.startTime as string)
-      : undefined;
+      const dueDateIso = (data?.dueDate) === 'string' && data.dueDate
+      ? new Date(data.dueDate as string) : typeof data.startTime === 'string' && data.startTime
+        ? new Date(data.startTime as string) : undefined;
 
-    const endTimeDate = typeof data.endTime === 'string' && data.endTime
-      ? new Date(data.endTime as string)
-      : undefined;
+      const startTimeDate = typeof data.startTime === 'string' && data.startTime
+        ? new Date(data.startTime as string) : undefined;
 
-    const payload: FieldValues | TicketFormValuesUnion = {
-      ...data,
-      dueDate: dueDateIso,
-      startTime: startTimeDate,
-      endTime: endTimeDate,
-      createdById: user?.id ?? null,
-    } as unknown as Partial<Create_Ticket>;
-        
-    await updateTicket(Number(ticket!.id), payload as Partial<Ticket>);
-    onUpdate?.();
-    reset(payload);
+      const endTimeDate = typeof data.endTime === 'string' && data.endTime
+        ? new Date(data.endTime as string) : undefined;
+
+      const payload: FieldValues | TicketFormValuesUnion = {
+        ...data,
+        dueDate: dueDateIso,
+        startTime: startTimeDate,
+        endTime: endTimeDate,
+        createdById: user?.id ?? null,
+      } as unknown as Partial<Create_Ticket>;
+          
+      await updateTicket(Number(ticket!.id), payload as Partial<Ticket>);
+      showAlert("Ticket updated!", 'success');
+
+      onUpdate?.();
+      reset(payload);
+      onClose();
+    } catch {
+      showAlert("Failed to update!", 'warning');
+    }
   };
 
   const addNote = async () => {
     if (!newNote) return;
 
-    await updateTicket(Number(ticket!.id), { 
-      notes: [...(ticket!.notes ?? []), { 
-        id: Number(ticket!.id+Math.random()), 
-        content: newNote, 
-        createdAt: new Date().toISOString(), 
-        authorId: user?.id }] 
-      });
+    try {
+      setIsUpdating(true);
+      await addTicketComment(Number(ticket!.id), newNote);
     
-    setNewNote('');
-    onUpdate?.();
+      setNewNote('');
+      setIsUpdating(false);
+      showAlert("Comment posted!", 'success');
+
+      onUpdate?.();
+    } catch {
+      showAlert("Update failed. Something went wrong!", 'warning')
+      setIsUpdating(false);
+    }
   };
 
   const addHistory = async () => {
     if (!newHistoryAction) return;
 
-    await updateTicket(Number(ticket!.id), { 
-      history: [...(ticket!.history ?? []), { 
-        id: Number(ticket!.id+Math.random()), 
-        action: newHistoryAction, 
-        createdAt: new Date().toISOString(), 
-        performedById: user?.id }] 
-      });
-    setNewHistoryAction('');
-    onUpdate?.();
+    try {
+      setIsUpdating(true);
+      await addTicketHistory(Number(ticket!.id), newHistoryAction.formfields);
+
+      showAlert("Action Successful!", 'success');
+      onUpdate?.();
+      onClose();
+    } catch {
+      showAlert("Update failed. Something went wrong!", 'warning')
+      setIsUpdating(false);
+    }
   };
 
   return (
@@ -127,213 +169,331 @@ export default function TWSExtDrawer({
           <CloseSharp />
         </IconButton>
       </Box>
+
       <Divider />
-
-      <Box p={3} display="grid" gap={3}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography><strong>Unique Fields</strong></Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Stack gap={2}>
-                {ticket!.type === 'BUG' && 'severity' in fields && (
-                  <Controller
-                    name="severity"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField label="Severity" select disabled={!isActive} {...field}>
-                      </TextField>
-                    )}
-                  />
-                )}
-                {ticket!.type === 'BUG' && 'steps' in fields && (
-                  <Controller
-                    name="steps"
-                    control={control}
-                    render={({ field }) => <TextField label="Steps" multiline disabled={!isActive} {...field} />}
-                  />
-                )}
-                {ticket!.type === 'FEATURE_REQUEST' && 'impact' in fields && (
-                  <Controller
-                    name="impact"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField label="Impact" select disabled={!isActive} {...field}>
-                        {/* Options */}
-                      </TextField>
-                    )}
-                  />
-                )}
-                {ticket!.type === 'INVOICE' && 'amount' in fields && (
-                  <Controller name="amount" control={control} render={({ field }) => <TextField label="Amount" type="number" disabled={!isActive} {...field} />} />
-                )}
-                {ticket!.type === 'INVOICE' && 'currency' in fields && (
-                  <Controller name="currency" control={control} render={({ field }) => <TextField label="Currency" disabled={!isActive} {...field} />} />
-                )}
-                {ticket!.type === 'INVOICE' && 'recurrence' in fields && (
-                  <Controller name="recurrence" control={control} render={({ field }) => <TextField label="Recurrence" disabled={!isActive} {...field} />} />
-                )}
-                {ticket!.type === 'TASK' && 'checklist' in fields && (
-                  <Stack gap={1}>
-                    <Typography>Checklist</Typography>
-                    {fields.checklist?.map((item, idx) => (
-                      <Stack key={idx} direction="row" alignItems="center">
-                        <Switch disabled={!isActive} />
-                        <Typography>{item}</Typography>
-                      </Stack>
-                    ))}
-                    {isActive && <TextField placeholder="Add checklist item" />}
-                  </Stack>
-                )}
-                {ticket!.type === 'TASK' && 'recurrence' in fields && (
-                  <Controller name="recurrence" control={control} render={({ field }) => 
-                    <TextField label="Recurrence" disabled={!isActive} {...field} />} />
-                )}
-                {ticket!.type === 'TASK' && 'estimatedTimeHours' in fields && (
-                  <Controller
-                    name="estimatedTimeHours"
-                    control={control}
-                    render={({ field }) => <TextField label="Estimated Hours" type="number" disabled={!isActive} {...field} />}
-                  />
-                )}
-                {ticket!.type === 'TASK' && 'attachments' in fields && (
-                  <Stack gap={1}>
-                    <Typography>Attachments</Typography>
-                    {fields.attachments?.map((url, idx) => <Chip key={idx} label={url} />)}
-                    {isActive && <Button>Upload Attachment</Button>}
-                  </Stack>
-                )}
-                {ticket!.type === 'TASK' && 'subtasks' in fields && (
-                  <Stack gap={1}>
-                    <Typography>Subtasks</Typography>
-                    <List>
-                      {fields.subtasks?.map((sub, idx) => (
-                        <ListItem key={idx}>
-                          <ListItemText primary={sub.title} secondary={sub.done ? 'Done' : 'Pending'} />
-                        </ListItem>
+      { isUpdating ? <Typography textAlign={'center'} py={6}> Updating.... </Typography> :
+        <Box p={3} display="grid" gap={3}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Accordion defaultExpanded>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Typography><strong>Unique Fields</strong></Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Stack gap={2}>
+                  <Alert severity='warning' color='warning' sx={{ opacity: 0.75, mb: 2}}>
+                    Are you sure you want to modify this {ticket?.type.toLocaleLowerCase()}?
+                  </Alert>
+                  {ticket!.type === 'BUG' && 'severity' in fields && (
+                    <Controller
+                      name="severity"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField label="Severity" select disabled={!isActive} {...field}>
+                        </TextField>
+                      )}
+                    />
+                  )}
+                  {ticket!.type === 'BUG' && 'steps' in fields && (
+                    <Controller
+                      name="steps"
+                      control={control}
+                      render={({ field }) => <TextField label="Steps" multiline disabled={!isActive} {...field} />}
+                    />
+                  )}
+                  {ticket!.type === 'FEATURE_REQUEST' && 'impact' in fields && (
+                    <Controller
+                      name="impact"
+                      control={control}
+                      defaultValue={fields.impact ?? Ticket_Impact.LOW}
+                      render={({ field }) => (
+                        <TextField
+                          label="Impact"
+                          select
+                          disabled={!isActive}
+                          {...field}
+                        >
+                          {Object.values(Ticket_Impact).map((impact) => (
+                            <MenuItem key={impact} value={impact}>
+                              {impact}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      )}
+                    />
+                  )}
+                  {ticket!.type === 'INVOICE' && 'amount' in fields && (
+                    <Controller name="amount" control={control} render={({ field }) => 
+                      <TextField label="Amount" type="number" disabled={!isActive} {...field} />} />
+                  )}
+                  {ticket!.type === 'INVOICE' && 'currency' in fields && (
+                    <Controller name="currency" control={control} render={({ field }) => 
+                      <TextField label="Currency" disabled={!isActive} {...field} />} />
+                  )}
+                  {ticket!.type === 'INVOICE' && 'recurrence' in fields && (
+                    <Controller name="recurrence" control={control} render={({ field }) => 
+                      <TextField label="Recurrence" disabled={!isActive} {...field} />} />
+                  )}
+                  {ticket!.type === 'INVOICE' && 'extClient' in fields && (
+                    <Controller name="extClient" control={control} render={({ field }) => 
+                      <TextField label="Clients" disabled={!isActive} {...field} />} />
+                  )}
+                  {ticket!.type === 'TASK' && 'checklist' in fields && (
+                    <Stack gap={1}>
+                      <Typography>Checklist</Typography>
+                      {fields.checklist?.map((item, idx) => (
+                        <Stack key={idx} direction="row" alignItems="center">
+                          <Switch disabled={!isActive} />
+                          <Typography>{item}</Typography>
+                        </Stack>
                       ))}
-                    </List>
-                    {isActive && <TextField placeholder="Add subtask" />}
-                  </Stack>
+                      {isActive && <TextField placeholder="Add checklist item" />}
+                    </Stack>
+                  )}
+                  {ticket!.type === 'TASK' && 'recurrence' in fields && (
+                    <Controller name="recurrence" control={control} render={({ field }) => 
+                      <TextField label="Recurrence" disabled={!isActive} {...field} />} />
+                  )}
+                  {ticket!.type === 'TASK' && 'estimatedTimeHours' in fields && (
+                    <Controller
+                      name="estimatedTimeHours"
+                      control={control}
+                      render={({ field }) => <TextField label="Estimated Hours" type="number" disabled={!isActive} {...field} />}
+                    />
+                  )}
+                  {ticket!.type === 'TASK' && 'attachments' in fields && (
+                    <Stack gap={1}>
+                      <Typography>Attachments</Typography>
+                      {fields.attachments?.map((url, idx) => <Chip key={idx} label={url} />)}
+                      {isActive && <Button>Upload Attachment</Button>}
+                    </Stack>
+                  )}
+                  {ticket!.type === 'TASK' && 'subtasks' in fields && (
+                    <Stack gap={1}>
+                      <Typography>Subtasks</Typography>
+                      <List>
+                        {fields.subtasks?.map((sub, idx) => (
+                          <ListItem key={idx}>
+                            <ListItemText primary={sub.title} secondary={sub.done ? 'Done' : 'Pending'} />
+                          </ListItem>
+                        ))}
+                      </List>
+                      {isActive && <TextField placeholder="Add subtask" />}
+                    </Stack>
+                  )}
+                  {['EVENT', 'MEETING'].includes(ticket!.type) && 'startTime' in fields && (
+                    <DatePicker 
+                      control={control} 
+                      name="startTime" 
+                      defaultValue={fields.startTime ?? ""} 
+                      disabled={!isActive}
+                      label="Start Time"
+                    />
+                  )}
+                  {['EVENT', 'MEETING'].includes(ticket!.type) && 'endTime' in fields && (
+                    <DatePicker
+                      control={control}
+                      name="endTime"
+                      defaultValue={fields.endTime ?? ""}
+                      disabled={!isActive}
+                      label="End Time"
+                    />
+                  )}
+                  {['EVENT', 'MEETING'].includes(ticket!.type) && 'location' in fields && (
+                    <Controller name="location" control={control} render={({ field }) => 
+                      <TextField label="Location" disabled={!isActive} {...field} />} />
+                  )}
+                  {['EVENT', 'MEETING'].includes(ticket!.type) && 'attendees' in fields && (
+                    <Stack gap={1} p={1}>
+                      <Typography><strong>Attendees</strong></Typography>
+                      {!fields.attendees || fields.attendees.length < 1 && 
+                        <Typography variant='body2' sx={{ opacity: 0.75}}>No attendees for this event</Typography>
+                      }
+                      {fields.attendees &&
+                        <Stack direction={'row'} flexWrap={'wrap'} gap={1}>
+                          {fields.attendees?.map((attendee, idx) => 
+                            <Chip key={idx} label={attendee} sx={{ maxWidth: 'fit-content'}}/>
+                          )}
+                        </Stack>
+                      }
+                      {isActive && <TextField placeholder="Add attendee" />}
+                    </Stack>
+                  )}
+                  {(ticket!.type !== 'EVENT') && (ticket!.type !== 'MEETING') && 'dueDate' in fields && fields.dueDate &&
+                    <DatePicker
+                      control={control}
+                      name="dueDate"
+                      defaultValue={fields.dueDate ?? ""}
+                      disabled={!isActive}
+                      label="Due Date"
+                    />
+                  }
+                  {isActive && <Button type="submit">Save Fields</Button>}
+                </Stack>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Typography>Notes ({ticketNotes?.length ?? 0})</Typography>
+              </AccordionSummary>
+              <Divider />
+              <AccordionDetails>
+                {!ticketNotes?.length && (
+                  <Typography variant="caption" color="text.disabled">
+                    No notes yet. Be the first to add one.
+                  </Typography>
                 )}
-                {['EVENT', 'MEETING'].includes(ticket!.type) && 'startTime' in fields && (
-                  <DatePicker 
-                    control={control} 
-                    name="startTime" 
-                    defaultValue={fields.startTime ?? ""} 
-                    disabled={!isActive}
-                    label="Start Time"
-                  />
-                )}
-                {['EVENT', 'MEETING'].includes(ticket!.type) && 'endTime' in fields && (
-                  <DatePicker
-                    control={control}
-                    name="endTime"
-                    defaultValue={fields.endTime ?? ""}
-                    disabled={!isActive}
-                    label="End Time"
-                  />
-                )}
-                {['EVENT', 'MEETING'].includes(ticket!.type) && 'location' in fields && (
-                  <Controller name="location" control={control} render={({ field }) => 
-                    <TextField label="Location" disabled={!isActive} {...field} />} />
-                )}
-                {['EVENT', 'MEETING'].includes(ticket!.type) && 'attendees' in fields && (
-                  <Stack gap={1} p={1}>
-                    <Typography><strong>Attendees</strong></Typography>
-                    {!fields.attendees || fields.attendees.length < 1 && 
-                      <Typography variant='body2' sx={{ opacity: 0.75}}>No attendees for this event</Typography>
-                    }
-                    {fields.attendees &&
-                      <Stack direction={'row'} flexWrap={'wrap'} gap={1}>
-                        {fields.attendees?.map((attendee, idx) => 
-                          <Chip key={idx} label={attendee} sx={{ maxWidth: 'fit-content'}}/>
-                        )}
+                <Stack spacing={2} py={1}>
+                  {ticketNotes?.map((note) => (
+                    <Stack key={note.id} direction="row" spacing={2} alignItems="end">
+                      <Avatar sx={{ width: 32, height: 32 }}>
+                        {note.author?.name?.[0] ?? "?"}
+                      </Avatar>
+                      <Stack spacing={0.5} flex={1}>
+                        <Stack direction="row" spacing={1} alignItems="center">
+                          <Typography variant="body2" fontWeight={600}>
+                            {note.author?.name ?? "Unknown"}
+                          </Typography>
+                        </Stack>
+                        <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
+                          {note.content}
+                        </Typography>
                       </Stack>
-                    }
-                    {isActive && <TextField placeholder="Add attendee" />}
+                      <Typography variant="caption" color="text.disabled">
+                        {new Date(note.createdAt).toLocaleString()}
+                      </Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+
+                {isActive && ( // still contemplating bordering add-comments feature with (Product TIERs) PBAC or RBAC
+                  <Stack spacing={1.5} mt={3}>
+                    <TextField
+                      multiline
+                      minRows={3}
+                      value={newNote}
+                      onChange={(e) => setNewNote(e.target.value)}
+                      placeholder="Write a comment…"
+                      fullWidth
+                    />
+                    <Stack direction="row" justifyContent="flex-end">
+                      <Button
+                        variant="contained"
+                        onClick={addNote}
+                        disabled={!newNote.trim()}
+                      >
+                        Add comment
+                      </Button>
+                    </Stack>
                   </Stack>
                 )}
-                {(ticket!.type !== 'EVENT') && (ticket!.type !== 'MEETING') && 'dueDate' in fields && fields.dueDate &&
-                  <DatePicker
-                    control={control}
-                    name="dueDate"
-                    defaultValue={fields.dueDate ?? ""}
-                    disabled={!isActive}
-                    label="Due Date"
-                  />
-                }
-                {isActive && <Button type="submit">Save Fields</Button>}
-              </Stack>
-            </AccordionDetails>
-          </Accordion>
+              </AccordionDetails>
+            </Accordion>
 
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography>Notes ({ticket!.notes?.length ?? 0})</Typography>
-            </AccordionSummary>
-            <Box px={2} my={-1}>
-              {(ticket!.notes?.length===0 || !ticket?.notes) && 
-                <Typography variant='caption' color='text.disabled'>You have no notes on this ticket</Typography>
-              }
-            </Box>
-            <AccordionDetails>
-              {/* Newer features will enforce a boundary with either user.userType, user.subscription or both */}
-              <List>
-                {ticket!.notes?.map((note, idx) => (
-                  <ListItem key={idx}>
-                    <ListItemText 
-                      primary={note.content} 
-                      secondary={new Date(note.createdAt).toLocaleString()} 
-                    />
-                  </ListItem>
-                ))}
-              </List>
-              {isActive && (
-                <Stack gap={1}>
-                  <TextField multiline value={newNote} onChange={(e) => 
-                    setNewNote(e.target.value)} placeholder="Add note" 
-                  />
-                  <Button onClick={addNote}>Add Note</Button>
-                </Stack>
-              )}
-            </AccordionDetails>
-          </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Typography>
+                  History ({ticketHistory?.length ?? 0})
+                </Typography>
+              </AccordionSummary>
 
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography>History ({ticket!.history?.length ?? 0})</Typography>
-            </AccordionSummary>
-            <Box px={2} my={-1}>
-              {(ticket!.history?.length===0 || !ticket?.history) && 
-                <Typography variant='caption' color='text.disabled'>You have no history on this ticket</Typography>
-              }
-            </Box>
-            <AccordionDetails>
-              <List>
-                {ticket!.history?.map((hist, idx) => (
-                  <ListItem key={idx}>
-                    <ListItemText
-                      primary={hist.action}
-                      secondary={`${hist.oldValue ? `From: ${hist.oldValue} ` : ''} 
-                        To: ${hist.newValue ?? ''} - ${new Date(hist.createdAt).toLocaleString()}`}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-              {isActive && isTeamAdmin && (
-                <Stack gap={1}>
-                  <TextField value={newHistoryAction} onChange={(e) => 
-                    setNewHistoryAction(e.target.value)} placeholder="Log action" 
-                  />
-                  <Button onClick={addHistory}>Log History</Button>
+              <AccordionDetails sx={{ pt: 1 }}>
+                {!ticketHistory?.length && (
+                  <Typography
+                    variant="caption"
+                    color="text.disabled"
+                    sx={{ px: 1, pb: 2, display: "block" }}
+                  >
+                    No history recorded for this ticket.
+                  </Typography>
+                )}
+
+                <Stack spacing={1.5}>
+                  {ticketHistory?.map((hist) => (
+                    <Stack
+                      key={hist.id}
+                      direction="row"
+                      spacing={2}
+                      alignItems="flex-start"
+                    >
+                      <Box
+                        sx={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: "50%",
+                          bgcolor: "text.disabled",
+                        }}
+                      />
+
+                      <Stack spacing={0.25} flex={1}>
+                        <Typography variant="body2" fontWeight={500}>
+                          {hist.action}
+                        </Typography>
+
+                        {(hist.oldValue || hist.newValue) && (
+                          <Typography variant="caption" color="text.secondary">
+                            {hist.oldValue && `From: ${hist.oldValue} `}
+                            {hist.newValue && `→ To: ${hist.newValue}`}
+                          </Typography>
+                        )}
+
+                        <Stack direction="row" spacing={1}>
+                          <Typography variant="caption" color="text.disabled">
+                            {new Date(hist.createdAt).toLocaleString()}
+                          </Typography>
+
+                          {hist.performedBy && (
+                            <Typography variant="caption" color="text.disabled">
+                              • {hist.performedBy.name}
+                            </Typography>
+                          )}
+                        </Stack>
+                      </Stack>
+                    </Stack>
+                  ))}
                 </Stack>
-              )}
-            </AccordionDetails>
-          </Accordion>
-        </form>
-      </Box>
+
+                {isActive && isTeamAdmin && (
+                  <Stack spacing={1.5} mt={3}>
+                    <TextField
+                      name='action'
+                      size="small"
+                      value={newHistoryAction.formfields.action}
+                      onChange={(e) => setNewHistoryAction({ ...newHistoryAction })}
+                      placeholder="Log an action (e.g. Status changed to Closed)"
+                      fullWidth
+                    />
+                    <TextField
+                      name='oldValue'
+                      size="small"
+                      value={newHistoryAction.formfields.oldValue}
+                      onChange={(e) => setNewHistoryAction({ ...newHistoryAction})}
+                      placeholder="Log an old value for history"
+                      fullWidth
+                    />
+                    <TextField
+                      size="small"
+                      value={newHistoryAction.formfields.newValue}
+                      onChange={(e) => setNewHistoryAction({ ...newHistoryAction })}
+                      placeholder="Log a new value for history)"
+                      fullWidth
+                    />
+                    <Stack direction="row" justifyContent="flex-end">
+                      <Button
+                        variant="outlined"
+                        onClick={addHistory}
+                        disabled={!newHistoryAction.formfields.action.trim()}
+                      >
+                        Log history
+                      </Button>
+                    </Stack>
+                  </Stack>
+                )}
+              </AccordionDetails>
+            </Accordion>
+          </form>
+        </Box>
+      }
     </Drawer>
   );
 }

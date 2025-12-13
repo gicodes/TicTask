@@ -1,7 +1,7 @@
 import { BlogCardProps, ChangeLogProps, FAQProps } from "./resources";
 import { Subscription } from "./subscription";
 import { Role, User } from "./users";
-import { Ticket } from "./ticket";
+import { Ticket, TicketHistory, TicketNote } from "./ticket";
 
 export interface VerifyEmailRequest {
   email: string;
@@ -83,6 +83,14 @@ export interface TicketsRes {
   message: string;
   ticket: Ticket;
   tickets: Ticket[];
+}
+
+export interface TicketRes {
+  ok: boolean
+  data?: unknown;
+  note?: TicketNote;
+  notes?: TicketNote[];
+  history?: TicketHistory[];
 }
 
 export interface UserProfileRes {

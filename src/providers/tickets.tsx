@@ -5,14 +5,14 @@ import {
   useCallback, 
   useContext, 
   useEffect, 
+  useState,
   useRef, 
-  useState 
 } from "react";
 import { useAuth } from "./auth";
 import { AppEvents } from "./events";
-import { TicketsRes } from "@/types/axios";
-import { apiGet, apiPatch, apiPost } from "@/lib/axios";
-import { Ticket, priorityOrder, statusOrder } from "@/types/ticket";
+import { TicketsRes, TicketRes } from "@/types/axios";
+import { apiGet, apiPatch, apiPost, apiPut } from "@/lib/axios";
+import { Ticket, TicketHistory, TicketNote, priorityOrder, statusOrder } from "@/types/ticket";
 
 export const sortTickets = (list: Ticket[]): Ticket[] => {
   if (!Array.isArray(list)) return [];
@@ -22,10 +22,8 @@ export const sortTickets = (list: Ticket[]): Ticket[] => {
     const sB = statusOrder[b.status] ?? 999;
 
     if (sA !== sB) return sA - sB;
-
     if (!a.dueDate && b.dueDate) return 1;
     if (a.dueDate && !b.dueDate) return -1;
-
     if (a.dueDate && b.dueDate) {
       const diff =
         new Date(a.dueDate).getTime() -
@@ -36,6 +34,7 @@ export const sortTickets = (list: Ticket[]): Ticket[] => {
 
     const pA = priorityOrder[a.priority ?? "MEDIUM"];
     const pB = priorityOrder[b.priority ?? "MEDIUM"];
+
     if (pA !== pB) return pA - pB;
 
     return (
@@ -50,9 +49,13 @@ type TicketContextType = {
   loading: boolean;
   selectedTicket: Ticket | null;
   fetchTickets: (force?: boolean) => Promise<void>;
+  fetchTicketNote: (ticketId: number) => Promise<TicketNote[] | undefined>;
+  fetchTicketHistory: (ticketId: number) => Promise<TicketHistory[] | undefined>;
   selectTicket: (ticketId: string | number | null) => void;
   clearSelection: () => void;
   createTicket: (payload: Partial<Ticket>) => Promise<Ticket | undefined>;
+  addTicketComment: (ticketId: number, content: string) => Promise<TicketRes | undefined>;
+  addTicketHistory: (ticketId: number, history: Partial<TicketHistory>) => Promise<TicketRes | undefined>;
   updateTicket: (ticketId: number, updates: Partial<Ticket>) => Promise<Ticket | undefined>;
   deleteTicket: (id: number | string) => void;
 };
@@ -111,13 +114,38 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
       AppEvents.emit("ticket:created", { 
         ticketId: ticket.id, 
         type: ticket.type, 
-        createdBy: ticket.createdById===user?.id ? "you" : (ticket.createdBy?.name?.split(" ")[0] || 'team admin'), 
+        createdBy: ticket.createdById===user?.id ? "you" : 
+          (ticket.createdBy?.name?.split(" ")[0] || 'team'), 
         title: ticket.title 
       });
 
       return ticket;
     } catch (err) {
       console.error("Create failed:", err);
+    }
+  };
+
+  const fetchTicketNote = async (ticketId: number) => {
+    try {
+      const res: TicketRes = await apiGet(`/tickets/${ticketId}/get-comment`);
+
+      if (!res.ok) return;
+
+      return res.notes;
+    } catch (err) {
+      console.error("Fetch failed:", err);
+    }
+  };
+
+  const fetchTicketHistory = async (ticketId: number) => {
+    try {
+      const res: TicketRes = await apiGet(`/tickets/${ticketId}/get-history`);
+      
+      if (!res.ok) return;
+      
+      return res.history
+    } catch (err) {
+      console.error("Fetch failed:", err);
     }
   };
 
@@ -146,11 +174,45 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
         });
       }
 
-      if (updates.status === "CLOSED") 
+      if (updates.status === "CLOSED") {
         AppEvents.emit("ticket:closed", { 
           ticketId,  
           closedBy: user?.id 
         });
+      }
+
+      return updated;
+    } catch (err) {
+      console.error("Update failed:", err);
+    }
+  };
+
+  const addTicketComment = async (ticketId: number, content: string) => {
+    try {
+      const updated: TicketRes = await apiPut(`/tickets/${ticketId}/add-comment`, { 
+        content, 
+        userId: user?.id
+      });
+
+      AppEvents.emit("ticket:comment", {
+        ticketId,
+        commentId: (updated as TicketRes).note?.id ?? '',
+        text: content,
+        author: user?.id ?? ''
+      });
+
+      return updated;
+    } catch (err) {
+      console.error("Update failed:", err);
+    }
+  };
+
+  const addTicketHistory = async (ticketId: number, history: Partial<TicketHistory>) => {
+    try {
+      const updated: TicketRes = await apiPut(`/tickets/${ticketId}/add-history`, {
+        history, 
+        userId: user?.id
+      });
 
       return updated;
     } catch (err) {
@@ -183,6 +245,10 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
         selectTicket,
         clearSelection,
         createTicket,
+        fetchTicketNote,
+        fetchTicketHistory,
+        addTicketComment,
+        addTicketHistory,
         updateTicket,
         deleteTicket,
       }}

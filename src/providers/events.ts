@@ -6,7 +6,7 @@ export type TicketPayloads = {
   assigned: { ticketId: number; assignee?: string | number; assignedBy?: string | number };
   resolved: { ticketId: number; resolvedBy?: string | number };
   closed: { ticketId: number, closedBy?: string | number};
-  comment: { ticketId: number; commentId: string; text: string; author: string | number };
+  comment: { ticketId: number; commentId: string | number; text: string; author: string | number };
   statusChanged: { ticketId: number; from: string; to: string; changedBy?: string };
 };
 

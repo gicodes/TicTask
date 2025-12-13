@@ -122,6 +122,12 @@ export enum Ticket_Type {
   DOCUMENTATION = 'DOCUMENTATION',
 }
 
+export enum Ticket_Impact {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+}
+
 export enum Ticket_Priority {
   LOW = "LOW",
   MEDIUM = "MEDIUM",

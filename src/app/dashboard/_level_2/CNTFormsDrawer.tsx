@@ -45,11 +45,12 @@ export default function TicketTaskCreateFormsDrawer({
   onClose, 
   onCreated, 
 }: TICKET_FORM_PROPS ) {
+
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const { createTicket } = useTickets();
 
-  const [submitting, setSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
   const typeSelectorRef = useRef<HTMLDivElement>(null);
@@ -100,13 +101,13 @@ export default function TicketTaskCreateFormsDrawer({
 
   const onSubmit = async (values: FieldValues) => {
     setErr(null);
-    setSubmitting(true);
+    setIsSubmitting(true);
 
     try {
       if (task && (itemType === 'MEETING' || itemType==='EVENT')) {
         if (!values.dueDate && !values.startTime) {
           setErr('You must add a due date or start time for a planner task');
-          setSubmitting(false);
+          setIsSubmitting(false);
           return;
         }
       }
@@ -151,15 +152,18 @@ export default function TicketTaskCreateFormsDrawer({
 
       methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
       onClose();
-      
     } catch (e) {
       const message = (e instanceof Error) ? e.message : 'Something went wrong. Please try again.';
-      console.error(e);
       setErr(message);
     } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
   };
+
+  const cancelCNT = () => { 
+    methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate)); 
+    onClose(); 
+  }
 
   return (
     <Drawer 
@@ -171,121 +175,124 @@ export default function TicketTaskCreateFormsDrawer({
       }}
     >
       <Toolbar />
-      <Box display="grid" gap={2}>
-        <Card 
-          sx={{
-            px: 2,
-            pt: 2,
-            pb: 1.5,
-            borderRadius: 0,
-          }}
-        >
-          <Box 
-            gap={1}  
-            alignItems={'center'}
-            justifyContent={'space-between'}
-            display={{ xs: 'block', sm: 'flex' }}
+      { isSubmitting ? 
+        <Typography textAlign={'center'} py={6}> Submitting....</Typography> 
+        :
+        <Box display="grid" gap={2}>
+          <Card 
+            sx={{
+              px: 2,
+              pt: 2,
+              pb: 1.5,
+              borderRadius: 0,
+            }}
           >
-            <Stack mr={1}>
-              <Typography 
-                variant="h6" 
-                fontWeight={600}
-                minWidth={{ sm: 200}}
-                textAlign={{ xs: 'center', sm: 'left'}} 
-              >
-                Create new {task ? 'task' : 'ticket'}
-              </Typography>
-              <Typography 
-                variant='caption' 
-                pb={{ xs: 2, md: 0}}
-                sx={{ opacity: 0.5 }}
-                textAlign={{ xs: 'center', sm: 'left'}} 
-              >
-                Choose from {!task ? 'General, Invoice, etc' : 'Task, Event, etc'}
-              </Typography>
-            </Stack>
-            
-            <Box
-              ref={typeSelectorRef}
-              width={'100%'}
-              sx={{
-                animation: 'none',
-                '& .MuiOutlinedInput-root': {
-                  transition: 'all 0.3s ease',
-                },
-              }}
-              className='highlight-glow'
-              >
-              <TextField
-                select
-                label="Type"
-                value={String(itemType)}
-                onChange={(e) => setItemType(e.target.value as LocalType)}
-                fullWidth
-                slotProps={{
-                  input: {
-                    sx: {
-                      fontWeight: 600,
-                      backgroundColor: 'background.paper',
-                    },
+            <Box 
+              gap={1}  
+              alignItems={'center'}
+              justifyContent={'space-between'}
+              display={{ xs: 'block', sm: 'flex' }}
+            >
+              <Stack mr={1}>
+                <Typography 
+                  variant="h6" 
+                  fontWeight={600}
+                  minWidth={{ sm: 200}}
+                  textAlign={{ xs: 'center', sm: 'left'}} 
+                >
+                  Create new {task ? 'task' : 'ticket'}
+                </Typography>
+                <Typography 
+                  variant='caption' 
+                  pb={{ xs: 2, md: 0}}
+                  sx={{ opacity: 0.5 }}
+                  textAlign={{ xs: 'center', sm: 'left'}} 
+                >
+                  Choose from {!task ? 'General, Invoice, etc' : 'Task, Event, etc'}
+                </Typography>
+              </Stack>
+              
+              <Box
+                ref={typeSelectorRef}
+                width={'100%'}
+                sx={{
+                  animation: 'none',
+                  '& .MuiOutlinedInput-root': {
+                    transition: 'all 0.3s ease',
                   },
                 }}
-              >
-                {Object.keys(registryForms).map((k) => (
-                  <MenuItem key={k} value={k}>
-                    {k === 'FEATURE_REQUEST' ? 'Feature' : (k[0]+k.slice(1).toLowerCase())}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Box>
-          </Box>
-        </Card>
-        
-        <Box px={3}>
-          <FormProvider {...methods}>
-            <form 
-              key={String(itemType)} 
-              onSubmit={methods.handleSubmit(onSubmit)}
-            >
-              <FormComponent control={methods.control} task={task} />
-              <Stack gap={2} py={3} px={{ xs: 4, sm: 5, md: 6, }}>
-                <Button 
-                  fullWidth 
-                  type="submit"
-                  tone='action'
-                  size='large'
-                  loading={submitting}
+                className='highlight-glow'
                 >
-                  Create
-                </Button>
-                <Button 
-                  tone="warm" 
-                  onClick={() => { 
-                    methods.reset(registryDefaults[itemType as 
-                      keyof typeof registryDefaults](defaultDueDate)); 
-                    onClose(); 
+                <TextField
+                  select
+                  label="Type"
+                  value={String(itemType)}
+                  onChange={(e) => setItemType(e.target.value as LocalType)}
+                  fullWidth
+                  slotProps={{
+                    input: {
+                      sx: {
+                        fontWeight: 600,
+                        backgroundColor: 'background.paper',
+                      },
+                    },
                   }}
-                  sx={{ minWidth: 222, margin: '0 auto'}}
                 >
-                  Cancel
-                </Button>
-              </Stack>
-            </form>
-          </FormProvider>
-        </Box>
-        
-        { err && 
-          <Alert severity="error" sx={{ mt: 2 }}>
-            {err}
-          </Alert>
-        }
-        { methods.formState.errors && Object.keys(
-          methods.formState.errors).length > 0 && (
-          <Alert severity="warning" sx={{ mt: 2 }}>
-            Please fix the errors above
-          </Alert>
-        )}
+                  {Object.keys(registryForms).map((k) => (
+                    <MenuItem key={k} value={k}>
+                      {k === 'FEATURE_REQUEST' ? 'Feature' : (k[0]+k.slice(1).toLowerCase())}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
+            </Box>
+          </Card>
+          
+          { isSubmitting ? <Typography textAlign={'center'} py={2}>Submitting...</Typography> :
+            <Box px={3}>
+              <FormProvider {...methods}>
+                <form 
+                  key={String(itemType)} 
+                  onSubmit={methods.handleSubmit(onSubmit)}
+                >
+                  <FormComponent control={methods.control} task={task} />
+                  <Stack gap={2} py={3} px={{ xs: 4, sm: 5, md: 6, }}>
+                    <Button 
+                      fullWidth 
+                      type="submit"
+                      tone='action'
+                      size='large'
+                      loading={isSubmitting}
+                    >
+                      Create
+                    </Button>
+                    <Button 
+                      tone="warm" 
+                      onClick={cancelCNT}
+                      sx={{ minWidth: 222, margin: '0 auto'}}
+                    >
+                      Cancel
+                    </Button>
+                  </Stack>
+                </form>
+              </FormProvider>
+            </Box>
+          }
+          
+          { err && 
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {err}
+            </Alert>
+          }
+          { methods.formState.errors && Object.keys(
+            methods.formState.errors).length > 0 && (
+              <Alert severity="warning" sx={{ mt: 2 }}>
+                Please fix the errors above
+              </Alert>
+            )
+          }
       </Box>
+      }
     </Drawer>
   );
 }

@@ -40,11 +40,11 @@ export default function TicketDetailDrawer({
 
   const { user } = useAuth();
   const { selectedTicket: ticket, selectTicket, updateTicket } = useTickets();
-  const { reset, getValues } = useForm<FormValues>({ defaultValues: { dueDate: '' } });
+  const { reset } = useForm<FormValues>({ defaultValues: { dueDate: '' } });
   const [assignee, setAssignee] = useState<number | null>();
   const [extDrawerOpen, setExtDrawerOpen] = useState(false);
   const [moreOptions, setMoreOptions] = useState(false);
-  const [note, setNote] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     selectTicket(ticketId ?? null);
@@ -57,20 +57,20 @@ export default function TicketDetailDrawer({
   }, [ticket, reset]);
 
   const save = async () => {
-    if (!ticket) return;
+    try {
+      setIsSubmitting(true);
+      if (!ticket) return;
 
-    const { dueDate } = getValues();
+      await updateTicket(Number(ticket.id), {...(assignee && { assignedToId: assignee })});
+      setIsSubmitting(false);
 
-    await updateTicket(Number(ticket.id), {
-      ...(dueDate && { dueDate: new Date(dueDate).toISOString() }),
-      ...(assignee && { assignedToId: assignee }),
-      ...(note && { note }),
-    });
-
-    onUpdate?.();
-    setNote('');
-    setAssignee(null);
-    onClose();
+      onUpdate?.();
+      setAssignee(null);
+      onClose();
+    } catch {
+      console.warn("Failed to update ticket at Mini-workspace");
+      setIsSubmitting(false);
+    }
   };
 
   const toggleMoreOptions = () => setMoreOptions(!moreOptions);
@@ -229,31 +229,45 @@ export default function TicketDetailDrawer({
               </Stack>
 
               <Stack direction="row" flexWrap="wrap" gap={1}>
-                {'severity' in fields && fields.severity && <Chip label={`Severity: ${fields.severity}`} size="small" />}
-                {'impact' in fields && fields.impact && <Chip label={`Impact: ${fields.impact}`} size="small" />}
-                {'amount' in fields && fields.amount > 0 && <Chip
-                  label={`${fields.amount.toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })} ${fields.currency || "USD"}`}
-                  size="small"
-                  color="success"
-                  variant="outlined"
-                />}
-                {'extClient' in fields && <Chip label={`${fields.extClient}`} size="small" color="info"/>}
-                {'estimatedTimeHours' in fields && fields.estimatedTimeHours && <Chip label={`${fields.estimatedTimeHours}h est.`} size="small" />}
-                {'subtasks' in fields && fields.subtasks?.length && <Chip label={`${fields.subtasks.length} subtasks`} size="small" />}
-                {'checklist' in fields && fields.checklist?.length && <Chip label={`${fields.checklist.length} checklist items`} size="small" />}
-                {'attendees' in fields && (fields.attendees && fields.attendees.length > 0) && <Chip label={`${fields.attendees.length} attendees`} size="small" />}
-                {'attachments' in fields && fields.attachments?.length && <Chip label={`${fields.attachments.length} attachments`} size="small" />}
-                {'steps' in fields && fields.steps && <Chip label="Steps provided" size="small" />}
-                {'recurrence' in fields && fields.recurrence && <Chip label={`Recurs: ${fields.recurrence}`} size="small" />}
-                {'location' in fields && fields.location && <Chip label={`Location: ${fields.location}`} size="small" />}
+                {'severity' in fields && fields.severity && 
+                  <Chip label={`Severity: ${fields.severity}`} size="small" />}
+                {'impact' in fields && fields.impact && 
+                  <Chip label={`Impact: ${fields.impact}`} size="small" />}
+                {'amount' in fields && fields.amount > 0 && 
+                  <Chip size="small" color="success" variant="outlined"
+                    label={`${fields.amount.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })} ${fields.currency || "USD"}`}
+                  />
+                }
+                {'extClient' in fields && 
+                  <Chip label={`${fields.extClient}`} size="small" color="info"/>}
+                {'estimatedTimeHours' in fields && fields.estimatedTimeHours && 
+                  <Chip label={`${fields.estimatedTimeHours}h est.`} size="small" />}
+                {'subtasks' in fields && fields.subtasks?.length && 
+                  <Chip label={`${fields.subtasks.length} subtasks`} size="small" />}
+                {'checklist' in fields && fields.checklist?.length && 
+                  <Chip label={`${fields.checklist.length} checklist items`} size="small" />}
+                {'attendees' in fields && (fields.attendees && fields.attendees.length > 0) && 
+                  <Chip label={`${fields.attendees.length} attendees`} size="small" />}
+                {'attachments' in fields && fields.attachments?.length && 
+                  <Chip label={`${fields.attachments.length} attachments`} size="small" />}
+                {'steps' in fields && fields.steps && 
+                  <Chip label="Steps provided" size="small" />}
+                {'recurrence' in fields && fields.recurrence && 
+                  <Chip label={`Recurs: ${fields.recurrence}`} size="small" />}
+                {'location' in fields && fields.location && 
+                  <Chip label={`Location: ${fields.location}`} size="small" />}
                 <Stack direction={'row'} flexWrap="wrap" gap={1} alignItems={'end'}>
-                  {'startTime' in fields && fields.startTime && <Chip label={`Start: ${new Date(fields.startTime).toLocaleTimeString()}`} size="small" />}
-                  {'startTime' in fields && fields.startTime && <Typography variant='body2' fontSize={12}>{new Date(fields.startTime).toDateString()}</Typography>}
-                  {'endTime' in fields && fields.endTime && <Chip label={`End: ${new Date(fields.endTime).toLocaleTimeString()}`} size="small" />}
-                  {'endTime' in fields && fields.endTime && <Typography variant='body2' fontSize={12}>{new Date(fields.endTime).toDateString()}</Typography>}
+                  {'startTime' in fields && fields.startTime && 
+                    <Chip label={`Start: ${new Date(fields.startTime).toLocaleTimeString()}`} size="small" />}
+                  {'startTime' in fields && fields.startTime && 
+                    <Typography variant='body2' fontSize={12}>{new Date(fields.startTime).toDateString()}</Typography>}
+                  {'endTime' in fields && fields.endTime && 
+                    <Chip label={`End: ${new Date(fields.endTime).toLocaleTimeString()}`} size="small" />}
+                  {'endTime' in fields && fields.endTime && 
+                    <Typography variant='body2' fontSize={12}>{new Date(fields.endTime).toDateString()}</Typography>}
                 </Stack>
               </Stack>
 
@@ -300,43 +314,29 @@ export default function TicketDetailDrawer({
 
             {isActive && (
               <Box mt={2} display="grid" gap={1}>
-                {isTeamAdmin && (
-                  <>
-                    <Typography sx={{ opacity: 0.5 }} variant="body2">
-                      Add new assignee
-                    </Typography>
-                    <TextField
-                      type="text"
-                      value={assignee}
-                      onChange={(e) => setAssignee(Number(e.target.value))}
-                      placeholder="Assign to team (member email)"
-                      sx={{ minWidth: 250 }}
-                    />
-                  </>
-                )}
-                <Typography sx={{ opacity: 0.5 }} variant="body2">
-                  Add note
-                </Typography>
-                <TextField
-                  multiline
-                  minRows={3}
-                  value={note}
-                  fullWidth
-                  onChange={(e) => setNote(e.target.value)}
-                  placeholder="Write a note..."
-                />
+                { isTeamAdmin && <>
+                  <Typography sx={{ opacity: 0.5 }} variant="body2"> Add new assignee </Typography>
+                  <TextField
+                    type="text"
+                    value={assignee}
+                    onChange={(e) => setAssignee(Number(e.target.value))}
+                    placeholder="Assign to team (member email)"
+                    sx={{ minWidth: 250 }}
+                  />
+                </>
+              }
               </Box>
             )}
           </Box>
         </Box>
-
         <Divider sx={{ mt: 5, border: '5px solid var(--disabled)' }} />
         <Stack p={3} direction={{ xs: 'column', sm: 'row' }} spacing={3}>
-          {isBusinessOrTeam && 
-            isActive && 
-              (note || assignee) && 
-                <Button onClick={save}>Save Changes</Button>
-          }
+          { isSubmitting ? <Typography py={2}>Submitting...</Typography> :
+            ( isBusinessOrTeam && 
+              isActive && 
+              assignee && 
+            <Button onClick={save}>Save Changes</Button>
+          )}
           <Button 
             onClick={onClose} 
             tone="inverted" 
