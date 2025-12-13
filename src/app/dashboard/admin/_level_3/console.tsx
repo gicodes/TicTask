@@ -86,7 +86,7 @@ export default function AdminOverviewPage() {
   } = data.adminOverview ?? {};
 
   return (
-    <Container maxWidth="xl" sx={{ pt: 3, pb: 6 }}>
+    <Container maxWidth="xl" sx={{ py: { xs: 3, md: 4} }}>
       <Box
         borderBottom={'1px solid var(--disabled)'}
         display={{ xs: 'grid', sm: "flex"}}

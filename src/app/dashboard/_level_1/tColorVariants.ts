@@ -59,6 +59,8 @@ export const getTypeColor = (type: string) => {
       return 'var(--special)';
     case 'SUPPORT': 
       return 'var(--success)';
+    case 'PERFORMANCE': 
+      return 'var(--success)'
     case 'EVENT' : 
       return '#0288d1';
     case 'MEETING' : 

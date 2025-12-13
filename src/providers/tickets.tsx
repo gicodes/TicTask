@@ -198,7 +198,7 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
         ticketId,
         commentId: (updated as TicketRes).note?.id ?? '',
         text: content,
-        author: user?.id ?? ''
+        author: updated.note?.authorId===user?.id ? 'you' : updated.note?.authorId ?? 'unknown'
       });
 
       return updated;

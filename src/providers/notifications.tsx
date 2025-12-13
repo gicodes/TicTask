@@ -8,6 +8,7 @@ import React, {
   useCallback,
 } from "react";
 import { AppEvents } from "./events";
+import { useAuth } from "./auth";
 
 export type NotificationType = "info" | "success" | "warning" | "error";
 
@@ -106,7 +107,7 @@ export const NotificationsProvider = ({
   children: React.ReactNode;
 }) => {
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
-
+  const { user } = useAuth();
   const webhookForward = false;
   const webhookEndpoint = "/api/user/events";
 
@@ -195,7 +196,7 @@ export const NotificationsProvider = ({
     const ticketComment: EventCallback<"ticket:comment"> = (p) => {
       addNotification({
         title: "New comment",
-        message: `New comment on ${p.ticketId} by ${p.author}`,
+        message: `New comment on ticket ${p.ticketId} by ${p.author===user?.id ? 'you' : p.author}`,
         type: "info",
         meta: { channel: "ticket", event: "comment", ...p },
       });

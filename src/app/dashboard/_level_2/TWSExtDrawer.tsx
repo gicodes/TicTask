@@ -345,21 +345,21 @@ export default function TWSExtDrawer({
                 )}
                 <Stack spacing={2} py={1}>
                   {ticketNotes?.map((note) => (
-                    <Stack key={note.id} direction="row" spacing={2} alignItems="end">
-                      <Avatar sx={{ width: 32, height: 32 }}>
-                        {note.author?.name?.[0] ?? "?"}
-                      </Avatar>
-                      <Stack spacing={0.5} flex={1}>
-                        <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack key={note.id} direction="row" spacing={2} alignItems="end" justifyContent={'space-between'}>
+                      <Stack direction="row" spacing={1.5} alignItems={'center'}>
+                        <Avatar sx={{ width: 32, height: 32 }}>
+                          {note.author?.name?.[0] ?? "?"}
+                        </Avatar>
+                        <Stack alignItems="flex-start" minWidth={150} width={'100%'}>
                           <Typography variant="body2" fontWeight={600}>
                             {note.author?.name ?? "Unknown"}
                           </Typography>
+                          <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
+                            {note.content}
+                          </Typography>
                         </Stack>
-                        <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
-                          {note.content}
-                        </Typography>
                       </Stack>
-                      <Typography variant="caption" color="text.disabled">
+                      <Typography variant="caption" color="text.disabled" minWidth={80}>
                         {new Date(note.createdAt).toLocaleString()}
                       </Typography>
                     </Stack>
