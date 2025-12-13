@@ -172,7 +172,7 @@ export default function TWSExtDrawer({
 
       <Divider />
       { isUpdating ? <Typography textAlign={'center'} py={6}> Updating.... </Typography> :
-        <Box p={3} display="grid" gap={3}>
+        <Box py={2} px={{ xs: 1, md: 2 }} display="grid" gap={3}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Accordion defaultExpanded>
               <AccordionSummary expandIcon={<ExpandMore />}>
