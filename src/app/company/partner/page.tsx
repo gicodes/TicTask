@@ -8,11 +8,11 @@ export const metadata = {
     title: "TicTask Partner Program — Build, Integrate, and Grow",
     description:
       "Partner with TicTask to access APIs, co-marketing, and developer tools that scale with your business.",
-    url: "https://tictask.com/company/partner",
+    url: "https://tictask.org/company/partner",
     siteName: "TicTask",
     images: [
       {
-        url: "https://tictask.com/og/partner.png",
+        url: "https://tictask.org/og/partner.png",
         width: 1200,
         height: 630,
         alt: "TicTask Partner Program",
@@ -26,7 +26,7 @@ export const metadata = {
     title: "TicTask Partner Program — Build, Integrate, and Grow",
     description:
       "Integrate with TicTask, collaborate with our team, and grow your business with us.",
-    images: ["https://tictask.com/og/partner.png"],
+    images: ["https://tictask.org/og/partner.png"],
   },
 };
 

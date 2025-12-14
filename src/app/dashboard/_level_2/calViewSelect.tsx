@@ -1,3 +1,4 @@
+import { View } from 'react-big-calendar';
 import {
   FormControl,
   InputLabel,
@@ -8,9 +9,14 @@ import {
   IconButton,
   SelectChangeEvent,
 } from '@mui/material';
-import { InternalView } from './_calendar';
 import { useAlert } from '@/providers/alert';
 import { Calendar, CalendarDays, Clock } from 'lucide-react';
+
+export type InternalView = View | 'thisWeek';
+
+const capitalizeView = (v: string) =>
+  v.replace('_', ' ').replace(/\b\w/g, (c) => 
+    c.toUpperCase()).replace('ThisWeek', 'This week');
 
 const viewIcon = (v: InternalView) => {
   switch (v) {
@@ -24,31 +30,35 @@ const viewIcon = (v: InternalView) => {
   }
 };
 
-const capitalizeView = (v: string) =>
-  v.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase()).replace('ThisWeek', 'This Week');
 
 export default function ViewSelect({
-  internalView,
   onChange,
   hasThisWeek,
+  internalView,
 }: {
+  hasThisWeek: boolean;
   internalView: InternalView;
   onChange: (val: InternalView) => void;
-  hasThisWeek: boolean;
 }) {
   const { showAlert } = useAlert();
   const handleSelect = (e: SelectChangeEvent<InternalView>) => {
-  const newView = e.target.value as InternalView;
+    const newView = e.target.value as InternalView;
 
-  onChange(newView);
-  showAlert(`Calendar view changed to ${newView}. Set as default`, "success");
-};
-
+    onChange(newView);
+    showAlert(`Calendar view changed to ${newView}. Set as default`, "success");
+  };
 
   return (
     <FormControl 
       size="small" 
-      sx={{ minWidth: { xs: 120, sm: 150, md: 180, lg: 200 } }}
+      sx={{ 
+        minWidth: { 
+          xs: 120, 
+          sm: 150, 
+          md: 180, 
+          lg: 200 
+        } 
+      }}
     >
       <InputLabel id="view-select-label">Calendar View</InputLabel>
       <Select
@@ -57,11 +67,17 @@ export default function ViewSelect({
         label="Calendar View"
         onChange={handleSelect}
         renderValue={(selected) => (
-          <Stack direction="row" alignItems="center" gap={3} px={{xs: 1, sm: 0}}>
-              <IconButton sx={{ display: { xs: 'none', sm: 'grid' } }}>
-                {viewIcon(selected)}
-              </IconButton>
-            <Typography variant="body1">{capitalizeView(selected)}</Typography>
+          <Stack 
+            direction="row" 
+            alignItems="center" 
+            gap={{ xs: 0, sm: 3}}
+          >
+            <IconButton sx={{ display: { xs: 'none', sm: 'grid' } }}>
+              {viewIcon(selected)}
+            </IconButton>
+            <Typography variant="body1">
+              {capitalizeView(selected)}
+            </Typography>
           </Stack>
         )}
       >
@@ -70,10 +86,10 @@ export default function ViewSelect({
           .map((v) => (
             <MenuItem key={v} value={v!}>
               <Stack direction="row" alignItems="center" gap={3}>
-                <IconButton sx={{ display: { xs: 'none', sm: 'grid' } }}>
+                <IconButton sx={{ display: { xs: 'none', sm: 'grid' }}}>
                   {viewIcon(v as InternalView)}
                 </IconButton>
-                <span>{capitalizeView(v!)}</span>
+                <span>{capitalizeView(v!)}</span>{"  "}
               </Stack>
             </MenuItem>
           ))}

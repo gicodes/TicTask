@@ -5,7 +5,7 @@
 If you discover a security vulnerability in TicTask, please report it privately.
 
 
-Email: security@tictask.com
+Email: security@tictask.org
 
 
 We will acknowledge receipt within 48 hours and provide a timeline for a fix.

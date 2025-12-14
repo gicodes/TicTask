@@ -228,7 +228,7 @@ export default function TicketDetailDrawer({
                 </Box>
               </Stack>
 
-              <Stack direction="row" flexWrap="wrap" gap={1} my={1}>
+              <Stack direction="row" flexWrap="wrap" gap={1} pb={1} pt={2}>
                 {'severity' in fields && fields.severity && 
                   <Chip label={`Severity: ${fields.severity}`} size="small" />}
                 {'impact' in fields && fields.impact && 
@@ -239,7 +239,7 @@ export default function TicketDetailDrawer({
                       {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${fields.currency || "USD"}`}
                   />
                 }
-                {'extClient' in fields && 
+                {'extClient' in fields && fields.extClient &&
                   <Chip label={`${fields.extClient}`} size="small" color="info"/>}
                 {'estimatedTimeHours' in fields && fields.estimatedTimeHours && 
                   <Chip label={`${fields.estimatedTimeHours}h est.`} size="small" />}

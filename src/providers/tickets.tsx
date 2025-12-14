@@ -107,6 +107,9 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
   const createTicket = async (payload: Partial<Ticket>) => {
     try {
       const created: TicketsRes = await apiPost(`/tickets`, payload);
+
+      if (!created.ok) return;
+
       const ticket = created.ticket;
       
       setTickets(prev => sortTickets([...prev, ticket]));
@@ -151,17 +154,19 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
 
   const updateTicket = async (ticketId: number, updates: Partial<Ticket>) => {
     try {
-      const updated: Ticket = await apiPatch(`/tickets/${ticketId}`, updates);
-      setTickets(prev => sortTickets(prev.map(t => t.id === updated.id ? updated : t)));
+      const updated: TicketsRes = await apiPatch(`/tickets/${ticketId}`, updates);
+
+      if (!updated.ok)
+      setTickets(prev => sortTickets(prev.map(t => t.id === updated?.ticket?.id ? updated.ticket : t)));
       
-      if (selectedTicket?.id === updated.id) {
-        setSelectedTicket(updated);
+      if (selectedTicket?.id === updated.ticket.id) {
+        setSelectedTicket(updated.ticket);
       }
 
       AppEvents.emit("ticket:updated", {
         ticketId,
-        type: updated.type,
-        status: updated.status!,
+        type: updated.ticket.type,
+        status: updated.ticket.status!,
         updatedBy: user?.id,
         changes: updates,
       });
@@ -181,7 +186,7 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
         });
       }
 
-      return updated;
+      return updated.ticket;
     } catch (err) {
       console.error("Update failed:", err);
     }

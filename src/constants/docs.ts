@@ -103,7 +103,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     "The dashboard structures your workspace into simple and user-friendly layout, comprising of dashboard header, menu pages and an overview page i.e. Tickets, Settings, etc.", 
     "Tickets offer two (2) standard workspace views: Board and List.", 
     { type: "outline", content: "BOARD"}, { type: 'inline', content: ' organizes your tickets in rows of ticket status. Each status column showing tickets in detailed card'}, '',
-    { type: "badge", content: "Upcoming"}, { type: "badge", content: "Open"}, { type: "badge", content: "In progress"}, { type: "badge", content: "Resolved"}, { type: "badge", content: "Closed"}, { type: "badge", content: "Cancelled"}, '',
+    { type: "badge", content: "Upcoming"}, { type: "badge", content: "In progress"}, { type: "badge", content: "Open"}, { type: "badge", content: "Resolved"}, { type: "badge", content: "Closed"}, { type: "badge", content: "Cancelled"}, '',
     { type: "outline", content: "LIST"}, { type: 'inline', content: ' tabulates your tickets in a readable format, with column tabs showing detailed ticket information'}, '',
     { type: 'link', href: '/resources/docs/tour', content: 'Read the complete dashboard walkthrough' }
   ],

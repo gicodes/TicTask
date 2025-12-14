@@ -21,10 +21,10 @@ const PlannerPage: React.FC = () => {
     return 'calendar';
   });
   const [search, setSearch] = useState<string>('');
-  const [formOpen, setFormOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<string | number | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState<boolean>(false);
   const [createDate, setCreateDate] = useState<Date | null>(null);
+  const [selected, setSelected] = useState<string | number | null>(null);
 
   useEffect(() => {
     localStorage.setItem('planner_view', view);
@@ -102,16 +102,16 @@ const PlannerPage: React.FC = () => {
           setFormOpen(false);
           setCreateDate(null);
         }}
-        onCreated={onTaskCreated}
         task
+        onCreated={onTaskCreated}
         defaultDueDate={createDate || undefined}  
       />
 
       <DateSelectDialog
         open={dialogOpen}
         date={createDate}
-        onClose={() => setDialogOpen(false)}
         onConfirm={handleCreateConfirm}
+        onClose={() => setDialogOpen(false)}
       />
     </Box>
   );

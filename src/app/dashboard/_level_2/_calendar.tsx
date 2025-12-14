@@ -8,9 +8,8 @@ import React, {
   useCallback,
   KeyboardEvent,
 } from 'react';
-import ViewSelect from './calViewSelect';
 import CalendarTimeline from './calTimeline';
-import CalendarSkeleton from './calSkeleton';
+import ViewSelect, { InternalView} from './calViewSelect';
 import EventRenderer, { TicketEvent } from './calEventRenderer';
 import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
 import { getStatusColor, priorityColor, getTypeColor } from '../_level_1/tColorVariants';
@@ -19,13 +18,12 @@ import moment from 'moment';
 import { format, addDays } from 'date-fns';
 import { Box, useTheme } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import CalendarSkeleton, { calendarStyle } from '../_level_1/calendarStyle';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { Calendar as BigCalendar, momentLocalizer, View } from 'react-big-calendar';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
-
-export type InternalView = View | 'thisWeek';
 
 const LOCAL_VIEW_KEY = 'plannerView';
 const localizer = momentLocalizer(moment);
@@ -82,8 +80,10 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
 
   useEffect(() => {
     if (!tasks) return;
+
     setLoading(true);
     const timeout = setTimeout(() => setLoading(false), Math.min(tasks.length * 10, 1000));
+    
     return () => clearTimeout(timeout);
   }, [tasks]);
 
@@ -102,14 +102,14 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       status: t.status!,
       priority: t.priority!,
     }));
+
     setEventsState(mapped);
   }, [tasks]);
 
-  const bigCalendarView = useMemo<View>(() => (
-    internalView === 'thisWeek' ? 'week' : (internalView as View)
-  ),
-    [internalView]
-  );
+  const bigCalendarView = useMemo<View>(() => 
+    internalView === 'thisWeek' 
+      ? 'week' : (internalView as View)
+  , [internalView]);
 
   const handleNavigate = useCallback(
     (direction: 'PREV' | 'NEXT' | 'TODAY') => {
@@ -170,7 +170,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
 
     const mobileFormat = (d: Date) => {
       const year = d.getFullYear();
-      return year === currentYear ? format(d, "EEE d MMM") : format(d, "d MMM, yy");
+      return year === currentYear ? format(d, "EEE d MMM") : format(d, "d MMM, yyy");
     };
 
     const desktopFormat = (d: Date) => {
@@ -231,51 +231,6 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     };
   }, []);
 
-  const calendarStyle = {
-    height: '100%',
-    overflow: 'hidden',
-    '@media (max-width: 900px)': {
-      overflowX: 'auto',
-      maxWidth: '96vw',
-      width: '100%',
-      '& .rbc-calendar': { minWidth: '735px' },
-    },
-    '& .rbc-calendar': { minHeight: '90vh', cursor: 'default' },
-    '& .rbc-toolbar': { display: 'none' },
-    '& .rbc-header': {
-      height: 60,
-      fontSize: 20,
-      alignContent: 'center',
-    },
-    '& .rbc-timeslot-group': {
-      padding: '0 10px',
-      display: 'grid',
-      alignContent: 'center',
-    },
-    '& .rbc-time-slot.rbc-now': { background: 'var(--accent)' },
-    '& .rbc-time-header': { height: 60 },
-    '& .rbc-current-time-indicator': { background: 'var(--accent)' },
-    '& .rbc-event-content': {
-      height: 'fit-content',
-      width: 'auto',
-    },
-    '& .rbc-today': {
-      fontWeight: 'bold',
-      color: 'var(--accent)',
-      background: 'var(--accent-light)',
-    },
-    '& .rbc-month-view .rbc-today': {
-      border: '3px solid var(--accent)',
-      borderRadius: 0,
-      background: 'var(--accent-light)',
-      color: 'var(--accent)',
-      fontWeight: 700,
-    },
-    '& .rbc-today .rbc-day-slot': {
-      fontWeight: 700,
-    },
-  };
-
   return (
     <Box
       tabIndex={0}
@@ -284,15 +239,12 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       aria-label="Planner calendar"
     >
       <Box
+        py={2}
+        px={{ xs: 1, md: 0 }}
+        gap={1}
         display="flex"
-        width={'100%'}
+        flexWrap={'wrap'}
         justifyContent={'space-between'}
-        alignItems={{ xs: 'flex-start', sm: 'center' }}
-        sx={{ 
-          py: 2, 
-          px: { xs: 1, md: 0 }, 
-          gap: { xs: 2, sm: 0 } 
-        }}
       >
         <ViewSelect
           internalView={internalView}
@@ -307,6 +259,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
           bigCalendarView={bigCalendarView}
         />
       </Box>
+
       <Box sx={{ position: 'relative' }}>
         {loading && (
           <Box
@@ -340,7 +293,9 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
               setInternalView(v as InternalView);
               try {
                 localStorage.setItem(LOCAL_VIEW_KEY, v as string);
-              } catch {}
+              } catch {
+                // do nothing for now
+              }
             }}
             onNavigate={(d) => setCurrentDate(d)}
             selectable

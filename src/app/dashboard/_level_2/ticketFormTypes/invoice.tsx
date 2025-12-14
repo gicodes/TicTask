@@ -138,7 +138,7 @@ export default function InvoiceForm({ control }: InvoiceFormProps) {
         name="extClient"
         control={control}
         render={({ field }) => (
-          <TextField label="Bill to [client email]  (Optional)" {...field} />
+          <TextField label="Bill to [client email]" {...field} />
         )}
       />
 

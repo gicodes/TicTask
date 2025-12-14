@@ -34,8 +34,18 @@ export default function CalendarTimeline({
           : 'Next';
 
   return (
-    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems="center" flexWrap="wrap">
-      <Stack direction="row" alignItems="center" sx={{ gap: { sm: 1 } }}>
+    <Stack 
+      direction={{ xs: 'column', sm: 'row' }} 
+      spacing={1} 
+      alignItems="center" 
+      flexWrap="wrap"
+      minHeight={{ xs: 50, sm: 'none'}}
+    >
+      <Stack 
+        direction="row" 
+        alignItems="center" 
+        sx={{ gap: { sm: 1 } }}
+      >
         <Tooltip title={prevTip}>
           <IconButton aria-label="previous" onClick={onPrev}>
             <ChevronLeft size={25} />
@@ -43,10 +53,16 @@ export default function CalendarTimeline({
         </Tooltip>
 
         <Typography
-          variant="h6"
-          minWidth={75}
-          fontSize={{ xs: 15, sm: 18 }}
-          sx={{ fontWeight: 600, textAlign: 'center' }}
+          fontSize={{ xs: 14, sm: 15, md: 17, lg: 18 }}
+          sx={{
+            textAlign: 'center',
+            width: '100%',
+            maxWidth: { xs: 150, sm: 200, md: 250, lg: 300 },
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            opacity: 0.75
+          }}
         >
           {calControlDes}
         </Typography>
@@ -58,17 +74,19 @@ export default function CalendarTimeline({
         </Tooltip>
       </Stack>
 
-      <Tooltip title={`${new Date().toDateString()}`}>
-        <div>
-          <Button
-            size="small"
-            tone="warm"
-            onClick={onToday}
-          >
-            See Today
-          </Button>
-        </div>
-      </Tooltip>
+      <Stack display={{ xs: 'none', sm: 'flex'}}>
+        <Tooltip title={`${new Date().toDateString()}`}>
+          <div>
+            <Button
+              size="small"
+              tone="warm"
+              onClick={onToday}
+            >
+              See Today
+            </Button>
+          </div>
+        </Tooltip>
+      </Stack>
     </Stack>
   );
 }

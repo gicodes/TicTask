@@ -104,6 +104,7 @@ export default function TWSExtDrawer({
       showAlert("Ticket updated!", 'success');
 
       onUpdate?.();
+      setIsUpdating(false)
       reset(payload);
       onClose();
     } catch {
@@ -122,7 +123,7 @@ export default function TWSExtDrawer({
       setIsUpdating(false);
       showAlert("Comment posted!", 'success');
 
-      onUpdate?.();
+      window.location.reload();
     } catch {
       showAlert("Update failed. Something went wrong!", 'warning')
       setIsUpdating(false);
