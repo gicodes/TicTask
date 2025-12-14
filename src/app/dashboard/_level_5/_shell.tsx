@@ -192,7 +192,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                         onClick={handleCloseUserMenu}
                       >
                         <Typography variant='caption'>{user?.name || 'Not Available'}</Typography>
-                        <Typography className='font-xxs custom-dull'>
+                        <Typography variant='caption' sx={{ opacity: 0.5}}>
                           {user?.email || 'please sign in'}
                         </Typography>
                       </Link>

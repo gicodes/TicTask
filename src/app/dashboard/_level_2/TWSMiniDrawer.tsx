@@ -228,17 +228,15 @@ export default function TicketDetailDrawer({
                 </Box>
               </Stack>
 
-              <Stack direction="row" flexWrap="wrap" gap={1}>
+              <Stack direction="row" flexWrap="wrap" gap={1} my={1}>
                 {'severity' in fields && fields.severity && 
                   <Chip label={`Severity: ${fields.severity}`} size="small" />}
                 {'impact' in fields && fields.impact && 
                   <Chip label={`Impact: ${fields.impact}`} size="small" />}
                 {'amount' in fields && fields.amount > 0 && 
                   <Chip size="small" color="success" variant="outlined"
-                    label={`${fields.amount.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })} ${fields.currency || "USD"}`}
+                    label={`${fields.amount.toLocaleString("en-US", 
+                      {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${fields.currency || "USD"}`}
                   />
                 }
                 {'extClient' in fields && 
@@ -259,16 +257,18 @@ export default function TicketDetailDrawer({
                   <Chip label={`Recurs: ${fields.recurrence}`} size="small" />}
                 {'location' in fields && fields.location && 
                   <Chip label={`Location: ${fields.location}`} size="small" />}
-                <Stack direction={'row'} flexWrap="wrap" gap={1} alignItems={'end'}>
-                  {'startTime' in fields && fields.startTime && 
-                    <Chip label={`Start: ${new Date(fields.startTime).toLocaleTimeString()}`} size="small" />}
-                  {'startTime' in fields && fields.startTime && 
-                    <Typography variant='body2' fontSize={12}>{new Date(fields.startTime).toDateString()}</Typography>}
-                  {'endTime' in fields && fields.endTime && 
-                    <Chip label={`End: ${new Date(fields.endTime).toLocaleTimeString()}`} size="small" />}
-                  {'endTime' in fields && fields.endTime && 
-                    <Typography variant='body2' fontSize={12}>{new Date(fields.endTime).toDateString()}</Typography>}
-                </Stack>
+                {('startTime' in fields || 'endTime' in fields) && 
+                  <Stack direction={'row'} flexWrap="wrap" gap={1} width={'100%'} justifyContent={'end'} py={2}>
+                    {'startTime' in fields && fields.startTime && <Stack gap={0.75}>
+                      <Chip size="small" variant='outlined' label={`Start: ${new Date(fields.startTime).toLocaleTimeString()}`} />
+                      <Chip size='small' label={new Date(fields.startTime).toDateString()} />
+                    </Stack>}
+                    {'endTime' in fields && fields.endTime && <Stack gap={0.75}>
+                      <Chip size="small" variant='outlined' label={`End: ${new Date(fields.endTime).toLocaleTimeString()}`} />
+                      <Chip size='small' label={new Date(fields.endTime).toDateString()} />
+                    </Stack>}
+                  </Stack>
+                }
               </Stack>
 
               <Button 

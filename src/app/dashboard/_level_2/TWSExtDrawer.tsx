@@ -1,9 +1,9 @@
 'use client';
 
+import { Create_Ticket, Ticket, Ticket_Impact, Ticket_Severity, TicketHistory, TicketNote } from '@/types/ticket';
 import { TICKET_WORKSPACE_PROPS, TicketFormValuesUnion } from '../_level_1/tSchema';
-import { Create_Ticket, Ticket, Ticket_Impact, TicketHistory, TicketNote } from '@/types/ticket';
+import { excludedTypes, extractTicketData } from '../_level_1/tFieldExtract';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
-import { extractTicketData } from '../_level_1/tFieldExtract';
 import { DatePicker } from '../_level_1/tDateControl';
 import { useTickets } from '@/providers/tickets';
 import { useAuth } from '@/providers/auth';
@@ -83,8 +83,8 @@ export default function TWSExtDrawer({
       setIsUpdating(true);
 
       const dueDateIso = (data?.dueDate) === 'string' && data.dueDate
-      ? new Date(data.dueDate as string) : typeof data.startTime === 'string' && data.startTime
-        ? new Date(data.startTime as string) : undefined;
+        ? new Date(data.dueDate as string) : typeof data.startTime === 'string' && data.startTime
+          ? new Date(data.startTime as string) : undefined;
 
       const startTimeDate = typeof data.startTime === 'string' && data.startTime
         ? new Date(data.startTime as string) : undefined;
@@ -145,20 +145,18 @@ export default function TWSExtDrawer({
     }
   };
 
+  const shouldAppendTicket = !excludedTypes.some(keyword => ticket?.type?.toLowerCase().includes(keyword));
+
   return (
     <Drawer 
       anchor="right" 
       open={open} 
       onClose={onClose} 
-      sx={{ 
-        '& .MuiDrawer-paper': { width: { 
-          xs: '100%', md: 600, lg: 669 } 
-        } 
-      }}
+      sx={{'& .MuiDrawer-paper': { width: { xs: '100%', md: 600, lg: 669 }} }}
     >
       <Toolbar />
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-        <Stack direction={'row'} alignItems={'center'} py={1} pl={3}>
+        <Stack display={'flex'} direction={'row'} alignItems={'center'} flexWrap={'wrap'} py={1} pl={3}>
           <Typography flexGrow={1} variant='body2' color='text.disabled'>
             Extended Workspace 
           </Typography>
@@ -180,15 +178,22 @@ export default function TWSExtDrawer({
               </AccordionSummary>
               <AccordionDetails>
                 <Stack gap={2}>
-                  <Alert severity='warning' color='warning' sx={{ opacity: 0.75, mb: 2}}>
-                    Are you sure you want to modify this {ticket?.type.toLocaleLowerCase()}?
+                  <Alert severity="warning" color="warning" sx={{ opacity: 0.75, mb: 2 }}>
+                    Modifying this{' '}<strong>{ticket?.type === 'FEATURE_REQUEST' ? 'feature' : ticket?.type?.toLowerCase()}</strong>
+                    {shouldAppendTicket ? ' ticket' : ''} will change the details!
                   </Alert>
                   {ticket!.type === 'BUG' && 'severity' in fields && (
                     <Controller
                       name="severity"
                       control={control}
+                      defaultValue={fields.severity ?? Ticket_Severity.HIGH}
                       render={({ field }) => (
                         <TextField label="Severity" select disabled={!isActive} {...field}>
+                          {Object.values(Ticket_Severity).map((sev) => (
+                            <MenuItem key={sev} value={sev}>
+                              {sev}
+                            </MenuItem>
+                          ))}
                         </TextField>
                       )}
                     />
@@ -204,14 +209,9 @@ export default function TWSExtDrawer({
                     <Controller
                       name="impact"
                       control={control}
-                      defaultValue={fields.impact ?? Ticket_Impact.LOW}
+                      defaultValue={fields.impact ?? Ticket_Impact.MEDIUM}
                       render={({ field }) => (
-                        <TextField
-                          label="Impact"
-                          select
-                          disabled={!isActive}
-                          {...field}
-                        >
+                        <TextField label="Impact" select disabled={!isActive}{...field}>
                           {Object.values(Ticket_Impact).map((impact) => (
                             <MenuItem key={impact} value={impact}>
                               {impact}
@@ -257,7 +257,8 @@ export default function TWSExtDrawer({
                     <Controller
                       name="estimatedTimeHours"
                       control={control}
-                      render={({ field }) => <TextField label="Estimated Hours" type="number" disabled={!isActive} {...field} />}
+                      render={({ field }) => 
+                        <TextField label="Estimated Hours" type="number" disabled={!isActive} {...field} />}
                     />
                   )}
                   {ticket!.type === 'TASK' && 'attachments' in fields && (
@@ -344,13 +345,13 @@ export default function TWSExtDrawer({
                   </Typography>
                 )}
                 <Stack spacing={2} py={1}>
-                  {ticketNotes?.map((note) => (
-                    <Stack key={note.id} direction="row" spacing={2} alignItems="end" justifyContent={'space-between'}>
-                      <Stack direction="row" spacing={1.5} alignItems={'center'}>
+                  {ticketNotes?.map((note, i) => (
+                    <Box key={i} flexWrap={'wrap'} display={'flex'} gap={1}>
+                      <Stack direction="row" spacing={1.5} alignItems={'center'} width={'100%'}>
                         <Avatar sx={{ width: 32, height: 32 }}>
                           {note.author?.name?.[0] ?? "?"}
                         </Avatar>
-                        <Stack alignItems="flex-start" minWidth={150} width={'100%'}>
+                        <Stack alignItems="flex-start" minWidth={150}>
                           <Typography variant="body2" fontWeight={600}>
                             {note.author?.name ?? "Unknown"}
                           </Typography>
@@ -359,10 +360,12 @@ export default function TWSExtDrawer({
                           </Typography>
                         </Stack>
                       </Stack>
-                      <Typography variant="caption" color="text.disabled" minWidth={80}>
-                        {new Date(note.createdAt).toLocaleString()}
-                      </Typography>
-                    </Stack>
+                      <Stack alignItems={'flex-end'} width={'100%'}>
+                        <Typography variant="caption" maxWidth={150}>
+                          {new Date(note.createdAt).toLocaleString()}
+                        </Typography>
+                      </Stack>
+                    </Box>
                   ))}
                 </Stack>
 
@@ -424,24 +427,20 @@ export default function TWSExtDrawer({
                           bgcolor: "text.disabled",
                         }}
                       />
-
                       <Stack spacing={0.25} flex={1}>
                         <Typography variant="body2" fontWeight={500}>
                           {hist.action}
                         </Typography>
-
                         {(hist.oldValue || hist.newValue) && (
                           <Typography variant="caption" color="text.secondary">
                             {hist.oldValue && `From: ${hist.oldValue} `}
                             {hist.newValue && `→ To: ${hist.newValue}`}
                           </Typography>
                         )}
-
                         <Stack direction="row" spacing={1}>
                           <Typography variant="caption" color="text.disabled">
                             {new Date(hist.createdAt).toLocaleString()}
                           </Typography>
-
                           {hist.performedBy && (
                             <Typography variant="caption" color="text.disabled">
                               • {hist.performedBy.name}

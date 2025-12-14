@@ -63,3 +63,13 @@ export function extractTicketData(ticket: Ticket): TicketFormValuesUnion {
 export const formatAmount = (value: number | string): string => {
   return Number(value).toLocaleString('en-US');
 };
+
+export const excludedTypes = [
+  'task',
+  'event',
+  'meeting',
+  'invoice',
+  'ticket',
+  'documentation',
+  'feature_request',
+];

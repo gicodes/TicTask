@@ -128,6 +128,13 @@ export enum Ticket_Impact {
   HIGH = "HIGH",
 }
 
+export enum Ticket_Severity {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  CRITICAL = "CRITICAL"
+}
+
 export enum Ticket_Priority {
   LOW = "LOW",
   MEDIUM = "MEDIUM",
