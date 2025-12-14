@@ -53,11 +53,11 @@ export default function CalendarTimeline({
         </Tooltip>
 
         <Typography
-          fontSize={{ xs: 14, sm: 15, md: 17, lg: 18 }}
+          fontSize={{ xs: 14, md: 15, xl: 16 }}
           sx={{
             textAlign: 'center',
             width: '100%',
-            maxWidth: { xs: 150, sm: 200, md: 250, lg: 300 },
+            maxWidth: { xs: 180, sm: 234, md: 250, lg: 300, xl: 360 },
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',

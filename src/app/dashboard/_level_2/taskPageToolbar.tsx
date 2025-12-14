@@ -90,7 +90,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
               backgroundColor: 'rgba(255, 255, 255, 0.05)',
             }}
           >
-            <Tooltip title={view==="calendar" ? "Showing planner on calendar. Currently on this view" : "View planner on big calendar. Only show items with date"}>
+            <Tooltip title={view==="calendar" ? "Showing calendar. Currently on this view" : "View page on big calendar. Only show items with date"}>
               <IconButton
                 onClick={() => setView('calendar')}
                 color={view === 'calendar' ? 'success' : 'inherit'}
@@ -104,7 +104,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
               </IconButton>
             </Tooltip>
 
-            <Tooltip title={view==="list" ? "Showing planner as list items. Currently on this view" :  "Switch to list all items created on this workspace"}>
+            <Tooltip title={view==="list" ? "Showing as list. Currently on this view" :  "Switch to list all items created on this workspace"}>
               <IconButton
                 onClick={() => setView('list')}
                 color={view === 'list' ? 'success' : 'inherit'}

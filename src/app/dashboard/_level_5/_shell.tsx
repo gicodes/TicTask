@@ -6,6 +6,7 @@ import { useAuth } from '@/providers/auth';
 import { usePathname } from 'next/navigation';
 import AiAssistantDrawer from '../_level_2/aiDrawer';
 import { ReactNode, useEffect, useState } from 'react';
+import { SetStatusButton } from '../_level_2/statusBar';
 import { FaUserTie, FaUserShield } from 'react-icons/fa6';
 import NotificationDrop from '../_level_2/notificationDrop';
 import { useNotifications } from '@/providers/notifications';
@@ -192,7 +193,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                         onClick={handleCloseUserMenu}
                       >
                         <Typography variant='caption'>{user?.name || 'Not Available'}</Typography>
-                        <Typography variant='caption' sx={{ opacity: 0.5}}>
+                        <Typography variant='caption' sx={{ opacity: 0.5, fontSize: 11}}>
                           {user?.email || 'please sign in'}
                         </Typography>
                       </Link>
@@ -200,20 +201,9 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                     <UserRole />
                   </Stack>
 
-                  <Link 
-                    href={'#'} 
-                    style={{ 
-                      gap: 10, 
-                      padding: 7.5, 
-                      fontSize: 13, 
-                      margin: '1px 0', 
-                      display: 'flex', 
-                      borderRadius: 5, 
-                      border: '1px solid silver'
-                    }}
-                  >
-                    <span>🗿</span> <>Set Status</>
-                  </Link>
+                  <SetStatusButton profile={{
+                    id: user?.id!
+                  }} />
                   <Link 
                     href={'#'} 
                     style={{ 

@@ -31,9 +31,9 @@ export type User = {
   logo?:       string; 
   bio?:          string;
 
+  data?:    UserPreferences;
+
   subscription?: Subscription;
-  getTNotifsViaEmail?: boolean;
-  workSpaceName?: string;
 
   teamMemberships: TeamMember[];
   createdTeams: Team[];
@@ -111,4 +111,20 @@ export type Client = {
 export enum User_Type {
   BUSINESS = 'BUSINESS',
   PERSONAL = 'PERSONAL'
+}
+
+export interface UserPreferences {
+  status: UserStatus;
+  getTNotifsViaEmail?: boolean;
+  workSpaceName?: string;
+
+  statusUntil?: string; 
+  statusMessage?: string;
+}
+
+export enum UserStatus {
+  ACTIVE = "ACTIVE",
+  BUSY = "BUSY",
+  AWAY = "AWAY",
+  OFFLINE = "OFFLINE",
 }

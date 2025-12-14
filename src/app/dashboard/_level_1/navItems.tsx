@@ -1,3 +1,4 @@
+import { User } from "@/types/users";
 import { AuthUser } from "@/providers/auth";
 import { CgMenuGridR } from "react-icons/cg";
 import { FaUserGroup } from "react-icons/fa6";
@@ -49,15 +50,13 @@ export const MORE_NAV_ITEMS = [
 export const getFilteredNav = (user: AuthUser | null) => {
   if (!user) {
     const allowed = [
-      'Tickets Hub', 'Task Manager', 'AI assistant', 'Products',
-      'Invite', 'Legal', 'Settings'
+      'Tickets Hub', 'Task Manager', 'AI assistant', 'Products', 'Invite', 'Legal', 'Settings'
     ];
     return NAV_ITEMS.filter(item => allowed.includes(item.label));
   }
 
   const allowed = [
-    'Tickets Hub', 'Task Manager', 'AI assistant', 'Products',
-    'Invite', 'Legal', 'Subscription', 'Settings',
+    'Tickets Hub', 'Task Manager', 'AI assistant', 'Products', 'Invite', 'Legal', 'Subscription', 'Settings',
   ];
 
   if (user?.role==="USER") allowed.push('More')
@@ -79,7 +78,6 @@ export type LinkItem = {
   cta?: boolean;
   disabled?: boolean;
 };
-
 export const AUTH_ITEMS: LinkItem[] = [
   { label: <div className='flex gap-2 items-center'><GiThreeFriends/> Become a partner</div>, href: "/company/partner/register"},
   { label: <div className='flex gap-2 items-center'><GrUpdate/> Latest updates</div>, href: "/resources/changelog"},
@@ -96,7 +94,6 @@ export const menuItems = [
   { label: "Resources", href: "/resources" },
   { label: "Company", href: "/company" },
 ];
-
 export const extendedMenuItems: Record<string, { label: string; href: string }[]> = {
   Products: [
     { label: "Overview", href: "/product" },
@@ -128,32 +125,40 @@ export const userLinks: LinkItem[] = [
 ];
 
 export interface AvatarProps {
+  size?: number;
   user: {
     name: string;
     photo?: string;
   } | null;
-  size?: number;
 }
-
-export const NavbarAvatar = ({ user, size = 36}: AvatarProps) => <Box position={'relative'} maxHeight={50} alignContent={'center'}>
-  <Avatar
-    src={user?.photo || ''}
-    sx={{
-      // In scale: TEAM_ADMIN='var(--sharp)' ? 'primary.main', ADMIN='var(--surface-1)' 
-      bgcolor: user ? 'var(--surface-1)' : 'var(--surface-2)', 
-      width: size,
-      height: size,
-      fontSize: 15,
-      border: '0.1px solid var(--dull-gray)'
-    }}
-  >
-    <Typography color={'var(--bw)'}>{user ? user.name?.
-    split(' ').slice(0,2).map(n => n[0]?.toUpperCase()).join('') : 'NA'}</Typography>
-  </Avatar>
-  <Box position={'absolute'} bottom={-5} right={0} maxHeight={1}>
-    <FaCircle size={9} color={user ? 'limegreen' : 'var(--secondary)'} />
+export const NavbarAvatar = ({ 
+  user, 
+  size = 36}: AvatarProps
+) => (
+  <Box position={'relative'} maxHeight={50} alignContent={'center'}>
+    <Avatar
+      src={user?.photo || ''}
+      sx={{
+        bgcolor: user ? 'var(--surface-1)' :  'var(--surface-2)', 
+        width: size,
+        height: size,
+        fontSize: 15,
+        border: '0.1px solid var(--dull-gray)'
+      }}
+    >
+      <Typography color={'var(--bw)'}>
+        {user ? user.name?.split(' ').slice(0,2).map(n => n[0]?.toUpperCase()).join('') : 'NA'}
+      </Typography>
+    </Avatar>
+    <Box position={'absolute'} bottom={-5} right={0} maxHeight={1}>
+      <FaCircle 
+        size={9} 
+        color={!(user as User)?.data ? 'limegreen' : (user as User)?.data?.status==="ACTIVE" ? 'limegreen' 
+          : (user as User)?.data?.status==="AWAY" ? 'greenyellow' 
+          : (user as User)?.data?.status==="BUSY" ? 'tomato' : 'var(--secondary)'} />
+    </Box>
   </Box>
-</Box>
+);
 
 export const NewFeatureBadge = () => 
   <Badge 

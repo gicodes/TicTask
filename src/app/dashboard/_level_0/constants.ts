@@ -1,3 +1,5 @@
+import { UserStatus } from "@/types/users";
+
 export const ALL_TICKET_TYPES = [
   'GENERAL',
   'BUG',
@@ -90,3 +92,14 @@ export const TICTASK_QUICK_ACTIONS = [
     status: 'CANCELLED',
   }
 ] as const;
+
+export const USER_STATUS_OPTIONS: {
+  value: UserStatus;
+  label: string;
+  emoji: string;
+}[] = [
+  { value: UserStatus.ACTIVE, label: "Active", emoji: "🟢" },
+  { value: UserStatus.BUSY, label: "Busy", emoji: "⛔️" },
+  { value: UserStatus.AWAY, label: "Away", emoji: "🔸" },
+  { value: UserStatus.OFFLINE, label: "Offline", emoji: "📵" },
+];

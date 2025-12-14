@@ -1,25 +1,40 @@
 'use client';
 
+import { getTimeOfDayGreeting, getRandomGreeting, GREETINGS } from '../_level_1/getGreeting';
 import { Box, Typography, Tooltip, Divider } from '@mui/material';
 import DashboardOnboarding from '../_level_0/onboardTips';
 import React, { useEffect, useState } from 'react'
 import TicketsPage from '../_level_3/ticket';
 import { useAuth } from '@/providers/auth';
+import Link from 'next/link';
 
 const Page = () => {
   const [time, setTime] = useState(new Date());
+  const [greeting, setGreeting] = useState('');
   const { user, loading, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
+    const interval = setInterval(
+      () => setTime(new Date()), 1000);
     return () => clearInterval(interval);
+  }, [setTime]);
+
+  useEffect(() => {
+    const timeOfDay = getTimeOfDayGreeting(new Date());
+    const greetingText = getRandomGreeting(GREETINGS[timeOfDay]);
+
+    setGreeting(greetingText);
   }, []);
 
-  if (loading) return <Box textAlign="center" p={4}>Loading Tickets View...</Box>;
+
+  if (loading) return (
+    <Box textAlign="center" p={4}>Loading Tickets View...</Box>
+  );
 
   if (!isAuthenticated) return (
-    <Box textAlign="center" px={2} py={10}>
-      Please log in to access dashboard. <br/><br/> If you recently logged in on this device, swipe down or refresh to restore your last session.
+    <Box textAlign="center" px={2} display={'grid'} gap={10} py={10}>
+      <Typography>Please log in to access dashboard... </Typography>
+      <Typography>If you recently logged in with this device, refresh page to restore  from last session.</Typography>
     </Box>
   );
   
@@ -29,20 +44,30 @@ const Page = () => {
       <Box
         px={3}
         py={1}
+        gap={1}
         width="100%"
         alignItems="center"
         display={{ xs: 'grid', md: 'flex' }}
       >
         <Box display="flex" justifyContent="left" width="100%">
-          <Typography variant="h6" fontWeight={501}>Hello{user?.name ? `, ${user?.name}` : ' there...'}</Typography>
+          <Typography variant="h6" fontWeight={501}>
+            <span style={{ opacity: 0.6}}>{greeting}</span>
+            <Tooltip title="Go to profile">
+              <Link href="/dashboard/profile" style={{ opacity: 0.8}}>
+                {user?.name ? ` ${user.name}` : ''}
+              </Link>
+            </Tooltip>
+          </Typography>
         </Box>
+
         <Box display="flex" justifyContent="right" width="100%">
           <Tooltip title={'Every Second Counts ⏱️'}>
             <Typography variant="subtitle2">{time.toLocaleString()}</Typography>
           </Tooltip>
         </Box>
       </Box>
-      <Divider />
+
+      <Divider sx={{ my: 1}} />
       <TicketsPage />
     </Box>
   )
