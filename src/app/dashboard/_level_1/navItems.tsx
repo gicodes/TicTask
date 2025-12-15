@@ -134,7 +134,8 @@ export interface AvatarProps {
 export const NavbarAvatar = ({ 
   user, 
   size = 36}: AvatarProps
-) => (
+) => { 
+  return (
   <Box position={'relative'} maxHeight={50} alignContent={'center'}>
     <Avatar
       src={user?.photo || ''}
@@ -153,12 +154,13 @@ export const NavbarAvatar = ({
     <Box position={'absolute'} bottom={-5} right={0} maxHeight={1}>
       <FaCircle 
         size={9} 
-        color={!(user as User)?.data ? 'limegreen' : (user as User)?.data?.status==="ACTIVE" ? 'limegreen' 
+        color={(user as User)?.data?.status===undefined ? 'limegreen' 
+          : (user as User)?.data?.status==="ACTIVE" ? 'limegreen' 
           : (user as User)?.data?.status==="AWAY" ? 'greenyellow' 
           : (user as User)?.data?.status==="BUSY" ? 'tomato' : 'var(--secondary)'} />
     </Box>
   </Box>
-);
+)};
 
 export const NewFeatureBadge = () => 
   <Badge 

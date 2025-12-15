@@ -54,7 +54,7 @@ const Page = () => {
             <span style={{ opacity: 0.6}}>{greeting}</span>
             <Tooltip title="Go to profile">
               <Link href="/dashboard/profile" style={{ opacity: 0.8}}>
-                {user?.name ? ` ${user.name}` : ''}
+                {user?.name ? ` ${user.name.split(" ")[0]}` : ''}
               </Link>
             </Tooltip>
           </Typography>

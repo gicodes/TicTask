@@ -37,12 +37,13 @@ export function SetStatusButton({ profile }: { profile: { id: number } }) {
 
       {open && (
         <Stack
+          p={1}
+          gap={2}
+          borderRadius={2}
           direction={'row'}
           flexWrap={'wrap'}
           justifyContent={'space-around'}
-          gap={2}
-          mt={1}
-          p={1}
+          border={'0.1px solid var(--disabled)'}
         >
           {USER_STATUS_OPTIONS.map(option => (
             <Button
