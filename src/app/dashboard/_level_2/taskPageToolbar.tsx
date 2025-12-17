@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import { Button } from '@/assets/buttons';
 import {
   Box,
   Stack,
@@ -9,8 +11,9 @@ import {
   InputAdornment,
   Tooltip,
   useMediaQuery,
+  Collapse,
 } from '@mui/material';
-import { Button } from '@/assets/buttons';
+import { Close, Tune } from '@mui/icons-material';
 import { FaPlusCircle } from 'react-icons/fa';
 import { Calendar, List, Search } from 'lucide-react';
 import { PLANNER_TOOLBAR_PROPS } from '../_level_1/tSchema';
@@ -25,6 +28,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
   dateRangeLabel,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
+  const [open, setOpen] = useState(!isMobile);
 
   return (
     <Box
@@ -49,90 +53,122 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
         )}
       />
 
-      <Stack 
-        direction={{ xs: 'column', sm: 'row'}} 
-        justifyContent={'space-between'}
-        width={'100%'}
-        spacing={2}
-      >
-        <TextField
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search tasks..."
-          size="small"
-          fullWidth={isMobile}
-          sx={{
-            flex: isMobile ? '1 1 auto' : '0 0 300px',
-            backgroundColor: 'background.paper',
-            borderRadius: 2,
-            minWidth: { sm: 300, md: 360 }
-          }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search size={18} />
-              </InputAdornment>
-            ),
-          }}
-        />
-
-        <Box display={'flex'} justifyContent={{ xs: 'center', sm: 'end'}}>
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            justifyContent="space-between"
+      <Collapse in={!isMobile || open} sx={{ width: '100%'}}>
+        <Stack 
+          direction={{ xs: 'column', sm: 'row'}} 
+          justifyContent={'space-between'}
+          width={'100%'}
+          spacing={2}
+        >
+          <TextField
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search tasks..."
+            size="small"
+            fullWidth={isMobile}
             sx={{
-              maxWidth: 300,
-              mx: { xs: '0 auto', sm: 0 },
-              boxShadow: 2,
-              borderRadius: 999,
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              flex: isMobile ? '1 1 auto' : '0 0 300px',
+              backgroundColor: 'background.paper',
+              borderRadius: 2,
+              minWidth: { sm: 300, md: 360 }
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search size={18} />
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <Box display={'flex'} justifyContent={{ xs: 'center', sm: 'end'}}>
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{
+                maxWidth: 300,
+                mx: { xs: '0 auto', sm: 0 },
+                boxShadow: 2,
+                borderRadius: 999,
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              }}
+            >
+              <Tooltip
+                arrow 
+                title={view==="calendar" ? 
+                  "Showing calendar. Currently on this view" 
+                  : "View page on big calendar. Only show items with date"}
+              >
+                <IconButton
+                  onClick={() => setView('calendar')}
+                  color={view === 'calendar' ? 'success' : 'inherit'}
+                  sx={{
+                    p: 1.5,
+                    backgroundColor: view === 'calendar' ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+                    boxShadow: view === 'calendar' ? 2 : '',
+                  }}
+                >
+                  <Calendar size={20} />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip 
+                arrow 
+                title={view==="list" ? 
+                  "Showing as list. Currently on this view" 
+                  :  "Switch to list all items created on this workspace"}
+                >
+                <IconButton
+                  onClick={() => setView('list')}
+                  color={view === 'list' ? 'success' : 'inherit'}
+                  sx={{
+                    p: 1.5,
+                    backgroundColor: view === 'list' ? 'rgba(255, 255, 255, 0.25)' : 'transparent',
+                    boxShadow: view === 'list' ? 2 : '',
+                  }}
+                >
+                  <List size={20} />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Create task as event or meeting and set date & time">
+                <div>
+                  <Button
+                    onClick={onOpenCreate}
+                    tone="action"
+                    startIcon={<FaPlusCircle />}
+                    sx={{ flexShrink: 0 }}
+                  >
+                    ADD EVENT
+                  </Button>
+                </div>
+              </Tooltip>
+            </Stack>
+          </Box>
+        </Stack>
+      </Collapse>
+
+      {isMobile && (
+        <Tooltip title={open ? 'Hide tools' : 'Show tools'}>
+          <IconButton
+            onClick={() => setOpen(v => !v)}
+            sx={{
+              position: 'fixed',
+              top: 80,
+              left: 0,
+              zIndex: 1200,
+              width: 50,
+              backgroundColor: 'background.paper',
+              boxShadow: 5,
+              borderRadius: '0 99px 99px 0',
             }}
           >
-            <Tooltip title={view==="calendar" ? "Showing calendar. Currently on this view" : "View page on big calendar. Only show items with date"}>
-              <IconButton
-                onClick={() => setView('calendar')}
-                color={view === 'calendar' ? 'success' : 'inherit'}
-                sx={{
-                  p: 1.5,
-                  backgroundColor: view === 'calendar' ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
-                  boxShadow: view === 'calendar' ? 2 : '',
-                }}
-              >
-                <Calendar size={20} />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title={view==="list" ? "Showing as list. Currently on this view" :  "Switch to list all items created on this workspace"}>
-              <IconButton
-                onClick={() => setView('list')}
-                color={view === 'list' ? 'success' : 'inherit'}
-                sx={{
-                  p: 1.5,
-                  backgroundColor: view === 'list' ? 'rgba(255, 255, 255, 0.25)' : 'transparent',
-                  boxShadow: view === 'list' ? 2 : '',
-                }}
-              >
-                <List size={20} />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title="Create task as event or meeting and set date & time">
-              <div>
-                <Button
-                  onClick={onOpenCreate}
-                  tone="action"
-                  startIcon={<FaPlusCircle />}
-                  sx={{ flexShrink: 0 }}
-                >
-                  ADD EVENT
-                </Button>
-              </div>
-            </Tooltip>
-          </Stack>
-        </Box>
-      </Stack>
+            {open ? (<Close sx={{ border: '1px solid tomato', borderRadius: '50%'}} />) : (<Tune />)}
+          </IconButton>
+        </Tooltip>
+      )}
     </Box>
   );
 };

@@ -5,6 +5,9 @@ import { useAuth } from '@/providers/auth';
 import { apiGet, apiPatch } from '@/lib/axios';
 import { UserProfileRes } from '@/types/axios';
 import React, { useEffect, useState } from 'react';
+import { PersonalSection } from './profileSections/perFields';
+import { BusinessSection } from './profileSections/busFields';
+import { ModeratorSection } from './profileSections/modFields';
 import {
   Drawer,
   Box,
@@ -26,11 +29,10 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { Button } from '@/assets/buttons';
-import { SiAwsorganizations } from 'react-icons/si';
-import { MdEmail, MdWorkspacesFilled } from 'react-icons/md';
+import { MdEmail, } from 'react-icons/md';
 import { Check, Download, Share2, UserCog2Icon,} from 'lucide-react';
-import { FaBriefcase, FaLocationDot, FaPhone, FaEllipsisVertical } from 'react-icons/fa6';
-import { CloseSharp, Language, Groups3, EditOutlined, ArrowBack } from '@mui/icons-material';
+import { CloseSharp, EditOutlined, ArrowBack } from '@mui/icons-material';
+import { FaLocationDot, FaPhone, FaEllipsisVertical } from 'react-icons/fa6';
 
 export default function ProfileDetailDrawer() {
   const { user } = useAuth();
@@ -40,6 +42,7 @@ export default function ProfileDetailDrawer() {
   const [saving, setSaving] = useState(false);
   const [moreOptions, setMoreOptions] = useState(false);
   const [closeDrawer, setCloseDrawer] = useState(false);
+  
   const theme = useTheme();
 
   useEffect(() => {
@@ -112,8 +115,6 @@ export default function ProfileDetailDrawer() {
     }
   };
 
-  if (loading) return <Box py={5} textAlign="center"><CircularProgress /></Box>
-
   const isBusiness = profile?.userType === 'BUSINESS';
   const isModerator = profile?.collab || profile?.partner || profile?.role === 'ADMIN';
 
@@ -128,7 +129,7 @@ export default function ProfileDetailDrawer() {
         <Toolbar />
         <Stack p={3} spacing={2}>
           <Skeleton variant="circular" width={80} height={80} />
-          <Skeleton variant="text" width="60%" />
+          <Skeleton variant="text" width="60%" /> 
           <Skeleton variant="text" width="40%" />
           <Skeleton variant="rectangular" height={120} sx={{ borderRadius: 2 }} />
         </Stack>
@@ -138,7 +139,7 @@ export default function ProfileDetailDrawer() {
 
   return (
     <> { closeDrawer ? 
-      <Fab // Future updates will introduce a full page for drawer-less profile viewing
+      <Fab
         aria-label="Open profile"
         onClick={() => setCloseDrawer(false)}
         sx={{
@@ -220,6 +221,7 @@ export default function ProfileDetailDrawer() {
                 </Tooltip>
               </Stack>
             </Stack>
+
             <Stack alignItems="center" spacing={1.5} textAlign="center" my={3}>
               <Avatar
                 src={profile?.photo || '/default-avatar.png'}
@@ -238,6 +240,7 @@ export default function ProfileDetailDrawer() {
                   }`,
                 }}
               />
+
               {isEditing ? (
                 <TextField
                   value={profile?.name || ''}
@@ -246,9 +249,8 @@ export default function ProfileDetailDrawer() {
                   fullWidth
                   sx={{ maxWidth: 260, textAlign: 'center', border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
                 />
-              ) : (
-                <Typography variant="h6" fontWeight={600}>{profile?.name}</Typography>
-              )}
+              ) : <Typography variant="h6" fontWeight={600}>{profile?.name}</Typography>}
+
               <Stack direction="row" spacing={1} display={'flex'} alignItems={'center'}>
                 <Chip 
                   label={profile?.role==='USER' ? "Tier 𝟚" : profile?.role}
@@ -267,6 +269,7 @@ export default function ProfileDetailDrawer() {
                   sx={{ p: 1.8}}
                 />
               </Stack>
+
               {isEditing ? (
                 <TextField
                   multiline
@@ -278,16 +281,17 @@ export default function ProfileDetailDrawer() {
                   sx={{ maxWidth: 340, borderRadius: 5, mt: 5 }}
                   placeholder="Tell us something about yourself..."
                 />
-              ) : (
-                <Typography variant="body2" color="text.secondary" pt={1} px={4}>
+              ) : <Typography variant="body2" color="text.secondary" pt={1} px={4}>
                   {profile?.bio || 'No bio added yet.'}
                 </Typography>
-              )}
+              }
             </Stack>
+
             <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
               <Typography variant="subtitle2" color="text.secondary" mb={2}>
                 Contact Information
               </Typography>
+
               <Stack spacing={1.5}>
                 {(['email', 'phone', 'country'] as const).map((field) => (
                   <Stack
@@ -296,13 +300,10 @@ export default function ProfileDetailDrawer() {
                     spacing={1.5}
                     key={field}
                   >
-                    {field === 'email' ? (
-                      <MdEmail size={16} />
-                    ) : field === 'phone' ? (
-                      <FaPhone size={16} />
-                    ) : (
-                      <FaLocationDot size={16} />
-                    )}
+                    {field === 'email' ? <MdEmail size={16} />
+                    : field === 'phone' ? <FaPhone size={16} />
+                    : <FaLocationDot size={16} />}
+
                     {isEditing && field !== 'email' ? (
                       <TextField
                         size="small"
@@ -316,172 +317,31 @@ export default function ProfileDetailDrawer() {
                           borderRadius: 2,
                         }}
                       />
-                    ) : (
-                      <Typography variant="body2">
-                        {profile?.[field] || 'Not provided'}
-                      </Typography>
-                    )}
+                    ) : <Typography variant="body2"> {profile?.[field] || 'Not provided'} </Typography>}
                   </Stack>
                 ))}
               </Stack>
             </Paper>
-            { isBusiness && (
-              <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-                <Typography variant="subtitle2" color="text.secondary" mb={2}>
-                  Organization Details
-                </Typography>
-                <Stack spacing={1.5}>
-                  {isEditing && profile?.userType === "BUSINESS" ? (
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <SiAwsorganizations />
-                      <TextField
-                        size="small"
-                        variant="standard"
-                        value={profile?.organization || ''}
-                        onChange={(e) => handleChange('organization', e.target.value)}
-                        sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
-                        fullWidth
-                      />
-                    </Stack>
-                  ) : (
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <SiAwsorganizations />
-                      <Typography variant="body2">{profile.organization}</Typography>
-                    </Stack>
-                  )}
-                  {isEditing && profile?.industry ? (
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <MdWorkspacesFilled />
-                      <TextField
-                        size="small"
-                        variant="standard"
-                        value={profile.industry}
-                        onChange={(e) => handleChange('industry', e.target.value)}
-                        sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
-                        fullWidth
-                      />
-                    </Stack>
-                  ) : (
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <MdWorkspacesFilled />
-                      <Typography variant="body2">{profile.industry || "Industry not specified"}</Typography>
-                    </Stack>
-                  )}
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <FaBriefcase size={16} />
-                    {isEditing ? (
-                      <TextField
-                        size="small"
-                        variant="standard"
-                        placeholder="Your role in the organization"
-                        value={profile?.position || ''}
-                        onChange={(e) => handleChange('position', e.target.value)}
-                        sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
-                        fullWidth
-                      />
-                    ) : (
-                      <Typography variant="body2">
-                        {profile?.position || 'Role not specified'}
-                      </Typography>
-                    )}
-                  </Stack>
-                  {isEditing && profile?.teamSize ? (
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <Groups3 fontSize="small" />
-                      <TextField
-                        size="small"
-                        variant="standard"
-                        value={String(profile.teamSize)}
-                        onChange={(e) => handleChange('teamSize', e.target.value)}
-                        sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
-                        fullWidth
-                      />
-                    </Stack>
-                  ) : (
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <Groups3 fontSize="small" />
-                      <Typography variant="body2">Team Size: {profile.teamSize}</Typography>
-                    </Stack>
-                  )}
-                  {isEditing && profile?.website && (
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <Language fontSize="small" />
-                      <TextField
-                        size="small"
-                        variant="standard"
-                        value={profile.website}
-                        onChange={(e) => handleChange('website', e.target.value)}
-                        sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
-                        fullWidth
-                      />
-                    </Stack>
-                  )} {(!isEditing && profile?.website) && (
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <Language fontSize="small" />
-                      <Typography variant="body2" color="primary">
-                        <a href={(!profile.website.includes("http")) ? `https://${profile.website}` : profile.website} target="_blank" rel="noopener noreferrer">
-                          {profile.website}
-                        </a>
-                      </Typography>
-                    </Stack>
-                  )}
-                  {(user as User).data?.workSpaceName && <Typography variant='body2'>{(user as User).data?.workSpaceName}</Typography>}
-                </Stack>
-              </Paper>
+
+            {isBusiness ? (
+              <BusinessSection
+                profile={profile}
+                isEditing={isEditing}
+                handleChange={handleChange}
+              />
+            ) : (
+              <PersonalSection 
+                profile={profile}
+                isEditing={isEditing}
+                handleChange={handleChange}
+              />
             )}
-            {!isBusiness && (
-              <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-                <Typography variant="subtitle2" color="text.secondary" mb={2}>
-                  Professional Details
-                </Typography>
-                <Stack spacing={1.5}>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <FaBriefcase size={16} />
-                    {isEditing ? (
-                      <TextField
-                        size="small"
-                        variant="standard"
-                        placeholder={profile?.position || ' Specify Professional Position'}
-                        value={profile?.position || ''}
-                        onChange={(e) => handleChange('position', e.target.value)}
-                        sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
-                        fullWidth
-                      />
-                    ) : (
-                      <Typography variant="body2"> {profile?.position || 'Position not specified'}</Typography>
-                    )}
-                  </Stack>
-                  {(user as User).data?.workSpaceName && <Typography variant='body2'>{(user as User).data?.workSpaceName}</Typography>}
-                </Stack>
-              </Paper>
-            )}
-            {isModerator && (
-              <Paper
-                variant="outlined"
-                sx={{
-                  p: 2, 
-                  mb: 2,
-                  borderRadius: 3,
-                  bgcolor: theme.palette.warning.light + '15',
-                }}
-              >
-                <Typography variant="subtitle2" color="text.secondary" mb={1.5}>
-                  Moderator & Contributor Info
-                </Typography>
-                <Typography variant="body2" color="text.disabled" fontStyle={'italic'} sx={{ opacity: 0.5}}>
-                  ・ {profile?.collab
-                    ? 'Private access to product templates, docs and collaboration tools'
-                    : profile?.partner
-                    ? `Partner Role: ${profile?.partnerRole || 'Private access to changelogs, beta features and partner resources'}`
-                    : 'Admin privileges enabled'}
-                </Typography>
-              </Paper>
-            )}
+
+            {isModerator && <ModeratorSection profile={profile} />}
           </Box>
         </Fade>
 
         <Divider sx={{ width: '100%', border: '5px solid var(--disabled)'}} />
-        
         <Box p={3}>
           <Button 
             onClick={closeDetail} 
