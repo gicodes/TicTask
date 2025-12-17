@@ -39,7 +39,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
         alignItems: isMobile ? 'stretch' : 'center',
         justifyContent: 'space-between',
         gap: 2,
-        mb: 5,
+        mb: { sm: 5 },
         pt: { xs: 2, sm: 1 }
       }}
     >

@@ -16,7 +16,6 @@ export async function POST() {
     .map(c => `${c.name}=${c.value}`)
     .join("; ");
 
-
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
     {

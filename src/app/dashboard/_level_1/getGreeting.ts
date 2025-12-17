@@ -21,17 +21,17 @@ export const GREETINGS = {
   afternoon: [
     'Good afternoon ☀️',
     'Welcome back!',
-    "Hope your day's going well!",
+    "Hope your day's swell!",
     'Great to see you,',
   ],
   evening: [
     'Good evening 🌥️',
     'Welcome back,',
-    'Hope you had a productive day!',
+    'Was your day productive?',
     'Nice to see you again!',
   ],
   night: [
-    '🌙 Burning the midnight oil?',
+    '🌙 Burning midnight oil?',
     'Good evening,',
     'Welcome back,',
     'Working late or early?',
