@@ -99,7 +99,7 @@ export function useTeam() {
 
       showAlert("Team dissolved", "success");
 
-      router.replace("/dashboard/team");
+      router.replace("/dashboard/teams");
       return true;
     } catch (err) {
       console.error("Dissolve team error:", err);

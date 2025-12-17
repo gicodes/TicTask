@@ -19,7 +19,7 @@ export const NAV_ITEMS = [
   { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
   { label: 'Subscription', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
   { label: 'Settings', path: '/dashboard/settings', icon: <MdSettings /> }, 
-  { label: 'Team Manager', path: '/dashboard/team', icon: <FaUsers />},
+  { label: 'Teams', path: '/dashboard/teams', icon: <FaUsers />},
   { label: 'Invite', path: '/dashboard/invite', icon: <FcInvite /> },
   
   { label: 'All Tickets', path: '/dashboard/admin/tickets', icon: <FcParallelTasks /> },
@@ -61,7 +61,7 @@ export const getFilteredNav = (user: AuthUser | null) => {
 
   if (user?.role==="USER") allowed.push('More')
   if (user?.partner) allowed.push('Marketing', 'More');
-  if (user?.userType==="BUSINESS") allowed.push('Team Manager', 'Metrics'); 
+  if (user?.userType==="BUSINESS") allowed.push('Teams', 'Metrics'); 
   if (user?.role === 'ADMIN') {
     return NAV_ITEMS.filter(
       (item) => !['More', 'Invite', 'Subscription'].includes(item.label)    

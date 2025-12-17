@@ -38,8 +38,9 @@ export interface LoginResponse {
   ok: boolean;
   user: {
     id: string;
-    email: string;
     role: Role;
+    name: string;
+    email: string;
     accessToken: string
   }
   error?: string

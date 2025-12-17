@@ -17,7 +17,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  useTheme
 } from "@mui/material";
 import { Button } from "@/assets/buttons";
 import { PLAN_IDS } from "@/lib/pricing";
@@ -29,7 +28,6 @@ import { useAlert } from "@/providers/alert";
 import { useSubscription } from "@/providers/subscription";
 
 export default function PricingSection() {
-  const theme = useTheme();
   const router = useRouter();
   const { user } = useAuth();
   const { showAlert } = useAlert();
@@ -67,7 +65,7 @@ export default function PricingSection() {
   };
 
   return (
-    <Box component="section" sx={{ py: { xs: 10, md: 16 }, bgcolor: theme.palette.mode }}>
+    <Box component="section" sx={{ py: { xs: 10, md: 16 } }}>
       <Container maxWidth="xl">
         <Stack spacing={2} alignItems="center" mb={6}>
           <Typography variant="h3" fontWeight={700} textAlign="center">

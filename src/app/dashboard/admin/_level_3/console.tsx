@@ -279,7 +279,7 @@ export default function AdminOverviewPage() {
         </Stack>
 
         <AdminComponents.DataTable
-          columns={['id', 'name', 'email', 'role', 'createdAt', "origin"]}
+          columns={['id', 'name', 'email', 'role', 'createdAt', "lastLoginIp"]}
           rows={usersSummary?.recent ?? []}
         />
       </Box>

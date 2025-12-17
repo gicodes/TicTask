@@ -42,7 +42,7 @@ export default function TeamsPage() {
               }
 
               {teams.map(team => (
-                <Link key={team.id} href={`/dashboard/team/${team.id}`}>
+                <Link key={team.id} href={`/dashboard/teams/${team.id}`}>
                   <Typography
                     sx={{
                       p: 2,

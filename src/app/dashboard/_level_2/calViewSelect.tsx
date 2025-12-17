@@ -45,7 +45,7 @@ export default function ViewSelect({
     const newView = e.target.value as InternalView;
 
     onChange(newView);
-    showAlert(`Calendar view changed to ${newView}. Set as default`, "success");
+    showAlert(`Calendar view changed to ${newView}`, "success");
   };
 
   return (

@@ -30,11 +30,12 @@ import { Trash2, Loader2, AlertCircle } from 'lucide-react';
 import { ADMIN_USERS_QUERY, DELETE_USER_MUTATION } from '../_level_1/graphQL';
 
 interface UserNode {
-  id: string;
+  id: number;
   name: string;
   email: string;
   role: string;
   createdAt: string;
+  lastLoginIp?: string;
 }
 
 interface UsersData {
@@ -63,7 +64,10 @@ export default function AdminUsersPage() {
       after: null,
       filter: {
         search: debouncedSearch || undefined,
-        userType: typeFilter === "All users" || !typeFilter ? undefined : typeFilter === "Business" ? "BUSINESS" : "PERSONAL",
+        userType:
+          !typeFilter || typeFilter === 'All users'
+            ? undefined
+            : typeFilter,
         role: roleFilter || undefined,
       },
     },
@@ -220,6 +224,7 @@ export default function AdminUsersPage() {
                           <TableCell><strong>Email</strong></TableCell>
                           <TableCell><strong>Role</strong></TableCell>
                           <TableCell><strong>Joined</strong></TableCell>
+                          <TableCell><strong>Origin</strong></TableCell>
                           <TableCell align="right"><strong>Actions</strong></TableCell>
                         </TableRow>
                       </TableHead>
@@ -237,6 +242,9 @@ export default function AdminUsersPage() {
                             </TableCell>
                             <TableCell>
                               {format(new Date(node.createdAt), 'MMM dd, yyyy')}
+                            </TableCell>
+                            <TableCell>
+                              {node.lastLoginIp || '--'}
                             </TableCell>
                             <TableCell align="right">
                               <Tooltip title="Delete user">

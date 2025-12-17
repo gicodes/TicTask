@@ -1,13 +1,14 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { CssBaseline } from "@mui/material";
+import QueryProvider from "@/providers/query";
+import StripeProvider from "@/providers/stripe";
 import { AuthProvider } from "@/providers/auth";
 import { AlertProvider } from "@/providers/alert";
-import ThemeRegistry from '@/emotion/ThemeRegistry';
 import ConditionalLayout from "@/providers/_layout";
 import { Geist, Geist_Mono } from "next/font/google";
-import AppProviders from "@/providers/stripeClient";
+import { SubscriptionProvider } from '@/providers/subscription';
+import EmotionCacheProvider from '@/providers/emotion/ThemeProvider';
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -18,22 +19,26 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout(
-  { children }: Readonly<{ children: React.ReactNode }>) {
+  { children }: Readonly<{ children: React.ReactNode }>
+) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ThemeRegistry>
+        <EmotionCacheProvider> 
           <AuthProvider>
-            <CssBaseline />
             <AlertProvider>
-              <ConditionalLayout>
-                <AppProviders>
-                  {children}
-                </AppProviders>
-              </ConditionalLayout>
+              <QueryProvider>
+                <SubscriptionProvider>
+                  <StripeProvider>
+                    <ConditionalLayout>
+                      {children}
+                    </ConditionalLayout>
+                  </StripeProvider>
+                </SubscriptionProvider>
+              </QueryProvider>
             </AlertProvider>
           </AuthProvider>
-        </ThemeRegistry>
+        </EmotionCacheProvider>
       </body>
     </html>
   );

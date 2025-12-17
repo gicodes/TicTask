@@ -15,6 +15,10 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+export const AdminApolloProvider = ({ children }: { children: React.ReactNode }) => {
+  return <ApolloProvider client={client}>{children}</ApolloProvider>;
+};
+
 export const ADMIN_OVERVIEW_QUERY = gql`
   query AdminOverview {
     adminOverview {
@@ -42,6 +46,7 @@ export const ADMIN_OVERVIEW_QUERY = gql`
           email
           role
           createdAt
+          lastLoginIp
         }
       }
       teamsSummary {
@@ -185,6 +190,7 @@ export const ADMIN_USERS_QUERY = gql`
           role
           userType
           isOnboarded
+          lastLoginIp
           createdAt
           updatedAt
         }
@@ -324,7 +330,3 @@ export function useAdminOverview() {
     fetchPolicy: "cache-and-network",
   });
 }
-
-export const AdminApolloProvider = ({ children }: { children: React.ReactNode }) => {
-  return <ApolloProvider client={client}>{children}</ApolloProvider>;
-};

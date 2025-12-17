@@ -115,6 +115,10 @@ const formatHeader = (key: string): string => {
     title = title.split('At').join(" At");
   }
 
+  if (key.includes("Ip")) {
+    title = "Origin";
+  }
+
   return title
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (char) => char.toUpperCase());

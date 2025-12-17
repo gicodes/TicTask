@@ -1,6 +1,5 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { LoginRequest, LoginResponse } from '@/types/axios';
-
 import GoogleProvider from 'next-auth/providers/google';
 import SlackProvider from 'next-auth/providers/slack';
 import XProvider from 'next-auth/providers/twitter';
@@ -25,6 +24,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         try {
           const res = await nextAuthApiPost<LoginResponse, LoginRequest>("/auth/login", credentials!);
+          
           if (res.ok && res.user) {
             return res.user;
           }
@@ -34,9 +34,18 @@ export const authOptions: NextAuthOptions = {
         return null;
       },
     }),
-    GoogleProvider({ clientId: process.env.GOOGLE_CLIENT_ID!, clientSecret: process.env.GOOGLE_CLIENT_SECRET! }),
-    SlackProvider({ clientId: process.env.SLACK_CLIENT_ID!, clientSecret: process.env.SLACK_CLIENT_SECRET! }),
-    XProvider({ clientId: process.env.X_CLIENT_ID!, clientSecret: process.env.X_CLIENT_SECRET!, version: "2.0" }),
+    GoogleProvider({ 
+      clientId: process.env.GOOGLE_CLIENT_ID!, 
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET! 
+    }),
+    SlackProvider({ 
+      clientId: process.env.SLACK_CLIENT_ID!, 
+      clientSecret: process.env.SLACK_CLIENT_SECRET! 
+    }),
+    XProvider({ 
+      clientId: process.env.X_CLIENT_ID!, 
+      clientSecret: process.env.X_CLIENT_SECRET!, version: "2.0" 
+    }),
   ],
   session: {
     strategy: "jwt",
@@ -46,20 +55,45 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.user = user;
+        token.id = user.id;
+        token.user = user
         token.accessToken = (user as User).accessToken;
-        token.expires = Math.floor(Date.now() / 1000) + 15 * 60;
+        token.accessTokenExpires = Date.now() + 15 * 60 * 1000;
+        
+        return token;
       }
-      
+
+      if (Date.now() < (token.accessTokenExpires as number)) return token;
+
+      try {
+        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/refresh`, {
+          method: "POST",
+          credentials: "include",
+        });
+
+        if (!res.ok) throw new Error("Refresh failed");
+
+        const data = await res.json();
+
+        token.accessToken = data.accessToken;
+        token.accessTokenExpires = Date.now() + 15 * 60 * 1000;
+      } catch {
+        token.accessToken = '';
+        token.user = undefined
+      }
+
       return token;
     },
+
     async session({ session, token }) {
-      if (token.user) session.user = token.user as User;
-      session.accessToken = token.accessToken as string;
+      if (token.user) {
+        session.user = token.user as User;
+        (session as any).accessToken = token.accessToken;
+      }
 
       return session;
     },
-  },
+  }
 };
 
 export default authOptions;

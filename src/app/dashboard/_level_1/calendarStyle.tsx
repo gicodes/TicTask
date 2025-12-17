@@ -3,6 +3,7 @@ import { Box, Skeleton } from '@mui/material';
 export const calendarStyle = {
   height: '100%',
   overflow: 'hidden',
+  
   '@media (max-width: 900px)': {
     overflowX: 'auto',
     maxWidth: '96vw',

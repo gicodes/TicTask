@@ -38,7 +38,7 @@ export function SetStatusButton({ profile }: { profile: { id: number } }) {
       {open && (
         <Stack
           p={1}
-          gap={2}
+          gap={1}
           borderRadius={2}
           direction={'row'}
           flexWrap={'wrap'}

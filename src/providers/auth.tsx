@@ -2,12 +2,9 @@
 
 import { SessionProvider, useSession, signIn, signOut, SignInResponse } from 'next-auth/react';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-
-import { User, Role, UserType } from '@/types/users';
+import { Role, UserType, UserPreferences } from '@/types/users';
 import { Subscription } from '@/types/subscription';
-import { UserProfileRes } from '@/types/axios';
 import { AppEvents } from './events';
-import { apiGet } from '@/lib/axios';
 
 export interface AuthUser {
   id: number;
@@ -22,6 +19,7 @@ export interface AuthUser {
   organization?: string;
   accessToken: string;
   subscription?: Subscription;
+  data?: UserPreferences
 }
 
 interface LoginProps {
@@ -46,7 +44,6 @@ interface AuthContextProps {
   inviteUser: (email: string, invitedBy?: string) => Promise<void>;
   removeUser: (email: string, removedBy?: string) => Promise<void>;
   logout: () => Promise<void>;
-  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -54,35 +51,31 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: session, status, update } = useSession();
   const [ user, setUser ] = useState<AuthUser | null>(null);
-
   const loading = status === 'loading';
   const isAuthenticated = !!session?.user;
 
   useEffect(() => {
-    if (session?.user) {
-      const fetchUser = async () => {
-        const res: UserProfileRes = await apiGet(`/user/${((session.user) as User).id}`);
-        
-        setUser({
-          id: ((session.user) as User).id,
-          name: res.data.name || '',
-          email: res.data.email || '',
-          role: ((res.data) as User).role || 'USER',
-          userType: ((res.data) as User).userType || '',
-          photo: ((res.data) as User).photo,
-          position:  ((res.data) as User).position,
-          organization: ((res.data) as User).organization,
-          accessToken: ((res.data) as User).accessToken,
-          subscription: ((res.data) as User).subscription
-        });
-
-        return;
-      }
-
-      fetchUser();
-    } else {
+    if (!session?.user) {
       setUser(null);
+      return;
     }
+
+    const sUser = session.user as AuthUser;
+
+    setUser({
+      id: session.user.id as number, 
+      name: sUser.name || 'Untitled User', 
+      email: sUser.email || '', 
+      role: sUser.role || 'USER', 
+      userType: sUser.userType || 'PERSONAL', 
+      photo: sUser.photo, 
+      position: sUser.position, 
+      organization: sUser.organization, 
+      subscription: sUser.subscription, 
+      data: sUser.data,
+
+      accessToken: sUser.accessToken, 
+    });
   }, [session]);
 
   const login = useCallback(async ({
@@ -133,10 +126,6 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const refreshUser = async () => {
-    await update(); 
-  };
-
   const value: AuthContextProps = {
     user,
     loading,
@@ -150,7 +139,6 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
     notifyNewDevice,
     inviteUser,
     removeUser,
-    refreshUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -166,7 +154,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context)
-    throw new Error('useAuth must be used within an AuthProvider');
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };

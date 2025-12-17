@@ -9,7 +9,7 @@ export type AdminOverviewData = {
       totalUsers: number;
       newThisWeek: number;
       inTrial: number;
-      recent: [];
+      recent: AdminOverviewUserRows[];
     };
     teamsSummary: {
       totalTeams: number;
@@ -66,6 +66,15 @@ export type AdminOverviewTicketRows = {
   status: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type AdminOverviewUserRows = {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  createdAt: Date;
+  lastLoginIp?: string;
 }
 
 export interface DataTableProps<T extends Record<string, unknown>> {

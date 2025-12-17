@@ -14,7 +14,7 @@ export default function LegalIndexPage() {
   ];
 
   return (
-    <Box sx={{ bgcolor: theme.palette.mode}}>
+    <Box>
       <Container maxWidth="sm" sx={{ py: 8, textAlign: 'center' }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

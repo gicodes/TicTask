@@ -1,5 +1,5 @@
-import { TicketPriority, TicketStatus, TicketType } from '@/types/ticket';
 import { getStatusColor, getTypeColor, priorityColor } from '../_level_1/tColorVariants';
+import { TicketPriority, TicketStatus, TicketType } from '@/types/ticket';
 import { useMemo } from 'react';
 
 export interface TicketEvent {
