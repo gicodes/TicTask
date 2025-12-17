@@ -13,8 +13,8 @@ import {
   useMediaQuery,
   Collapse,
 } from '@mui/material';
-import { Close, Tune } from '@mui/icons-material';
 import { FaPlusCircle } from 'react-icons/fa';
+import { Close, Tune } from '@mui/icons-material';
 import { Calendar, List, Search } from 'lucide-react';
 import { PLANNER_TOOLBAR_PROPS } from '../_level_1/tSchema';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
@@ -118,7 +118,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
                 arrow 
                 title={view==="list" ? 
                   "Showing as list. Currently on this view" 
-                  :  "Switch to list all items created on this workspace"}
+                  : "Switch to list all items created on this workspace"}
                 >
                 <IconButton
                   onClick={() => setView('list')}
@@ -150,7 +150,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
         </Stack>
       </Collapse>
 
-      {isMobile && (
+      { isMobile && (
         <Tooltip title={open ? 'Hide tools' : 'Show tools'}>
           <IconButton
             onClick={() => setOpen(v => !v)}
@@ -160,7 +160,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
               left: 0,
               zIndex: 1200,
               width: 50,
-              backgroundColor: 'background.paper',
+              backgroundColor: 'var(--surface-2)',
               boxShadow: 5,
               borderRadius: '0 99px 99px 0',
             }}

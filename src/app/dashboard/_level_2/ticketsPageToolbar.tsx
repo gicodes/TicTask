@@ -119,7 +119,10 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
             </ButtonGroup>
           </section>
 
-          <section id="new-ticket-btn" className='flex justify-center'>
+          <section 
+            id="new-ticket-btn" 
+            className='flex justify-center'
+          >
             <Tooltip title="Create New Ticket">
               <div>
                 <Button
@@ -147,7 +150,7 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
               left: 0,
               zIndex: 1200,
               width: 50,
-              backgroundColor: 'background.paper',
+              backgroundColor: 'var(--surface-2)',
               boxShadow: 5,
               borderRadius: '0 99px 99px 0',
             }}
