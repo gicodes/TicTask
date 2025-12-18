@@ -5,11 +5,11 @@ import { FaBriefcase } from 'react-icons/fa6';
 import { Paper, Stack, Typography, TextField } from '@mui/material';
 import { BsPersonWorkspace } from 'react-icons/bs';
 
-export type ProfileProps = {
+export interface ProfileProps {
   profile: User | null;
   isEditing: boolean;
-  handleChange: (path: string, value: any) => void;
-};
+  handleChange: (field: keyof User, value: string | unknown) => void;
+}
 
 export function PersonalSection({
   profile,

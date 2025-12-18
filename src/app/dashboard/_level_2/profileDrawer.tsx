@@ -76,7 +76,7 @@ export default function ProfileDetailDrawer() {
 
   const closeDetail = () => setCloseDrawer(true);
 
-  const handleChange = (field: keyof User, value: string) => {
+  const handleChange = (field: keyof User, value: string | unknown) => {
     if (!profile) return;
     setProfile({ ...profile, [field]: value });
   };
