@@ -23,7 +23,10 @@ export const authOptions: NextAuthOptions = {
       }, 
       async authorize(credentials) {
         try {
-          const res = await nextAuthApiPost<LoginResponse, LoginRequest>("/auth/login", credentials!);
+          const res = await nextAuthApiPost<LoginResponse, LoginRequest>(
+            "/auth/login", 
+            credentials!
+          );
           
           if (res.ok && res.user) {
             return res.user;
@@ -34,6 +37,7 @@ export const authOptions: NextAuthOptions = {
         return null;
       },
     }),
+
     GoogleProvider({ 
       clientId: process.env.GOOGLE_CLIENT_ID!, 
       clientSecret: process.env.GOOGLE_CLIENT_SECRET! 
@@ -53,12 +57,26 @@ export const authOptions: NextAuthOptions = {
     updateAge: 24 * 60 * 60,
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.user = user;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
         token.accessTokenExpires = Date.now() + 15 * 60 * 1000;
+        
+        return token;
+      }
+
+      if (trigger === "update" && !session?.user) {
+        console.warn("Session update triggered without user payload");
+      }
+
+      if (trigger === "update" && session?.user) {
+        token.user = {
+          ...token.user,
+          ...session.user,
+        };
+
         return token;
       }
 
@@ -78,6 +96,7 @@ export const authOptions: NextAuthOptions = {
         token.error = "RefreshFailed";
         return token;
       }
+
       const data = await res.json();
 
       token.accessToken = data.accessToken;
@@ -91,6 +110,7 @@ export const authOptions: NextAuthOptions = {
         session.user = token.user as User;
         (session as any).accessToken = token.accessToken;
       }
+
       return session;
     },
   }

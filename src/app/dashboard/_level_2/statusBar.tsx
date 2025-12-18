@@ -1,15 +1,28 @@
 import { useState } from "react";
 import { Button } from "@/assets/buttons";
 import { UserStatus } from "@/types/users";
+import { useAlert } from "@/providers/alert";
 import { Stack, Typography } from "@mui/material";
 import { USER_STATUS_OPTIONS } from "../_level_0/constants";
 import { useUpdateUserStatus } from "@/hooks/useUpdateStatus";
 
-export function SetStatusButton({ profile }: { profile: { id: number } }) {
+export function SetStatusButton({ 
+  profile 
+}: { 
+  profile: { 
+    id: number,
+    status?: UserStatus
+  } 
+}) {
   const [open, setOpen] = useState(false);
+  const { showAlert } = useAlert();
   const { updateStatus, loading } = useUpdateUserStatus(profile.id);
 
-  const handleStatusChange = async (status: UserStatus) => {
+  const handleStatusChange = async (status: UserStatus) => {    
+    if (profile.status === status) {
+      showAlert(`Your status is already set as ${status.toLowerCase()}`)
+      return;
+    }
     await updateStatus({ status });
     setOpen(false);
   };

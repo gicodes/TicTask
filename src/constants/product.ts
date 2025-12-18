@@ -121,7 +121,6 @@ export const PLANS = [
       "Up to 4 team workspaces",
       "Up to 360 Projects",
       "Timeline & Gantt view",
-      "Advanced task automation",
       "AI workflow with node automation",
       "Integrations (Slack, GitHub, Drive)",
       "Custom notification settings across all workspaces",

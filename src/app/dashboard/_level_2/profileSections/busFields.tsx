@@ -52,7 +52,7 @@ export function BusinessSection({
               sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               fullWidth
             />
-          ) : <Typography variant="body2">{profile?.industry || "Industry not specified"}</Typography>
+          ) : <Typography variant="body2">{profile?.industry || <i>&nbsp;Industry not specified</i>}</Typography>
           }
         </Stack>
 
@@ -68,7 +68,7 @@ export function BusinessSection({
               sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               fullWidth
             />
-          ) : <Typography variant="body2"> {profile?.position || 'Role not specified'} </Typography>
+          ) : <Typography variant="body2"> {profile?.position || <i>&nbsp;Role not specified</i>} </Typography>
           }
         </Stack>
 
@@ -126,7 +126,7 @@ export function BusinessSection({
               sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               fullWidth
             />
-          ) : <Typography variant="body2"> {profile?.data?.workSpaceName || 'Workspace name not set'}</Typography>
+          ) : <Typography variant="body2"> {profile?.data?.workSpaceName  || <i>&nbsp;Workspace name not set</i>}</Typography>
           }
         </Stack>
       </Stack>

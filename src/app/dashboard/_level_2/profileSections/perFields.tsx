@@ -35,7 +35,7 @@ export function PersonalSection({
               sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               fullWidth
             />
-          ) : <Typography variant="body2"> {profile?.position || 'Position not specified'}</Typography>
+          ) : <Typography variant="body2"> {profile?.position || <i>&nbsp;Position not specified</i>}</Typography>
           }
         </Stack>
         <Stack direction="row" alignItems="center" spacing={1}>
@@ -44,13 +44,13 @@ export function PersonalSection({
             <TextField
               size="small"
               variant="standard"
-              placeholder={profile?.data?.workSpaceName|| 'Specify Workspace Name'}
+              placeholder={profile?.data?.workSpaceName || 'Specify Workspace Name'}
               value={profile?.data?.workSpaceName || ''}
               onChange={(e) => handleChange('data', { ...profile?.data, workSpaceName: e.target.value })}
               sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               fullWidth
             />
-          ) : <Typography variant="body2"> {profile?.data?.workSpaceName || 'Workspace name not set'}</Typography>
+          ) : <Typography variant="body2"> {(profile?.data?.workSpaceName) || <i>{" "}Workspace name not set</i>}</Typography>
           }
         </Stack>
       </Stack>

@@ -201,9 +201,12 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                     <UserRole />
                   </Stack>
 
-                  <SetStatusButton profile={{
-                    id: user?.id!
-                  }} />
+                  <SetStatusButton 
+                    profile={{
+                      id: user?.id!,
+                      status: user?.data?.status
+                    }} 
+                  />
                   <Link 
                     href={'#'} 
                     style={{ 

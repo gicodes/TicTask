@@ -1,7 +1,8 @@
-import { useState, useCallback } from "react";
 import { apiPatch } from "@/lib/axios";
 import { UserStatus } from "@/types/users";
 import { useAlert } from "@/providers/alert";
+import { useState, useCallback } from "react";
+import { useSession } from "next-auth/react";
 
 interface UpdateStatusPayload {
   status: UserStatus;
@@ -10,6 +11,7 @@ interface UpdateStatusPayload {
 
 export function useUpdateUserStatus(userId: number) {
   const { showAlert } = useAlert();
+  const { update: updateSession } = useSession(); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,8 +28,17 @@ export function useUpdateUserStatus(userId: number) {
           },
         });
 
-        showAlert(`Updating your status to ${payload.status.toLocaleLowerCase()}...`, "success");
-        setTimeout(() => window.location.reload(), 5000);
+        await updateSession({
+          user: {
+            status: payload.status,
+            statusUntil: payload.statusUntil,
+          },
+        });
+
+        showAlert(
+          `Your status is now set to ${payload.status.toLowerCase()}!`,
+          "success"
+        );
       } catch (err) {
         setError("Failed to update status");
         showAlert("Status failed to update", "error");
@@ -35,7 +46,7 @@ export function useUpdateUserStatus(userId: number) {
       } finally {
         setLoading(false);
       }
-    }, [userId]
+    }, [userId, updateSession, showAlert]
   );
 
   return {
