@@ -41,7 +41,8 @@ export interface LoginResponse {
     role: Role;
     name: string;
     email: string;
-    accessToken: string
+    accessToken: string;
+    refreshToken: string;
   }
   error?: string
 }

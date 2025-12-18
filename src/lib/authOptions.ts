@@ -55,42 +55,42 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.user = user
-        token.accessToken = (user as User).accessToken;
+        token.user = user;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
         token.accessTokenExpires = Date.now() + 15 * 60 * 1000;
-        
         return token;
       }
 
-      if (Date.now() < (token.accessTokenExpires as number)) return token;
+      if (Date.now() < (token.accessTokenExpires as unknown as number)) return token;
 
-      try {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/refresh`, {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
+        {
           method: "POST",
-          credentials: "include",
-        });
+          headers: {
+            Authorization: `Bearer ${token.refreshToken}`,
+          },
+        }
+      );
 
-        if (!res.ok) throw new Error("Refresh failed");
-
-        const data = await res.json();
-
-        token.accessToken = data.accessToken;
-        token.accessTokenExpires = Date.now() + 15 * 60 * 1000;
-      } catch {
-        token.accessToken = '';
-        token.user = undefined
+      if (!res.ok) {
+        token.error = "RefreshFailed";
+        return token;
       }
+      const data = await res.json();
+
+      token.accessToken = data.accessToken;
+      token.refreshToken = data.refreshToken;
+      token.accessTokenExpires = Date.now() + 15 * 60 * 1000;
 
       return token;
     },
-
     async session({ session, token }) {
       if (token.user) {
         session.user = token.user as User;
         (session as any).accessToken = token.accessToken;
       }
-
       return session;
     },
   }

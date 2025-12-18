@@ -1,7 +1,9 @@
 'use client';
 
+import AiInfo from './aiInfo';
 import { AiMessage } from '@/types/ai';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { handleSendAI } from '../_level_1/aiSend';
 import {
   Box,
@@ -19,13 +21,7 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
-import { 
-  SmartToy, 
-  Send, 
-  Chat, 
-  ArrowBackIosNew 
-} from '@mui/icons-material';
-import { usePathname } from 'next/navigation';
+import { SmartToy, Send, Chat, ArrowBackIosNew, Info } from '@mui/icons-material';
 
 export default function AiAssistantDrawer() {
   const pathname = usePathname();
@@ -34,7 +30,6 @@ export default function AiAssistantDrawer() {
   if (isAiPage) return null;
 
   const [open, setOpen] = useState(false);
-
   const AI_OPTIONS = {
     tictask: { label: "TicTask", icon: "🤖" },
     skyler: { label: "Skyler", icon: "⛅️" },
@@ -48,6 +43,7 @@ export default function AiAssistantDrawer() {
       content: `Hi there! I am ${AI_OPTIONS[name].label}, your AI Assistant. How can I help you?`,
     });
     const [messages, setMessages] = useState<AiMessage[]>([]);
+    const [openInfo, setOpenInfo] = useState(false);
     const MAX_HISTORY = 8;
 
     useEffect(() => {
@@ -126,7 +122,7 @@ export default function AiAssistantDrawer() {
 
         <Box flex={1} p={1} overflow="auto" sx={{ flexGrow: 1 }}>
           <Stack spacing={2}>
-            <Box display={'flex'} justifyContent={'left'}>
+            <Box display={'flex'} justifyContent={'space-between'}>
               <Select
                 size="small"
                 value={aiName}
@@ -139,7 +135,12 @@ export default function AiAssistantDrawer() {
                   </MenuItem>
                 ))}
               </Select>
+
+              <IconButton onClick={() => setOpenInfo(!openInfo)}>
+                <Info />
+              </IconButton>
             </Box>
+            {openInfo && <AiInfo />}
             {messages.map((msg, idx) => (
               <Stack
                 key={idx}

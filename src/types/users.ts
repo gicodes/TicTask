@@ -44,6 +44,7 @@ export type User = {
   partnerRole: string;
 
   accessToken: string;
+  refreshToken: string;
 
   createdAt: string;
   updatedAt: string;

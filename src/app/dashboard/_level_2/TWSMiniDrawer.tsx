@@ -140,7 +140,7 @@ export default function TicketDetailDrawer({
               )}
               <Box display="flex" width="100%" justifyContent="end" pr={1}>
                 <Typography variant="caption" sx={{ opacity: 0.75 }}>
-                  {(user as User).data?.workSpaceName || user?.name.split(' ').splice(0)}&apos;s mini - workspace
+                  {(user as User).data?.workSpaceName || user?.name.split(' ')[0]}&apos;s mini - workspace
                 </Typography>
               </Box>
             </Stack>

@@ -1,6 +1,7 @@
 'use client';
 
 import { AiMessage } from '@/types/ai';
+import AiInfo from '../_level_2/aiInfo';
 import { useEffect, useState } from 'react';
 import { handleSendAI } from '../_level_1/aiSend';
 import {
@@ -15,7 +16,7 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
-import { Send, SmartToy, Person } from '@mui/icons-material';
+import { Send, SmartToy, Person, Info } from '@mui/icons-material';
 
 const MAX_HISTORY = 8;
 
@@ -25,7 +26,6 @@ export default function AiAssistantPage() {
     skyler: { label: "Skyler", icon: "⛅️" },
     kros: { label: "Krōs", icon: "➕" },
   };
-  
   const [aiName, setAiName] = useState<keyof typeof AI_OPTIONS>("kros");
   const [input, setInput] = useState('');
   const getGreeting = (name: keyof typeof AI_OPTIONS): AiMessage => ({
@@ -33,6 +33,7 @@ export default function AiAssistantPage() {
     aiName: AI_OPTIONS[name].label,
     content: `Hi there! I am ${AI_OPTIONS[name].label}, your AI Assistant. How can I help you?`,
   });
+  const [openInfo, setOpenInfo] = useState(false);
   const [messages, setMessages] = useState<AiMessage[]>([]);
 
   useEffect(() => {
@@ -71,7 +72,7 @@ export default function AiAssistantPage() {
         sx={{
           width: '100%',
           maxWidth: 777,
-          minHeight: { md: '77vh', xs: '80vh' },
+          minHeight: {  xs: '80vh', md: '90vh',},
           borderRadius: { xs: 1, sm: 2, md: 3 },
           display: 'flex',
           flexDirection: 'column',
@@ -104,7 +105,7 @@ export default function AiAssistantPage() {
           />
         </Box>
 
-        <Box pt={1}>
+        <Box p={1} display={'flex'} justifyContent={'space-between'}>
           <Select
             size="small"
             value={aiName}
@@ -117,9 +118,18 @@ export default function AiAssistantPage() {
               </MenuItem>
             ))}
           </Select>
+
+          <IconButton onClick={() => setOpenInfo(!openInfo)}>
+            <Info />
+          </IconButton>
         </Box>
 
         <Box flex={1} p={2} overflow="auto">
+          {openInfo && 
+            <Stack mb={3}>
+              <AiInfo />
+            </Stack>
+          }
           <Stack spacing={2}>
             {messages.map((msg, idx) => (
               <Stack
@@ -152,6 +162,8 @@ export default function AiAssistantPage() {
         <Box p={2} display="flex" gap={1}>
           <TextField
             fullWidth
+            multiline
+            rows={2}
             size="small"
             placeholder="Ask TicTask anything..."
             value={input}

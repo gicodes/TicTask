@@ -14,14 +14,16 @@ declare module "next-auth" {
     partner?: boolean;
     position?: string;
     organization?: string;
-    accessToken: string;
     subscription?: Subscription;
     data?: UserPreferences
+    accessToken: string;
+    refreshToken: string;
   }
 
   interface Session extends DefaultSession {
     user: User;
     accessToken: string;
+    refreshToken: string;
   }
 
   interface JWTCallbackParams {
@@ -41,6 +43,7 @@ declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     user?: import("next-auth").User;
     accessToken: string;
+    refreshToken: string;
     expires?: number;
   }
 }
