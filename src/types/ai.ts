@@ -1,5 +1,4 @@
-
-export interface Message {
+export interface AiMessage {
   role: 'user' | 'assistant';
   content: string;
   idle?: boolean;
@@ -7,7 +6,8 @@ export interface Message {
 }
 
 export interface HandleSendProps {
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  messages: AiMessage[];
+  setMessages: React.Dispatch<React.SetStateAction<AiMessage[]>>;
   setInput: React.Dispatch<React.SetStateAction<string>>;
   input: string;
   aiName: string;
@@ -36,4 +36,14 @@ export interface AIRefinedResponse {
     completion_tokens: number;
     completion_time: number | unknown;
   }
+}
+
+export interface AICommsBody {
+  type: string;
+  aiName: string;
+  userId: number;
+  payload: AiMessage & {
+    ticket?: any;
+    history?: AiMessage[];
+  };
 }

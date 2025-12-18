@@ -52,6 +52,7 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
           direction={{ xs: 'column', sm: 'row' }}
           justifyContent="space-between"
           width="100%"
+          mb={{ xs: 1, sm: 0 }}
         >
 
           <section id="search">

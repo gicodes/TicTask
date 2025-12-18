@@ -1,7 +1,7 @@
+import { UserStatus } from "@/types/users";
 import { AuthUser } from "@/providers/auth";
 import { CgMenuGridR } from "react-icons/cg";
 import { FaUserGroup } from "react-icons/fa6";
-import { UserPreferences } from "@/types/users";
 import { SiAwsorganizations } from "react-icons/si";
 import { GiHelp, GiThreeFriends } from 'react-icons/gi';
 import { RiBloggerLine, RiRobot2Fill } from "react-icons/ri";
@@ -129,14 +129,13 @@ export interface AvatarProps {
   user: {
     name: string;
     photo?: string;
-    data?: UserPreferences
+    data?: { status: UserStatus }
   } | null;
 }
 export const NavbarAvatar = ({ 
   user, 
   size = 36}: AvatarProps
-) => { 
-  return (
+) => (
   <Box position={'relative'} maxHeight={50} alignContent={'center'}>
     <Avatar
       src={user?.photo || ''}
@@ -155,13 +154,13 @@ export const NavbarAvatar = ({
     <Box position={'absolute'} bottom={-5} right={0} maxHeight={1}>
       <FaCircle 
         size={9} 
-        color={user?.data?.status===undefined ? 'limegreen' 
+        color={user?.data?.status===undefined ? 'var(--disabled)' 
           : user?.data?.status==="ACTIVE" ? 'limegreen' 
           : user?.data?.status==="AWAY" ? 'gold' 
-          : user?.data?.status==="BUSY" ? 'tomato' : 'var(--secondary)'} />
+          : user?.data?.status==="BUSY" ? 'tomato' : 'gray'} />
     </Box>
   </Box>
-)};
+);
 
 export const NewFeatureBadge = () => (
   <Badge 

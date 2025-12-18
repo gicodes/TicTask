@@ -1,6 +1,6 @@
 'use client';
 
-import { Message } from '@/types/ai';
+import { AiMessage } from '@/types/ai';
 import { useEffect, useState } from 'react';
 import { handleSendAI } from '../_level_1/aiSend';
 import {
@@ -28,7 +28,13 @@ import {
 import { usePathname } from 'next/navigation';
 
 export default function AiAssistantDrawer() {
+  const pathname = usePathname();
+  const isAiPage = pathname.startsWith('/dashboard/ai');
+  
+  if (isAiPage) return null;
+
   const [open, setOpen] = useState(false);
+
   const AI_OPTIONS = {
     tictask: { label: "TicTask", icon: "🤖" },
     skyler: { label: "Skyler", icon: "⛅️" },
@@ -36,26 +42,41 @@ export default function AiAssistantDrawer() {
   };
   const [aiName, setAiName] = useState<keyof typeof AI_OPTIONS>("kros");
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([{
-    role: "assistant",
-    aiName: AI_OPTIONS["kros"].label,
-    content: `Hi there! I am ${AI_OPTIONS["kros"].label}, your AI Assistant. How can I help you?`,
-  }]);
-
-  useEffect(() => {
-    setMessages([{
+    const getGreeting = (name: keyof typeof AI_OPTIONS): AiMessage => ({
       role: "assistant",
-      aiName: AI_OPTIONS[aiName].label,
-      content: `Hi there! I am ${AI_OPTIONS[aiName].label}, your AI Assistant. How can I help you?`,
-    }]);
-  }, [aiName]);
+      aiName: AI_OPTIONS[name].label,
+      content: `Hi there! I am ${AI_OPTIONS[name].label}, your AI Assistant. How can I help you?`,
+    });
+    const [messages, setMessages] = useState<AiMessage[]>([]);
+    const MAX_HISTORY = 8;
 
-  const pathname = usePathname();
-  const isAiPage = pathname.startsWith('/dashboard/ai');
+    useEffect(() => {
+      const key = `ai_chat_${aiName}`;
+      const stored = localStorage.getItem(key);
+  
+      if (stored) {
+        try {
+          const parsed: AiMessage[] = JSON.parse(stored);
+          setMessages(parsed.length ? parsed : [getGreeting(aiName)]);
+          return;
+        } catch { 
+          // ignore JSON parsing errors
+        }
+      }
+  
+      setMessages([getGreeting(aiName)]);
+    }, [aiName]);
+  
+    useEffect(() => {
+      if (!messages.length) return;
+  
+      const key = `ai_chat_${aiName}`;
+      const trimmed = messages.slice(-MAX_HISTORY);
+  
+      localStorage.setItem(key, JSON.stringify(trimmed));
+    }, [messages, aiName]);
 
   const handleClose = () => setOpen(false);
-
-  if (isAiPage) return null;
 
   return (
     <>
@@ -184,11 +205,23 @@ export default function AiAssistantDrawer() {
             variant="outlined"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSendAI({ setMessages, setInput, input, aiName })}
+            onKeyDown={(e) => e.key === 'Enter' && handleSendAI({ 
+              messages,
+              setMessages, 
+              setInput, 
+              input, 
+              aiName 
+            })}
           />
           <IconButton 
             color="info" 
-            onClick={() => handleSendAI({ setMessages, setInput, input, aiName })}
+            onClick={() => handleSendAI({ 
+              messages,
+              setMessages, 
+              setInput,
+              input, 
+              aiName 
+            })}
           >
             <Send />
           </IconButton>

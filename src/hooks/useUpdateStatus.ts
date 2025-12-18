@@ -26,8 +26,8 @@ export function useUpdateUserStatus(userId: number) {
           },
         });
 
-        showAlert("Status updated successfully", "success");
-        window.location.reload();
+        showAlert(`Updating your status to ${payload.status.toLocaleLowerCase()}...`, "success");
+        setTimeout(() => window.location.reload(), 5000);
       } catch (err) {
         setError("Failed to update status");
         showAlert("Status failed to update", "error");

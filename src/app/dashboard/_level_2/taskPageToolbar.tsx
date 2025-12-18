@@ -59,6 +59,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
           justifyContent={'space-between'}
           width={'100%'}
           spacing={2}
+          mb={{ xs: 3, sm: 0 }}
         >
           <TextField
             value={searchQuery}

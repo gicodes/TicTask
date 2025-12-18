@@ -1,48 +1,84 @@
 'use client';
 
-import { Message } from '@/types/ai';
+import { AiMessage } from '@/types/ai';
 import { useEffect, useState } from 'react';
 import { handleSendAI } from '../_level_1/aiSend';
+import {
+  Box,
+  Paper,
+  Stack,
+  Typography,
+  TextField,
+  IconButton,
+  Chip,
+  Avatar,
+  MenuItem,
+  Select,
+} from '@mui/material';
 import { Send, SmartToy, Person } from '@mui/icons-material';
-import { Box, Paper, Stack, Typography, TextField, IconButton, Chip, Avatar, MenuItem, Select,} from '@mui/material';
 
-export default function AiAssistantPage() { 
+const MAX_HISTORY = 8;
+
+export default function AiAssistantPage() {
   const AI_OPTIONS = {
     tictask: { label: "TicTask", icon: "🤖" },
     skyler: { label: "Skyler", icon: "⛅️" },
     kros: { label: "Krōs", icon: "➕" },
   };
+  
   const [aiName, setAiName] = useState<keyof typeof AI_OPTIONS>("kros");
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([{
+  const getGreeting = (name: keyof typeof AI_OPTIONS): AiMessage => ({
     role: "assistant",
-    aiName: AI_OPTIONS["kros"].label,
-    content: `Hi there! I am ${AI_OPTIONS["kros"].label}, your AI Assistant. How can I help you?`,
-  }]);
+    aiName: AI_OPTIONS[name].label,
+    content: `Hi there! I am ${AI_OPTIONS[name].label}, your AI Assistant. How can I help you?`,
+  });
+  const [messages, setMessages] = useState<AiMessage[]>([]);
 
   useEffect(() => {
-    setMessages([{
-      role: "assistant",
-      aiName: AI_OPTIONS[aiName].label,
-      content: `Hi there! I am ${AI_OPTIONS[aiName].label}, your AI Assistant. How can I help you?`,
-    }]);
+    const key = `ai_chat_${aiName}`;
+    const stored = localStorage.getItem(key);
+
+    if (stored) {
+      try {
+        const parsed: AiMessage[] = JSON.parse(stored);
+        setMessages(parsed.length ? parsed : [getGreeting(aiName)]);
+        return;
+      } catch { 
+        // ignore JSON parsing errors
+      }
+    }
+
+    setMessages([getGreeting(aiName)]);
   }, [aiName]);
 
+  useEffect(() => {
+    if (!messages.length) return;
+
+    const key = `ai_chat_${aiName}`;
+    const trimmed = messages.slice(-MAX_HISTORY);
+
+    localStorage.setItem(key, JSON.stringify(trimmed));
+  }, [messages, aiName]);
+
   return (
-    <Box display="flex" justifyContent="center" p={{ sm: 1, md: 2, lg: 3}}>
+    <Box 
+      display="flex" 
+      justifyContent="center" p={{ sm: 1, md: 2, lg: 3 }}
+    >
       <Paper
         elevation={3}
         sx={{
           width: '100%',
           maxWidth: 777,
-          minHeight: { md: '77vh', xs: '80vh', },
-          borderRadius: { xs: 1, sm: 2, md: 3, },
+          minHeight: { md: '77vh', xs: '80vh' },
+          borderRadius: { xs: 1, sm: 2, md: 3 },
           display: 'flex',
           flexDirection: 'column',
         }}
       >
         <Box
-          display={{xs: 'none', sm: "flex"}}
+          display={{ xs: 'none', sm: "flex" }}
           alignItems="center"
           justifyContent="space-between"
           p={2}
@@ -50,26 +86,25 @@ export default function AiAssistantPage() {
           borderColor="divider"
         >
           <Stack direction="row" alignItems="center" spacing={2}>
-            <SmartToy fontSize="medium" sx={{ color: 'var(--special)'}} />
+            <SmartToy sx={{ color: 'var(--special)' }} />
             <Typography variant="h6" fontWeight={600}>
               AI Assistant
             </Typography>
           </Stack>
-          <Chip 
-            label="BETA" 
-            variant="outlined" 
-            sx={{ 
-              bgcolor: 'orange', 
-              color: 'var(--surface-1)', 
-              fontWeight: 600, 
-              p: 1.5, 
+          <Chip
+            label="BETA"
+            variant="outlined"
+            sx={{
+              bgcolor: 'orange',
+              color: 'var(--surface-1)',
+              fontWeight: 600,
               border: 'none',
               fontFamily: 'monospace'
             }}
           />
         </Box>
 
-        <Box display={'flex'} justifyContent={'left'} pt={{ xs: 1, sm: 0}}>
+        <Box pt={1}>
           <Select
             size="small"
             value={aiName}
@@ -83,21 +118,14 @@ export default function AiAssistantPage() {
             ))}
           </Select>
         </Box>
-        
-        <Box
-          flex={1}
-          py={2}
-          px={{ xs: 1, sm: 2}}
-          overflow="auto"
-          sx={{ scrollBehavior: 'smooth', backgroundColor: 'background.default' }}
-        >
+
+        <Box flex={1} p={2} overflow="auto">
           <Stack spacing={2}>
             {messages.map((msg, idx) => (
               <Stack
                 key={idx}
                 direction="row"
                 justifyContent={msg.role === 'user' ? 'flex-end' : 'flex-start'}
-                alignItems="flex-start"
                 spacing={1.5}
               >
                 {msg.role === 'assistant' && (
@@ -105,24 +133,12 @@ export default function AiAssistantPage() {
                     <SmartToy fontSize="small" />
                   </Avatar>
                 )}
-                <Paper
-                  sx={{
-                    p: 1.5,
-                    borderRadius: 3,
-                    maxWidth: '80%',
-                    bgcolor:
-                      msg.role === 'user'
-                        ? 'primary.main' : 'background.paper',
-                    color:
-                      msg.role === 'user'
-                        ? 'info.contrastText' : 'text.info',
-                  }}
-                >
-                  <Typography 
-                    variant="body2" 
-                    className={msg.idle ? 'text-italic' : ''}
-                  >{msg.content}</Typography>
+                <Paper sx={{ p: 1.5, borderRadius: 3, maxWidth: '80%' }}>
+                  <Typography variant="body2">
+                    {msg.content}
+                  </Typography>
                 </Paper>
+
                 {msg.role === 'user' && (
                   <Avatar sx={{ bgcolor: 'grey.500' }}>
                     <Person fontSize="small" />
@@ -133,20 +149,34 @@ export default function AiAssistantPage() {
           </Stack>
         </Box>
 
-        <Box p={2} display="flex" alignItems="center" gap={1}>
+        <Box p={2} display="flex" gap={1}>
           <TextField
             fullWidth
-            placeholder="Ask TicTask anything..."
-            variant="outlined"
             size="small"
+            placeholder="Ask TicTask anything..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSendAI({ setMessages, setInput, input, aiName })}
+            onKeyDown={(e) =>
+              e.key === 'Enter' &&
+              handleSendAI({ 
+                messages,
+                setMessages, 
+                setInput, 
+                input, 
+                aiName 
+              })
+            }
           />
           <IconButton
-            color="info"
-            onClick={() => handleSendAI({ setMessages, setInput, input, aiName })}
-            sx={{ borderRadius: 2 }}
+            onClick={() =>
+              handleSendAI({ 
+                messages,
+                setMessages, 
+                setInput, 
+                input, 
+                aiName 
+              })
+            }
           >
             <Send />
           </IconButton>
