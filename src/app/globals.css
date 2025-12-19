@@ -123,6 +123,7 @@ h6 { font-size: 1.5rem; }
 .font-sxl { font-size: 3rem; }
 
 .font-weight-l { font-weight: 200; }
+.text-italic { font-style: italic;}
 
 .flex { display: flex; }
 .grid { display: grid; }
@@ -178,11 +179,6 @@ h6 { font-size: 1.5rem; }
   }
 }
 
-.pulse {
-  display: inline-block;
-  animation: pulse 2.5s ease-in-out infinite;
-}
-
 .btn {
   border-radius: 9999px;
   height: auto;
@@ -198,6 +194,11 @@ h6 { font-size: 1.5rem; }
   &:hover {
     border-color: var(--accent);
   }
+}
+
+.pulse {
+  display: inline-block;
+  animation: pulse 2.5s ease-in-out infinite;
 }
 
 @keyframes fadeIn {
@@ -228,8 +229,4 @@ h6 { font-size: 1.5rem; }
     box-shadow: 0 0 0 0 transparent;
     transform: scale(1);
   }
-}
-
-.text-italic { 
-  font-style: italic;
 }

@@ -161,7 +161,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
               left: 0,
               zIndex: 1200,
               width: 50,
-              backgroundColor: 'var(--surface-2)',
+              backgroundColor: 'var(--surface-1)',
               boxShadow: 5,
               borderRadius: '0 99px 99px 0',
             }}
