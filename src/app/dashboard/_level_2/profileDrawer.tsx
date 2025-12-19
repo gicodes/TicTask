@@ -256,7 +256,7 @@ export default function ProfileDetailDrawer() {
                   label={profile?.role==='USER' ? "Tier 𝟚" : profile?.role}
                   sx={{
                     bgcolor: isModerator ? 'var(--special)' : 'default',
-                    color: 'var(--bw-inverse)',
+                    color: isModerator ? 'var(--bw-inverse)' : 'var(--bw)',
                     fontWeight: 600,
                     fontStyle: profile?.role==='USER' ? 'italic' : 'inherit',
                   }}
