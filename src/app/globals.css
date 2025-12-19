@@ -10,6 +10,7 @@
   --disabled: #cccccc;
   --accent-contrast: #ffffff;
   --bw: #000;
+  --bw-inverse: #fff;
   --info: #0066ff;
   --dull-gray: #999;
   --border-color: #ccc;
@@ -37,7 +38,8 @@
     --flair: rgb(69, 107, 139);     
     --secondary: #777;
     --disabled: #555;
-    --bw: #fff;        
+    --bw: #fff;   
+    --bw-inverse: #000;     
     --dull-gray: #555;
     --border-color: #333;
     --accent-contrast: #1a1a1a;

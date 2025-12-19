@@ -32,8 +32,8 @@ const ResetPassword = () => {
       });
       
       if (res.ok) {
-        showAlert("Password Reset Successfully!", "success");
-        router.push('/dashboard')
+        showAlert("Password Reset Successfully. Login with new password!", "success");
+        router.push('/auth/login')
       }
       else setError(res.message);
     } catch {
@@ -52,7 +52,7 @@ const ResetPassword = () => {
           component="form"
           onSubmit={handleSubmit}
         >
-          <Stack spacing={2} p={{ xs: 1.2, sm: 1.5, md: 2 }}>
+          <Stack gap={2} p={{ xs: 1.2, sm: 1.5, md: 2 }}>
             <TextField
               fullWidth
               type={showPassword ? 'text' : 'password'}
@@ -85,7 +85,6 @@ const ResetPassword = () => {
             <Button
               type="submit"
               disabled={submitting}
-              sx={{ margin: '0 auto'}}
             >
               {submitting ? 'Resetting Password...' : 'Reset Password'}
             </Button>

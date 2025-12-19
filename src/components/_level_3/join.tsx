@@ -166,7 +166,7 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
                     <TextField
                       label="Invite Token"
                       name="adminToken"
-                      type={showToken ? 'text' : 'password'}
+                      type='text'
                       value={formData.adminToken}
                       onChange={handleChange}
                       fullWidth
