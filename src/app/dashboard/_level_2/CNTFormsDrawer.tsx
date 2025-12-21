@@ -161,7 +161,7 @@ export default function TicketTaskCreateFormsDrawer({
   };
 
   const cancelCNT = () => { 
-    // methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate)); 
+    methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate)); 
     onClose(); 
   }
 
