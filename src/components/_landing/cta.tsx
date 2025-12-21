@@ -13,7 +13,7 @@ const CTA = () => {
   const router = useRouter()
   const { user } = useAuth();
   const { showAlert } = useAlert();
-  const { subscription } = useSubscription();
+  const { subscription, getPro } = useSubscription();
 
   const GetPro = async () => {
     if (!user) {
@@ -23,15 +23,19 @@ const CTA = () => {
     };
 
     if (!subscription || !subscription.active) {
-      showAlert("You are being redirected to pricing to complete your product/ plan purchase", "info");
-      setInterval(() => router.push('/product/pricing'), 1200)
+      showAlert("Redirecting to pricing…", "info");
+
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          router.push("/product/pricing");
+        }, 500);
+      });
     }
 
     if (subscription && subscription.active){
       showAlert("You have an active Pro Subscription running!");
       return;
     }
-    else showAlert("Unauthorized! Kindly contact admin", "warning");
   }
   
   return (

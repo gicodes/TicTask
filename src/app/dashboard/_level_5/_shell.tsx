@@ -41,14 +41,15 @@ import { Login, Menu as MenuIcon, Notifications } from '@mui/icons-material';
 
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [notificationDrop, setNotificationDrop] = useState<null | HTMLElement>(null);
-  const { notifications } = useNotifications();
   const { user, logout } = useAuth();
+  const { notifications } = useNotifications();
   const pathname = usePathname();
+  
   const [isMounted, setIsMounted] = useState(false);
   const [moreMenuList, setMoreMenuList] = useState(false);
   const [isRouteChanging, setIsRouteChanging] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [notificationDrop, setNotificationDrop] = useState<null | HTMLElement>(null);
 
   useEffect(() => setIsMounted(true), []);
 
@@ -204,7 +205,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                   <SetStatusButton 
                     profile={{
                       id: user?.id!,
-                      status: user?.data?.status
+                      data: { status: user?.data?.status }
                     }} 
                   />
                   <Link 

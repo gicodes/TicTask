@@ -60,7 +60,7 @@ export default function PricingSection() {
 
     const planKey = plan.toLowerCase() as keyof typeof PLAN_IDS;
     const planId = PLAN_IDS[planKey][billing];
-    const { url } = await upgradeToCheckout(planId);
+    const url = await upgradeToCheckout(planId);
     router.push(url);
   };
 

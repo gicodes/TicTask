@@ -10,9 +10,8 @@ export const useUpdateEmailNotifSetting = (params?: number) => {
 
   let userId: number | undefined;
 
-  if (!params) {
-    userId = user?.id
-  } else userId = params;
+  if (!params) userId = user?.id
+  else userId = params;
 
   const updateEmailNotifications = useCallback(
     async (enabled: boolean) => {
@@ -20,9 +19,18 @@ export const useUpdateEmailNotifSetting = (params?: number) => {
         setLoading(true);
         setError(null);
           
-        const payload = { getTNotifsViaEmail: enabled };
+        const payload = { 
+          user: { 
+            data: { 
+              getTNotifsViaEmail: enabled 
+            }
+          }
+        };
 
-        const res: GenericAPIRes = await apiPatch(`/user/${userId}`, payload);
+        const res: GenericAPIRes = await apiPatch(
+          `/user/${userId}`, 
+          payload
+        );
         return res.data;
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to update email notifications");
@@ -33,5 +41,9 @@ export const useUpdateEmailNotifSetting = (params?: number) => {
     }, [userId]
   );
 
-  return { updateEmailNotifications, tNotifsLoading, error };
+  return { 
+    updateEmailNotifications, 
+    tNotifsLoading, 
+    error 
+  };
 };

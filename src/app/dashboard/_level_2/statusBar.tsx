@@ -11,7 +11,9 @@ export function SetStatusButton({
 }: { 
   profile: { 
     id: number,
-    status?: UserStatus
+    data: {
+      status?: UserStatus
+    }
   } 
 }) {
   const [open, setOpen] = useState(false);
@@ -19,7 +21,7 @@ export function SetStatusButton({
   const { updateStatus, loading } = useUpdateUserStatus(profile.id);
 
   const handleStatusChange = async (status: UserStatus) => {    
-    if (profile.status === status) {
+    if (profile.data.status === status) {
       showAlert(`Your status is already set as ${status.toLowerCase()}`)
       return;
     }

@@ -30,8 +30,10 @@ export function useUpdateUserStatus(userId: number) {
 
         await updateSession({
           user: {
-            status: payload.status,
-            statusUntil: payload.statusUntil,
+            data: {
+              status: payload.status,
+              statusUntil: payload.statusUntil,
+            },
           },
         });
 
