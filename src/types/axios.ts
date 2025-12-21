@@ -124,7 +124,7 @@ export interface GenericAPIRes {
   user?: {
     email: string;
   }
-  status: number;
+  status?: number;
   error?: {
     message: string;
   }
