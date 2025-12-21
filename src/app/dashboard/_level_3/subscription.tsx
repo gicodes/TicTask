@@ -33,7 +33,7 @@ export default function SubscriptionPage() {
     isFreeTrial, 
     loading, 
     upgradeToCheckout, 
-    cancelSubscription 
+    cancel 
   } = useSubscription();
 
   if (loading) return (
@@ -47,7 +47,12 @@ export default function SubscriptionPage() {
   const handleUpgrade = async (planId: string) => {
     try {
       const res = await upgradeToCheckout(planId);
-      window.location.href = res.url;
+      const url = typeof res === 'string' ? res : ((res as { url?: string })?.url ?? '');
+      if (url) {
+        window.location.href = url;
+      } else {
+        showAlert('Failed to start checkout session', 'error');
+      }
     } catch (e) {
       console.error(e);
       showAlert('Failed to start checkout session', 'error');
@@ -129,7 +134,7 @@ export default function SubscriptionPage() {
                       Manage Billing
                     </Button>
 
-                    <Button variant="text" tone="error" onClick={cancelSubscription}>
+                    <Button variant="text" tone="error" onClick={cancel}>
                       Cancel
                     </Button>
                   </Stack>
