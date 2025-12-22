@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 const platforms = [
-  { name: "Trello", logo: "/platforms/trello.png", link: 'trello.com' }, 
-  { name: "ClickUp", logo: "/platforms/clickup.png", link: 'app.clickup.com' },
-  { name: "Asana", logo: "/platforms/asana.png", link: 'asana.com' },
-  { name: "Jira", logo: "/platforms/jira.png", link: 'jira.com' },
-  { name: "Notion", logo: "/platforms/notion.png", link: 'notion.com' },
+  { name: "Trello", logo: "/platforms/trello.png", link: 'https://trello.com' }, 
+  { name: "ClickUp", logo: "/platforms/clickup.png", link: 'https://app.clickup.com' },
+  { name: "Asana", logo: "/platforms/asana.png", link: 'https://asana.com' },
+  { name: "Jira", logo: "/platforms/jira.png", link: 'https://jira.com' },
+  { name: "Notion", logo: "/platforms/notion.png", link: 'https://notion.com' },
 ];
 
 const ProPlatform = () => {

@@ -31,7 +31,7 @@ export default function AiAssistantPage() {
   const getGreeting = (name: keyof typeof AI_OPTIONS): AiMessage => ({
     role: "assistant",
     aiName: AI_OPTIONS[name].label,
-    content: `Hi there! I am ${AI_OPTIONS[name].label}, your AI Assistant. How can I help you?`,
+    content: `Hi there! I am ${AI_OPTIONS[name].label==="TicTask" ? "TicTask AI" : AI_OPTIONS[name].label}, your assistant. How can I help you?`,
   });
   const [openInfo, setOpenInfo] = useState(false);
   const [messages, setMessages] = useState<AiMessage[]>([]);

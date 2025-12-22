@@ -32,7 +32,7 @@ const Hero = () => {
       return;
     }
     if (trial.active) {
-      showAlert("You already have an active Pro subscription!", "info");
+      showAlert("You already have an active trial subscription!", "info");
       return;
     }
 
