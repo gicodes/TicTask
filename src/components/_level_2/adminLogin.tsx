@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LoginTemplate from '../_level_1/loginTemplate';
 
@@ -12,6 +12,25 @@ export const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');  
   const [submitting, setSubmitting] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  useEffect(() => {
+    try {
+      const savedEmail = localStorage.getItem('rememberedEmail');
+      if (savedEmail) {
+        setEmail(savedEmail);
+        setRememberMe(true);
+      }
+    } catch {
+      localStorage.removeItem('rememberedEmail');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!rememberMe) {
+      localStorage.removeItem('rememberedEmail');
+    }
+  }, [rememberMe]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +72,8 @@ export const AdminLogin = () => {
         handleSubmit={handleSubmit}
         setEmail={setEmail}
         setPassword={setPassword}
+        remember={rememberMe}
+        setRemember={setRememberMe}
       />
     </>
   );
