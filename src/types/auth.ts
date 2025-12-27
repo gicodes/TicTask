@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface LoginTemplateProps {
   email: string;
   password: string;
@@ -6,4 +8,13 @@ export interface LoginTemplateProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   setEmail: (value: string) => void;
   setPassword: (value: string) => void;
+  remember: boolean;
+  setRemember: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface RememberMeProps {
+  remember: boolean;
+  setRemember: (value: boolean) => void;
+  email?: string;
+  password?: string
 }

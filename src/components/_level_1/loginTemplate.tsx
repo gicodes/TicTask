@@ -1,4 +1,3 @@
-import { Box, Stack, TextField, Typography, IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { forgotPassword } from '@/hooks/useForgotPass';
 import { authErrorMessages } from '@/lib/authErrorMsg';
@@ -8,6 +7,14 @@ import { useAlert } from '@/providers/alert';
 import { Button } from '@/assets/buttons';
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { 
+  Box, 
+  Stack, 
+  TextField, 
+  Typography, 
+  IconButton, 
+  InputAdornment 
+} from '@mui/material';
 
 const LoginTemplate = ({
   email,
@@ -17,9 +24,10 @@ const LoginTemplate = ({
   handleSubmit,
   setEmail,
   setPassword,
+  remember,
+  setRemember
 }: LoginTemplateProps) => {
   const { showAlert } = useAlert();
-  const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const message = (error && authErrorMessages[error]) || authErrorMessages.Default;
@@ -82,7 +90,10 @@ const LoginTemplate = ({
           <Typography px={1} variant="caption" color="info.main">
             <Link href="#" onClick={handleForgotPassword}>Forgot Password?</Link>
           </Typography>
-          <RememberMe remember={remember} setRemember={setRemember} />
+          <RememberMe 
+            remember={remember} 
+            setRemember={setRemember}
+          />
         </Box>
         {error && (<Typography color="error" fontSize="0.9rem">{message}</Typography>)}
         <Button
