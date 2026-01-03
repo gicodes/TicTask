@@ -43,7 +43,7 @@ export const CredentialsForm = () => {
 
     const res = await login({ email, password, returnUrl });
 
-    if (res && 'error' in res) {
+    if (res && !res.ok) {
       setError(res.error || 'Invalid credentials');
       setSubmitting(false);
       return;
