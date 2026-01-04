@@ -45,7 +45,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
     >
       <GenericDashboardPagesHeader 
         title="Task Manager"
-        description="Manage your time, plan with a timeline in mind."
+        description="Manage your tasks, plan with a timeline in mind."
         extras={dateRangeLabel && (
           <Typography color="var(--secondary)" sx={{ fontWeight: 500 }}>
             {dateRangeLabel}
