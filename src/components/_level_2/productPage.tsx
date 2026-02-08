@@ -69,7 +69,7 @@ export const ProductHero = () => {
           <Button
             tone="secondary"
             component={Link}
-            href="/auth/register"
+            href="/auth/join/user"
           >
             Start Free
           </Button>
