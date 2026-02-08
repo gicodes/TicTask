@@ -17,7 +17,7 @@ export const FOOTER_LINKS = {
     {title: "Careers", link: '/company/careers'},  // *
     {title: "Partnership", link: '/company/partner/register'}, 
     {title: "Be a Contributor", link: '/collab'},  // *
-    {title: "Contact Us", link: '/company/contact-us'}
+    {title: "Contact Us", link: '/company#contact-us'}
   ],
   LEGAL: [
     {title: "Terms of Service", link: '/legal/terms-of-service'},

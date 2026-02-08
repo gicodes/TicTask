@@ -100,7 +100,7 @@ export default function SettingsPage() {
     <GenericGridPageLayout>
       <GenericDashboardPagesHeader
         title='Settings'
-        description='Customize your Appearance, Account, Notifications, Workspace and more ...'
+        description='Customize your Appearance, Account, Notifications, Workspace and more. '
       />
 
       <SettingsCard

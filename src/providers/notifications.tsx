@@ -8,7 +8,7 @@ import React, {
   useCallback,
 } from "react";
 import { AppEvents } from "./events";
-import { useAuth } from "./auth";
+import { useAuth } from "./auth";``
 
 export type NotificationType = "info" | "success" | "warning" | "error";
 
@@ -244,15 +244,11 @@ export const NotificationsProvider = ({
     };
   }, [addNotification]);
 
-  /* ----------------------------- Persist to localStorage ---------------------------- */
-
   useEffect(() => {
     try {
       localStorage.setItem("notifications", JSON.stringify(notifications));
     } catch {}
   }, [notifications]);
-
-  /* ------------------------------ Push Permission ------------------------------ */
 
   const requestPushPermission = useCallback(async () => {
     if (typeof Notification !== "undefined") {

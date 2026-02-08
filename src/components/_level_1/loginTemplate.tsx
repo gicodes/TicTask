@@ -41,9 +41,14 @@ const LoginTemplate = ({
       return;
     }
 
-    forgotPassword({email})
-      .then(() => showAlert("Password reset link sent to your email!", "success"))
-      .catch(() => showAlert("Something went wrong!", "error"))
+    try {
+      forgotPassword({email})
+      showAlert("Password reset link sent to your email!", "success");
+      return;
+    } catch {
+      showAlert("Something went wrong!", "error");
+      return
+    }
   }
 
   return (

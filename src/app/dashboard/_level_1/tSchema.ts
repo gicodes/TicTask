@@ -72,7 +72,6 @@ export interface BOARD_COLUMN {
 export type TicketTypeUnion = TicketType;
 export type PlannerTaskTypeUnion = PlannerTaskType;
 export type FormComponentType = React.ComponentType<{control: Control<FieldValues>; task?: boolean }>;
-
 export type TicketFormValuesUnion =
   | GeneralFormValues
   | BugFormValues
