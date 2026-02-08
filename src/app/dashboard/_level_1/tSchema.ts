@@ -152,7 +152,7 @@ export type InvoiceFormValues = z.infer<typeof invoiceSchema>;
  
 export const taskSchema = z.object({
   type: z.literal('TASK').optional(),
-  title: z.string().min(1),
+  title: z.string().min(1).optional(),
   description: z.string().optional(),
   priority: z.enum(['LOW','MEDIUM','HIGH','CRITICAL']).optional(),
   assignTo: z.string().email().optional(),

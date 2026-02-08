@@ -33,18 +33,27 @@ export default function TaskForm({ control }: Props) {
           <TextField label="Assign to (email)" {...field} />
         } 
       />
-      <Controller 
-        name="estimatedTimeHours" 
-        control={control} 
-        render={({ field }) => 
-          <TextField type="number" label="Estimated time (hours)" {...field} />
-        } 
+      <Controller
+        name="estimatedTimeHours"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            type="number"
+            label="Estimated time (hours)"
+            value={field.value ?? ''}
+            onChange={(e) =>
+              field.onChange(
+                e.target.value === '' ? undefined : Number(e.target.value)
+              )
+            }
+          />
+        )}
       />
       <Controller 
         name="recurrence" 
         control={control} 
         render={({ field }) => 
-          <TextField label="Recurrence (e.g. daily, weekly, cron)" {...field} />
+          <TextField label="Recurrence (e.g. daily, weekly)" {...field} />
         } 
       />
       <div>
@@ -59,7 +68,7 @@ export default function TaskForm({ control }: Props) {
             size="small" 
             tone="secondary"
             startIcon={<Add />} 
-            onClick={() => checklist.append('')}
+            onClick={() => checklist.append(' ')}
           >
             Add
           </Button>
