@@ -35,7 +35,11 @@ export const ContactUsSection = () => {
       );
 
       showAlert("Thank you for reaching out to TicTask Support Center", "success");
-      window.location.reload();
+      setFormData({
+        message: '',
+        email: '',
+        name: ''
+      });
     } catch {
       showAlert("Failed to deliver message. Try again later...", 'error')
     } finally {
