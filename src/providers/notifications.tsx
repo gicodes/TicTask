@@ -165,8 +165,7 @@ export const NotificationsProvider = ({
     return () => unsubscribers.forEach(off => off());
   }, [addNotification, user]);
 
-  const unreadCount = useMemo(
-    () => notifications.filter(n => !n.read).length,
+  const unreadCount = useMemo(() => notifications.filter(n => !n.read).length,
     [notifications]
   );
 
