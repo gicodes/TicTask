@@ -33,8 +33,7 @@ const Page = () => {
 
   if (!isAuthenticated) return (
     <Box textAlign="center" px={2} display={'grid'} gap={10} py={10}>
-      <Typography>Please log in to access dashboard... </Typography>
-      <Typography>If you recently logged in with this device, refresh page to restore  from last session.</Typography>
+      <Typography>Please <Link href={'/auth/login'} className='custom-link'>log in</Link> to access dashboard </Typography>
     </Box>
   );
   

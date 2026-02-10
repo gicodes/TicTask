@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useTickets } from '@/providers/tickets';
-import { Create_Ticket } from '@/types/ticket';
+import { Create_Ticket, CreateTicketResult, Ticket } from '@/types/ticket';
 import { useAlert } from '@/providers/alert';
 import { useAuth } from '@/providers/auth';
 import { Button } from '@/assets/buttons';
@@ -146,15 +146,20 @@ export default function TicketTaskCreateFormsDrawer({
         throw new Error('Ticket creation is not available right now.');
       }
 
-      const ticket = await createTicket(payload);
-      onCreated?.(ticket);
-      showAlert('Your new ticket has been created!', 'success');
+      const result = await createTicket(payload) as CreateTicketResult;
 
-      methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
-      onClose();
+      if (result.success) {
+        onCreated?.(result.ticket);
+        showAlert("Your new ticket has been created!", "success");
+        methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
+        onClose();
+      } else {
+        showAlert(result.error, "error");
+      }
     } catch (e) {
-      const message = (e instanceof Error) ? e.message : 'Something went wrong. Please try again.';
+      const message = e instanceof Error ? e.message : "Something went wrong";
       setErr(message);
+      showAlert(message, "error");
     } finally {
       setIsSubmitting(false);
     }

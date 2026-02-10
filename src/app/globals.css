@@ -90,6 +90,7 @@ a {
 .custom-white { color: #fff; }
 .custom-sharp { color: var(--success); }
 .custom-dull { color: var(--secondary); }
+.custom-link { color: #0066ff;}
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;

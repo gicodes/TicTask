@@ -10,9 +10,9 @@ import {
 } from "react";
 import { useAuth } from "./auth";
 import { AppEvents } from "./events";
-import { TicketsRes, TicketRes } from "@/types/axios";
+import { TicketsRes, TicketRes, ErrorResponse } from "@/types/axios";
 import { apiGet, apiPatch, apiPost, apiPut } from "@/lib/axios";
-import { Ticket, TicketHistory, TicketNote, priorityOrder, statusOrder } from "@/types/ticket";
+import { Ticket, TicketHistory, TicketNote, priorityOrder, statusOrder, CreateTicketResult } from "@/types/ticket";
 
 export const sortTickets = (list: Ticket[]): Ticket[] => {
   if (!Array.isArray(list)) return [];
@@ -53,7 +53,7 @@ type TicketContextType = {
   fetchTicketHistory: (ticketId: number) => Promise<TicketHistory[] | undefined>;
   selectTicket: (ticketId: string | number | null) => void;
   clearSelection: () => void;
-  createTicket: (payload: Partial<Ticket>) => Promise<Ticket | undefined>;
+  createTicket: (payload: Partial<Ticket>) => Promise<Ticket | unknown>;
   addTicketComment: (ticketId: number, content: string) => Promise<TicketRes | undefined>;
   addTicketHistory: (ticketId: number, history: Partial<TicketHistory>) => Promise<TicketRes | undefined>;
   updateTicket: (ticketId: number, updates: Partial<Ticket>) => Promise<Ticket | undefined>;
@@ -104,27 +104,46 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
     }
   }, [user?.id, fetchTickets]);
 
-  const createTicket = async (payload: Partial<Ticket>) => {
+  const createTicket = async (
+    payload: Partial<Ticket>,
+  ): Promise<CreateTicketResult> => {
     try {
-      const created: TicketsRes = await apiPost(`/tickets`, payload);
+      const response = await apiPost<TicketsRes>("/tickets", payload);
 
-      if (!created.ok) return;
+      if (!response.ok) {
+        const errorMessage = response.message ?? "Ticket could not be created";
 
-      const ticket = created.ticket;
-      
-      setTickets(prev => sortTickets([...prev, ticket]));
+        return {
+          success: false,
+          error: errorMessage,
+        };
+      }
 
-      AppEvents.emit("ticket:created", { 
-        ticketId: ticket.id, 
-        type: ticket.type, 
-        createdBy: ticket.createdById===user?.id ? "you" : 
-          (ticket.createdBy?.name?.split(" ")[0] || 'team'), 
-        title: ticket.title 
+      const ticket = response.ticket;
+
+      setTickets((prev) => sortTickets([...prev, ticket]));
+
+      AppEvents.emit("ticket:created", {
+        ticketId: ticket.id,
+        type: ticket.type,
+        createdBy:
+          ticket.createdById === user?.id
+            ? "you"
+            : ticket.createdBy?.name?.split(" ")[0] || "team",
+        title: ticket.title,
       });
 
-      return ticket;
+      return { success: true, ticket };
     } catch (err) {
-      console.error("Create failed:", err);
+      console.log(err)
+      const message = (err as ErrorResponse).response.data.message || "Unexpected error occurred";
+
+      console.error("Ticket creation failed:", message, err);
+
+      return {
+        success: false,
+        error: message,
+      };
     }
   };
 

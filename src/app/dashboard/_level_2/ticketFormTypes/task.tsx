@@ -57,12 +57,13 @@ export default function TaskForm({ control }: Props) {
         } 
       />
       <div>
-        <div style={{
-          display:'flex', 
-          justifyContent:'space-between', 
-          alignItems:'center'
-        }}
-      >
+        <div 
+          style={{
+            display:'flex', 
+            justifyContent:'space-between', 
+            alignItems:'center'
+          }}
+        >
           <strong>Checklist</strong>
           <Button 
             size="small" 
@@ -112,6 +113,7 @@ export default function TaskForm({ control }: Props) {
             Add
           </Button>
         </div>
+        
         {subtasks.fields.map((f, i) => (
           <div key={f.id} style={{display:'flex', gap:8, marginTop:8, alignItems:'center'}}>
             <Controller 

@@ -24,7 +24,7 @@ import {
   Search,
   NotificationsNone,
 } from "@mui/icons-material";
-import type { AppNotification, NotificationType } from "@/providers/notifications";
+import type { AppNotification, NotificationType } from "@/types/notification";
 
 const ICONS = {
   info: <Info color="info" fontSize="small" />,
@@ -58,7 +58,7 @@ const NotificationsDrawer: React.FC = () => {
       const matchesSearch =
         s.length === 0 ||
         n.title.toLowerCase().includes(s) ||
-        n.message.toLowerCase().includes(s) ||
+        n.message?.toLowerCase().includes(s) ||
         JSON.stringify(n.meta ?? "").toLowerCase().includes(s);
 
       const matchesType = filterType === "all" || n.type === filterType;
@@ -157,7 +157,7 @@ const NotificationsDrawer: React.FC = () => {
 
             <Stack spacing={1.5}>
               {items.map((n) => {
-                const icon = ICONS[n.type ?? "info"] ?? (
+                const icon = ICONS[n.severity ?? "info"] ?? (
                   <NotificationsNone fontSize="small" />
                 );
 

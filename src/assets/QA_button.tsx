@@ -45,6 +45,6 @@ export const QA_Btn = ({
         fontSize: { xs: 12, sm: 15, md: 16}
       }}
     >
-      {disabled ? "PAUSED" : title}
+      {disabled ? "CLOSED" : title}
     </Button>
   )}

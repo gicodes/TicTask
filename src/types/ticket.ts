@@ -171,3 +171,7 @@ export const statusOrder: Record<string, number> = {
   CANCELLED: 4,
   CLOSED: 5,
 };
+
+export type CreateTicketResult =
+  | { success: true; ticket: Ticket }     // assuming Ticket is your entity type
+  | { success: false; error: string };

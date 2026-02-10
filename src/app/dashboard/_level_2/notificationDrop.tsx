@@ -113,7 +113,7 @@ const NotificationDropDown = ({
                       {new Date(n.createdAt).toLocaleString()}
                     </Typography>
                     <Tooltip title='Remove notification'>
-                      <IconButton onClick={() => removeNotification}>
+                      <IconButton onClick={() => removeNotification(n.id)}>
                         <Delete fontSize='small' color='disabled' />
                       </IconButton>
                     </Tooltip>
@@ -123,7 +123,7 @@ const NotificationDropDown = ({
             ))}
           </Stack> 
         : 
-        <Typography px={2} py={4}>No New Notifications</Typography>}
+        <Typography textAlign={'center'} py={4}>No New Notifications</Typography>}
 
         <Box px={2} mt={1}>
           <Link href={'/dashboard/notifications'} onClick={handleClose}>

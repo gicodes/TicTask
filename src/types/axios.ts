@@ -87,6 +87,14 @@ export interface TicketsRes {
   tickets: Ticket[];
 }
 
+export interface ErrorResponse {
+  response: {
+    data: {
+      message: string
+    }
+  }
+}
+
 export interface TicketRes {
   ok: boolean
   data?: unknown;
