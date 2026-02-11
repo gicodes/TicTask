@@ -139,6 +139,27 @@ export interface GenericAPIRes {
   reply?: string
 }
 
+export interface GenericResponse {
+  response: {
+    data: {
+      message: string
+    }
+  }
+}
+
+export interface GenericUserRes {
+  user: {
+    name: string;
+    email: string;
+  }
+  url?: string
+}
+
+export interface GenericUserMessageRes {
+  data: GenericUserRes
+  message?: string
+}
+
 export interface StripeCheckOutSessionRequest {
   userId: number;
   plan: string

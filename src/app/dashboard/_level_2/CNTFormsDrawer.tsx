@@ -2,19 +2,9 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useTickets } from '@/providers/tickets';
-import { Create_Ticket, CreateTicketResult, Ticket } from '@/types/ticket';
 import { useAlert } from '@/providers/alert';
 import { useAuth } from '@/providers/auth';
 import { Button } from '@/assets/buttons';
-import { 
-  useForm, 
-  FormProvider, 
-  FieldValues, 
-  Control, 
-  Resolver 
-} from 'react-hook-form';
-import { ZodType } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   TICKET_FORMS,
   TICKET_SCHEMAS,
@@ -26,6 +16,7 @@ import {
   PlannerTaskTypeUnion,
   TICKET_FORM_PROPS,
 } from '../_level_1/tSchema';
+import { Create_Ticket, CreateTicketResult } from '@/types/ticket';
 import {
   Drawer,
   Box,
@@ -37,6 +28,9 @@ import {
   Typography,
   Card,
 } from '@mui/material';
+import { ZodType } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, FormProvider, FieldValues, Control, Resolver } from 'react-hook-form';
 
 export default function TicketTaskCreateFormsDrawer({ 
   open,
@@ -151,6 +145,7 @@ export default function TicketTaskCreateFormsDrawer({
       if (result.success) {
         onCreated?.(result.ticket);
         showAlert("Your new ticket has been created!", "success");
+
         methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
         onClose();
       } else {
@@ -158,6 +153,7 @@ export default function TicketTaskCreateFormsDrawer({
       }
     } catch (e) {
       const message = e instanceof Error ? e.message : "Something went wrong";
+      
       setErr(message);
       showAlert(message, "error");
     } finally {
@@ -227,7 +223,7 @@ export default function TicketTaskCreateFormsDrawer({
                   },
                 }}
                 className='highlight-glow'
-                >
+              >
                 <TextField
                   select
                   label="Type"
@@ -283,7 +279,6 @@ export default function TicketTaskCreateFormsDrawer({
               </FormProvider>
             </Box>
           }
-          
           { err && 
             <Alert severity="error" sx={{ mt: 2 }}>
               {err}

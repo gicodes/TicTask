@@ -91,7 +91,6 @@ export default function OnboardingUI(props: OnboardingProps) {
       <Typography>Building your profile...</Typography>
     }
   </>
-    
 
   const CountrySelect = ({ accountType }: { accountType: UserType}) =>
     <Box mx={"auto"} my={1}>

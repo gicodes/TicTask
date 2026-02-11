@@ -99,10 +99,21 @@ export async function apiGet<TResponse>(url: string, config?: AxiosRequestConfig
 export async function apiPost<TResponse, TBody = unknown>(
   url: string,
   data?: TBody,
-  headers?: Record<string, string>,
+  headers: Record<string, string> = {},
   config?: AxiosRequestConfig
 ): Promise<TResponse> {
-  const res = await api.post(url, data, config ? { ...config, headers: { ...config.headers, ...headers } } : { headers });
+  const isFormData = data instanceof FormData;
+
+  const finalConfig: AxiosRequestConfig = {
+    ...config,
+    headers: {
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
+      ...headers,
+      ...config?.headers,
+    },
+  };
+
+  const res = await api.post(url, data, finalConfig);
   return res.data;
 }
 

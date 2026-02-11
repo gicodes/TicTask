@@ -6,6 +6,7 @@ import { Button } from "@/assets/buttons";
 import { ROLES } from "@/constants/partner";
 import { useSearchParams } from "next/navigation";
 import { Box, Stack, Card, TextField, Typography, MenuItem, Select, InputLabel, FormControl, Chip, OutlinedInput, SelectChangeEvent } from "@mui/material";
+import { useAlert } from "@/providers/alert";
 
 export default function PartnerJoinPage() {
   const params = useSearchParams();
@@ -20,7 +21,7 @@ export default function PartnerJoinPage() {
 
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<{ success?: boolean; message?: string }>({});
-
+  const { showAlert } = useAlert();
   const filteredRoles = context === "collab" ? ROLES.filter(r => r.collab): ROLES;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -43,6 +44,7 @@ export default function PartnerJoinPage() {
       const payload = { ...form, collab: context === "collab", partner: true };
       await apiPost("/company/partner/register", payload);
       setResponse({ success: true, message: "Application submitted successfully!" });
+      showAlert("Application Submitted. Kindly Check your email inbox to verify and continue to onboarding")
       setForm({ name: "", company: "", email: "", message: "", roles: [] });
     } catch (error) {
       setResponse({
@@ -80,7 +82,6 @@ export default function PartnerJoinPage() {
               ? "Join Open-Source Collaborators"
               : "Join the TicTask Partner Program"}
           </Typography>
-
           <Typography variant="body1" sx={{ opacity: 0.85 }}>
             {context === "collab"
               ? "Contribute to TicTask’s open-source mission and make teamwork better for everyone."
@@ -151,7 +152,6 @@ export default function PartnerJoinPage() {
             value={form.message}
             onChange={handleChange}
           />
-
           <Button
             type="submit"
             tone="primary"

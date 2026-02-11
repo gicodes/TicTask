@@ -9,26 +9,26 @@ export function ModeratorSection({ profile }: { profile: User }) {
   const accountLabel =
     profile.role === "ADMIN"
       ? "Admin Account"
-      : profile.partnerRole.includes("Sponsor")
+      : profile.partnerRole?.includes("Sponsor")
       ? "Sponsor Account"
       : profile.partnerRole === "Moderator"
       ? "Moderator Account"
       : profile.collab
       ? "Collaborator Account"
-      : profile.partnerRole.includes("Developer")
+      : profile.partnerRole?.includes("Developer")
       ? "Developer Account"
       : "Contributor Account";
 
   const accessLevel =
     profile.role === "ADMIN"
       ? "Administrator"
-      : profile.partnerRole.includes("Sponsor")
+      : profile.partnerRole?.includes("Sponsor")
       ? "Sponsor"
       : profile.partnerRole === "Moderator"
       ? "Moderator"
       : profile.collab
       ? "Collaborator"
-      : profile.partnerRole.includes("Developer")
+      : profile.partnerRole?.includes("Developer")
       ? "Developer"
       : "Contributor";
 
@@ -52,17 +52,18 @@ export function ModeratorSection({ profile }: { profile: User }) {
         </Typography>
 
         <Typography variant="caption" sx={{ opacity: 0.5 }}>
-          {profile.role === "ADMIN"
+          { profile.role === "ADMIN"
             ? "Full administrative access to all organizations, users, projects, tickets, billing, and system-wide configurations"
-            : profile.partnerRole.includes("Sponsor")
+            : profile.partnerRole?.includes("Sponsor")
             ? "Private access to strategic dashboards, performance analytics, financial reports, and sponsored initiatives"
             : profile.partnerRole === "Moderator"
             ? "Private access to moderation tools, changelogs, beta features, user reports, and platform governance resources"
             : profile.collab
             ? "Private access to shared workspaces, product templates, internal documentation, and collaboration tools"
-            : profile.partnerRole.includes("Developer")
+            : profile.partnerRole?.includes("Developer")
             ? "Private access to developer tools, API documentation, webhooks, integrations, and sandbox environments"
-            : "Elevated contributor privileges with enhanced creation, review, and task execution capabilities"}
+            : "Elevated contributor privileges with enhanced creation, review, and task execution capabilities"
+          }
         </Typography>
         <Stack py={1}><Divider /></Stack>
 
