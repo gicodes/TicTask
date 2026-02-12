@@ -43,7 +43,7 @@ const LoginTemplate = ({
 
     try {
       forgotPassword({email})
-      showAlert("Password reset link sent to your email!", "success");
+      showAlert("If you have a registered account with this email, a password reset link would be sent!", "success");
       return;
     } catch {
       showAlert("Something went wrong!", "error");

@@ -1,15 +1,50 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { useTeam } from "@/hooks/useTeam";
+
 import { motion } from "framer-motion";
+import { Button } from "@/assets/buttons";
 import { useAuth } from "@/providers/auth";
 import { Team, User } from "@/types/users";
-import { Stack, Typography, Card, CardContent } from "@mui/material";
-import GenericDashboardPagesHeader from "../_level_1/genDashPagesHeader";
 import GenericGridPageLayout from "../_level_1/genGridPageLayout";
+import GenericDashboardPagesHeader from "../_level_1/genDashPagesHeader";
+import { 
+  Stack, 
+  Typography, 
+  Card, 
+  CardContent, 
+  Dialog, 
+  DialogTitle, 
+  DialogContent, 
+  TextField, 
+  DialogActions 
+} from "@mui/material";
+import { Add } from "@mui/icons-material";
 
 export default function TeamsPage() {
   const { user } = useAuth();
+  const { createNewTeam } = useTeam();
+
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleCreate = async () => {
+    if (!name.trim()) return;
+
+    const success = await createNewTeam({
+      name,
+      description,
+    });
+
+    if (success) {
+      setOpen(false);
+      setName("");
+      setDescription("");
+    }
+  };
 
   const createdTeams = (user as User)?.createdTeams ?? [];
   const membershipTeams = (user as User)?.teamMemberships?.map(m => m.team) ?? [];
@@ -24,6 +59,17 @@ export default function TeamsPage() {
       />
 
       <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+        <Stack direction="row" justifyContent="flex-end" mb={3}>
+          <Button
+            startIcon={<Add />}
+            tone="primary"
+            variant="filled"
+            onClick={() => setOpen(true)}
+          >
+            Create Team
+          </Button>
+        </Stack>
+
         <Card sx={{ borderRadius: 4 }}>
           <CardContent>
             <Stack spacing={2}>
@@ -56,6 +102,44 @@ export default function TeamsPage() {
                   </Typography>
                 </Link>
               ))}
+
+              <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
+                <DialogTitle>Create New Team</DialogTitle>
+                <DialogContent>
+                  <Stack spacing={2} mt={1}>
+                    <TextField
+                      label="Team Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      fullWidth
+                      required
+                    />
+
+                    <TextField
+                      label="Description (Optional)"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      multiline
+                      rows={3}
+                      fullWidth
+                    />
+                  </Stack>
+                </DialogContent>
+
+                <DialogActions>
+                  <Button tone="retreat" onClick={() => setOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="filled"
+                    tone="primary"
+                    onClick={handleCreate}
+                    disabled={!name.trim()}
+                  >
+                    Create
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Stack>
           </CardContent>
         </Card>

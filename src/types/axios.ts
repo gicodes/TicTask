@@ -148,10 +148,7 @@ export interface GenericResponse {
 }
 
 export interface GenericUserRes {
-  user: {
-    name: string;
-    email: string;
-  }
+  user: User
   url?: string
 }
 

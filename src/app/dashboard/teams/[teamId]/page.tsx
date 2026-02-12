@@ -1,13 +1,23 @@
 "use client";
 
-import { useTeam } from "@/hooks/useTeam";
+import { useEffect } from "react";
+import { User } from "@/types/users";
 import { motion } from "framer-motion";
 import { Button } from "@/assets/buttons";
+import { useTeam } from "@/hooks/useTeam";
 import { Add, DeleteOutline } from "@mui/icons-material";
 import { Box, Stack, Typography, Card, CardContent, Divider, Avatar, Grid, IconButton } from "@mui/material";
 
 export default function TeamDashboard() {
   const { team, loading, inviteToTeam, removeFromTeam, dissolveTeam } = useTeam();
+
+  useEffect(() => {
+    if (team?.members?.length === 1) {
+      setTimeout(() => {
+        handleInvite();
+      }, 500);
+    }
+  }, [team]);
 
   if (loading) return <Box py={10} textAlign={'center'}>Loading team...</Box>;
   if (!team) return <Box py={10} textAlign={'center'}>Team not found</Box>;
@@ -46,7 +56,7 @@ export default function TeamDashboard() {
             <Divider sx={{ mb: 2 }} />
 
             <Grid container spacing={2}>
-              {members.map(m => (
+              {members.map((m: User) => (
                 <Grid key={m.id}>
                   <Stack
                     direction="row"
@@ -55,14 +65,14 @@ export default function TeamDashboard() {
                     sx={{ p: 2, borderRadius: 2, bgcolor: "rgba(0,0,0,0.02)" }}
                   >
                     <Stack direction="row" spacing={2} alignItems="center">
-                      <Avatar>{m.user.name[0]}</Avatar>
+                      <Avatar>{m.name[0]}</Avatar>
                       <Box>
-                        <Typography fontWeight={600}>{m.user.name}</Typography>
+                        <Typography fontWeight={600}>{m.name}</Typography>
                         <Typography variant="caption" sx={{ opacity: 0.6 }}>{m.role}</Typography>
                       </Box>
                     </Stack>
 
-                    <IconButton color="error" onClick={() => removeFromTeam(m.userId)}>
+                    <IconButton color="error" onClick={() => removeFromTeam(m.id)}>
                       <DeleteOutline />
                     </IconButton>
                   </Stack>

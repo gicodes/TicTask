@@ -22,6 +22,8 @@ export type User = {
   phone:        string;
   photo?:       string;
 
+  company?: string;
+  roles?: string[];
   position?: string; 
 
   organization?: string;
@@ -122,9 +124,10 @@ export interface UserPreferences {
   statusUntil?: string; 
   statusMessage?: string;
   
-  partnerRoles?: string[];
-  preferredContact?: string;
-  collaborationGoals?: string;
+  partnerRoles: string[]; // same as partner.roles
+  approved?: boolean;  // same as partner.approved
+  preferredContact?: string; 
+  collaborationGoals?: string; 
 }
 
 export enum UserStatus {

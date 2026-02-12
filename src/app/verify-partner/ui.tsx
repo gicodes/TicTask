@@ -104,6 +104,8 @@ export default function PartnerOnboardingPage() {
         reset({
           fullName: response.user.name || "",
           email: response.user.email,
+          companyName: response.user.company,
+          partnerRoles: response.user.roles
         });
       } catch (err) {
         console.error("Verification fetch failed:", err);

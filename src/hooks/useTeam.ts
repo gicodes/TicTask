@@ -2,117 +2,121 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { apiPost, apiDelete } from "@/lib/axios";
-import { GenericAPIRes } from "@/types/axios";
 import { useAlert } from "@/providers/alert";
-import { Team, User } from "@/types/users";
-import { useAuth } from "@/providers/auth";
+import * as teamsApi from "@/lib/teams";
 
 export function useTeam() {
-  const { user } = useAuth();
+  const { teamId } = useParams() as { teamId?: string };
   const router = useRouter();
   const { showAlert } = useAlert();
-  const { teamId } = useParams() as { teamId?: string };
 
-  const [team, setTeam] = useState<Team | null>(null);
+  const [team, setTeam] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user) return;
+  const createNewTeam = async (payload: {
+    name: string;
+    description?: string;
+  }) => {
+    try {
+      const res = await teamsApi.createTeam(payload);
 
-    const ownedTeams = (user as User)?.createdTeams ?? [];
-    const membershipTeams = (user as User)?.teamMemberships?.map(m => m.team) ?? [];
-    const allTeams = [...ownedTeams, ...membershipTeams];
+      showAlert("Team created successfully", "success");
 
-    if (!teamId) {
-      setTeam(null);
-      setLoading(false);
-      return;
+      const newTeamId = res.team.id;
+
+      router.push(`/dashboard/teams/${newTeamId}`);
+
+      return true;
+    } catch (err) {
+      showAlert("Failed to create team", "error");
+      return false;
     }
+  };
 
-    const found = allTeams.find(t => t.id === Number(teamId)) ?? null;
-
-    setTeam(found);
-    setLoading(false);
-  }, [user, teamId]);
-
-  const inviteToTeam = useCallback(
-    async (email: string) => {
-      if (!team) return false;
-
-      try {
-        const payload = { email, teamId: team.id, userId: user?.id };
-
-        const res: GenericAPIRes = await apiPost("/team/invite", payload);
-
-        if (!res.ok) {
-          showAlert("Failed to send invitation", "error");
-          return false;
-        }
-
-        showAlert("Invitation sent!", "success");
-        return true;
-      } catch (err) {
-        console.error("Invite failed:", err);
-        showAlert("Error sending invitation", "error");
-        return false;
-      }
-    }, [team, user, showAlert]
-  );
-
-  const removeFromTeam = useCallback(
-    async (memberUserId: number) => {
-      if (!team) return false;
-
-      try {
-        const res: GenericAPIRes = await apiPost("/team/remove", {
-          teamId: team.id,
-          memberUserId,
-        });
-
-        if (!res.ok) {
-          showAlert("Failed to remove member", "error");
-          return false;
-        }
-
-        showAlert("Member removed", "success");
-
-        return true;
-      } catch (err) {
-        console.error("Remove member error:", err);
-        showAlert("Error removing member", "error");
-        return false;
-      }
-    }, [team, showAlert]
-  );
-
-  const dissolveTeam = useCallback(async () => {
-    if (!team) return false;
+  const fetchTeam = useCallback(async () => {
+    if (!teamId) return;
 
     try {
-      const res: GenericAPIRes = await apiDelete(`/team/${team.id}`);
+      setLoading(true);
 
-      if (!res.ok) {
-        showAlert("Failed to dissolve team", "error");
-        return false;
-      }
+      const teamRes = await teamsApi.getTeam(Number(teamId));
+      const membersRes = await teamsApi.getTeamMembers(Number(teamId));
+
+      setTeam({
+        ...teamRes.team,
+        members: membersRes.members,
+      });
+    } catch (err) {
+      console.error(err);
+      setTeam(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [teamId]);
+
+  useEffect(() => {
+    fetchTeam();
+  }, [fetchTeam]);
+
+  const inviteToTeam = async (email: string) => {
+    if (!teamId) return false;
+
+    try {
+      await teamsApi.inviteToTeam({
+        email,
+        teamId: Number(teamId),
+      });
+
+      showAlert("Invitation sent!", "success");
+      await fetchTeam();
+      return true;
+    } catch (err) {
+      showAlert("Failed to send invitation", "error");
+      return false;
+    }
+  };
+
+  const removeFromTeam = async (userId: number) => {
+    if (!teamId) return false;
+
+    try {
+      await teamsApi.removeTeamMember({
+        teamId: Number(teamId),
+        userId,
+      });
+
+      showAlert("Member removed", "success");
+      await fetchTeam();
+      return true;
+    } catch (err) {
+      showAlert("Failed to remove member", "error");
+      return false;
+    }
+  };
+
+  const dissolveTeam = async () => {
+    if (!teamId) return false;
+
+    const confirmDelete = confirm("Are you sure you want to dissolve this team?");
+    if (!confirmDelete) return false;
+
+    try {
+      await teamsApi.dissolveTeam(Number(teamId));
 
       showAlert("Team dissolved", "success");
-
       router.replace("/dashboard/teams");
       return true;
     } catch (err) {
-      console.error("Dissolve team error:", err);
-      showAlert("Error dissolving team", "error");
+      showAlert("Failed to dissolve team", "error");
       return false;
     }
-  }, [team, showAlert, router]);
+  };
 
   return {
     team,
-    teamId: team?.id ?? null,
     loading,
     inviteToTeam,
+    createNewTeam,
     removeFromTeam,
     dissolveTeam,
   };

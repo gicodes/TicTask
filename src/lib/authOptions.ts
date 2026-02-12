@@ -86,9 +86,7 @@ export const authOptions: NextAuthOptions = {
         `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token.refreshToken}`,
-          },
+          credentials: "include",
         }
       );
 
@@ -100,7 +98,6 @@ export const authOptions: NextAuthOptions = {
       const data = await res.json();
 
       token.accessToken = data.accessToken;
-      token.refreshToken = data.refreshToken;
       token.accessTokenExpires = Date.now() + 15 * 60 * 1000;
 
       return token;

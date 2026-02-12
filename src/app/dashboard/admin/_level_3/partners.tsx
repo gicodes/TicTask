@@ -113,8 +113,9 @@ export default function PartnersList() {
               <TableRow>
                 <TableCell>Business Name</TableCell>
                 <TableCell>Email</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Reg. Number</TableCell>
+                <TableCell>Company</TableCell>
+                <TableCell>Roles</TableCell>
+                <TableCell>Message</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell align="right">Joined</TableCell>
               </TableRow>
@@ -126,8 +127,19 @@ export default function PartnersList() {
                     <Typography variant="subtitle2">{partner.name}</Typography>
                   </TableCell>
                   <TableCell>{partner.email}</TableCell>
-                  <TableCell>{partner.user?.phone || '—'}</TableCell>
                   <TableCell>{partner.company || '—'}</TableCell>
+                  <TableCell>
+                    { partner.roles.map((i: string) => 
+                      <Box>
+                        <Chip label={i} size='small' sx={{ my: 0.1}}/>
+                      </Box>) || '—'
+                    }
+                  </TableCell>
+                  <TableCell>
+                    <Typography fontSize={11}>
+                      {partner.message || '—'}
+                    </Typography>
+                  </TableCell>
                   <TableCell>
                     <Chip
                       label={partner.approved ? "APPROVED" : "PENDING"}
