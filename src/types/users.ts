@@ -121,6 +121,10 @@ export interface UserPreferences {
 
   statusUntil?: string; 
   statusMessage?: string;
+  
+  partnerRoles?: string[];
+  preferredContact?: string;
+  collaborationGoals?: string;
 }
 
 export enum UserStatus {

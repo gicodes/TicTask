@@ -1,9 +1,8 @@
 'use client'
 
-import React from 'react'
 import PlannerPage from '../_level_3/planner'
 import { useAuth } from '@/providers/auth';
-import { Box } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 
 const Page = () => {
   const { loading, isAuthenticated } = useAuth();
@@ -11,8 +10,11 @@ const Page = () => {
   if (loading)
     return <Box textAlign="center" p={4}>Loading...</Box>;
 
-  if (!isAuthenticated)
-    return <Box textAlign="center" p={4}>Please log in to view planner</Box>;
+  if (!isAuthenticated) return (
+    <Box textAlign="center" p={4}>
+      <Typography>Please <Link href={'/auth/login'} className='custom-link'>log in</Link> to view planner</Typography>
+    </Box>
+  );
   
   return (<PlannerPage />)
 }

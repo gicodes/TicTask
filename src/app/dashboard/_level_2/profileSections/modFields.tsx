@@ -47,7 +47,7 @@ export function ModeratorSection({ profile }: { profile: User }) {
       </Typography>
 
       <Stack p={1} spacing={1}>
-        <Typography variant="body2" color="silver">
+        <Typography variant="body2">
           <strong>Access Level:</strong>&nbsp; <i>{accessLevel}</i>
         </Typography>
 

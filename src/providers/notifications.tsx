@@ -17,6 +17,7 @@ import {
   NewNotification, 
   NotificationsContextProps 
 } from "@/types/notification";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -29,10 +30,23 @@ export const NotificationsProvider = ({
   children: React.ReactNode;
 }) => {
   const { user } = useAuth();
+  const { subscribeUser } = usePushNotifications();
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
 
   useEffect(() => {
     if (!user) return;
+
+    const trySubscribe = async () => {
+      if (Notification.permission === "granted") {
+        await subscribeUser();
+      } else if (Notification.permission !== "denied") {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          await subscribeUser();
+        }
+      }
+    };
+    trySubscribe();
 
     fetch(`${SERVER_URL}/notifications`, {
       credentials: "include",
@@ -43,7 +57,18 @@ export const NotificationsProvider = ({
       if (data?.ok) setNotifications(data.notifications);
     })
     .catch(() => {});
-  }, [user]);
+
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        trySubscribe();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [user, subscribeUser]);
 
   const addNotification = useCallback(async (n: NewNotification) => {
     const res = await fetch(`${SERVER_URL}/notifications/${user?.id}`, {
@@ -171,9 +196,13 @@ export const NotificationsProvider = ({
 
 
   const requestPushPermission = useCallback(async () => {
-    if (typeof Notification === "undefined") return;
-    return (await Notification.requestPermission()) === "granted";
-  }, []);
+    if (typeof Notification === "undefined") return false;
+    const perm = await Notification.requestPermission();
+    if (perm === "granted") {
+      await subscribeUser();
+    }
+    return perm === "granted";
+  }, [subscribeUser]);
 
   return (
     <NotificationsContext.Provider

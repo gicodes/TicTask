@@ -1,21 +1,20 @@
 'use client';
 
-import GenericDashboardPagesHeader from '../../_level_1/genDashPagesHeader'
+import { Card } from '@mui/material';
+import GenericDashboardPagesHeader from '../../_level_1/genDashPagesHeader';
 import GenericGridPageLayout from '../../_level_1/genGridPageLayout';
-import { Box, Typography } from '@mui/material';
+import PartnersList from '../_level_3/partners';
 
-const Page = () => {
+export default function PartnersPage() {
   return (
     <GenericGridPageLayout>
-      <GenericDashboardPagesHeader 
-        title={'Partners'} 
-        description={'Partner records, inbound messages and pending outbound messages from partners'} 
+      <GenericDashboardPagesHeader
+        title="Partners"
+        description="Partner records, inbound messages and pending outbound messages from partners"
       />
-      <Box py={5} textAlign={{ xs: 'center', sm: 'left' }}>
-        <Typography color='warning'>No partner records available</Typography>
-      </Box>
+      <Card elevation={2} sx={{ p: 2}}>
+        <PartnersList />
+      </Card>
     </GenericGridPageLayout>
-  )
+  );
 }
-
-export default Page;
