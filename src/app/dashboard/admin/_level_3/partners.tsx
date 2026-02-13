@@ -31,12 +31,12 @@ export default function PartnersList() {
   useEffect(() => {
     const fetchPartners = async () => {
       try {
+        if(!user) return; 
+
         setLoading(true);
         setError(null);
 
         const token = user?.accessToken;
-
-        if (!token) return;
 
         const res = await fetch(`${SERVER_URL}/company/partners`, {
           method: 'GET',
