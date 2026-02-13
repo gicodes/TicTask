@@ -51,6 +51,26 @@ export default function SettingsPage() {
               variant="h6" 
               fontWeight={600}
             > 
+              Appearance 
+            </Typography>
+            <Typography variant="body2" sx={{ opacity: 0.8}}>
+              Configure the appearance of your team&apos;s workspace and playground
+            </Typography>
+          </Stack>
+
+          <Box py={2}>
+            <Typography sx={{ opacity: 0.75 }}> <i>Not Available To Your Team Yet</i></Typography>
+          </Box>
+        </CardContent>
+      </Card>
+
+      <Card sx={{ mb: 4 }}>
+        <CardContent>
+          <Stack mb={2} gap={1}>
+            <Typography 
+              variant="h6" 
+              fontWeight={600}
+            > 
               Team Profile
             </Typography>
             <Typography variant="body2" sx={{ opacity: 0.8}}>
@@ -81,26 +101,6 @@ export default function SettingsPage() {
               Save Changes
             </Button>
           </Grid>
-        </CardContent>
-      </Card>
-
-      <Card sx={{ mb: 4 }}>
-        <CardContent>
-          <Stack mb={2} gap={1}>
-            <Typography 
-              variant="h6" 
-              fontWeight={600}
-            > 
-              Appearance 
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8}}>
-              Configure the appearance of your team&apos;s workspace and playground
-            </Typography>
-          </Stack>
-
-          <Box py={2}>
-            <Typography sx={{ opacity: 0.75 }}> <i>Not Available To Your Team Yet</i></Typography>
-          </Box>
         </CardContent>
       </Card>
 
