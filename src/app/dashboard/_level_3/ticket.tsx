@@ -27,13 +27,16 @@ const TicketsPage: React.FC = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
   const [selectedTicket, setSelectedTicket] = useState<string | number | null>(null);
-  const [view, setView] = useState<'board' | 'list'>(() => {
-    if (typeof window === 'undefined') return 'board';
-    return (localStorage.getItem('tictask_view') as 'list' | 'board') || 'board';
-  });
-  
+  const [view, setView] = useState<'board' | 'list'>('board');
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedQuery = useDebounce(searchQuery);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('tictask_view');
+    if (stored === 'list' || stored === 'board') {
+      setView(stored);
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('tictask_view', view);

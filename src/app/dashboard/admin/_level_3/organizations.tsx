@@ -10,6 +10,7 @@ import {
   Card, 
   CardContent, 
 } from "@mui/material";
+import { Group } from "@mui/icons-material";
 import { useTeamByAdmin } from "@/hooks/useTeamsByAdmin";
 
 export default function OrganizationsList() {
@@ -56,7 +57,7 @@ export default function OrganizationsList() {
                           <Typography variant="caption" sx={{ opacity: 0.7 }}>{team.description}</Typography>
                         </Stack>
                         <Stack display={'flex'} alignItems={'flex-end'} gap={0.5}>
-                          <Typography variant="body2">Strength: {team.members.length}</Typography>
+                          <Typography variant="body2"><Group/> {team?.members?.length}</Typography>
                           <Typography variant="caption" sx={{ opacity: 0.7 }} maxWidth={{ xs: 100, sm: 250, md: 'none'}}>
                             <i><strong>Updated:</strong> {new Date(team.updatedAt).toDateString()}</i>
                           </Typography>

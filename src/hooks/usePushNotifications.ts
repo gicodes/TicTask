@@ -23,6 +23,9 @@ export const usePushNotifications = () => {
 
   const subscribeUser = useCallback(async () => {
     if (!user) return;
+    if (user.userType==="PERSONAL" && !user.subscription?.active) return;
+
+    if (user.userType==="BUSINESS" && !user.subscription?.active) return;
 
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
       console.warn("[PUSH] 📣 Push notifications not supported in this browser");

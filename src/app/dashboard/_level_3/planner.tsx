@@ -15,16 +15,20 @@ import { DateSelectDialog } from '../_level_2/CNTonClickDialog';
 const PlannerPage: React.FC = () => {
   const { showAlert } = useAlert()
   const { tickets, fetchTickets } = useTickets();
-  const [view, setView] = useState<'calendar' | 'list'>(() => {
-    if (typeof window !== 'undefined') 
-      return (localStorage.getItem('planner_view') as 'calendar' | 'list') || 'calendar';        
-    return 'calendar';
-  });
+  const [view, setView] = useState<'calendar' | 'list'>('calendar')
+
   const [search, setSearch] = useState<string>('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [formOpen, setFormOpen] = useState<boolean>(false);
   const [createDate, setCreateDate] = useState<Date | null>(null);
   const [selected, setSelected] = useState<string | number | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('tictask_view');
+    if (stored === 'list' || stored === 'calendar') {
+      setView(stored);
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('planner_view', view);

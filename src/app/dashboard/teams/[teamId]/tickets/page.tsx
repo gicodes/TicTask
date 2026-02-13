@@ -7,7 +7,7 @@ export default function TicketsPage() {
     <Box>
       <Typography variant="h6" fontWeight={600} mb={3}>
         Team Tickets
-      </Typography>
+      </Typography>. 
 
       {/* Replace with actual TicketBoard */}
       <Box>Kanban / List View goes here</Box>

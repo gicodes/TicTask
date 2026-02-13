@@ -21,7 +21,7 @@ import {
   Divider,
   Drawer
 } from "@mui/material";
-import { Add, CloseSharp } from "@mui/icons-material";
+import { Add, CloseSharp, Group } from "@mui/icons-material";
 
 export default function TeamsPage() {
   const { teams, createTeam, loading } = useMyTeams();
@@ -113,7 +113,7 @@ export default function TeamsPage() {
                           <Typography variant="caption" sx={{ opacity: 0.7 }}>{team.description}</Typography>
                         </Stack>
                         <Stack display={'flex'} alignItems={'flex-end'} gap={0.5}>
-                          <Typography variant="body2">Strength: {team.members.length}</Typography>
+                          <Typography variant="body2"><Group/> {team.members.length}</Typography>
                           <Typography variant="caption" sx={{ opacity: 0.7 }} maxWidth={{ xs: 100, sm: 250, md: 'none'}}>
                             <i><strong>Updated:</strong> {new Date(team.updatedAt).toDateString()}</i>
                           </Typography>

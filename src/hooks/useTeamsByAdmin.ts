@@ -6,15 +6,14 @@ import * as teamsApi from "@/lib/teams";
 
 export function useTeamByAdmin() {
   const { showAlert } = useAlert();
-
   const [teams, setTeams] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchAllTeams = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await teamsApi.getAllTeams();
-      setTeams(res.teams ?? []);
+      const res = await teamsApi.getAllTeams();;
+      setTeams(res.data ?? []);
     } catch (err) {
       console.error(err);
       showAlert("Failed to fetch teams", "error");
