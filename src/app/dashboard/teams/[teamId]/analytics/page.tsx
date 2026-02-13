@@ -16,8 +16,8 @@ export default function AnalyticsPage() {
 
   if (!isAuthenticated) return;
 
-  const isPro = team?.subscription === "PRO";
-  const isEnt = team?.subscription === "ENTERPRISE"
+  const isPro = team?.subscription?.plan.includes("PRO");
+  const isEnt = team?.subscription?.plan.includes("ENTERPRISE");
 
   if (!isPro || !isEnt) {
     return (

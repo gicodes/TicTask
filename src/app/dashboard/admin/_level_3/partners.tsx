@@ -26,7 +26,7 @@ export default function PartnersList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const { user } = useAuth(); 
+  const { user, isAuthenticated } = useAuth(); 
 
   useEffect(() => {
     const fetchPartners = async () => {
@@ -80,6 +80,8 @@ export default function PartnersList() {
       </Box>
     );
   }
+
+  if (!isAuthenticated) return <Typography py={10} textAlign={'center'}>Partners unavailable in offline mode ⚠️</Typography>
 
   if (error) return (
     <Box py={5} textAlign="center">

@@ -14,7 +14,7 @@ export default function SettingsCard({
   subtitle,
   children,
 }: {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   title: string;
   subtitle?: string;
   children: React.ReactNode;

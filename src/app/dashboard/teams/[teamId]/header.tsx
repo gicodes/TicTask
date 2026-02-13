@@ -16,7 +16,7 @@ export default function WorkspaceHeader() {
   if (loading || !team) return null;
   if (!isAuthenticated) return (
     <Typography textAlign={'center'}> 
-      Team unavailable in offline mode!
+      Team unavailable in offline mode ⚠️
     </Typography>
   )
 
@@ -40,6 +40,12 @@ export default function WorkspaceHeader() {
     router.push(routes[newValue]);
   };
 
+  const subscriptionPlan = 
+    team?.subscription?.plan === "STANDARD" ? "Standard"
+    : team?.subscription?.plan?.includes("PRO") ? "Pro" 
+    : team?.subscription?.plan?.includes("ENTERPRISE") ? "Enterprise"
+    : "Pro +"
+
   return (
     <Box>
       <Stack spacing={2} mb={3}>
@@ -48,7 +54,7 @@ export default function WorkspaceHeader() {
             {team.name}
           </Typography>
           <Chip
-            label={team?.subscription ?? "Standard"}
+            label={subscriptionPlan}
             color="primary"
             size="small"
           />

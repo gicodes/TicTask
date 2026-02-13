@@ -17,7 +17,6 @@ export type Team = {
 
   owner: User;
   invitations: Invitation[];
-  subscriptions: Subscription;
   notifications: AppNotification;
 
   _count: {
@@ -26,7 +25,7 @@ export type Team = {
   tickets: Ticket[];
 
   members: TeamMember[];
-  subscription?: string;
+  subscription: Subscription;
 } | null;
 
 export type TeamMember = {
