@@ -274,7 +274,7 @@ a.secondary {
 
 .btnDanger {
   background: var(--danger);
-  color: var(--bw);
+  color: white;
 }
 
 @media (hover: hover) and (pointer: fine) {

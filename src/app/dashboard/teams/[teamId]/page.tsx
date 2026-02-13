@@ -1,95 +1,73 @@
 "use client";
 
-import { useEffect } from "react";
-import { User } from "@/types/users";
-import { motion } from "framer-motion";
-import { Button } from "@/assets/buttons";
+import { Box, Card, CardContent, Stack, Typography, Button, Chip } from "@mui/material";
+import { useParams, useRouter } from "next/navigation";
 import { useTeam } from "@/hooks/useTeam";
-import { Add, DeleteOutline } from "@mui/icons-material";
-import { Box, Stack, Typography, Card, CardContent, Divider, Avatar, Grid, IconButton } from "@mui/material";
+import { useAuth } from "@/providers/auth";
 
-export default function TeamDashboard() {
-  const { team, loading, inviteToTeam, removeFromTeam, dissolveTeam } = useTeam();
+export default function OverviewPage() {
+  const { teamId } = useParams<{ teamId: string }>();
+  const { user } = useAuth();
+  const router = useRouter();
+  const { team, loading } = useTeam();
 
-  useEffect(() => {
-    if (team?.members?.length === 1) {
-      setTimeout(() => {
-        handleInvite();
-      }, 500);
-    }
-  }, [team]);
+  const isOwner = user?.id === team.ownerId;
 
-  if (loading) return <Box py={10} textAlign={'center'}>Loading team...</Box>;
-  if (!team) return <Box py={10} textAlign={'center'}>Team not found</Box>;
-
-  const handleInvite = async () => {
-    const email = prompt("Enter email to invite:");
-    if (!email) return;
-
-    await inviteToTeam(email);
-  };
-
-  const members = team.members ?? [];
+  if (loading) return <Box py={6}>Loading...</Box>;
+  if (!team) return <Box py={6}>Team not found</Box>
 
   return (
-    <Box sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, md: 4 } }}>
-      <Stack spacing={4} maxWidth="900px" mx="auto">
+    <Stack spacing={4}>
+      <Card sx={{ borderRadius: 4 }}>
+        <CardContent>
+          <Stack direction="row" spacing={6}>
+            <Box>
+              <Typography variant="caption">Created</Typography>
+              <Typography fontWeight={600}>
+                {new Date(team.createdAt).toDateString()}
+              </Typography>
+            </Box>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <Typography variant="h4" fontWeight={700}>
-            {team.name}
-          </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.7 }}>
-            Manage members of this team.
-          </Typography>
-        </motion.div>
+            <Box>
+              <Typography variant="caption">Owner</Typography>
+              <Typography fontWeight={600}>
+                {team.owner?.name} {isOwner && <Chip title={"you"} size="small" color="success"/>}
+              </Typography>
+            </Box>
 
-        <Card sx={{ borderRadius: 4 }}>
-          <CardContent>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
-              <Typography variant="h6" fontWeight={600}>Members</Typography>
-              <Button startIcon={<Add />} tone="primary" variant="filled" onClick={handleInvite}>
-                Add Member
-              </Button>
-            </Stack>
+            <Box>
+              <Typography variant="caption">Tickets</Typography>
+              <Typography fontWeight={600}>
+                {team._count?.tickets ?? 0}
+              </Typography>
+            </Box>
+          </Stack>
+        </CardContent>
+      </Card>
 
-            <Divider sx={{ mb: 2 }} />
+      <Card sx={{ borderRadius: 4 }}>
+        <CardContent>
+          <Stack direction="row" justifyContent="space-between">
+            <Box>
+              <Typography fontWeight={700}>
+                Team Ticket Playground
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                Collaborate and manage tickets.
+              </Typography>
+            </Box>
 
-            <Grid container spacing={2}>
-              {members.map((m: User) => (
-                <Grid key={m.id}>
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    sx={{ p: 2, borderRadius: 2, bgcolor: "rgba(0,0,0,0.02)" }}
-                  >
-                    <Stack direction="row" spacing={2} alignItems="center">
-                      <Avatar>{m.name[0]}</Avatar>
-                      <Box>
-                        <Typography fontWeight={600}>{m.name}</Typography>
-                        <Typography variant="caption" sx={{ opacity: 0.6 }}>{m.role}</Typography>
-                      </Box>
-                    </Stack>
-
-                    <IconButton color="error" onClick={() => removeFromTeam(m.id)}>
-                      <DeleteOutline />
-                    </IconButton>
-                  </Stack>
-                </Grid>
-              ))}
-            </Grid>
-
-            {team.ownerId && (
-              <Box mt={4} textAlign="right">
-                <Button variant="outlined" tone="danger" onClick={dissolveTeam}>
-                  Dissolve Team
-                </Button>
-              </Box>
-            )}
-          </CardContent>
-        </Card>
-      </Stack>
-    </Box>
+            <Button
+              variant="contained"
+              onClick={() =>
+                router.push(`/dashboard/teams/${teamId}/tickets`)
+              }
+            >
+              Open Tickets
+            </Button>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Stack>
   );
 }

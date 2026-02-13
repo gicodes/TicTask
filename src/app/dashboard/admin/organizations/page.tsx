@@ -11,8 +11,8 @@ const Page = () => {
         title={'Teams As Organizations'} 
         description={'Manage Standard, Pro and Enterprise-level teams as organizations'} 
       />
-      <Box py={5} textAlign={{ xs: 'center', sm: 'left' }}>
-        <Typography color='warning'>Organizations are currently unavailable</Typography>
+      <Box py={5} textAlign={{ xs: 'center' }}>
+        <Typography color='error'>Organizations are currently unavailable</Typography>
       </Box>
     </GenericGridPageLayout>
   )

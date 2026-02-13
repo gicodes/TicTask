@@ -25,7 +25,7 @@ export const usePushNotifications = () => {
     if (!user) return;
 
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-      console.warn("Push notifications not supported in this browser");
+      console.warn("[PUSH] 📣 Push notifications not supported in this browser");
       return;
     }
 
@@ -34,7 +34,7 @@ export const usePushNotifications = () => {
         scope: "/",
       });
 
-      console.log("[PUSH] 📣 Service Worker registered:", registration);
+      // console.log("[PUSH] 📣 Service Worker registered:", registration);
 
       let subscription = await registration.pushManager.getSubscription();
 

@@ -11,8 +11,8 @@ const Page = () => {
         title={'Marketing'} 
         description={'Manage Advertisements, PR and Marketing Campaigns under one house'}
       />
-      <Box py={5} textAlign={{ xs: 'center', sm: 'left' }}>
-        <Typography color='warning'>Marketing is currently unavailable</Typography>
+      <Box py={5} textAlign={{ xs: 'center' }}>
+        <Typography color='error'>Marketing is currently unavailable</Typography>
       </Box>
     </GenericGridPageLayout>
   )

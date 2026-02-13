@@ -59,7 +59,7 @@ export default function AiAssistantPage() {
     const key = `ai_chat_${aiName}`;
     const trimmed = messages.slice(-MAX_HISTORY);
 
-    localStorage.setItem(key, JSON.stringify(trimmed));
+    localStorage?.setItem(key, JSON.stringify(trimmed));
   }, [messages, aiName]);
 
   return (

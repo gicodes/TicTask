@@ -11,8 +11,8 @@ const Page = () => {
         title={'Subscriptions & Revenue'} 
         description={'All Subscribed users and teams are currated here with special options for revenue sorting'} 
       />
-      <Box py={5} textAlign={{ xs: 'center', sm: 'left' }}>
-        <Typography color='warning'>Finances are currently unavailable</Typography>
+      <Box py={5} textAlign={{ xs: 'center' }}>
+        <Typography color='error'>Finances are currently unavailable</Typography>
       </Box>
     </GenericGridPageLayout>
   )

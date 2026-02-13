@@ -4,9 +4,9 @@ import { useState } from "react";
 import { apiPost } from "@/lib/axios";
 import { Button } from "@/assets/buttons";
 import { ROLES } from "@/constants/partner";
+import { useAlert } from "@/providers/alert";
 import { useSearchParams } from "next/navigation";
 import { Box, Stack, Card, TextField, Typography, MenuItem, Select, InputLabel, FormControl, Chip, OutlinedInput, SelectChangeEvent } from "@mui/material";
-import { useAlert } from "@/providers/alert";
 
 export default function PartnerJoinPage() {
   const params = useSearchParams();

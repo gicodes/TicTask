@@ -13,7 +13,7 @@ const GenericGridPageLayout = ({ children }: GGPLProps) => {
         px={{ xs: 1, sm: 2, md: 3}}
         mx="auto"
         spacing={4} 
-        maxWidth="900px"
+        maxWidth="1200px"
       >
         {children}
       </Stack>
