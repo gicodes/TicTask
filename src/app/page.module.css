@@ -268,7 +268,7 @@ a.secondary {
 
 .btnError {
   background: var(--error);
-  color: var(--foreground);
+  color: #fff;
   border-color: #f4a460;
 }
 

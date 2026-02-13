@@ -3,15 +3,22 @@
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Box, Stack, Typography, Tabs, Tab, Chip } from "@mui/material";
 import { useTeam } from "@/hooks/useTeam";
+import { useAuth } from "@/providers/auth";
 
 export default function WorkspaceHeader() {
   const { teamId } = useParams<{ teamId: string }>();
   const pathname = usePathname();
   const router = useRouter();
 
+  const { isAuthenticated } = useAuth();
   const { team, loading } = useTeam();
 
   if (loading || !team) return null;
+  if (!isAuthenticated) return (
+    <Typography textAlign={'center'}> 
+      Team unavailable in offline mode!
+    </Typography>
+  )
 
   const currentTab = () => {
     if (pathname.includes("/tickets")) return 1;
@@ -35,14 +42,13 @@ export default function WorkspaceHeader() {
 
   return (
     <Box>
-      <Stack spacing={2}>
+      <Stack spacing={2} mb={3}>
         <Stack direction="row" alignItems="center" spacing={2}>
           <Typography variant="h5" fontWeight={700}>
             {team.name}
           </Typography>
-
           <Chip
-            label={team.subscription ?? "Standard"}
+            label={team?.subscription ?? "Standard"}
             color="primary"
             size="small"
           />
@@ -51,15 +57,22 @@ export default function WorkspaceHeader() {
         <Typography variant="body2" sx={{ opacity: 0.7 }}>
           {team.description}
         </Typography>
-
-        <Tabs value={currentTab()} onChange={handleChange}>
-          <Tab label="Overview" />
-          <Tab label="Tickets" />
-          <Tab label="Members" />
-          <Tab label="Analytics" />
-          <Tab label="Settings" />
-        </Tabs>
       </Stack>
+
+      <Tabs
+        value={currentTab()}
+        onChange={handleChange}
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile
+        sx={{ maxWidth: '93vw'}}
+      >
+        <Tab label="Overview" />
+        <Tab label="Tickets" />
+        <Tab label="Members" />
+        <Tab label="Analytics" />
+        <Tab label="Settings" />
+      </Tabs>
     </Box>
   );
 }

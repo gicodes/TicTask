@@ -71,7 +71,7 @@ export default function TeamsPage() {
             sx={{ cursor: 'pointer', borderBottom: '1px solid cornflowerblue', height: 'fit-content'}}
             onClick={() => setReadAboutTeam(true)}
           >
-            What is a Team?
+            What is a <strong>team?</strong>
           </Typography>
         </Stack>
 
@@ -108,14 +108,14 @@ export default function TeamsPage() {
                           "&:hover": { bgcolor: "rgba(0,0,0,0.06)" }
                         }}
                       >
-                        <Stack>
+                        <Stack gap={1}>
                           <Typography>{team.name}</Typography>
                           <Typography variant="caption" sx={{ opacity: 0.7 }}>{team.description}</Typography>
                         </Stack>
-                        <Stack display={'flex'} alignItems={'flex-end'}>
+                        <Stack display={'flex'} alignItems={'flex-end'} gap={0.5}>
                           <Typography variant="body2">Strength: {team.members.length}</Typography>
                           <Typography variant="caption" sx={{ opacity: 0.7 }} maxWidth={{ xs: 100, sm: 250, md: 'none'}}>
-                            Last Updated: {new Date(team.updatedAt).toDateString()}
+                            <i><strong>Updated:</strong> {new Date(team.updatedAt).toDateString()}</i>
                           </Typography>
                         </Stack>
                       </Box>

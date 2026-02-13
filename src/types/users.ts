@@ -1,9 +1,9 @@
 import { Subscription } from "./subscription";
+import { TeamMember, Team } from "./team";
 import { Ticket, TicketHistory, TicketNote } from "./ticket";
 
 export type Role = 'ADMIN' | 'USER';
 export type UserType = 'PERSONAL' | 'BUSINESS';
-export type TeamRole = 'OWNER' | 'ADMIN' | 'MEMBER';
 export type AdminLevel = 'BASIC' | 'FULL' | 'SUPER';
 
 export type User = {
@@ -58,31 +58,6 @@ export type Admin = {
   level: AdminLevel;
 
   createdAt: string;
-};
-
-export type Team = {
-  id: number;
-  name: string;
-  slug: string;
-  ownerId: number;
-  createdAt: string;
-  updatedAt: string;
-
-  members: TeamMember[];
-  subscription?: Subscription;
-};
-
-export type TeamMember = {
-  id: number;
-  userId: number;
-  teamId: number;
-  role: TeamRole;
-
-  invitedBy?: number;
-  createdAt: string;
-
-  user: User;
-  team: Team;
 };
 
 export type Invitation = {

@@ -1,41 +1,50 @@
 "use client";
 
-import { Box, Card, CardContent, Stack, Typography, Button, Chip } from "@mui/material";
+import { Box, Card, CardContent, Stack, Typography, Chip } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import { useTeam } from "@/hooks/useTeam";
 import { useAuth } from "@/providers/auth";
+import { Button } from "@/assets/buttons";
 
 export default function OverviewPage() {
   const { teamId } = useParams<{ teamId: string }>();
-  const { user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
-  const { team, loading } = useTeam();
-
-  const isOwner = user?.id === team.ownerId;
+  const { team, loading, isOwner } = useTeam();
 
   if (loading) return <Box py={6}>Loading...</Box>;
   if (!team) return <Box py={6}>Team not found</Box>
 
+  if (!isAuthenticated) return;
+
   return (
-    <Stack spacing={4}>
+    <Stack spacing={4} maxWidth={800}>
       <Card sx={{ borderRadius: 4 }}>
         <CardContent>
-          <Stack direction="row" spacing={6}>
-            <Box>
+          <Stack direction={'row'} spacing={{ xs: 3, sm: 4, md: 5, lg: 6, xl: 7}}>
+            <Box display={'grid'} gap={1}>
               <Typography variant="caption">Created</Typography>
               <Typography fontWeight={600}>
                 {new Date(team.createdAt).toDateString()}
               </Typography>
             </Box>
 
-            <Box>
-              <Typography variant="caption">Owner</Typography>
+            <Box display={'grid'} gap={1}>
+              <Typography 
+                variant="caption" 
+                display={'flex'} 
+                alignItems={'center'} 
+                gap={1}
+              >
+                Owner 
+                {isOwner && <Chip label={"you"} sx={{ fontSize: 10, height: 20}} color="success"/>}
+              </Typography>
               <Typography fontWeight={600}>
-                {team.owner?.name} {isOwner && <Chip title={"you"} size="small" color="success"/>}
+                {team.owner?.name}
               </Typography>
             </Box>
 
-            <Box>
+            <Box display={'grid'} gap={1}>
               <Typography variant="caption">Tickets</Typography>
               <Typography fontWeight={600}>
                 {team._count?.tickets ?? 0}
@@ -45,9 +54,9 @@ export default function OverviewPage() {
         </CardContent>
       </Card>
 
-      <Card sx={{ borderRadius: 4 }}>
+      <Card sx={{ borderRadius: 4, pt: 2 }}>
         <CardContent>
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction={{ xs: "column", sm: "row"}} gap={4} justifyContent="space-between">
             <Box>
               <Typography fontWeight={700}>
                 Team Ticket Playground
@@ -58,10 +67,8 @@ export default function OverviewPage() {
             </Box>
 
             <Button
-              variant="contained"
-              onClick={() =>
-                router.push(`/dashboard/teams/${teamId}/tickets`)
-              }
+              tone="action"
+              onClick={() => router.push(`/dashboard/teams/${teamId}/tickets`)}
             >
               Open Tickets
             </Button>

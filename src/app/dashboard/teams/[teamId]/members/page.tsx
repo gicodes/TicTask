@@ -1,32 +1,37 @@
 "use client";
 
-import { User } from "@/types/users";
 import { Button } from "@/assets/buttons";
 import { useTeam } from "@/hooks/useTeam";
 import { useAuth } from "@/providers/auth";
 import { Add, DeleteOutline } from "@mui/icons-material";
-import { Box, Typography, Card, CardContent, Avatar, Grid, IconButton, Stack } from "@mui/material";
+import { 
+  Box, 
+  Typography, 
+  Card, 
+  CardContent, 
+  Avatar, 
+  Grid, 
+  IconButton, 
+  Stack 
+} from "@mui/material";
 
 export default function MembersPage() {
-  const { user } = useAuth();
-  const { team, inviteMember, removeMember } = useTeam();
+  const { isAuthenticated } = useAuth();
+  const { team, inviteMember, removeMember, isOwner } = useTeam();
 
   const handleInvite = async () => {
     const email = prompt("Enter email to invite:");
+    
     if (!email) return;
-
     await inviteMember(email);
   };
 
-  const members = team.members ?? [];
-  const isOwner = user?.id === team.ownerId;
+  const members = team?.members ?? [];
+
+  if (!isAuthenticated) return;
 
   return (
-    <Box>
-      <Typography variant="h6" fontWeight={600} mb={3}>
-        Members
-      </Typography>
-
+    <Box maxWidth={800}>
       <Card sx={{ borderRadius: 4 }}>
         <CardContent>
           <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
@@ -37,23 +42,30 @@ export default function MembersPage() {
           </Stack>
 
           <Grid container spacing={2}>
-            {members.map((m: User) => (
+            {members.map(m => (
               <Grid key={m.id}>
                 <Stack
+                  p={2}
+                  gap={5}
                   direction="row"
+                  borderRadius={2}
                   alignItems="center"
                   justifyContent="space-between"
-                  sx={{ p: 2, borderRadius: 2, bgcolor: "rgba(0,0,0,0.02)" }}
+                  sx={{ 
+                    cursor: 'pointer',
+                    bgcolor: "rgba(0,0,0,0.02)",
+                    ":hover": { bgcolor: "rgba(0,0,0, 0.06)"} 
+                  }}
                 >
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar>{m.name[0]}</Avatar>
+                    <Avatar>{m.name?.[0]}</Avatar>
                     <Box>
                       <Typography fontWeight={600}>{m.name}</Typography>
                       <Typography variant="caption" sx={{ opacity: 0.6 }}>{m.role}</Typography>
                     </Box>
                   </Stack>
 
-                  {isOwner && m.id !== team.ownerId && (
+                  {isOwner && (
                     <IconButton
                       color="error"
                       onClick={() => removeMember(m.id)}
@@ -66,14 +78,14 @@ export default function MembersPage() {
             ))}
           </Grid>
 
-          {isOwner && team.invitations?.length > 0 && (
+          {isOwner && team?.invitations && team?.invitations?.length > 0 && (
             <Card sx={{ borderRadius: 4 }}>
               <CardContent>
                 <Typography fontWeight={600} mb={2}>
                   Pending Invitations
                 </Typography>
-
-                {team.invitations.map((invite: { id: string, email: string}) => (
+                
+                {team.invitations.map((invite: { id: number, email: string}) => (
                   <Typography key={invite.id}>
                     {invite.email}
                   </Typography>

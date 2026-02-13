@@ -1,3 +1,4 @@
+import { UpdateTeamPayload } from "@/types/team";
 import { getSession } from "next-auth/react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -35,7 +36,6 @@ export const createTeam = (payload: { name: string; description?: string }) =>
 export const getAllTeams = () =>
   request("/get-all");
 
-
 export const getMyTeams = () =>
   request("/", {
     method: "GET",
@@ -46,6 +46,20 @@ export const getTeam = (teamId: number) =>
 
 export const getTeamMembers = (teamId: number) =>
   request(`/${teamId}/members`);
+
+export const getTeamAnalytics = async (teamId: number) => {
+  return request(`/${teamId}/analytics`)
+};
+
+export const updateTeamInfo = async (
+  teamId: number,
+  data: UpdateTeamPayload
+) => {
+  return request(`/${teamId}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  })
+};
 
 export const inviteToTeam = (payload: { email: string; teamId: number }) =>
   request(`/invite`, {
@@ -58,6 +72,12 @@ export const acceptInvite = (payload: { token: string }) =>
     method: "POST",
     body: JSON.stringify(payload),
   });
+
+export const leaveTeam = async (teamId: number) => {
+  request(`/${teamId}/leave`, {
+    method: "POST",
+  });
+};
 
 export const removeTeamMember = (payload: { teamId: number; userId: number }) =>
   request(`/${payload.teamId}/members/remove`, {
