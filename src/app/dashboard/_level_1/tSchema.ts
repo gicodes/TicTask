@@ -20,7 +20,8 @@ export interface TICKET_FORM_PROPS {
   task?: boolean;
   defaultDueDate?: Date;
   onClose: () => void;
-  onCreated?: (t: Ticket | void) => void;
+  teamId?: number;
+  onCreated: (t: Ticket | void) => void;
 }
 
 export interface TICKET_WORKSPACE_PROPS { 
@@ -42,9 +43,9 @@ export interface TICKET_TOOLBAR_PROPS {
 export interface KANBAN_BOARD_PROPS {
   grouped: Record<string, Ticket[]>;
   setGrouped: React.Dispatch<React.SetStateAction<Record<string, Ticket[]>>>;
-  openDetail: (id: string | number) => void;
+  openDetail: (id: number) => void;
   isSearching?: boolean;
-  updateTicket: (id: string | number, updates: Partial<Ticket>) => void;
+  updateTicket: (id: number, updates: Partial<Ticket>) => void;
 }
 
 export interface TICKET_LIST_PROPS {
@@ -65,7 +66,7 @@ export interface PLANNER_TOOLBAR_PROPS {
 export interface BOARD_COLUMN { 
   title: string;
   tickets: Ticket[];
-  onOpen?: (id: string | number) => void;
+  onOpen?: (id: number) => void;
   isDragDisabled: boolean;
 }
 

@@ -1,11 +1,9 @@
 'use client';
 
-import { Container, Typography, Stack, Link, Box, useTheme } from '@mui/material';
+import { Container, Typography, Stack, Link, Box } from '@mui/material';
 import { motion } from 'framer-motion';
 
 export default function LegalIndexPage() {
-  const theme = useTheme();
-
   const links = [
     { label: 'Terms of Service', href: '/legal/terms-of-service' },
     { label: 'Privacy Policy', href: '/legal/privacy-policy' },

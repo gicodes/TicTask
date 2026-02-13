@@ -1,5 +1,7 @@
-import { UpdateTeamPayload } from "@/types/team";
+import { Ticket } from "@/types/ticket";
 import { getSession } from "next-auth/react";
+import { UpdateTeamPayload } from "@/types/team";
+import { CreateTeamTicketPayload } from "../types/team";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -89,3 +91,57 @@ export const dissolveTeam = (teamId: number) =>
   request(`/${teamId}`, {
     method: "DELETE",
   });
+
+export const getTeamTickets = (teamId: number): Promise<Ticket[]> => {
+  return request(`/${teamId}/tickets`);
+}
+
+export const getTeamTicket = (teamId: number, ticketId: number): Promise<Ticket> => {
+  return request(`/${teamId}/tickets/${ticketId}`);
+}
+
+export const createTeamTicket = (
+  teamId: number,
+  data: CreateTeamTicketPayload
+): Promise<Ticket> => {
+  return request(`/${teamId}/tickets`, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+}
+
+export const updateTeamTicket = (
+  teamId: number,
+  ticketId: number,
+  data: Partial<Ticket>
+): Promise<Ticket> => {
+  return request(`/${teamId}/tickets/${ticketId}`, {
+    method: "PATCH",
+    body: JSON.stringify(data)
+  });
+}
+
+export const deleteTeamTicket = (teamId: number, ticketId: number) => {
+  return request(`/${teamId}/tickets/${ticketId}`, {
+    method: "DELETE"
+  });
+}
+
+export const getCommentOnTeamTicket = (teamId: number, ticketId: number ) => {
+  return request(`/${teamId}/tickets/${ticketId}/comments`)
+}
+
+export const commentOnTeamTicket = (
+  teamId: number, 
+  ticketId: number, 
+  data: unknown
+) => {
+  return request(`/${teamId}/tickets/${ticketId}/comments`, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+}
+
+export const getHistoryOnTeamTicket = (teamId: number, ticketId: number ) => {
+  return request(`/${teamId}/tickets/${ticketId}/history`)
+}

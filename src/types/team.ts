@@ -1,6 +1,6 @@
 import { AppNotification } from "./notification";
 import { Subscription } from "./subscription";
-import { Ticket } from "./ticket";
+import { Ticket, Ticket_Priority, TicketPriority } from "./ticket";
 import { Invitation, User } from "./users";
 
 export type TeamRole = 'OWNER' | 'ADMIN' | 'MEMBER';
@@ -55,3 +55,37 @@ export type UpdateTeamPayload = Partial<{
   name: string;
   description: string;
 }>;
+
+export interface TeamWidgets {
+  total: number;
+  overdue: number;
+  dueToday: number;
+  inProgress: number;
+  createdThisWeek: number;
+  completed: number;
+}
+
+export interface TeamAnalytics {
+  totalTickets: number;
+  openTickets: number;
+  closedTickets: number;
+  overdueTickets: number;
+}
+
+export interface TeamTicket {
+  id: number;
+  title: string;
+  description?: string;
+  status: "OPEN" | "IN_PROGRESS" | "DONE";
+  priority: "LOW" | "MEDIUM" | "HIGH";
+  assigneeId?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateTeamTicketPayload {
+  title: string;
+  description?: string;
+  priority?: TicketPriority;
+  assigneeId?: number;
+}

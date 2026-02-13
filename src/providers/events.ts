@@ -27,6 +27,33 @@ export type AuthPayloads = {
   removed: { email: string; removedBy?: string; at: number };
 };
 
+export type TeamTicketPayloads = {
+  created: {
+    teamId: number;
+    ticketId: number;
+    createdBy?: string | number;
+  };
+
+  updated: {
+    teamId: number;
+    ticketId: number;
+    updates: Record<string, unknown>;
+  };
+
+  deleted: {
+    teamId: number;
+    ticketId: number;
+    deletedBy?: string | number;
+  };
+
+  comment: {
+    teamId: number;
+    ticketId: number;
+    author?: string | number;
+  };
+};
+
+
 export type AppEvents = {
   "ticket:created": TicketPayloads["created"];
   "ticket:updated": TicketPayloads["updated"];
@@ -35,6 +62,11 @@ export type AppEvents = {
   "ticket:closed": TicketPayloads["closed"];
   "ticket:comment": TicketPayloads["comment"];
   "ticket:status-changed": TicketPayloads["statusChanged"];
+
+  "team:ticket:created": TeamTicketPayloads["created"];
+  "team:ticket:updated": TeamTicketPayloads["updated"];
+  "team:ticket:deleted": TeamTicketPayloads["deleted"];
+  "team:ticket:comment": TeamTicketPayloads["comment"];
 
   "subscription:started": SubscriptionPayloads["started"];
   "subscription:upgraded": SubscriptionPayloads["upgraded"];
@@ -48,6 +80,8 @@ export type AppEvents = {
   "auth:role-changed": AuthPayloads["roleChanged"];
   "auth:invited": AuthPayloads["invited"];
   "auth:removed": AuthPayloads["removed"];
+
+  
 };
 
 type Handler<T> = (payload: T) => void;

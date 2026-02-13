@@ -65,7 +65,7 @@ const TicketsPage: React.FC = () => {
     setGrouped(map);
   }, [filteredTickets]);
 
-  const openDetail = (id: string | number) => setSelectedTicket(id);
+  const openDetail = (id: number) => setSelectedTicket(id);
   const closeDetail = () => setSelectedTicket(null);
   const refresh = () => fetchTickets(true);
 

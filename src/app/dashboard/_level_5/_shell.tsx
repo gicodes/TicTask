@@ -370,7 +370,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
       <Box component="main" sx={{ flexGrow: 1, minHeight: '100vh', pb: 5}}>
         <Toolbar />
         {children}
-        <Box textAlign={'center'} mt={5}>
+        <Box textAlign={'center'} my={5}>
           <Typography 
             variant='subtitle2' 
             fontFamily={'serif'} 

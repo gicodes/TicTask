@@ -1,3 +1,4 @@
+import { CreateTeamTicketPayload } from "./team";
 import { Client, User } from "./users";
 
 export interface TicketNote {
@@ -93,10 +94,13 @@ export interface Create_Ticket {
   attachments?: string[];
   location?: string;
   attendees?: string[];
-  extClient: string;
+  extClient?: string;
 
   createdById: number;
   assignTo?: string;
+  assignees?: string[];
+
+  teamId?: number;
 }
 
 export enum Ticket_Type {
@@ -154,7 +158,7 @@ export enum Ticket_Status {
 export type TicketImpact = 'LOW' | 'MEDIUM' | 'HIGH';
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 export type TicketStatus = 'UPCOMING'| 'OPEN'| 'IN_PROGRESS'| 'RESOLVED'| 'CLOSED'| 'CANCELLED';
-export type TicketType = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' |'SUPPORT'| 'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE' | 'MEETING';
+export type TicketType = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' | 'SUPPORT'| 'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE' | 'MEETING' | 'DOCUMENTATION' | 'MAINTENANCE' | 'OPTIMIZATION' | 'DEPLOYMENT' | 'RELEASE' | 'RESEARCH' | 'SECURITY' | 'DESIGN' | 'TEST' | 'PERFORMANCE' | 'TICKET';
 
 export const priorityOrder: Record<string, number> = {
   URGENT: 0,
@@ -173,5 +177,27 @@ export const statusOrder: Record<string, number> = {
 };
 
 export type CreateTicketResult =
-  | { success: true; ticket: Ticket }     // assuming Ticket is your entity type
+  | { success: true; ticket: Ticket }  
   | { success: false; error: string };
+
+export type TeamTicketContextType = {
+  tickets: Ticket[];
+  loading: boolean;
+  selectedTicket: Ticket | null;
+
+  fetchTickets: (force?: boolean) => Promise<void>;
+  refreshTicket: (ticketId: number) => Promise<void>;
+
+  selectTicket: (ticketId: number | null) => void;
+  clearSelection: () => void;
+
+  createTicket: (payload: CreateTeamTicketPayload) => Promise<Ticket | null>;
+  updateTicket: (ticketId: number, updates: Partial<Ticket>) => Promise<Ticket | null>;
+  deleteTicket: (ticketId: number) => Promise<void>;
+
+  getComments: (ticketId: number) => Promise<TicketNote[]>;
+  addComment: (ticketId: number, content: string) => Promise<void>;
+
+  getHistory: (ticketId: number) => Promise<TicketHistory[]>;
+  invalidate: () => void;
+};
