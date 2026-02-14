@@ -16,19 +16,21 @@ import {
 } from "@mui/material";
 
 export default function MembersPage() {
-  const { isAuthenticated } = useAuth();
-  const { team, inviteMember, removeMember, isOwner } = useTeam();
+  const { isAuthenticated, user } = useAuth();
+  const { team, inviteMember, removeMember, isOwner, loading } = useTeam();
 
   const handleInvite = async () => {
+    if (!user) return;
     const email = prompt("Enter email to invite:");
     
     if (!email) return;
-    await inviteMember(email);
+    await inviteMember(email, user?.id);
   };
 
   const members = team?.members ?? [];
 
   if (!isAuthenticated) return;
+  if (loading) return <Typography py={2} textAlign={'center'}> Loading...</Typography>
 
   return (
     <Box maxWidth={800}>

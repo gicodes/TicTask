@@ -63,7 +63,7 @@ export const updateTeamInfo = async (
   })
 };
 
-export const inviteToTeam = (payload: { email: string; teamId: number }) =>
+export const inviteToTeam = (payload: { email: string; teamId: number, invitedById: number }) =>
   request(`/invite`, {
     method: "POST",
     body: JSON.stringify(payload),

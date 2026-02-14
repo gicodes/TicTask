@@ -12,8 +12,8 @@ export default function OverviewPage() {
   const router = useRouter();
   const { team, loading, isOwner } = useTeam();
 
-  if (loading) return <Box py={6}>Loading...</Box>;
-  if (!team) return <Box py={6}>Team not found</Box>
+  if (loading) return <Typography py={6} textAlign={'center'}>Loading...</Typography>;
+  if (!team) return <Typography py={6}>Team not found</Typography>
 
   if (!isAuthenticated) return;
 

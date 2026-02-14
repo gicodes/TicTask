@@ -44,13 +44,14 @@ export function useTeam() {
     fetchTeam();
   }, [fetchTeam]);
 
-  const inviteMember = async (email: string) => {
+  const inviteMember = async (email: string, userId: number) => {
     if (!teamId) return false;
 
     try {
       await teamsApi.inviteToTeam({
         email,
         teamId: Number(teamId),
+        invitedById: Number(userId)
       });
 
       showAlert("Invitation sent!", "success");
