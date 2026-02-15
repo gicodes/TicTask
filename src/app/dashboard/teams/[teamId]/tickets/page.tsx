@@ -14,6 +14,7 @@ import TicketsList from '../../../_level_2/_list';
 import TicketBoard from '../../../_level_2/_board';
 import { Stack, TextField, InputAdornment } from '@mui/material';
 import { TICKET_STATUSES, TICKET_LIST_HEADERS,} from '../../../_level_0/constants';
+import { useTeamTicket } from '@/providers/teamTickets';
 
 export function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
@@ -27,7 +28,7 @@ export function useDebounce<T>(value: T, delay = 300): T {
 }
 
 export default function TeamTicketsWorkspace() {
-  const { tickets, updateTicket } = useTickets();
+  const { tickets, updateTicket } = useTeamTicket();
   const { isAuthenticated } = useAuth();
 
   const [view, setView] =
