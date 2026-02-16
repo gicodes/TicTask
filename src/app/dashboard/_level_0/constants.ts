@@ -1,5 +1,12 @@
 import { UserStatus } from "@/types/users";
 
+export type LinkItem = {
+  label: string | React.ReactNode;
+  href: string;
+  cta?: boolean;
+  disabled?: boolean;
+};
+
 export const ALL_TICKET_TYPES = [
   'GENERAL',
   'BUG',

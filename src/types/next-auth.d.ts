@@ -22,7 +22,7 @@ declare module "next-auth" {
 
   interface Session extends DefaultSession {
     user: User;
-    accessToken: string;
+    accessToken: string | undefined;
     refreshToken: string;
   }
 
@@ -41,9 +41,9 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
-    user?: import("next-auth").User;
-    accessToken: string;
-    refreshToken: string;
-    expires?: number;
+    user?: import("next-auth").User | null;
+    accessToken: string | undefined | null;
+    refreshToken: string | null;
+    expires?: number | null;
   }
 }

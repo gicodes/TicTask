@@ -9,9 +9,9 @@ export async function apiFetch(input: RequestInfo, init?: RequestInit): Promise<
   const accessToken = (session as Session)?.accessToken;
 
   const headers = new Headers(init?.headers ?? {});
-  if (accessToken) {
-    headers.set("Authorization", `Bearer ${accessToken}`);
-  }
+
+  if (accessToken) headers.set("Authorization", `Bearer ${accessToken}`);
+
   headers.set("Content-Type", "application/json");
 
   const url = typeof input === "string" && input.startsWith("http")

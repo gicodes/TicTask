@@ -63,7 +63,7 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: session, status } = useSession();
 
   const loading = status === 'loading';
-  const isAuthenticated = !!session?.user;
+  const isAuthenticated = !!session?.user && !!session?.accessToken;
 
   const user: AuthUser | null = session?.user
     ? {
@@ -79,7 +79,7 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
         organization: session.user?.organization,
         subscription: session.user?.subscription,
         data: session.user.data,
-        accessToken: session.accessToken,
+        accessToken: session.accessToken as string,
       }
     : null;
 

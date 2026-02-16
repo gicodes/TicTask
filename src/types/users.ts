@@ -111,3 +111,12 @@ export enum UserStatus {
   AWAY = "AWAY",
   OFFLINE = "OFFLINE",
 }
+
+export interface AvatarProps {
+  size?: number;
+  user: {
+    name: string;
+    photo?: string;
+    data?: { status: UserStatus }
+  } | null;
+}

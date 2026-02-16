@@ -1,4 +1,5 @@
-import { UserStatus } from "@/types/users";
+import { LinkItem } from "../_level_0/constants";
+import { AvatarProps } from "@/types/users";
 import { AuthUser } from "@/providers/auth";
 import { CgMenuGridR } from "react-icons/cg";
 import { FaUserGroup } from "react-icons/fa6";
@@ -11,6 +12,7 @@ import { BsFillCreditCard2BackFill, BsCalendar2Date } from "react-icons/bs";
 import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle, FaPeopleCarry } from 'react-icons/fa';
 import { FcInvite, FcSerialTasks, FcDocument, FcBearish, FcDataEncryption, FcMoneyTransfer, FcParallelTasks } from "react-icons/fc";
 import { MdCategory, MdSettings, MdPaid, MdCampaign, MdQuestionAnswer, MdSwitchAccount, MdWorkHistory, MdLogout } from "react-icons/md";
+import { getSession } from "next-auth/react";
 
 export const NAV_ITEMS = [
   { label: 'Console', path: '/dashboard/admin', icon: <GrTasks/>},
@@ -72,21 +74,15 @@ export const getFilteredNav = (user: AuthUser | null) => {
   return NAV_ITEMS.filter(item => uniqueAllowed.includes(item.label));
 };
 
-export type LinkItem = {
-  label: string | React.ReactNode;
-  href: string;
-  cta?: boolean;
-  disabled?: boolean;
-};
 export const AUTH_ITEMS: LinkItem[] = [
-  { label: <div className='flex gap-2 items-center'><GiThreeFriends/> Become a partner</div>, href: "/company/partner/register"},
-  { label: <div className='flex gap-2 items-center'><GrUpdate/> Latest updates</div>, href: "/resources/changelog"},
-  { label: <div className='flex gap-2 items-center'><FaVideo/>  Watch videos</div>, href: "#", cta: true},
-  { label: <div className='flex gap-2 items-center'><MdPaid/>  See pricing</div>, href: "/product/pricing"},
-  { label: <div className='flex gap-2 items-center'><GiHelp/>  Get support</div>, href: "/company/#contact-us"},
-  { label: <div className='flex gap-2 items-center'><FaDonate/>  Donations</div>, href: "#", cta: true},
-  { label: <div className='flex gap-2 items-center'><FaHome/> Go to main page </div>, href: "/" },
-  { label: <div className='flex gap-2 items-center'><MdLogout fontSize='inherit'/>Logout</div>, href: "#", cta: true },
+  { label: <div className='flex gap-2 items-center'> <GiThreeFriends/> Become a partner</div>, href: "/company/partner/register"},
+  { label: <div className='flex gap-2 items-center'> <GrUpdate/> Latest updates</div>, href: "/resources/changelog"},
+  { label: <div className='flex gap-2 items-center'> <FaVideo/>  Watch videos</div>, href: "#", cta: true},
+  { label: <div className='flex gap-2 items-center'> <MdPaid/>  See pricing</div>, href: "/product/pricing"},
+  { label: <div className='flex gap-2 items-center'> <GiHelp/>  Get support</div>, href: "/company/#contact-us"},
+  { label: <div className='flex gap-2 items-center'> <FaDonate/>  Donations</div>, href: "#", cta: true},
+  { label: <div className='flex gap-2 items-center'> <FaHome/> Go to main page </div>, href: "/" },
+  { label: <div className='flex gap-2 items-center'> <MdLogout fontSize='inherit'/>Logout</div>, href: "#", cta: true },
 ]
 
 export const menuItems = [
@@ -94,6 +90,7 @@ export const menuItems = [
   { label: "Resources", href: "/resources" },
   { label: "Company", href: "/company" },
 ];
+
 export const extendedMenuItems: Record<string, { label: string; href: string }[]> = {
   Products: [
     { label: "Overview", href: "/product" },
@@ -124,14 +121,6 @@ export const userLinks: LinkItem[] = [
   { label: "Dashboard", href: "/dashboard", cta: true },
 ];
 
-export interface AvatarProps {
-  size?: number;
-  user: {
-    name: string;
-    photo?: string;
-    data?: { status: UserStatus }
-  } | null;
-}
 export const NavbarAvatar = ({ 
   user, 
   size = 36}: AvatarProps
@@ -143,21 +132,23 @@ export const NavbarAvatar = ({
         bgcolor: user ? 'var(--surface-1)' :  'var(--surface-2)', 
         width: size,
         height: size,
-        fontSize: 15,
         border: '0.1px solid var(--dull-gray)'
       }}
     >
-      <Typography color={'var(--bw)'}>
+      <Typography color={'var(--bw)'} fontSize={size ? size / 2.4 : 15}>
         {user ? user.name?.split(' ').slice(0,2).map(n => n[0]?.toUpperCase()).join('') : 'NA'}
       </Typography>
     </Avatar>
-    <Box position={'absolute'} bottom={-5} right={0} maxHeight={1}>
+    <Box position={'absolute'} bottom={-5} right={-1} maxHeight={1}>
       <FaCircle 
-        size={9} 
-        color={user?.data?.status===undefined ? 'var(--disabled)' 
+        size={size ? size / 4 : 9} 
+        color={
+          user?.data?.status===undefined ? 'var(--disabled)' 
           : user?.data?.status==="ACTIVE" ? 'limegreen' 
           : user?.data?.status==="AWAY" ? 'gold' 
-          : user?.data?.status==="BUSY" ? 'tomato' : 'gray'} />
+          : user?.data?.status==="BUSY" ? 'tomato' : 'gray'
+        }
+      />
     </Box>
   </Box>
 );

@@ -13,7 +13,7 @@ export default function OverviewPage() {
   const { team, loading, isOwner } = useTeam();
 
   if (loading) return <Typography py={6} textAlign={'center'}>Loading...</Typography>;
-  if (!team) return <Typography py={6}>Team not found</Typography>
+  if (!team) return <Typography py={6} textAlign={'center'}>Team not found</Typography>
 
   if (!isAuthenticated) return;
 
@@ -28,7 +28,6 @@ export default function OverviewPage() {
                 {new Date(team.createdAt).toDateString()}
               </Typography>
             </Box>
-
             <Box display={'grid'} gap={1}>
               <Typography 
                 variant="caption" 
@@ -43,7 +42,6 @@ export default function OverviewPage() {
                 {team.owner?.name}
               </Typography>
             </Box>
-
             <Box display={'grid'} gap={1}>
               <Typography variant="caption">Tickets</Typography>
               <Typography fontWeight={600}>

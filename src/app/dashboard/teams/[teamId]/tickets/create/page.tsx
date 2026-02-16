@@ -21,8 +21,8 @@ import { useTeam } from '@/hooks/useTeam';
 import { useTeamTicket } from '@/providers/teamTickets';
 import { DatePicker } from '@/app/dashboard/_level_1/tDateControl';
 import {
-  TICKET_SCHEMAS,
   TICKET_FORMS,
+  TICKET_SCHEMAS,
   TICKET_DEFAULTS,
   TASK_FORMS,
   TASK_SCHEMAS,
@@ -34,6 +34,7 @@ import { Create_Ticket } from '@/types/ticket';
 import { useAuth } from '@/providers/auth';
 import { ALL_TICKET_TYPES } from '@/app/dashboard/_level_0/constants';
 import { Button } from '@/assets/buttons';
+import { NavbarAvatar } from '@/app/dashboard/_level_1/navItems';
 
 type LocalType = TicketTypeUnion | PlannerTaskTypeUnion;
 
@@ -75,16 +76,40 @@ export default function TeamTicketCreatePage() {
   const teamMembers = team?.members ?? [];
 
   const onSubmit = async (data: FieldValues) => {
+    const payloadBase: Record<string, unknown> = { ...(data as Record<string, unknown>) };
+
+    if (Array.isArray(payloadBase.tags) === false && typeof payloadBase.tags === 'string') {
+      payloadBase.tags = (payloadBase.tags as unknown as string).split(',').map(s => s.trim()).filter(Boolean);
+    }
+
+    const dueDateIso =
+      typeof payloadBase.dueDate === 'string' && payloadBase.dueDate
+        ? new Date(payloadBase.dueDate as string)
+        : typeof payloadBase.startTime === 'string' && payloadBase.startTime
+          ? new Date(payloadBase.startTime as string)
+          : undefined;
+
+    const startTimeDate = typeof payloadBase.startTime === 'string' && payloadBase.startTime
+      ? new Date(payloadBase.startTime as string)
+      : undefined;
+
+    const endTimeDate = typeof payloadBase.endTime === 'string' && payloadBase.endTime
+      ? new Date(payloadBase.endTime as string)
+      : undefined;
+
     try {
-      const payload: Create_Ticket = {
+      const payload = {
         ...data,
         type: itemType,
         title: data.title ?? '',
         teamId: Number(teamId), 
         extClient: data.extClient ?? null,
         createdById: user?.id!,
-        assignees: data.assignees ?? [],
-      };
+        dueDate: dueDateIso,
+        endTime: endTimeDate,
+        startTime: startTimeDate,
+        assignTo: data.assignees?.length === 0 ? null : data.assignees,
+      } as unknown as Create_Ticket;
 
       const result = await createTicket(payload);
 
@@ -111,7 +136,7 @@ export default function TeamTicketCreatePage() {
           <IconButton edge="start" onClick={() => router.back()}>
             <ArrowBackIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ ml: 2, flex: 1 }}>
+          <Typography variant="h6" fontWeight={600} sx={{ ml: 2, flex: 1 }}>
             Create Team Ticket
           </Typography>
         </Toolbar>
@@ -143,8 +168,23 @@ export default function TeamTicketCreatePage() {
               ))}
             </TextField>
 
-            <Stack>
-              <Typography variant='caption'>Share or assign to team member</Typography>
+            <Typography fontWeight={600} mt={2}> Team Playground</Typography>
+
+            <Stack gap={0.75}>
+              {teamMembers.length === 0 ? (
+                <Typography variant="caption" color="textSecondary">
+                  No team members available. Add members to assign tickets.
+                </Typography>
+              ) : teamMembers.map(m => m.id).includes(user?.id!) ? (
+                <Typography variant="caption" color="textSecondary">
+                  You can assign this ticket to yourself or other team members.
+                </Typography>
+              ) : (
+                <Typography variant="caption" color="textSecondary">
+                  You cannot assign this ticket to anyone because you are not a member of the team.
+                </Typography>
+              )}
+              <Typography variant='caption'>Share or assign to team member </Typography>
               <Controller
                 name="assignees"
                 control={control}
@@ -173,59 +213,32 @@ export default function TeamTicketCreatePage() {
                   </Select>
                 )}
               />
-            </Stack>
-
-            <Stack>
-              <Typography variant='caption'>Add tags for readability</Typography><Controller
-                name="tags"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    multiple
-                    label="Tags"
-                    fullWidth
-                    {...field}
-                    renderValue={(selected: string[]) => (
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {selected.map((value) => <Chip key={value} label={value} />)}
-                      </Box>
-                    )}
-                  >
-                  </Select>
+              <Stack
+                bgcolor={'var(--border-color)'}
+                direction={'row'} 
+                borderRadius={5}
+                gap={0.75}
+                mb={1.75} 
+                p={1}
+              >
+                {teamMembers.map(m =>
+                  <NavbarAvatar key={m.id} user={m} size={24}/>
                 )}
-              />
+              </Stack>
             </Stack>
 
             <DatePicker control={control} name="dueDate" label="Due Date" />
           </Box>
 
           <Box flex={1}>
-            <TextField
-              label="Title"
-              fullWidth
-              variant="outlined"
-              sx={{ mb: 3, fontSize: '1.8rem' }}
-              {...control.register('title')}
-            />
-
             <FormComponent control={control} task={isTaskMode} />
-
-            <TextField
-              label="Description"
-              multiline
-              rows={8}
-              fullWidth
-              placeholder="Describe the ticket... (rich editor coming soon)"
-              {...control.register('description')}
-              sx={{ mt: 2 }}
-            />
           </Box>
         </Stack>
 
         <Stack direction={{ xs: 'column', sm: "row" }} justifyContent="flex-end" mt={5} spacing={2}>
           <Button tone='retreat' onClick={() => router.back()}>Cancel</Button>
           <Button onClick={handleSubmit(onSubmit)}>
-            Create Team Ticket
+            Create Ticket
           </Button>
         </Stack>
       </Box>

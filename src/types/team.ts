@@ -1,7 +1,7 @@
 import { AppNotification } from "./notification";
 import { Subscription } from "./subscription";
 import { Ticket, Ticket_Priority, TicketPriority } from "./ticket";
-import { Invitation, User } from "./users";
+import { Invitation, User, UserPreferences } from "./users";
 
 export type TeamRole = 'OWNER' | 'ADMIN' | 'MEMBER';
 
@@ -34,8 +34,8 @@ export type TeamMember = {
   teamId: number;
   role: TeamRole;
 
-  name?: string;
-
+  name: string;
+  data: UserPreferences;
 
   invitedBy?: number;
   createdAt: string;
@@ -63,6 +63,9 @@ export interface TeamWidgets {
   inProgress: number;
   createdThisWeek: number;
   completed: number;
+  assignedToMe: number;
+  abandoned: number;
+  highPriority: number;
 }
 
 export interface TeamAnalytics {

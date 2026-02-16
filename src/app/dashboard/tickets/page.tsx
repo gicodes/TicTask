@@ -2,6 +2,7 @@
 
 import { getTimeOfDayGreeting, getRandomGreeting, GREETINGS } from '../_level_1/getGreeting';
 import { Box, Typography, Tooltip, Divider } from '@mui/material';
+import { useAuthRedirect } from '@/hooks/useAuthRedirect';
 import DashboardOnboarding from '../_level_0/onboardTips';
 import React, { useEffect, useState } from 'react'
 import TicketsPage from '../_level_3/ticket';
@@ -9,6 +10,7 @@ import { useAuth } from '@/providers/auth';
 import Link from 'next/link';
 
 const Page = () => {
+  const { login } = useAuthRedirect();
   const [time, setTime] = useState(new Date());
   const [greeting, setGreeting] = useState('');
   const { user, loading, isAuthenticated } = useAuth();
@@ -33,7 +35,7 @@ const Page = () => {
 
   if (!isAuthenticated) return (
     <Box textAlign="center" px={2} display={'grid'} gap={10} py={10}>
-      <Typography>Please <Link href={'/auth/login'} className='custom-link'>log in</Link> to access dashboard </Typography>
+      <Typography>Please <span onClick={login} className='custom-link'>log in</span> to access dashboard </Typography>
     </Box>
   );
   

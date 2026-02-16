@@ -1,10 +1,12 @@
 'use client'
 
+import { useAuthRedirect } from '@/hooks/useAuthRedirect';
+import { Box, Typography } from '@mui/material';
 import PlannerPage from '../_level_3/planner'
 import { useAuth } from '@/providers/auth';
-import { Box, Link, Typography } from '@mui/material';
 
 const Page = () => {
+  const { login } = useAuthRedirect();
   const { loading, isAuthenticated } = useAuth();
 
   if (loading)
@@ -12,7 +14,7 @@ const Page = () => {
 
   if (!isAuthenticated) return (
     <Box textAlign="center" p={4}>
-      <Typography>Please <Link href={'/auth/login'} className='custom-link'>log in</Link> to view planner</Typography>
+      <Typography>Please <span onClick={login} className='custom-link'>log in</span> to view planner</Typography>
     </Box>
   );
   

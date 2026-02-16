@@ -19,6 +19,7 @@ export interface VerifyEmailResponse {
 
 export interface ConfirmVerificationRequest {
   token: string;
+  userId?: number
 }
 
 export interface ConfirmVerificationResponse {

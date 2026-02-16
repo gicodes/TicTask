@@ -9,11 +9,11 @@ import {
   Typography, 
   Card, 
   CardContent, 
-  Avatar, 
   Grid, 
   IconButton, 
   Stack 
 } from "@mui/material";
+import { NavbarAvatar } from "@/app/dashboard/_level_1/navItems";
 
 export default function MembersPage() {
   const { isAuthenticated, user } = useAuth();
@@ -60,7 +60,7 @@ export default function MembersPage() {
                   }}
                 >
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar>{m.name?.[0]}</Avatar>
+                    <NavbarAvatar user={m} />
                     <Box>
                       <Typography fontWeight={600}>{m.name}</Typography>
                       <Typography variant="caption" sx={{ opacity: 0.6 }}>{m.role}</Typography>

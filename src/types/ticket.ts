@@ -184,20 +184,15 @@ export type TeamTicketContextType = {
   tickets: Ticket[];
   loading: boolean;
   selectedTicket: Ticket | null;
-
   fetchTickets: (force?: boolean) => Promise<void>;
   refreshTicket: (ticketId: number) => Promise<void>;
-
   selectTicket: (ticketId: number | null) => void;
   clearSelection: () => void;
-
   createTicket: (payload: CreateTeamTicketPayload) => Promise<Ticket | null>;
   updateTicket: (ticketId: number, updates: Partial<Ticket>) => Promise<Ticket | null>;
   deleteTicket: (ticketId: number) => Promise<void>;
-
   getComments: (ticketId: number) => Promise<TicketNote[]>;
   addComment: (ticketId: number, content: string) => Promise<void>;
-
   getHistory: (ticketId: number) => Promise<TicketHistory[]>;
   invalidate: () => void;
 };

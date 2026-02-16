@@ -8,13 +8,12 @@ import { Ticket } from '@/types/ticket';
 import { Button } from '@/assets/buttons';
 import WorkspaceWidgets from './wsWidgets';
 import { useAuth } from '@/providers/auth';
-import { Search } from '@mui/icons-material';
-import { useTickets } from '@/providers/tickets';
+import { Add, Search } from '@mui/icons-material';
 import TicketsList from '../../../_level_2/_list';
 import TicketBoard from '../../../_level_2/_board';
+import { useTeamTicket } from '@/providers/teamTickets';
 import { Stack, TextField, InputAdornment } from '@mui/material';
 import { TICKET_STATUSES, TICKET_LIST_HEADERS,} from '../../../_level_0/constants';
-import { useTeamTicket } from '@/providers/teamTickets';
 
 export function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
@@ -28,8 +27,8 @@ export function useDebounce<T>(value: T, delay = 300): T {
 }
 
 export default function TeamTicketsWorkspace() {
+  const { isAuthenticated, user } = useAuth();
   const { tickets, updateTicket } = useTeamTicket();
-  const { isAuthenticated } = useAuth();
 
   const [view, setView] =
     useState<'board' | 'list' | 'timeline' | 'gantt'>('board');
@@ -110,6 +109,15 @@ export default function TeamTicketsWorkspace() {
       completed: filteredTickets.filter(
         t => t.status === 'RESOLVED' || t.status === 'CLOSED'
       ).length,
+      assignedToMe: filteredTickets.filter(
+        t => t.assignedTo?.id === user?.id
+      ).length,
+      abandoned: filteredTickets.filter(
+        t => t.status === 'CANCELLED'
+      ).length,
+      highPriority: filteredTickets.filter(
+        t => t.priority === 'HIGH'
+      ).length,
     };
   }, [filteredTickets]);
 
@@ -127,7 +135,14 @@ export default function TeamTicketsWorkspace() {
     <WorkspaceShell>
       <Stack mb={2.5} direction={'row'} justifyContent={'space-between'}>
         <DateToday />
-        <Button tone='action' component={Link} href={'tickets/create'}> New Ticket</Button>
+        <Button 
+          tone='action' 
+          component={Link} 
+          href={'tickets/create'}
+          startIcon={<Add />}
+        > 
+          New Ticket
+        </Button>
       </Stack>
       <Stack
         direction={{ xs: 'column', lg: 'row' }}

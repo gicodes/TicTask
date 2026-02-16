@@ -24,7 +24,6 @@ import {
 import {
   CreateTeamTicketPayload,
 } from "@/types/team";
-
 import { sortTickets } from "./tickets";
 import { TeamTicketContextType, Ticket } from "@/types/ticket";
 
@@ -38,18 +37,11 @@ export function TeamTicketProvider({
   children: React.ReactNode;
 }) {
   const { user } = useAuth();
-
-  const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(false);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
 
   const hasFetched = useRef(false);
-
-  useEffect(() => {
-    setTickets([]);
-    setSelectedTicket(null);
-    hasFetched.current = false;
-  }, [teamId]);
 
   const fetchTickets = useCallback(
     async (force = false) => {
@@ -59,6 +51,7 @@ export function TeamTicketProvider({
       try {
         setLoading(true);
         const data = await getTeamTickets(teamId);
+        
         setTickets(sortTickets(data));
         hasFetched.current = true;
       } catch (err) {
@@ -69,6 +62,14 @@ export function TeamTicketProvider({
     },
     [teamId]
   );
+
+  useEffect(() => {
+    if (user?.id) {
+      hasFetched.current = false;
+      fetchTickets();
+    }
+  }, [teamId, fetchTickets, user?.id]);
+
 
   const refreshTicket = async (ticketId: number) => {
     if (!teamId) return;
@@ -202,7 +203,7 @@ export function TeamTicketProvider({
       getHistory,
       invalidate,
     }),
-    [tickets, loading, selectedTicket, fetchTickets]
+    [tickets, loading, selectedTicket]
   );
 
   return (

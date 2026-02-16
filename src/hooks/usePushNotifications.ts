@@ -75,7 +75,7 @@ export const usePushNotifications = () => {
       if (!response.ok) {
         console.error("Failed to save subscription");
       } else {
-        console.log("Push subscription saved");
+        console.log("[PUSH] 📣 Push subscription saved");
       }
     } catch (err) {
       console.error("Push subscription error:", err);
