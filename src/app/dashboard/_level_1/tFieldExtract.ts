@@ -39,20 +39,20 @@ export function extractTicketData(ticket: Ticket): TicketFormValuesUnion {
     case 'TASK':
       return {
         ...base,
-        checklist: data.checklist ?? [],
-        subtasks: data.subtasks ?? [],
-        estimatedTimeHours: data.estimatedTimeHours,
-        attachments: data.attachments ?? [],
-        recurrence: data.recurrence ?? '',
-        startTime: ticket.startTime ?? undefined,
+        checklist: data?.checklist ?? [],
+        subtasks: data?.subtasks ?? [],
+        estimatedTimeHours: data?.estimatedTimeHours,
+        attachments: data?.attachments ?? [],
+        recurrence: data?.recurrence ?? '',
+        startTime: ticket?.startTime ?? undefined,
       };
     case 'EVENT':
       return {
         ...base,
-        type: ticket.type,
-        startTime: ticket.startTime ?? undefined,
-        endTime: ticket.endTime ?? undefined,
-        location: data.location ?? '',
+        type: ticket?.type,
+        startTime: ticket?.startTime ?? undefined,
+        endTime: ticket?.endTime ?? undefined,
+        location: data?.location ?? '',
         attendees: data.attendees ?? [],
       };
     default:

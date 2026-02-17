@@ -148,6 +148,11 @@ export function TeamTicketProvider({
     }
   };
 
+  const getTicket = async (ticketId: number) => {
+    if (!teamId || !ticketId) return null;
+    return await getTeamTicket(teamId, ticketId);
+  };
+
   const getComments = async (ticketId: number) => {
     if (!teamId) return [];
     return await getCommentOnTeamTicket(teamId, ticketId);
@@ -190,6 +195,7 @@ export function TeamTicketProvider({
     () => ({
       tickets,
       loading,
+      getTicket,
       selectedTicket,
       fetchTickets,
       refreshTicket,

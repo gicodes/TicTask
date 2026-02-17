@@ -10,8 +10,8 @@ interface QuickActions {
   status: QA_Status;
   title: string;
   disabled: boolean;
-  onClose: () => void;
-  onUpdate: () => void;
+  onClose?: () => void;
+  onUpdate?: () => void;
 }
 
 export const QA_Btn = ({ 

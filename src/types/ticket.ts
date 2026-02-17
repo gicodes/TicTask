@@ -1,4 +1,4 @@
-import { CreateTeamTicketPayload } from "./team";
+import { CreateTeamTicketPayload, TeamMember } from "./team";
 import { Client, User } from "./users";
 
 export interface TicketNote {
@@ -23,7 +23,7 @@ export interface Ticket {
   id: number;
   title: string;
   description: string | null;
-  type: TicketType;
+  type: AllTicketTypes;
   status: TicketStatus;
   priority: TicketPriority | null;
 
@@ -43,6 +43,10 @@ export interface Ticket {
   createdBy: User;
   assignedToId: number | null;
   assignedTo: User | null;
+  assignees?: TeamMember[] | [];
+  assigneesIds?: number[] | [];
+
+  teamId?: number;
 
   client: Client;
   notes: TicketNote[];
@@ -72,7 +76,7 @@ type SubTask = {
 }
 
 export interface Create_Ticket {
-  type: TicketType;
+  type: AllTicketTypes;
   title: string;
   description?: string;
   priority?: TicketPriority;
@@ -98,7 +102,7 @@ export interface Create_Ticket {
 
   createdById: number;
   assignTo?: string;
-  assignees?: string[];
+  assignees?: TeamMember[];
 
   teamId?: number;
 }
@@ -158,7 +162,7 @@ export enum Ticket_Status {
 export type TicketImpact = 'LOW' | 'MEDIUM' | 'HIGH';
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 export type TicketStatus = 'UPCOMING'| 'OPEN'| 'IN_PROGRESS'| 'RESOLVED'| 'CLOSED'| 'CANCELLED';
-export type TicketType = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' | 'SUPPORT'| 'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE' | 'MEETING' | 'DOCUMENTATION' | 'MAINTENANCE' | 'OPTIMIZATION' | 'DEPLOYMENT' | 'RELEASE' | 'RESEARCH' | 'SECURITY' | 'DESIGN' | 'TEST' | 'PERFORMANCE' | 'TICKET';
+export type AllTicketTypes = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' | 'SUPPORT'| 'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE' | 'MEETING' | 'DOCUMENTATION' | 'MAINTENANCE' | 'OPTIMIZATION' | 'DEPLOYMENT' | 'RELEASE' | 'RESEARCH' | 'SECURITY' | 'DESIGN' | 'TEST' | 'PERFORMANCE' | 'TICKET';
 
 export const priorityOrder: Record<string, number> = {
   URGENT: 0,
@@ -184,6 +188,7 @@ export type TeamTicketContextType = {
   tickets: Ticket[];
   loading: boolean;
   selectedTicket: Ticket | null;
+  getTicket: (ticketId: number) => Promise<Ticket | null>;
   fetchTickets: (force?: boolean) => Promise<void>;
   refreshTicket: (ticketId: number) => Promise<void>;
   selectTicket: (ticketId: number | null) => void;

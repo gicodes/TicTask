@@ -8,6 +8,7 @@ import { Ticket } from '@/types/ticket';
 import { Button } from '@/assets/buttons';
 import WorkspaceWidgets from './wsWidgets';
 import { useAuth } from '@/providers/auth';
+import { useRouter } from 'next/navigation';
 import { Add, Search } from '@mui/icons-material';
 import TicketsList from '../../../_level_2/_list';
 import TicketBoard from '../../../_level_2/_board';
@@ -29,14 +30,13 @@ export function useDebounce<T>(value: T, delay = 300): T {
 export default function TeamTicketsWorkspace() {
   const { isAuthenticated, user } = useAuth();
   const { tickets, updateTicket } = useTeamTicket();
-
-  const [view, setView] =
-    useState<'board' | 'list' | 'timeline' | 'gantt'>('board');
+  const [view, setView] = useState<'board' | 'list' | 'timeline' | 'gantt'>('board');
 
   const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
   const [selected, setSelected] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedQuery = useDebounce(searchQuery);
+  const router = useRouter();
 
   const now = new Date();
 
@@ -110,7 +110,7 @@ export default function TeamTicketsWorkspace() {
         t => t.status === 'RESOLVED' || t.status === 'CLOSED'
       ).length,
       assignedToMe: filteredTickets.filter(
-        t => t.assignedTo?.id === user?.id
+        t => t.assignedToId === user?.id
       ).length,
       abandoned: filteredTickets.filter(
         t => t.status === 'CANCELLED'
@@ -121,7 +121,10 @@ export default function TeamTicketsWorkspace() {
     };
   }, [filteredTickets]);
 
-  const openDetail = (id: number) => setSelected(id);
+  const openDetail = (id: number) => {
+    setSelected(id);
+    router.push(`tickets/${id}`);
+  }
 
   const DateToday = () => (
     <Stack textAlign={{ xs: 'center', sm: 'left'}}>
@@ -129,7 +132,11 @@ export default function TeamTicketsWorkspace() {
     </Stack>
   )
 
-  if (!isAuthenticated) return <WorkspaceShell><DateToday /></WorkspaceShell>
+  if (!isAuthenticated) return (
+    <WorkspaceShell>
+      <DateToday />
+    </WorkspaceShell>
+  );
 
   return (
     <WorkspaceShell>
@@ -193,6 +200,10 @@ export default function TeamTicketsWorkspace() {
         setView={setView}
         isEnterprise={false}
       />
+
+      {selected && (
+        <Link href={`tickets/${selected}`} style={{ display: 'none' }} id="ticket-detail-link" />
+      )}
     </WorkspaceShell>
   );
 }

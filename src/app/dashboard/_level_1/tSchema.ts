@@ -110,6 +110,7 @@ export const generalSchema = z.object({
   description: z.string().optional(),
   priority: z.enum(['LOW','MEDIUM','HIGH','URGENT']).optional(),
   assignTo: z.string().email().optional(),
+  assignees: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
   dueDate: z.string().optional(),
 });
@@ -122,6 +123,7 @@ export const bugSchema = z.object({
   severity: z.enum(['LOW','MEDIUM','HIGH','URGENT']).default('HIGH'),
   steps: z.string().optional(),
   priority: z.enum(['LOW','MEDIUM','HIGH','URGENT']).optional(),
+  assignees: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
   dueDate: z.string().optional(),
 });
@@ -133,6 +135,7 @@ export const featureSchema = z.object({
   description: z.string().optional(),
   impact: z.enum(['LOW','MEDIUM','HIGH']).default('MEDIUM'),
   priority: z.enum(['LOW','MEDIUM','HIGH','URGENT']).optional(),
+  assignees: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
   dueDate: z.string().optional(),
 });
@@ -157,6 +160,7 @@ export const taskSchema = z.object({
   description: z.string().optional(),
   priority: z.enum(['LOW','MEDIUM','HIGH','CRITICAL']).optional(),
   assignTo: z.string().email().optional(),
+  assignees: z.array(z.number()).optional(),
   checklist: z.array(z.string()).optional(),
   recurrence: z.string().optional(),
   estimatedTimeHours: z.number().nonnegative().optional(),
@@ -217,21 +221,21 @@ export const TICKET_SCHEMAS: Record<TicketTypeUnion, ZodTypeAny> = {
 };
 
 export const TICKET_DEFAULTS: Record<TicketTypeUnion, (defaultDueDate?: Date) => Record<string, unknown>> = {
-  GENERAL: () => ({ type: 'GENERAL', title: '', description: '', priority: 'MEDIUM', tags: [] }),
-  BUG: () => ({ type: 'BUG', title: '', severity: 'HIGH', steps: '', priority: 'HIGH', tags: [] }),
-  FEATURE_REQUEST: () => ({ type: 'FEATURE_REQUEST', title: '', impact: 'MEDIUM', description: '' }),
-  INVOICE: () => ({ type: 'INVOICE', title: '', amount: 0, currency: 'USD', description: '' }),
-  DOCUMENTATION: () => ({ type: 'DOCUMENTATION', title: '', description: '' }),
-  SUPPORT: () => ({ type: 'SUPPORT', title: '', description: '' }),
-  ISSUE: () => ({ type: 'ISSUE', title: '', description: '' }),
-  OPTIMIZATION: () => ({ type: 'OPTIMIZATION', title: '', description: '' }),
-  MAINTENANCE: () => ({ type: 'MAINTENANCE', title: '', description: '' }),
-  RESEARCH: () => ({ type: 'RESEARCH', title: '', description: '' }),
-  TEST: () => ({ type: 'TEST', title: '', description: '' }),
-  SECURITY: () => ({ type: 'SECURITY', title: '', description: '' }),
-  PERFORMANCE: () => ({ type: 'PERFORMANCE', title: '', description: '' }),
-  DESIGN: () => ({ type: 'DESIGN', title: '', description: '' }),
-  TICKET: () => ({ type: 'TICKET', title: '', description: '' }),
+  GENERAL: () => ({ type: 'GENERAL', title: '', description: '', priority: 'MEDIUM', tags: [], assignees: [], }),
+  BUG: () => ({ type: 'BUG', title: '', severity: 'HIGH', steps: '', priority: 'HIGH', tags: [], assignees: [], }),
+  FEATURE_REQUEST: () => ({ type: 'FEATURE_REQUEST', title: '', impact: 'MEDIUM', description: '', assignees: [], }),
+  INVOICE: () => ({ type: 'INVOICE', title: '', amount: 0, currency: 'USD', description: '', assignTo: '', }),
+  DOCUMENTATION: () => ({ type: 'DOCUMENTATION', title: '', description: '', assignees: [], }),
+  SUPPORT: () => ({ type: 'SUPPORT', title: '', description: '', assignees: [], }),
+  ISSUE: () => ({ type: 'ISSUE', title: '', description: '', assignees: [], }),
+  OPTIMIZATION: () => ({ type: 'OPTIMIZATION', title: '', description: '', assignees: [], }),
+  MAINTENANCE: () => ({ type: 'MAINTENANCE', title: '', description: '', assignees: [], }),
+  RESEARCH: () => ({ type: 'RESEARCH', title: '', description: '', assignees: [], }),
+  TEST: () => ({ type: 'TEST', title: '', description: '', assignees: [], }),
+  SECURITY: () => ({ type: 'SECURITY', title: '', description: '', assignees: [], }),
+  PERFORMANCE: () => ({ type: 'PERFORMANCE', title: '', description: '', assignees: [], }),
+  DESIGN: () => ({ type: 'DESIGN', title: '', description: '', assignees: [], }),
+  TICKET: () => ({ type: 'TICKET', title: '', description: '', assignees: [], }),
 };
 
 export const TASK_FORMS: Record<PlannerTaskTypeUnion, FormComponentType> = {
@@ -260,6 +264,7 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     estimatedTimeHours: undefined,
     attachments: [],
     subtasks: [],
+    assignees: [],
     dueDate: defaultDueDate ? format(defaultDueDate, "yyyy-MM-dd'T'HH:mm") : undefined,
   }),
   MEETING: (defaultDueDate?: Date) => ({
@@ -282,8 +287,8 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     attendees: [],
     tags: [],
   }),
-  RELEASE: () => ({ type: 'RELEASE', title: '', description: '' }),
-  DEPLOYMENT: () => ({ type: 'DEPLOYMENT', title: '', description: '' }),
+  RELEASE: () => ({ type: 'RELEASE', title: '', description: '', assignees: [], }),
+  DEPLOYMENT: () => ({ type: 'DEPLOYMENT', title: '', description: '', assignees: [], }),
 };
 
 export const CURRENCY_OPTIONS = [

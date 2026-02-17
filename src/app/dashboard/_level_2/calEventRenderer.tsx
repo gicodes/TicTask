@@ -1,9 +1,9 @@
 import { getStatusColor, getTypeColor, priorityColor } from '../_level_1/tColorVariants';
-import { TicketPriority, TicketStatus, TicketType } from '@/types/ticket';
+import { TicketPriority, TicketStatus, AllTicketTypes } from '@/types/ticket';
 import { useMemo } from 'react';
 
 export interface TicketEvent {
-  type: Partial<TicketType>;
+  type: Partial<AllTicketTypes>;
   priority: TicketPriority;
   title: string;
   status: TicketStatus;

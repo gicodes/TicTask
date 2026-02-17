@@ -90,7 +90,10 @@ a {
 .custom-white { color: #fff; }
 .custom-sharp { color: var(--success); }
 .custom-dull { color: var(--secondary); }
-.custom-link { color: #0066ff;}
+.custom-link { 
+  color: rgb(58, 114, 219);
+  cursor: pointer;
+}
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
@@ -152,6 +155,7 @@ h6 { font-size: 1.5rem; }
 .max-width-200 { max-width: 200px; }
 .max-width-360 { max-width: 360px; }
 .max-width-500 { max-width: 500px; }
+
 .full-width { width: 100%; }
 
 .mx-auto { margin: 0 auto; }
@@ -162,10 +166,13 @@ h6 { font-size: 1.5rem; }
 
 .py-1 { padding: 5px 0; }
 .py-3 { padding: 15px 0;}
+
 .px-1 { padding: 0 1rem; }
+.px-3 { padding: 0 1.75rem; }
 
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
+
 .mb-1 { margin-bottom: 0.5rem; }
 .mb-2 { margin-bottom: 1rem; }
 

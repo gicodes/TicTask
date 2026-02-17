@@ -1,8 +1,8 @@
-import { TicketType } from "@/types/ticket";
+import { AllTicketTypes } from "@/types/ticket";
 
 export type TicketPayloads = {
   created: { ticketId: number; type: string; title: string; createdBy: string | number; assignee?: string | number };
-  updated: { ticketId: number; type: string | TicketType; changes: Record<string, unknown>; status: string; updatedBy?: string | number }
+  updated: { ticketId: number; type: string | AllTicketTypes; changes: Record<string, unknown>; status: string; updatedBy?: string | number }
   assigned: { ticketId: number; assignee?: string | number; assignedBy?: string | number };
   resolved: { ticketId: number; resolvedBy?: string | number };
   closed: { ticketId: number, closedBy?: string | number};
