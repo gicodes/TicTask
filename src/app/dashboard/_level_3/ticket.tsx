@@ -78,7 +78,7 @@ const TicketsPage: React.FC = () => {
         p: { xs: 1, sm: 2, md: 3 }, 
       }}
     >
-      <Box mb={{ xs: 1, sm: -1}} display="flex" justifyContent="flex-end">
+      <Box mb={{ xs: 1, md: -1}} display="flex" justifyContent="flex-end">
         <Typography
           sx={{ cursor: 'pointer', borderBottom: '1px solid cornflowerblue', height: 'fit-content'}}
           onClick={() => setReadAboutTickets(true)}
