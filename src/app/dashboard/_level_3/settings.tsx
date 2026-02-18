@@ -66,8 +66,10 @@ export default function SettingsPage() {
 
     if (newValue) {
       requestPushPermission?.();
+      showAlert("Push notification settings turned on!", 'success');
     } else {
       unsubscribePush?.();
+      showAlert("Push notification settings turned off", 'success');
     }
   };
 

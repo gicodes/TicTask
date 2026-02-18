@@ -18,6 +18,7 @@ declare module "next-auth" {
     data?: UserPreferences
     accessToken: string;
     refreshToken: string;
+    pushSubscriptions?: unknown[];
   }
 
   interface Session extends DefaultSession {

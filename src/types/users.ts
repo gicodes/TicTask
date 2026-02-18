@@ -36,7 +36,7 @@ export type User = {
   data?:    UserPreferences;
 
   subscription?: Subscription;
-  pushSubscriptions?: unknown;
+  pushSubscriptions?: unknown[];
 
   teamMemberships: TeamMember[];
   createdTeams: Team[];

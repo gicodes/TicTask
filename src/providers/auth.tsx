@@ -26,6 +26,7 @@ export interface AuthUser {
   accessToken: string;
   subscription?: Subscription;
   data?: UserPreferences;
+  pushSubscriptions?: unknown[];
 }
 
 interface LoginProps {
@@ -61,7 +62,6 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: session, status } = useSession();
-
   const loading = status === 'loading';
   const isAuthenticated = !!session?.user && !!session?.accessToken;
 
@@ -80,6 +80,7 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
         subscription: session.user?.subscription,
         data: session.user.data,
         accessToken: session.accessToken as string,
+        pushSubscriptions: session.user.pushSubscriptions,
       }
     : null;
 
