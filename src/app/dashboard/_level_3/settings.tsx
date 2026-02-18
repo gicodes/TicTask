@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { User } from '@/types/users';
 import { Button } from '@/assets/buttons';
 import { useAuth } from '@/providers/auth';
@@ -27,17 +27,27 @@ import {
 import { Sun, Moon, Laptop, Bell, Shield, User2, Globe, PlugZap, CreditCard, Check } from 'lucide-react';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 import GenericGridPageLayout from '../_level_1/genGridPageLayout';
+import { useNotifications } from '@/providers/notifications';
+
+const isIOS = () => {
+  const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const hasMSStream = typeof window !== 'undefined' && 'MSStream' in window;
+  return isIOSDevice && !hasMSStream;
+};
+const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches;
 
 export default function SettingsPage() {
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const { mode, setThemeMode } = useThemeMode();
+  const { requestPushPermission, unsubscribePush } = useNotifications();
   const { updateWorkspaceName } = useUpdateWorkspaceName(user?.id);
   const { updateEmailNotifications, tNotifsLoading } = useUpdateEmailNotifSetting(user?.id);
 
   const [autoSave, setAutoSave] = useState(true);
   const [inAppNotfis, setInAppNotfis] = useState(true);
   const [emailNotif, setEmailNotif] = useState((user as User)?.data?.getTNotifsViaEmail ?? false);
+  const [pushNotif, setPushNotif] = useState(false);
   const [isSavingWSN, setIsSavingWSN] = useState(false);
   const [isEditingWSN, setIsEditingWSN] = useState(false);
   const [language, setLanguage] = useState('English');
@@ -47,6 +57,23 @@ export default function SettingsPage() {
   const plan = subscription?.plan || 'Free';
   const expiresAt = subscription?.expiresAt
     ? new Date(subscription.expiresAt).toLocaleDateString() : '—';
+
+  const [showIOSGuidance, setShowIOSGuidance] = useState(false);
+
+  const handlePushNotifChange = () => {
+    const newValue = !pushNotif;
+    setPushNotif(newValue);
+
+    if (newValue) {
+      requestPushPermission?.();
+    } else {
+      unsubscribePush?.();
+    }
+  };
+
+  useEffect(() => {
+    if (isIOS() && !isStandalone()) setShowIOSGuidance(true)
+  }, []);
 
   const handleForgotPassword = () => {
     const email = user?.email;
@@ -166,6 +193,39 @@ export default function SettingsPage() {
             label={tNotifsLoading ? "Saving..." : "Email Notifications"}
             disabled={tNotifsLoading}
           />
+          {user?.subscription?.active || user?.data?.approved && (
+            <FormControlLabel
+              control={<Switch checked={pushNotif} onChange={handlePushNotifChange} />}
+              label={tNotifsLoading ? "Saving..." : "Push Notifications"}
+              disabled={tNotifsLoading}
+            />
+          )}
+          {showIOSGuidance && (
+            <Box mt={2} p={2} bgcolor="warning.light" borderRadius={2}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                iPhone/iPad users – important step!
+              </Typography>
+              <Typography variant="body2" sx={{ mt: 1 }}>
+                To receive push notifications on iOS, you must first add this app to your Home Screen:
+              </Typography>
+              <ol className="mt-2 list-decimal space-y-1 pl-5">
+                <li>Open this site in Safari</li>
+                <li>Tap the Share button (square with arrow up)</li>
+                <li>Scroll down and select "Add to Home Screen"</li>
+                <li>Name it (e.g. "TicTask") and tap "Add"</li>
+                <li>Open the new icon from your Home Screen</li>
+                <li>Come back here and enable notifications</li>
+              </ol>
+              <Typography variant="caption" mt={2}>
+                This is required by Apple for web push on iOS (works on iOS 16.4+). 
+                Once added, the prompt will appear properly.
+              </Typography>
+            </Box>
+          )}
+
+          <Typography variant="caption" color="text.secondary" sx={{ p: 1, mt: 2, border: '1px dashed', borderColor: 'divider', borderRadius: 1 }}>
+            Push notifications require browser permission. You can manage them in your device settings later.
+          </Typography>
         </Stack>
       </SettingsCard>
 

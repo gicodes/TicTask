@@ -81,6 +81,7 @@ const NotificationsDrawer: React.FC = () => {
           width: { xs: "100%", md: 440 },
           borderTopLeftRadius: 16,
           boxShadow: "-6px 0px 20px rgba(0,0,0,0.1)",
+          height: "100%",
         },
       }}
     >
@@ -136,6 +137,10 @@ const NotificationsDrawer: React.FC = () => {
           </TextField>
         </Stack>
       </Box>
+
+      <Link href="/dashboard" onClick={closeDetail} style={{ padding: 20}}>
+        <Button fullWidth color="inherit" variant="contained"> ← &nbsp; Back </Button>
+      </Link>
 
       <Box sx={{ px: 3, py: 2 }} minHeight={'60vh'}>
         {filtered.length === 0 && (
@@ -210,10 +215,6 @@ const NotificationsDrawer: React.FC = () => {
           </Box>
         ))}
       </Box>
-
-      <Link href="/dashboard" onClick={closeDetail} style={{ padding: 20}}>
-        <Button fullWidth color="inherit" variant="contained"> ← &nbsp; Back </Button>
-      </Link>
     </Drawer>
   );
 };

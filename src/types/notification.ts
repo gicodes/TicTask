@@ -51,5 +51,6 @@ export interface NotificationsContextProps {
   markAllAsRead: () => Promise<void>;
   removeNotification: (id: number) => void;
   clearNotifications: () => void;
-  requestPushPermission: () => Promise<boolean | void>;
+  requestPushPermission?: () => Promise<boolean | void>;
+  unsubscribePush?: () => Promise<boolean>; 
 }
