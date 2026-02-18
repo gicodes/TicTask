@@ -47,7 +47,7 @@ export default function SettingsPage() {
   const [autoSave, setAutoSave] = useState(true);
   const [inAppNotfis, setInAppNotfis] = useState(true);
   const [emailNotif, setEmailNotif] = useState((user as User)?.data?.getTNotifsViaEmail ?? false);
-  const [pushNotif, setPushNotif] = useState(false);
+  const [pushNotif, setPushNotif] = useState((user as User)?.pushSubscriptions ?? false);
   const [isSavingWSN, setIsSavingWSN] = useState(false);
   const [isEditingWSN, setIsEditingWSN] = useState(false);
   const [language, setLanguage] = useState('English');
@@ -196,7 +196,7 @@ export default function SettingsPage() {
           {(user?.subscription?.active || user?.data?.partnerRoles || user?.data?.approved) && (
             <>
               <FormControlLabel
-                control={<Switch checked={pushNotif} onChange={handlePushNotifChange} />}
+                control={<Switch checked={pushNotif as boolean} onChange={handlePushNotifChange} />}
                 label={tNotifsLoading ? "Saving..." : "Push Notifications"}
                 disabled={tNotifsLoading}
               />
