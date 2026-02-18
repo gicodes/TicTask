@@ -54,8 +54,6 @@ export interface Ticket {
 }
 
 export type Data = {
-  amount?: number;
-  currency?: string;
   extClient: string;
   severity?: TicketPriority,
   steps?: string,
@@ -76,6 +74,7 @@ type SubTask = {
 }
 
 export interface Create_Ticket {
+  id?: number;
   type: AllTicketTypes;
   title: string;
   description?: string;

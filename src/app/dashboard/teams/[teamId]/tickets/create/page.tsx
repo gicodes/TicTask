@@ -94,18 +94,16 @@ export default function TeamTicketCreatePage() {
   }, [itemType])
 
   const methods = useForm<FieldValues>(
-    formConfig
-      ? {
-          resolver: zodResolver(formConfig.schema as any) as Resolver<FieldValues>,
-          defaultValues: formConfig.defaultValues,
-        }
-      : {
-          defaultValues: {
-            title: '',
-            assignees: [],
-            tags: [],
-          },
-        },
+    formConfig ? {
+      resolver: zodResolver(formConfig.schema as any) as Resolver<FieldValues>,
+      defaultValues: formConfig.defaultValues,
+    } : {
+      defaultValues: {
+        title: '',
+        assignees: [],
+        tags: [],
+      },
+    },
   )
 
   const { handleSubmit, control, reset } = methods
@@ -131,7 +129,6 @@ export default function TeamTicketCreatePage() {
   const teamMembers = team?.members ?? []
 
   const onSubmit = async (data: FieldValues) => {
-    console.log('Form data to submit:', data)
     const payload = {
       ...data,
       teamId: Number(teamId),
@@ -152,10 +149,9 @@ export default function TeamTicketCreatePage() {
       assignTo: data.assignTo,
     } as unknown as Create_Ticket
 
-    console.log("form data as payload", payload)
-
     try {
       const result = await createTicket(payload)
+      
       if (result) {
         router.push(`/teams/${teamId}/tickets`)
         router.back()

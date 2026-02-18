@@ -4,10 +4,9 @@ import React from 'react'
 import { useAuth } from '@/providers/auth';
 import AiAssistantPage from '../_level_4/ai';
 import { Box, Typography } from '@mui/material';
-import { useAuthRedirect } from '@/hooks/useAuthRedirect';
+import AuthRedirectBtn from '@/assets/authRedirectBtn';
 
 const Page = () => {
-  const { login } = useAuthRedirect();
   const {loading, isAuthenticated } = useAuth();
 
   if (loading)
@@ -15,7 +14,7 @@ const Page = () => {
 
   if (!isAuthenticated) return (
     <Box textAlign="center" p={4}>
-      <Typography>Please <span onClick={login} className='custom-link'>log in</span> to access AI assistant</Typography>
+      <Typography>Please <AuthRedirectBtn />  to access AI assistant</Typography>
     </Box>
   );
   

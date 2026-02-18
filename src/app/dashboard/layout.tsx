@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { CssBaseline } from '@mui/material';
 import DashboardIndex from './_level_5/_shell';
@@ -21,19 +22,21 @@ export default function DashboardLayout(
   children: React.ReactNode }>
 ) { 
   return (
-    <ThemeProvider>
-      <CssBaseline />
-      <LoadingProvider>
-        <AdminApolloProvider>
-          <TicketsProvider>
-            <NotificationsProvider>
-              <DashboardIndex>
-                {children}
-              </DashboardIndex>
-            </NotificationsProvider>
-          </TicketsProvider>
-        </AdminApolloProvider>
-      </LoadingProvider>
-    </ThemeProvider>
+    <Suspense fallback={<span>Loading...</span>}>
+      <ThemeProvider>
+        <CssBaseline />
+        <LoadingProvider>
+          <AdminApolloProvider>
+            <TicketsProvider>
+              <NotificationsProvider>
+                <DashboardIndex>
+                  {children}
+                </DashboardIndex>
+              </NotificationsProvider>
+            </TicketsProvider>
+          </AdminApolloProvider>
+        </LoadingProvider>
+      </ThemeProvider>
+    </Suspense>
   );
 };

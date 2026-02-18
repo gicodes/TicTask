@@ -1,25 +1,20 @@
 "use client";
 
-import { signIn, signOut } from "next-auth/react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export function useAuthRedirect() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const currentUrl = pathname + (searchParams.size > 0 ? `?${searchParams}` : "");
 
-  const currentUrl =
-    pathname +
-    (searchParams.toString() ? `?${searchParams.toString()}` : "");
+  const getLoginUrl = () => {
+    const params = new URLSearchParams();
 
-  const login = () =>
-    signIn(undefined, {
-      callbackUrl: currentUrl,
-    });
+    if (currentUrl !== "/auth/login") {
+      params.set("returnUrl", currentUrl);
+    }
+    return `/auth/login?${params}`;
+  };
 
-  const logout = () =>
-    signOut({
-      callbackUrl: currentUrl,
-    });
-
-  return { login, logout };
+  return { getLoginUrl };
 }

@@ -243,14 +243,14 @@ export default function TicketDetailDrawer({
                   <Chip label={`${fields.extClient}`} size="small" color="info"/>}
                 {'estimatedTimeHours' in fields && fields.estimatedTimeHours && 
                   <Chip label={`${fields.estimatedTimeHours}h est.`} size="small" />}
-                {'subtasks' in fields && fields.subtasks?.length && fields.subtasks.length > 0 &&
-                  <Chip label={`${fields.subtasks.length} subtasks`} size="small" />}
-                {'checklist' in fields && fields.checklist?.length && fields.checklist.length > 0 &&
-                  <Chip label={`${fields.checklist.length} checklist items`} size="small" />}
-                {'attendees' in fields && (fields.attendees && fields.attendees.length > 0) && 
-                  <Chip label={`${fields.attendees.length} attendees`} size="small" />}
-                {'attachments' in fields && fields.attachments?.length && fields.attachments.length > 0 &&
-                  <Chip label={`${fields.attachments.length} attachments`} size="small" />}
+                {'subtasks' in fields && fields.subtasks?.length && fields.subtasks.length > 0 ? (
+                  <Chip label={`${fields.subtasks.length} subtasks`} size="small" /> ): ''}
+                {'checklist' in fields && fields.checklist?.length && fields.checklist.length > 0 ? (
+                  <Chip label={`${fields.checklist.length} checklist items`} size="small" /> ): ''}
+                {'attendees' in fields && fields.attendees?.length && fields.attendees.length > 0 ? (
+                  <Chip label={`${fields.attendees.length} attendees`} size="small" /> ): ''}
+                {'attachments' in fields && fields.attachments?.length && fields.attachments.length > 0 ? (
+                  <Chip label={`${fields.attachments.length} attachments`} size="small" /> ): ''}
                 {'steps' in fields && fields.steps && 
                   <><Chip label="Steps provided: " size="small" />{fields.steps}</>}
                 {'recurrence' in fields && fields.recurrence && 

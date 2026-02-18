@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import AiAssistantDrawer from '../_level_2/aiDrawer';
 import { ReactNode, useEffect, useState } from 'react';
 import { SetStatusButton } from '../_level_2/statusBar';
+import { useAuthRedirect } from '@/hooks/useAuthRedirect';
 import { FaUserTie, FaUserShield } from 'react-icons/fa6';
 import NotificationDrop from '../_level_2/notificationDrop';
 import { useNotifications } from '@/providers/notifications';
@@ -44,6 +45,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
   const { notifications } = useNotifications();
   const pathname = usePathname();
+  const { getLoginUrl } = useAuthRedirect();
   
   const [isMounted, setIsMounted] = useState(false);
   const [moreMenuList, setMoreMenuList] = useState(false);
@@ -242,7 +244,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                 ))}
                 <Divider sx={{ my: 1}} />
                 { authMenuItems.slice(6).map((item, i) => (
-                  <Link key={i} href={item.cta && !isLoggedIn ? '/auth/login' : item.href}>
+                  <Link key={i} href={item.cta && !isLoggedIn ? getLoginUrl() : item.href}>
                     <MenuItem 
                       disabled={item.disabled} 
                       style={{ 
@@ -253,8 +255,12 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                       }} 
                       onClick={item.cta && isLoggedIn ? logout : handleCloseUserMenu}
                     >
-                      {item.cta && !isLoggedIn ? <span className='flex items-center gap-2'> 
-                        <Login fontSize='inherit' /> Login</span> : item.label}
+                      {item.cta && !isLoggedIn ? 
+                        <span className='flex items-center gap-2'> 
+                          <Login fontSize='inherit' /> Login
+                        </span> 
+                        : item.label
+                      }
                     </MenuItem>
                   </Link>
                 ))}
