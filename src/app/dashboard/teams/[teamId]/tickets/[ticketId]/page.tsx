@@ -238,7 +238,7 @@ export default function TeamTicketWorkspace() {
               onChange={(e) => setLocalTicket({ ...localTicket, status: e.target.value as any })}
               disabled={!editMode}
               size="small"
-              sx={{ minWidth: 160, mx: 2 }}
+              sx={{ minWidth: 100, mx: 2, maxWidth: { xs: 100, sm: 160 } }}
             >
               {['UPCOMING', 'OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'CANCELLED'].map((s) => (
                 <MenuItem key={s} value={s}> {s.replace('_', ' ')} </MenuItem>

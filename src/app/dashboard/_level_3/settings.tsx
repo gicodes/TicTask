@@ -193,7 +193,7 @@ export default function SettingsPage() {
             label={tNotifsLoading ? "Saving..." : "Email Notifications"}
             disabled={tNotifsLoading}
           />
-          {user?.subscription?.active || user?.data?.partnerRoles || user?.data?.approved && (
+          {(user?.subscription?.active || user?.data?.partnerRoles || user?.data?.approved) && (
             <>
               <FormControlLabel
                 control={<Switch checked={pushNotif} onChange={handlePushNotifChange} />}
@@ -203,21 +203,23 @@ export default function SettingsPage() {
               {showIOSGuidance && (
                 <Box mt={2} p={2} bgcolor="warning.light" borderRadius={2}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-                    iPhone/iPad users – important step!
+                    iPhone/ iPad users – important step!
                   </Typography>
                   <Typography variant="body2" sx={{ mt: 1 }}>
                     To receive push notifications on iOS, you must first add this app to your Home Screen:
                   </Typography>
-                  <Stack>
-                    <p>1. Open this site in Safari</p>
-                    <p>2. Tap the Share button (square with arrow up)</p>
-                    <p>3. Scroll down and select "Add to Home Screen"</p>
-                    <p>4. Name it (e.g. "TicTask") and tap "Add"</p>
-                    <p>5. Open the new icon from your Home Screen</p>
-                    <p>6. Come back here and enable notifications</p>
+                  <Stack pl={2} my={1} fontSize={12}>
+                    <ol className="mt-2 list-decimal space-y-1 pl-5">
+                      <li>Open this site in Safari</li>
+                      <li>Tap the Share button (square with arrow up)</li>
+                      <li>Scroll down and select "Add to Home Screen"</li>
+                      <li>Name it (e.g. "TicTask") and tap "Add"</li>
+                      <li>Open the new icon from your Home Screen</li>
+                      <li>Come back here and enable notifications</li>
+                    </ol>
                   </Stack>
                   
-                  <Typography variant="caption" mt={2} fontWeight={700}>
+                  <Typography variant="caption">
                     This is required by Apple for web push on iOS (works on iOS 16.4+). 
                     Once added, the prompt will appear properly.
                   </Typography>
