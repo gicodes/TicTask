@@ -209,14 +209,12 @@ export default function SettingsPage() {
                     To receive push notifications on iOS, you must first add this app to your Home Screen:
                   </Typography>
                   <Stack>
-                    <ol className="mt-2 list-decimal space-y-1 pl-5">
-                      <li>Open this site in Safari</li>
-                      <li>Tap the Share button (square with arrow up)</li>
-                      <li>Scroll down and select "Add to Home Screen"</li>
-                      <li>Name it (e.g. "TicTask") and tap "Add"</li>
-                      <li>Open the new icon from your Home Screen</li>
-                      <li>Come back here and enable notifications</li>
-                    </ol>
+                    <p>1. Open this site in Safari</p>
+                    <p>2. Tap the Share button (square with arrow up)</p>
+                    <p>3. Scroll down and select "Add to Home Screen"</p>
+                    <p>4. Name it (e.g. "TicTask") and tap "Add"</p>
+                    <p>5. Open the new icon from your Home Screen</p>
+                    <p>6. Come back here and enable notifications</p>
                   </Stack>
                   
                   <Typography variant="caption" mt={2} fontWeight={700}>
