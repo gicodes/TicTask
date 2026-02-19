@@ -50,7 +50,7 @@ export const CAREERS = [
     desc: "Craft interfaces that feel calm, intentional, and deeply human. Help define the visual language of productivity at TicTask.",
   },
   {
-    title: "Marketing & PR Specialist",
+    title: "Marketing (B2B)",
     type: "Full-time • Hybrid",
     desc: "Build campaigns that inspire teams to work smarter. Manage our brand voice across channels, and connect with media to amplify our mission.",
   }
