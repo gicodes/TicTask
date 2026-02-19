@@ -11,7 +11,7 @@ export const TEAM = [
 
 export const SOCIALS: { name: string; icon: ReactElement; url: string }[] = [
   { name: "X (Twitter)", icon: createElement(X), url: "https://x.com/gicodes" },
-  { name: "LinkedIn", icon: createElement(LinkedIn), url: "https://www.linkedin.com/company/tictask-for-smes/" },
+  { name: "LinkedIn", icon: createElement(LinkedIn), url: "https://www.linkedin.com/in/tictask-for-smes-aaa5762a0/" },
   { name: "YouTube", icon: createElement(YouTube), url: "https://www.youtube.com/@tictask_org" },
   // { name: "Tiktok", icon: <img src="/tiktok.svg" alt="Tiktok" style={{ width: 24, height: 24 }} />, url: "https://www.tiktok.com/@tictask_org" },
 ];
