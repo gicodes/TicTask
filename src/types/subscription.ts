@@ -1,3 +1,5 @@
+import { User } from "./users";
+
 export enum Plan {
   FREE = "FREE",
   STANDARD = "STANDARD",
@@ -22,3 +24,14 @@ export type Subscription = {
   teamId: number;
   userId: number;
 };
+
+export interface PushSubscriptions {
+  id: number;
+  enabled: boolean;
+  user: User;
+  userId: number;
+  p256dh: string;
+  auth: string;
+  createdAt: string;
+  updatedAt: string;
+}

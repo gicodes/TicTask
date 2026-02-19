@@ -1,6 +1,7 @@
 import { DefaultSession, DefaultUser } from "next-auth";
 import { NextApiRequest, NextApiResponse } from "next";
 import { JWT as DefaultJWT } from "next-auth/jwt";
+import { PushSubscriptions } from "./subscription";
 
 declare module "next-auth" {
   interface User extends DefaultUser {
@@ -18,7 +19,7 @@ declare module "next-auth" {
     data?: UserPreferences
     accessToken: string;
     refreshToken: string;
-    pushSubscriptions?: unknown[];
+    pushSubscriptions?: PushSubscriptions[];
   }
 
   interface Session extends DefaultSession {

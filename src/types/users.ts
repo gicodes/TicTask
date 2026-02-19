@@ -1,6 +1,6 @@
-import { Subscription } from "./subscription";
-import { TeamMember, Team } from "./team";
+import { Subscription, PushSubscriptions } from "./subscription";
 import { Ticket, TicketHistory, TicketNote } from "./ticket";
+import { TeamMember, Team } from "./team";
 
 export type Role = 'ADMIN' | 'USER';
 export type UserType = 'PERSONAL' | 'BUSINESS';
@@ -36,7 +36,7 @@ export type User = {
   data?:    UserPreferences;
 
   subscription?: Subscription;
-  pushSubscriptions?: unknown[];
+  pushSubscriptions?: PushSubscriptions[];
 
   teamMemberships: TeamMember[];
   createdTeams: Team[];

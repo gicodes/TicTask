@@ -47,7 +47,9 @@ export default function SettingsPage() {
   const [autoSave, setAutoSave] = useState(true);
   const [inAppNotfis, setInAppNotfis] = useState(true);
   const [emailNotif, setEmailNotif] = useState((user as User)?.data?.getTNotifsViaEmail ?? false);
-  const [pushNotif, setPushNotif] = useState((user as User)?.pushSubscriptions ?? false);
+  const [pushNotif, setPushNotif] = useState<boolean>(
+    user?.pushSubscriptions?.[0]?.enabled ?? false
+  );  
   const [isSavingWSN, setIsSavingWSN] = useState(false);
   const [isEditingWSN, setIsEditingWSN] = useState(false);
   const [language, setLanguage] = useState('English');

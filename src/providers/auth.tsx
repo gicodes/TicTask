@@ -7,9 +7,9 @@ import {
   signOut,
   SignInResponse,
 } from 'next-auth/react';
+import { Subscription, PushSubscriptions } from '@/types/subscription';
 import { createContext, useCallback, useContext } from 'react';
 import { Role, UserType, UserPreferences } from '@/types/users';
-import { Subscription } from '@/types/subscription';
 import { AppEvents } from './events';
 
 export interface AuthUser {
@@ -26,7 +26,7 @@ export interface AuthUser {
   accessToken: string;
   subscription?: Subscription;
   data?: UserPreferences;
-  pushSubscriptions?: unknown[];
+  pushSubscriptions?: PushSubscriptions[];
 }
 
 interface LoginProps {
@@ -80,7 +80,7 @@ const AuthInnerProvider = ({ children }: { children: React.ReactNode }) => {
         subscription: session.user?.subscription,
         data: session.user.data,
         accessToken: session.accessToken as string,
-        pushSubscriptions: session.user.pushSubscriptions,
+        pushSubscriptions: session.user?.pushSubscriptions,
       }
     : null;
 
