@@ -32,9 +32,9 @@ export const DocSection = ({
         <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <Typography variant='h4' mb={3} fontWeight={700}>{title}</Typography>
           { blocks.map((b, i) => {
-            if (typeof b === 'string') {
+            if (typeof b === 'string') { // normal - No {} or type renders this
               return <section key={i} id={`${i+1}`}>
-                <Typography mb={2} lineHeight={1.8}>{b}</Typography></section>; // normal - No {} or type renders this
+                <Typography mb={2} lineHeight={1.8}>{b}</Typography></section>;
             }
             switch (b.type) {
               case 'callout':
@@ -69,27 +69,36 @@ export const DocSection = ({
                   </section>
                 );
               case 'badge':
-                return <Chip key={i} label={b.content} color='primary' sx={{ margin: 1}} />
+                return <Chip 
+                  key={i} 
+                  label={b.content} 
+                  color={b.color ?? 'primary'} 
+                  sx={{ 
+                    margin: 1, 
+                    background: b.color === 'default' ? 'var(--foreground)' : undefined, 
+                    color: b.color === 'default' ? 'var(--background)' : undefined 
+                  }} 
+                />
               case 'point':
                 return <Typography key={i} my={1.5} fontWeight={501}>➢ {b.content}</Typography>
               case 'highlight':
                 return <span key={i} className="custom-sharp" style={{ fontWeight: 501}}>{b.content}</span>
               case 'link':
                 return <span key={i}><Link href={b.href || '#'}>{b.content}</Link></span>
-              case 'inline':
-                return <span key={i} style={{ lineHeight: 2, marginBottom: 2}}>{b.content}</span> // normal like default, but inline
+              case 'inline': // like default, but inline with spacing around for readability
+                return <span key={i} style={{ lineHeight: 2, marginBottom: 2}}>{b.content}</span>
               case 'disabled':
                 return <span key={i} className="custom-dull font-xxs">{b.content}</span>
               case 'outline':
-                return <span key={i} className={'btn'}>{b.content}</span>
+                return <span key={i} className={`btn ${b.color}`}>{b.content}</span>
               case 'italic':
                 return <span key={i}><i>{b.content}</i></span>
               case 'strong':
                 return <span key={i}><strong>{b.content}</strong></span>
-              default:
+              default: // serves as paragraph
                 return <section key={i} id={`${i+1}`}>
                   <Typography my={1}>{b.content}</Typography>
-                </section> // serves as paragraph
+                </section>
               }
             }
           )

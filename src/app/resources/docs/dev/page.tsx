@@ -1,5 +1,5 @@
-import { DocSection, GenericHeader } from '@/app/resources/_level_3/docsTemplate'
-import { CONTENTS_DEV, TABLE_OF_CONTENTS_DEV } from '@/constants/docs'
+import { DocSection, GenericHeader } from '@/app/resources/_level_2/docsTemplate'
+import { CONTENTS_DEV, TABLE_OF_CONTENTS_DEV } from '@/app/resources/_level_3/docs'
 import { Box, Stack, Typography } from '@mui/material'
 import type { Metadata } from 'next';
 import Link from 'next/link';

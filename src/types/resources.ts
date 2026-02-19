@@ -27,4 +27,5 @@ export type DocTextBlock = string | {
   title?: string,
   content: string | string[],
   href?: string,
+  color?: 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success' | 'default'
 }

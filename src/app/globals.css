@@ -95,6 +95,15 @@ a {
   cursor: pointer;
 }
 
+.secondary { 
+  background: var(--special); 
+  color: var(--bw-inverse);
+}
+.success {
+  background: var(--success);
+  color: var(--bw-inverse)
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1.2;
@@ -196,7 +205,6 @@ h6 { font-size: 1.5rem; }
   font-weight: 600;
   cursor: pointer;
   border: 0.9px solid var(--secondary);
-  color: inherit;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   
   &:hover {

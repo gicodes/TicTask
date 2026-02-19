@@ -186,9 +186,9 @@ const Page = () => {
         {/* ============================= */}
         {/*    TEAM PAGE                 */}
         {/* ============================= */}
-        <Typography alignItems={'center'} gap={2} display={'flex'} variant="h6" fontWeight={501} mt={4} mb={1}><SiAwsorganizations /> Team</Typography>
+        <Typography alignItems={'center'} gap={2} display={'flex'} variant="h6" fontWeight={501} mt={4} mb={1}><SiAwsorganizations /> Teams</Typography>
         <Typography>
-          The <strong>Team Page</strong> manages all workspace members.  
+          The <strong>Teams Page</strong> manages your teams and all workspace members.  
           From here, you can adjust access, roles, and collaboration settings.
         </Typography>
         <ul style={{ margin: '10px 15px 0', lineHeight: 2}}>

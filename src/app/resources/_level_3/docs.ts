@@ -4,7 +4,7 @@
   - Includes improved user-facing copy, more sections, and developer-facing content
   - Includes small React components / render helpers (MUI + Next) for a better docs UI
 
-  NOTE: This file is a developer convenience and can be split into smaller files in your repo.
+  NOTE: This file is a developer convenience and can be split into smaller files in the repo.
 */
 
 import { DocTextBlock } from "@/types/resources"
@@ -59,7 +59,6 @@ export const TABLE_OF_CONTENTS_DEV = [
 // -------------------------
 
 
-
 export const CONTENTS: Record<string, DocTextBlock[]> = {
   "What Is TicTask": [
     "TicTask is a lightweight, collaborative ticketing and task management platform built for fast, transparent teamwork.", 
@@ -79,10 +78,10 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
   ],
 
   "Quick Start — Create Account & Onboard": [
-    { type: 'inline', content: "1) Sign up: Enter your personal or business email. You’ll receive a verification link valid for 15 minutes. Click on the link to confirm your email and continue setup from the onboarding page."}, '',
-    { type: 'inline', content: "2) Onboard: Follow"}, { type: 'outline', content: "Set your password"}, { type: 'inline', content: " link sent to your email."}, 
-    "Setup password → Choose account type: Personal or Business → Save to complete onboarding and continue to Dashboard.", 
-    { type: 'inline', content: "3) Dashboard: You will be re-directed to your dashboard. You can also visit dashboard from the welcome email sent to your email."}, '',
+    { type: 'inline', content: "1) Sign up: Enter your personal or business email and submit. You will receive a verification link shortly, valid for 15 minutes. Click on the link to confirm your email and continue."}, '',
+    { type: 'inline', content: "2) Onboard: You have been re-directed to Tictask's"}, { type: 'outline', content: "Onboarding Page"}, { type: 'inline', content: "You are to setup your account how you'd like it to be."}, 
+    "Create password → Choose account type: Personal or Business → Save to complete onboarding and continue to Dashboard.", 
+    { type: 'inline', content: "3) Dashboard: Once onboarding is complete, you will be re-directed to your dashboard (Tickets Hub). You can also visit dashboard from the welcome email sent to your email."}, '',
     { type: 'callout', title: 'Safety tip', content: 'TicTask will never request your password in email. Keep your password private and mind the time constraints' }
   ],
 
@@ -90,9 +89,9 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     "Password-based login is the default. We are constantly working to add and improve our sign-in methods.", 
     { type: 'point', content: "Email and password"},
     { type: 'point', content: "SSO/ Auth providers"},
-    { type: 'badge', content: "Google sign-in"},
-    { type: 'badge', content: "Slack sign-in"},
-    { type: 'badge', content: "X (formerly Twitter) sign-in"},
+    { type: 'badge', content: "Google"},
+    { type: 'badge', content: "Slack", color: 'secondary'},
+    { type: 'badge', content: "X", color: 'default'},
     '',
     { type: 'point', content: 'Two-factor authentication (optional) '}, { type: 'inline', content: 'Enables extra security for sensitive workspaces.' }, 
     { type: 'inline', content: 'To manage, personalize or delete your account, visit '}, { type: 'link', content: ' account management.', href: '/dashboard/settings#account-management' },
@@ -100,20 +99,21 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
   ],
 
   "Quick Tour — Dashboard": [
-    "The dashboard structures your workspace into simple and user-friendly layout, comprising of dashboard header, menu pages and an overview page i.e. Tickets, Settings, etc.", 
+    "The dashboard structures your workspace into a simple and user-friendly layout, comprising of dashboard header, menu pages and an overview page i.e. Tickets Hub, Task Manager, Settings, etc.", 
     "Tickets offer two (2) standard workspace views: Board and List.", 
     { type: "outline", content: "BOARD"}, { type: 'inline', content: ' organizes your tickets in rows of ticket status. Each status column showing tickets in detailed card'}, '',
-    { type: "badge", content: "Upcoming"}, { type: "badge", content: "In progress"}, { type: "badge", content: "Open"}, { type: "badge", content: "Resolved"}, { type: "badge", content: "Closed"}, { type: "badge", content: "Cancelled"}, '',
+    { type: "badge", content: "Upcoming"}, { type: "badge", content: "In progress", color: 'success'}, { type: "badge", content: "Open", color: 'info'}, { type: "badge", content: "Resolved", color: 'secondary'}, { type: "badge", content: "Closed", color: 'warning'}, { type: "badge", content: "Cancelled", color: 'warning'}, '',
     { type: "outline", content: "LIST"}, { type: 'inline', content: ' tabulates your tickets in a readable format, with column tabs showing detailed ticket information'}, '',
     { type: 'link', href: '/resources/docs/tour', content: 'Read the complete dashboard walkthrough' }
   ],
 
   "Roles & Permissions": [
     "TicTask uses simple RBAC to control a user and viewer's accessibilty. These roles include; User as personal, User as organization/ team, Admin and Viewers.",
-    { type: 'outline', content: "Personal"}, { type: 'inline', content: " create and manage tickets and tasks on free tier. Subscription unlocks extended features."},  "",
-    { type: 'outline', content: "Organization"}, { type: 'inline', content: " create and manage teams with admin features. Subscription is required, while team members can use free tier."}, '',
-    { type: 'outline', content: "Admin"}, { type: 'inline', content: " manage in-app performances, metrics & system logs, Subscriptions, docs and resource requests are co-managed by "}, { type: 'badge', content: 'moderators'}, '',
-    { type: 'callout', title: 'Note', content: 'Custom roles i.e. Moderator are not supported by default. Setting up a custom role requires registering as partner.' }
+    { type: 'outline', content: "Personal"}, { type: 'inline', content: "create and manage tickets and tasks on free tier. Subscription unlocks extended features."},  "",
+    { type: 'outline', content: "Organization", color: 'success'}, { type: 'inline', content: "create and manage teams with admin features. Subscription is required, while team members can use free tier."}, '',
+    { type: 'badge', content: 'moderators', color: 'info'}, { type: 'inline', content: "manage in-app performances, docs review and client requests (CRM), Technical resources, codebase and logs (IT mods)"}, "",
+    { type: 'outline', content: "Admin", color: 'secondary'}, { type: 'inline', content: "manage product roadmap, app security & the business end with metrics from app-watch"}, "", 
+    { type: 'callout', title: 'Note', content: 'Custom roles i.e. Moderators are not supported by default. Setting up a custom role requires registering as partner.' }
   ],
 
   "Common Flows — Tasks, Comments, Attachments": [
@@ -153,10 +153,10 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
 
   "Contact & Support": [
     "We have several lines and channels open to receive your message.", 
-    "We typically give priority response to emails from support@tictask.app — Available 9:00–18:00 (GMT). For urgent incidents, use the in-app emergency contact or your workspace admin line.",
+    "We typically give priority response to emails from admin@tictask.org — Available 9:00–18:00 (GMT). For urgent incidents, use the in-app emergency contact or your workspace admin line.",
     { type: 'badge', content: 'Email' },
-    { type: 'badge', content: 'Slack' },    
-    { type: 'badge', content: 'Phone' },
+    { type: 'badge', content: 'Slack', color: 'secondary' },    
+    { type: 'badge', content: 'Phone', color: 'success' },
   ]
 }
 
@@ -182,9 +182,7 @@ export const ONBOARDING_DEV_CHECK_LIST = [
 ]
 
 // -------------------------
-// SMALL REACT / MUI HELPERS (docs UI)
-// - These are lightweight components to make your docs page nicer.
-// - Exported here just as a convenience; move to components/ in your repo.
+// SMALL REACT / MUI HELPERS (docs UI) - These are lightweight components to make the docs page nicer.
 // -------------------------
 
 export const DocsRenderHelpers = `
