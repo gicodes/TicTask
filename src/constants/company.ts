@@ -6,7 +6,7 @@ export const TEAM = [
   { name: "Humphery Atteng", role: "Operations & Experience", location: "Lagos, Nigeria" },
   // { name: "Gi Codes (Gideon)", role: "Product Lead", location: "Abuja, Nigeria" },
   { name: "Kemisola Isijola", role: "Growth & Partnerships", location: "Ontario, Canada" },
-  { name: "Select Engineering", role: "Marketing & PR", location: "Ontario, Canada" }
+  { name: "Select Engineering", role: "Marketing & B2B", location: "Ontario, Canada" }
 ];
 
 export const SOCIALS: { name: string; icon: ReactElement; url: string }[] = [
