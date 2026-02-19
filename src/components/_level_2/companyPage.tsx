@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ContactUsSection } from "./contactUs";
-import { TEAM, TEAM_BIO, VALUES } from "@/constants/company";
+import { SOCIALS, TEAM, TEAM_BIO, VALUES } from "@/constants/company";
 import { Box, Stack, Typography, Avatar, Grid, Divider } from "@mui/material";
 
 export const CompanyHero = () => {
@@ -51,7 +51,9 @@ export const ValuesSection = () => {
               <Typography variant="h6" fontWeight={600}>
                 {v.title}
               </Typography>
-              <Typography sx={{ opacity: 0.8}}>{v.desc}</Typography>
+              <Typography sx={{ opacity: 0.8}}>
+                {v.desc}
+              </Typography>
             </Stack>
           </Box>
         ))}
@@ -75,7 +77,12 @@ export const TeamSection = () => {
           <Grid key={member.name}>
             <Stack alignItems="center" spacing={1}>
               <Avatar sx={{ width: 100, height: 100, bgcolor: "primary.main" }}>
-                <Typography variant="h4">{member.name?.split(' ').map(n => n[0]?.toUpperCase()).join('')}</Typography>
+                <Typography variant="h4">{
+                  (() => {
+                    const words = member.name?.split(' ').filter(Boolean) || [];
+                    return words.slice(0, 2).map(n => n[0]?.toUpperCase()).join('');
+                  })()
+                }</Typography>
               </Avatar>
               <Typography fontWeight={600} pt={2}>{member.name}</Typography>
               <Typography sx={{ opacity: 0.6}}>{member.role}</Typography>
@@ -87,6 +94,22 @@ export const TeamSection = () => {
   );
 }
 
+export const SocialsSection = () => {
+  return (
+    <Box py={8} textAlign="center" color="var(--background)" bgcolor={'var(--foreground)'}>
+      <Typography variant="h4" fontWeight={700} mb={1}>Connect with Us</Typography>
+      <Typography sx={{ opacity: 0.85 }}>Follow us on social media to stay updated on our journey and latest news.</Typography>
+      <Stack direction="row" spacing={3} justifyContent="center" mt={4}>
+        {SOCIALS.map((social) => (
+          <Box key={social.name} component="a" href={social.url} target="_blank" rel="noopener noreferrer" color="inherit">
+            {social.icon}
+          </Box>
+        ))}
+      </Stack>
+    </Box>
+  );
+}
+
 export default function CompanyPage() {
   return (
     <Box>
@@ -94,6 +117,7 @@ export default function CompanyPage() {
       <ValuesSection />
       <TeamSection />
       <ContactUsSection />
+      <SocialsSection />
     </Box>
   )
 }

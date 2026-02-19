@@ -1,9 +1,19 @@
+import { X, LinkedIn, YouTube } from "@mui/icons-material";
+import { ReactElement, createElement } from "react";
+
 export const TEAM = [
-  { name: "Gi Codes", role: "Founder & CEO, TicTask" },
-  { name: "John Doe", role: "Design & Experience" },
-  { name: "J. Though", role: "Product Lead" },
-  { name: "Select Engr.", role: "Growth & Partnerships" },
-  { name: "Jane Doe", role: "Marketing & PR" }
+  { name: "Gideon Iduma", role: "Founder & CEO, TicTask" },
+  { name: "Humphery Atteng", role: "Operations & Experience" },
+  // { name: "Gi Codes (Gideon)", role: "Product Lead" },
+  { name: "Kemisola Isijola", role: "Growth & Partnerships" },
+  { name: "Select Engineering", role: "Marketing & PR" }
+];
+
+export const SOCIALS: { name: string; icon: ReactElement; url: string }[] = [
+  { name: "X (Twitter)", icon: createElement(X), url: "https://x.com/gicodes" },
+  { name: "LinkedIn", icon: createElement(LinkedIn), url: "https://www.linkedin.com/company/tictask-for-smes/" },
+  { name: "YouTube", icon: createElement(YouTube), url: "https://www.youtube.com/@tictask_org" },
+  // { name: "Tiktok", icon: <img src="/tiktok.svg" alt="Tiktok" style={{ width: 24, height: 24 }} />, url: "https://www.tiktok.com/@tictask_org" },
 ];
 
 export const VALUES = [

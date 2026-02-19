@@ -50,7 +50,7 @@ export const ContactUsSection = () => {
   return (
     <section id="contact-us">
       <Divider sx={{ border: '2px solid var(--dull-gray)'}} />
-      <Box py={12} textAlign="center">
+      <Box py={12} px={1} textAlign="center">
         <Typography variant="h4" fontWeight={700} mb={2}>
           Get in Touch
         </Typography>

@@ -24,10 +24,10 @@ import {
   Tooltip,
   CircularProgress,
 } from '@mui/material';
-import { Sun, Moon, Laptop, Bell, Shield, User2, Globe, PlugZap, CreditCard, Check } from 'lucide-react';
-import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
-import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 import { useNotifications } from '@/providers/notifications';
+import GenericGridPageLayout from '../_level_1/genGridPageLayout';
+import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
+import { Sun, Moon, Laptop, Bell, Shield, User2, Globe, PlugZap, CreditCard, Check } from 'lucide-react';
 
 const isIOS = () => {
   const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -43,7 +43,6 @@ export default function SettingsPage() {
   const { requestPushPermission, unsubscribePush } = useNotifications();
   const { updateWorkspaceName } = useUpdateWorkspaceName(user?.id);
   const { updateEmailNotifications, tNotifsLoading } = useUpdateEmailNotifSetting(user?.id);
-
   const [autoSave, setAutoSave] = useState(true);
   const [inAppNotfis, setInAppNotfis] = useState(true);
   const [emailNotif, setEmailNotif] = useState((user as User)?.data?.getTNotifsViaEmail ?? false);
@@ -53,12 +52,12 @@ export default function SettingsPage() {
   const [isSavingWSN, setIsSavingWSN] = useState(false);
   const [isEditingWSN, setIsEditingWSN] = useState(false);
   const [language, setLanguage] = useState('English');
-  const [workspaceName, setWorkspaceName] = useState((user as User)?.data?.workSpaceName || (user?.name.split(" ")[0] || "Untitled User"));
-
+  const [workspaceName, setWorkspaceName] = useState(
+    (user as User)?.data?.workSpaceName || (user?.name.split(" ")[0] || "Untitled User")
+  );
   const { subscription, loading } = useSubscription();
   const plan = subscription?.plan || 'Free';
-  const expiresAt = subscription?.expiresAt
-    ? new Date(subscription.expiresAt).toLocaleDateString() : '—';
+  const expiresAt = subscription?.expiresAt ? new Date(subscription.expiresAt).toLocaleDateString() : '—';
 
   const [showIOSGuidance, setShowIOSGuidance] = useState(false);
 
@@ -99,7 +98,6 @@ export default function SettingsPage() {
       .then( () => showAlert("Ticket notification settings changes detected", 'success'))
       .catch(() => showAlert('Something went wrong!', 'error'));
   }
-
 
   const handleSetWorkSpaceName = async () => {
     if (!isEditingWSN) return;
@@ -230,7 +228,11 @@ export default function SettingsPage() {
                 </Box>
               )}
 
-              <Typography variant="caption" color="text.secondary" sx={{ p: 1, mt: 2, border: '1px dashed', borderColor: 'divider', borderRadius: 1 }}>
+              <Typography 
+                variant="caption" 
+                color="text.secondary" 
+                sx={{ p: 1, mt: 2, border: '1px dashed', borderColor: 'divider', borderRadius: 1 }}
+              >
                 Push notifications require browser permission. You can manage them in your device settings later.
               </Typography>
             </>
@@ -265,7 +267,9 @@ export default function SettingsPage() {
                   <CircularProgress size={20} />
                 ) : isEditingWSN ? (
                   <Tooltip title='Save'>
-                    <IconButton type="submit"> <Check fontSize="small" /></IconButton>
+                    <IconButton type="submit"> 
+                      <Check fontSize="small" />
+                    </IconButton>
                   </Tooltip>
                 ) : null,
               }}
@@ -322,13 +326,15 @@ export default function SettingsPage() {
         title="Billing"
         subtitle="View your current plan and manage your subscription."
       >
-        { loading ? <>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
-            <Typography variant="body1" sx={{ opacity: 0.7 }}>
-              Loading your subscription...
-            </Typography>
-          </Box> 
-        </> : 
+        { loading ? (
+          <>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
+              <Typography variant="body1" sx={{ opacity: 0.7 }}>
+                Loading your subscription...
+              </Typography>
+            </Box> 
+          </>
+        ) : (
           <Stack spacing={2}>
             <Typography variant="body1">
               <strong>Current Plan:</strong> {plan}
@@ -346,7 +352,7 @@ export default function SettingsPage() {
               </Button>
             </Stack>
           </Stack>
-        } 
+        )} 
       </SettingsCard>
     </GenericGridPageLayout>
   );
