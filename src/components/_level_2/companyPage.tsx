@@ -34,7 +34,6 @@ export const ValuesSection = () => {
     >
       <Typography variant="h4" fontWeight={700} mb={1}>Our Core Values</Typography>
       <Typography sx={{ opacity: 0.85 }}>The principles that guide how we think, build, and collaborate.</Typography>
-
       <Divider sx={{ background: 'var(--dull-gray)', maxWidth: 200, mx: 'auto', my: 2}} />
       <Grid container 
         spacing={4} 
@@ -77,15 +76,16 @@ export const TeamSection = () => {
           <Grid key={member.name}>
             <Stack alignItems="center" spacing={1}>
               <Avatar sx={{ width: 100, height: 100, bgcolor: "primary.main" }}>
-                <Typography variant="h4">{
-                  (() => {
+                <Typography variant="h4">
+                  {(() => {
                     const words = member.name?.split(' ').filter(Boolean) || [];
                     return words.slice(0, 2).map(n => n[0]?.toUpperCase()).join('');
-                  })()
-                }</Typography>
+                  })()}
+                </Typography>
               </Avatar>
               <Typography fontWeight={600} pt={2}>{member.name}</Typography>
               <Typography sx={{ opacity: 0.6}}>{member.role}</Typography>
+              <Typography fontSize={13}>{member.location}</Typography>
             </Stack>
           </Grid>
         ))}
@@ -99,7 +99,7 @@ export const SocialsSection = () => {
     <Box py={8} textAlign="center" color="var(--background)" bgcolor={'var(--foreground)'}>
       <Typography variant="h4" fontWeight={700} mb={1}>Connect with Us</Typography>
       <Typography sx={{ opacity: 0.85 }}>Follow us on social media to stay updated on our journey and latest news.</Typography>
-      <Stack direction="row" spacing={3} justifyContent="center" mt={4}>
+      <Stack direction="row" spacing={4} justifyContent="center" mt={4}>
         {SOCIALS.map((social) => (
           <Box key={social.name} component="a" href={social.url} target="_blank" rel="noopener noreferrer" color="inherit">
             {social.icon}

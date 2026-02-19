@@ -2,11 +2,11 @@ import { X, LinkedIn, YouTube } from "@mui/icons-material";
 import { ReactElement, createElement } from "react";
 
 export const TEAM = [
-  { name: "Gideon Iduma", role: "Founder & CEO, TicTask" },
-  { name: "Humphery Atteng", role: "Operations & Experience" },
-  // { name: "Gi Codes (Gideon)", role: "Product Lead" },
-  { name: "Kemisola Isijola", role: "Growth & Partnerships" },
-  { name: "Select Engineering", role: "Marketing & PR" }
+  { name: "Gideon Iduma", role: "Founder & CEO, TicTask", location: "Abuja, Nigeria" },
+  { name: "Humphery Atteng", role: "Operations & Experience", location: "Lagos, Nigeria" },
+  // { name: "Gi Codes (Gideon)", role: "Product Lead", location: "Abuja, Nigeria" },
+  { name: "Kemisola Isijola", role: "Growth & Partnerships", location: "Ontario, Canada" },
+  { name: "Select Engineering", role: "Marketing & PR", location: "Ontario, Canada" }
 ];
 
 export const SOCIALS: { name: string; icon: ReactElement; url: string }[] = [
