@@ -119,7 +119,6 @@ export default function Onboarding() {
         if (r?.error) {
           setError(r.error || 'Invalid credentials');
         } else {
-          router.refresh();
           setAuthenticated(true);
           router.push('/dashboard');
         }      
