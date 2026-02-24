@@ -22,8 +22,8 @@ import { TicketCheck, } from 'lucide-react';
 import { Add as AddIcon } from '@mui/icons-material';
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { EstimatedTimeField } from '@/app/dashboard/_level_1/estTimeHours';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 export function TicketDetailPane({
   ticket,
@@ -107,22 +107,24 @@ export function TicketDetailPane({
           )}
         </Stack>
 
-        {editMode ? (
-          <TextField
-            multiline
-            fullWidth
-            rows={5}
-            value={ticket.description ?? ''}
-            onChange={(e) => updateField('description', e.target.value)}
-            placeholder="Enter ticket description..."
-            variant="outlined"
-            sx={{ mb: 4 }}
-          />
-        ) : (
-          <Typography variant="body1" whiteSpace="pre-wrap" sx={{ minHeight: 80, mb: 4 }}>
-            {ticket.description || 'No description provided.'}
-          </Typography>
-        )}
+        <Box maxWidth={300}>
+          {editMode ? (
+            <TextField
+              multiline
+              fullWidth
+              rows={5}
+              value={ticket.description ?? ''}
+              onChange={(e) => updateField('description', e.target.value)}
+              placeholder="Enter ticket description..."
+              variant="outlined"
+              sx={{ mb: 4 }}
+            />
+          ) : (
+            <Typography variant="body1" whiteSpace="pre-wrap" sx={{ minHeight: 80, mb: 4 }}>
+              {ticket.description || 'No description provided.'}
+            </Typography>
+          )}
+        </Box>
 
         <Stack spacing={1} mb={4}>
           <Typography variant="subtitle2" fontWeight={600}> Assignees</Typography>
@@ -246,7 +248,6 @@ export function TicketDetailPane({
                 });
               }}
               disabled={!editMode}
-              fullWidth
             />
           )}
           {'impact' in fields && (
@@ -261,7 +262,6 @@ export function TicketDetailPane({
                 });
               }}
               disabled={!editMode}
-              fullWidth
             />
           )}
           {ticket.type === "INVOICE" && 'amount' in fields && (
