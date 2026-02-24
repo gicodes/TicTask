@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import WorkspaceTabs from './wsTabs';
 import WorkspaceShell from './wsShell';
-import { Ticket } from '@/types/ticket';
 import { Button } from '@/assets/buttons';
 import WorkspaceWidgets from './wsWidgets';
 import { useAuth } from '@/providers/auth';
@@ -12,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { Add, Search } from '@mui/icons-material';
 import TicketsList from '../../../_level_2/_list';
 import TicketBoard from '../../../_level_2/_board';
+import { Ticket, TicketStatus, Ticket_Status } from '@/types/ticket';
 import { useTeamTicket } from '@/providers/teamTickets';
 import { Stack, TextField, InputAdornment } from '@mui/material';
 import { TICKET_STATUSES, TICKET_LIST_HEADERS,} from '../../../_level_0/constants';
@@ -26,6 +26,12 @@ export function useDebounce<T>(value: T, delay = 300): T {
 
   return debounced;
 }
+
+const TERMINAL_STATUSES: TicketStatus[] = [
+  Ticket_Status.RESOLVED,
+  Ticket_Status.CLOSED,
+  Ticket_Status.CANCELLED,
+];
 
 export default function TeamTicketsWorkspace() {
   const { isAuthenticated, user } = useAuth();
@@ -95,10 +101,22 @@ export default function TeamTicketsWorkspace() {
     setGrouped(map);
   }, [filteredTickets]);
 
+  const isAssignedToUser = (ticket: Ticket, userId?: number) => {
+    if (!userId) return false;
+
+    return (
+      ticket.assignedToId === userId || (ticket?.assigneesIds as number[] | undefined)?.includes(userId)
+    );
+  };
+
   const stats = useMemo(() => {
     return {
       total: filteredTickets.length,
-      overdue: filteredTickets.filter(t => isOverdue(t.dueDate)).length,
+      overdue: filteredTickets.filter(
+        (t) =>
+          isOverdue(t.dueDate) &&
+          !TERMINAL_STATUSES.includes(t.status)
+      ).length,      
       dueToday: filteredTickets.filter(t => isDueToday(t.dueDate)).length,
       inProgress: filteredTickets.filter(
         t => t.status === 'IN_PROGRESS'

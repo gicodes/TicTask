@@ -51,6 +51,8 @@ export default function TeamTicketWorkspace() {
   const [tab, setTab] = useState(0);
 
   const teamMembers = team?.members ?? [];
+  const isAssigned = !!user?.id && (
+    user.id === localTicket?.assignedToId || (localTicket?.assigneesIds as number[] | undefined)?.includes(user.id));
 
   useEffect(() => {
     if (!ticketId) return;
@@ -85,7 +87,6 @@ export default function TeamTicketWorkspace() {
         setLoading(false);
       }
     };
-
     loadData();
   }, [ticketId, getTicket, getHistory, getComments]);
 
@@ -135,8 +136,7 @@ export default function TeamTicketWorkspace() {
   const handleUpdate = async () => {
     if (!localTicket) return;
 
-    setIsSubmitting(true);
-    
+    setIsSubmitting(true);    
     try {
       const safeUpdate: Record<string, unknown> = {
         title: localTicket.title?.trim() || undefined,
@@ -227,7 +227,7 @@ export default function TeamTicketWorkspace() {
                 noWrap 
                 variant="h6" 
                 title={localTicket.title}
-                sx={{ ml: 2, flex: 1, minWidth: 0 }} 
+                sx={{ ml: 2, flex: 1, flexWrap: 'wrap', maxWidth: { xs: 180, sm: 'none' }}} 
               >
                 {localTicket.title}
               </Typography>
@@ -318,7 +318,7 @@ export default function TeamTicketWorkspace() {
             </Box>
           </Stack>
 
-          <Card
+          {isAssigned && <Card
             sx={{
               p: { xs: 2, sm: 3 },
               mt: 5,
@@ -351,7 +351,7 @@ export default function TeamTicketWorkspace() {
                 />
               ))}
             </Stack>
-          </Card>
+          </Card>}
         </Box>
       </Box>
     </Fade>
