@@ -220,14 +220,14 @@ export default function TeamTicketWorkspace() {
                 variant="standard"
                 fullWidth
                 autoFocus
-                sx={{ ml: 2, fontSize: '1.5rem' }}
+                sx={{ ml: 1, fontSize: '1.5rem' }}
               />
             ) : (
               <Typography 
                 noWrap 
                 variant="h6" 
                 title={localTicket.title}
-                sx={{ ml: 2, flex: 1, maxWidth: { xs: 150, sm: 'none' }}} 
+                sx={{ ml: 1, flex: 1, maxWidth: { xs: 145, sm: 'none' }}} 
               >
                 {localTicket.title}
               </Typography>
