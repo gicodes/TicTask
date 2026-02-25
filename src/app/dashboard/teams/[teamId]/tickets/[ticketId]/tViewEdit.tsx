@@ -78,7 +78,7 @@ export function TicketDetailPane({
           </Typography>
 
           {editMode ? (
-            <FormControl size="small" sx={{ minWidth: 140 }}>
+            <FormControl size="small" sx={{ minWidth: 120, maxWidth: 123 }}>
               <InputLabel>Priority</InputLabel>
               <Select
                 value={ticket.priority || ''}
@@ -248,6 +248,7 @@ export function TicketDetailPane({
                 });
               }}
               disabled={!editMode}
+              sx={{ maxWidth: 123}}
             />
           )}
           {'impact' in fields && (
@@ -262,6 +263,7 @@ export function TicketDetailPane({
                 });
               }}
               disabled={!editMode}
+              sx={{ maxWidth: 123}}
             />
           )}
           {ticket.type === "INVOICE" && 'amount' in fields && (
@@ -319,7 +321,6 @@ export function TicketDetailPane({
               value={fields.recurrence ?? ''}
               onChange={() => {}}
               disabled={!editMode}
-              fullWidth
             />
           )}
         </Stack>

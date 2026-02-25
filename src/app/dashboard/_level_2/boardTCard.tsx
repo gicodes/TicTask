@@ -37,8 +37,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
 
   const hasDueDate = !!ticket.dueDate;
   const isOverdue = hasDueDate && new Date(ticket.dueDate!) < new Date();
-  const dueDateLabel = hasDueDate
-    ? new Date(ticket.dueDate!).toLocaleDateString() : '';
+  const dueDateLabel = hasDueDate ? new Date(ticket.dueDate!).toLocaleDateString() : '';
 
   return (
     <Paper
@@ -69,7 +68,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
             <Typography
               variant="subtitle1"
               fontWeight={600}
-              flexWrap={'wrap'}
+              maxHeight={69}
               whiteSpace={'pre-wrap'}
               sx={{ flex: 1 }}
             >

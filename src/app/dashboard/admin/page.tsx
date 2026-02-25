@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import { useAuth } from '@/providers/auth';
 import { redirect } from "next/navigation";
 import AdminOverviewPage from './_level_3/console';
+import AuthRedirectBtn from '@/assets/authRedirectBtn';
 
 export default function Page() {
   const { user, loading, isAuthenticated } = useAuth();
@@ -12,7 +13,7 @@ export default function Page() {
 
   if (!isAuthenticated) return (
     <Box textAlign="center" px={2} py={10}>
-      Please log in to access console. <br/><br/> If you recently logged in on this device, swipe down or refresh to restore your last session.
+      Please <AuthRedirectBtn /> to access console. <br/><br/> If you recently logged in on this device, swipe down or refresh to restore your last session.
     </Box>
   );
 
