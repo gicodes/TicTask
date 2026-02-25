@@ -338,7 +338,7 @@ export function TicketDetailPane({
           )}
         </FormControl>
 
-        <Stack spacing={1} sx={{ p: 2, bgcolor: 'var(--surface-1)'}} maxWidth={{ xs: 300, sm: 'none'}}>
+        <Stack spacing={1} sx={{ p: 2, bgcolor: 'var(--surface-1)'}}>
           <Typography variant="caption">
             Created by {ticket.createdById === userId ? <strong>you</strong> : ticket.createdBy?.name || ticket.createdById}{' '}
             on {ticket.createdAt ? new Date(ticket.createdAt).toLocaleString() : 'unknown'}

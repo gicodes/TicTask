@@ -63,8 +63,8 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   }, [pathname, isRouteChanging]);
 
   if (!isMounted) return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-      <Typography variant="h6" py={6} color="var(--secondary)"> Loading...</Typography>
+    <Box display="flex" alignItems="center" height="100vh">
+      <Typography variant="h6" py={6} textAlign={'center'}> Loading...</Typography>
     </Box>
   );
 

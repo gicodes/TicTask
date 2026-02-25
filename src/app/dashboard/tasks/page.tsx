@@ -13,7 +13,7 @@ const Page = () => {
 
   if (!isAuthenticated) return (
     <Box textAlign="center" p={4}>
-      <Typography>Please <AuthRedirectBtn />  to view planner</Typography>
+      <Typography>Please <AuthRedirectBtn /> to view planner</Typography>
     </Box>
   );
   

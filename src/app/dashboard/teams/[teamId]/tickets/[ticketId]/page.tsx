@@ -227,7 +227,7 @@ export default function TeamTicketWorkspace() {
                 noWrap 
                 variant="h6" 
                 title={localTicket.title}
-                sx={{ ml: 2, flex: 1, maxWidth: { xs: 180, sm: 'none' }}} 
+                sx={{ ml: 2, flex: 1, maxWidth: { xs: 150, sm: 'none' }}} 
               >
                 {localTicket.title}
               </Typography>
