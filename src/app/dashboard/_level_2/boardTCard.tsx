@@ -66,7 +66,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
               {IconComponent ? <IconComponent size={18} /> : <TicketCheck size={18} />}
             </IconButton>
             <Typography
-              variant="subtitle1"
+              variant="subtitle2"
               fontWeight={600}
               maxHeight={69}
               whiteSpace={'pre-wrap'}
