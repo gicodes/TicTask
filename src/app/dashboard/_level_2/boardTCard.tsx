@@ -70,7 +70,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
               fontWeight={600}
               maxHeight={69}
               whiteSpace={'pre-wrap'}
-              sx={{ flex: 1 }}
+              sx={{ flex: 1, mb: 1 }}
             >
               {ticket.title}
             </Typography>

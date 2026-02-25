@@ -78,7 +78,7 @@ export function TicketDetailPane({
           </Typography>
 
           {editMode ? (
-            <FormControl size="small" sx={{ minWidth: 120, maxWidth: 123 }}>
+            <FormControl size="small" sx={{ minWidth: 120, maxWidth: 180 }}>
               <InputLabel>Priority</InputLabel>
               <Select
                 value={ticket.priority || ''}
@@ -107,7 +107,7 @@ export function TicketDetailPane({
           )}
         </Stack>
 
-        <Box maxWidth={300}>
+        <Box>
           {editMode ? (
             <TextField
               multiline
@@ -338,7 +338,7 @@ export function TicketDetailPane({
           )}
         </FormControl>
 
-        <Stack spacing={1} sx={{ p: 2, bgcolor: 'var(--surface-1)'}}>
+        <Stack spacing={1} sx={{ p: 2, bgcolor: 'var(--surface-1)'}} maxWidth={{ xs: 300, sm: 'none'}}>
           <Typography variant="caption">
             Created by {ticket.createdById === userId ? <strong>you</strong> : ticket.createdBy?.name || ticket.createdById}{' '}
             on {ticket.createdAt ? new Date(ticket.createdAt).toLocaleString() : 'unknown'}
