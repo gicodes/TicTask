@@ -97,7 +97,19 @@ export default function InvoiceForm({ control }: InvoiceFormProps) {
         )}
       />
 
-      <AmountField control={control} />
+      <Controller
+        name="description"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Description (Optional)"
+            multiline
+            rows={2}
+            placeholder="e.g. Annual subscription renewal – Q4 2025"
+            {...field}
+          />
+        )}
+      />
 
       <Controller
         name="currency"
@@ -120,19 +132,7 @@ export default function InvoiceForm({ control }: InvoiceFormProps) {
         )}
       />
 
-      <Controller
-        name="description"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            label="Description (Optional)"
-            multiline
-            rows={2}
-            placeholder="e.g. Annual subscription renewal – Q4 2025"
-            {...field}
-          />
-        )}
-      />
+      <AmountField control={control} />
 
       <Controller 
         name="extClient"

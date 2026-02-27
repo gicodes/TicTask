@@ -14,8 +14,8 @@ import {
   Collapse,
 } from '@mui/material';
 import { FaPlusCircle } from 'react-icons/fa';
-import { Close, Tune } from '@mui/icons-material';
-import { Calendar, List, Search } from 'lucide-react';
+import { Close } from '@mui/icons-material';
+import { Calendar, List, Search, PenTool } from 'lucide-react';
 import { PLANNER_TOOLBAR_PROPS } from '../_level_1/tSchema';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 
@@ -166,7 +166,11 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
               borderRadius: '0 99px 99px 0',
             }}
           >
-            {open ? (<Close sx={{ border: '1px solid tomato', borderRadius: '50%'}} />) : (<Tune />)}
+            {open ? (
+              <Close sx={{ border: '1px solid tomato', borderRadius: '50%'}} />
+            ) : (
+              <PenTool />
+            )}
           </IconButton>
         </Tooltip>
       )}

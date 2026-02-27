@@ -61,8 +61,9 @@ export const getFilteredNav = (user: AuthUser | null) => {
   ];
 
   if (user?.role==="USER") allowed.push('More')
-  if (user?.partner) allowed.push('Marketing', 'More');
-  if (user?.userType==="BUSINESS" || (user?.data?.approved || user?.partner || user?.data?.partnerRoles)) allowed.push('Teams', 'Metrics'); 
+  if (user?.partner && user?.data?.approved) allowed.push('Marketing', 'More');
+  if (user?.userType==="BUSINESS" || user?.data?.approved) allowed.push('Teams', 'Metrics'); 
+  
   if (user?.role === 'ADMIN') {
     return NAV_ITEMS.filter(
       (item) => !['More', 'Invite', 'Subscription'].includes(item.label)    
