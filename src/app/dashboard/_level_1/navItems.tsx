@@ -12,7 +12,6 @@ import { BsFillCreditCard2BackFill, BsCalendar2Date } from "react-icons/bs";
 import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle, FaPeopleCarry } from 'react-icons/fa';
 import { FcInvite, FcSerialTasks, FcDocument, FcBearish, FcDataEncryption, FcMoneyTransfer, FcParallelTasks } from "react-icons/fc";
 import { MdCategory, MdSettings, MdPaid, MdCampaign, MdQuestionAnswer, MdSwitchAccount, MdWorkHistory, MdLogout } from "react-icons/md";
-import { getSession } from "next-auth/react";
 
 export const NAV_ITEMS = [
   { label: 'Console', path: '/dashboard/admin', icon: <GrTasks/>},

@@ -57,7 +57,6 @@ export const ProductHero = () => {
           Built to grow as your workflow grows.
         </Typography>
 
-        {/* Soft CTA */}
         <Stack
           direction={{ xs: "column", sm: "row" }}
           spacing={2}
@@ -92,7 +91,6 @@ export const ProductShowcase = () => {
         bgcolor={"var(--foreground)"}
         px={1.5}
       >
-        {/* Section intro */}
         <Typography variant="h4" fontWeight={800}>
           One system. Every stage of work.
         </Typography>
@@ -246,7 +244,6 @@ export const ProductCTA = () => {
         flexDirection="column"
         alignItems="center"
       >
-        {/* Pricing CTA */}
         <Stack spacing={3} alignItems="center" maxWidth="sm">
           <Typography variant="h4" fontWeight={800}>
             Compare plans. Choose your pace.
@@ -272,7 +269,6 @@ export const ProductCTA = () => {
           }}
         />
 
-        {/* Action CTA */}
         <Stack spacing={3} alignItems="center" maxWidth="sm">
           <Typography variant="h4" fontWeight={800}>
             Ready to experience work without friction?

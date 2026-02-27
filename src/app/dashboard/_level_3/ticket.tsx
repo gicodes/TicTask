@@ -76,11 +76,17 @@ const TicketsPage: React.FC = () => {
       sx={{ 
         minHeight: '75vh', 
         p: { xs: 1, sm: 2, md: 3 }, 
+        pt: { sm: 1, md: 2}
       }}
     >
-      <Box mb={{ xs: 1, md: -1}} display="flex" justifyContent="flex-end">
+      <Box mb={{ xs: 2 }} display="flex" justifyContent="flex-end">
         <Typography
-          sx={{ cursor: 'pointer', borderBottom: '1px solid cornflowerblue', height: 'fit-content'}}
+          sx={{ 
+            opacity: 0.75,
+            cursor: 'pointer', 
+            height: 'fit-content',
+            borderBottom: '1px solid cornflowerblue', 
+          }}
           onClick={() => setReadAboutTickets(true)}
         >
           What is a <strong>ticket?</strong>

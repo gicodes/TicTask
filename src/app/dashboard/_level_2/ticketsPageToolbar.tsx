@@ -13,8 +13,9 @@ import {
   Collapse,
   IconButton,
 } from '@mui/material';
+import { PenTool } from 'lucide-react';
 import { FaPlusCircle, FaList } from 'react-icons/fa';
-import { Close, Search, Tune, ViewKanban } from '@mui/icons-material';
+import { Close, Search, ViewKanban } from '@mui/icons-material';
 
 const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({ 
   view, 
@@ -156,7 +157,11 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
               borderRadius: '0 99px 99px 0',
             }}
           > 
-            {open ? (<Close sx={{ border: '1px solid tomato', borderRadius: '50%'}} />) : (<Tune />)}
+            {open ? (
+              <Close sx={{ border: '1px solid tomato', borderRadius: '50%'}} />
+            ) : (
+              <PenTool />
+            )}
           </IconButton>
         </Tooltip>
       )}

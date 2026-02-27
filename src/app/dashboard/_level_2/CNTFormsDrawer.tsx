@@ -16,7 +16,17 @@ import {
   PlannerTaskTypeUnion,
   TICKET_FORM_PROPS,
 } from '../_level_1/tSchema';
+import { ZodType } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTicketLimits } from '@/hooks/useTicketLimits';
 import { Create_Ticket, CreateTicketResult } from '@/types/ticket';
+import { 
+  useForm, 
+  FormProvider, 
+  FieldValues, 
+  Control, 
+  Resolver 
+} from 'react-hook-form';
 import {
   Drawer,
   Box,
@@ -28,9 +38,6 @@ import {
   Typography,
   Card,
 } from '@mui/material';
-import { ZodType } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, FormProvider, FieldValues, Control, Resolver } from 'react-hook-form';
 
 export default function TicketTaskCreateFormsDrawer({ 
   open,
@@ -39,10 +46,11 @@ export default function TicketTaskCreateFormsDrawer({
   onClose, 
   onCreated, 
 }: TICKET_FORM_PROPS ) {
-
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const { createTicket } = useTickets();
+
+  const { data: limits, isLoading: limitsLoading, refreshLimits } = useTicketLimits();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -58,9 +66,7 @@ export default function TicketTaskCreateFormsDrawer({
     void element.offsetWidth;
     element.style.animation = 'highlightPulse 1.8s ease-out';
 
-    const timer = setTimeout(() => {
-      element.style.animation = '';
-    }, 2000);
+    const timer = setTimeout(() => { element.style.animation = ''}, 2000);
 
     return () => clearTimeout(timer);
   }, [open]);
@@ -76,8 +82,7 @@ export default function TicketTaskCreateFormsDrawer({
   const registryDefaults = (task ? TASK_DEFAULTS : TICKET_DEFAULTS) as Record<
     LocalType, (d?: Date) => Record<string, unknown>>;
 
-  const currentSchema: ZodType<FieldValues, FieldValues> = 
-    registrySchemas[itemType as keyof typeof registrySchemas];
+  const currentSchema: ZodType<FieldValues, FieldValues> = registrySchemas[itemType as keyof typeof registrySchemas];
   const defaultValues = registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate);
 
   const methods = useForm<FieldValues>({
@@ -93,11 +98,21 @@ export default function TicketTaskCreateFormsDrawer({
     methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
   }, [defaultDueDate, itemType, task, methods, registryDefaults]);
 
+  
+  const isPartner = user?.data?.approved;
+
   const onSubmit = async (values: FieldValues) => {
     setErr(null);
+    methods.clearErrors();
     setIsSubmitting(true);
 
     try {
+      if (itemType === "INVOICE" && (!isPartner || !user?.subscription?.active)) {
+        setErr('Invoice Tickets are Only available to Users with active subscription');
+        setIsSubmitting(false);
+        return;
+      }
+
       if (task && (itemType === 'MEETING' || itemType==='EVENT')) {
         if (!values.dueDate && !values.startTime) {
           setErr('You must add a due date or start time for a planner task');
@@ -132,7 +147,7 @@ export default function TicketTaskCreateFormsDrawer({
         dueDate: dueDateIso,
         endTime: endTimeDate,
         startTime: startTimeDate,
-        createdById: user?.id ?? null,
+        createdById: user?.id,
       } as unknown as Create_Ticket;
 
       if (!createTicket) {
@@ -147,9 +162,12 @@ export default function TicketTaskCreateFormsDrawer({
         showAlert("Your new ticket has been created!", "success");
 
         methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
+
+        refreshLimits();
         onClose();
       } else {
         showAlert(result.error, "error");
+        setErr(result.error);
       }
     } catch (e) {
       const message = e instanceof Error ? e.message : "Something went wrong";
@@ -162,6 +180,7 @@ export default function TicketTaskCreateFormsDrawer({
   };
 
   const cancelCNT = () => { 
+    methods.clearErrors();
     methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate)); 
     onClose(); 
   }
@@ -179,7 +198,7 @@ export default function TicketTaskCreateFormsDrawer({
       { isSubmitting ? 
         <Typography textAlign={'center'} py={6}> Submitting....</Typography> 
         :
-        <Box display="grid" gap={2}>
+        <Box display="grid" gap={1}>
           <Card 
             sx={{
               px: 2,
@@ -248,8 +267,49 @@ export default function TicketTaskCreateFormsDrawer({
               </Box>
             </Box>
           </Card>
+
+          <Alert 
+            sx={{ mx: 'auto', maxWidth: 321 }} 
+            severity={
+              limitsLoading ? "info" : 
+              limits && limits.remaining <= 0 ? "error" :
+              "success"
+            }
+          >
+            {limits && !limitsLoading && (
+              <Box borderRadius={1}>
+                <Typography variant="body2" color="text.secondary">
+                  {task ? "Tasks" : "Tickets"} remaining:{" "}
+                  <strong>
+                    {limits.remaining}
+                    {limits.remaining === 0 && " (limit reached!)"}
+                  </strong>{" "}
+                  / {limits.limit}
+                  {limits.isTeamActive && " (via team)"}
+                </Typography>
+                {limits.remaining <= 3 && limits.remaining > 0 && (
+                  <Typography variant="caption" color="warning.main">
+                    Almost out — consider upgrading
+                  </Typography>
+                )}
+                {limits.remaining <= 0 && (
+                  <Typography variant="caption" color="error.main" mt={0.5}>
+                    You&aposve reached your limit. Upgrade or resolve some tickets.
+                  </Typography>
+                )}
+              </Box>
+            )}
+
+            {limitsLoading && (
+              <Typography variant="caption" color="text.secondary" mt={1}>
+                Checking ticket limit...
+              </Typography>
+            )}
+          </Alert>
           
-          { isSubmitting ? <Typography textAlign={'center'} py={2}>Submitting...</Typography> :
+          { isSubmitting ? (
+              <Typography textAlign={'center'} py={2}>Submitting...</Typography> 
+          ) : (
             <Box px={3}>
               <FormProvider {...methods}>
                 <form 
@@ -258,12 +318,13 @@ export default function TicketTaskCreateFormsDrawer({
                 >
                   <FormComponent control={methods.control} task={task} />
                   <Stack gap={2} py={3} px={{ xs: 4, sm: 5, md: 6, }}>
-                    <Button 
-                      fullWidth 
+                    <Button
+                      fullWidth
                       type="submit"
-                      tone='action'
-                      size='large'
+                      tone="action"
+                      size="large"
                       loading={isSubmitting}
+                      disabled={isSubmitting || (limits?.remaining ?? 1) <= 0}
                     >
                       Create
                     </Button>
@@ -278,7 +339,7 @@ export default function TicketTaskCreateFormsDrawer({
                 </form>
               </FormProvider>
             </Box>
-          }
+          )}
           { err && 
             <Alert severity="error" sx={{ mt: 2 }}>
               {err}
@@ -292,7 +353,7 @@ export default function TicketTaskCreateFormsDrawer({
             )
           }
       </Box>
-      }
+    }
     </Drawer>
   );
 }
