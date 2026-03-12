@@ -32,17 +32,14 @@ const partnerSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters")
     .regex(/[0-9]/, "Must contain at least one number")
     .regex(/[^A-Za-z0-9]/, "Must contain at least one special character"),
-
   companyName: z.string().min(2, "Company name required for partners"),
   website: z.string().url().optional().or(z.literal("")),
   industry: z.string().min(1, "Select an industry"),
   teamSize: z.string().optional(),
   logo: z.any().optional(),
-
   partnerRoles: z.array(z.string()).min(1, "Select at least one role"),
   description: z.string().min(50, "Tell us more (min 50 chars)"),
   collaborationGoals: z.string().optional(),
-
   preferredContact: z.enum(["email", "phone", "both"]).default("email").optional(),
 });
 
@@ -59,7 +56,6 @@ export default function PartnerOnboardingPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -101,11 +97,13 @@ export default function PartnerOnboardingPage() {
           throw new Error("No valid user data in response");
         }
 
+        console.log(response)
+
         reset({
           fullName: response.user.name || "",
           email: response.user.email,
-          companyName: response.user.company,
-          partnerRoles: response.user.roles
+          companyName: response.user.organization,
+          partnerRoles: response.user?.partnerRole?.split(", ") ?? null
         });
       } catch (err) {
         console.error("Verification fetch failed:", err);
@@ -195,7 +193,7 @@ export default function PartnerOnboardingPage() {
         </Typography>
 
         <Typography variant="body1" color="text.secondary" textAlign="center" mb={4}>
-          Let's set up your profile so we can start collaborating effectively.
+          Let&apos;s set up your profile so we can start collaborating effectively.
         </Typography>
 
         {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}

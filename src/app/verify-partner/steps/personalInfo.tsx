@@ -4,10 +4,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Grid, IconButton, InputAdornment, TextField } from "@mui/material";
 
 export default function PersonalInfoStep() {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
+  const { control, formState: { errors }} = useFormContext();
 
   const [showPassword, setShowPassword] = useState(false);
 

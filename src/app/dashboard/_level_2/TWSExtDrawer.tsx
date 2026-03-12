@@ -6,6 +6,8 @@ import { excludedTypes, extractTicketData } from '../_level_1/tFieldExtract';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
 import { DatePicker } from '../_level_1/tDateControl';
 import { useTickets } from '@/providers/tickets';
+import { useAlert } from '@/providers/alert';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/providers/auth';
 import { Button } from '@/assets/buttons';
 import { User } from '@/types/users';
@@ -31,8 +33,7 @@ import {
   Alert,
 } from '@mui/material';
 import { CloseSharp, ExpandMore } from '@mui/icons-material';
-import { useAlert } from '@/providers/alert';
-import { useEffect, useState } from 'react';
+import { LightweightRichEditor } from '../_level_1/richTextEditior';
 
 export default function TWSExtDrawer({ 
   open, 
@@ -47,15 +48,7 @@ export default function TWSExtDrawer({
   const fields = extractTicketData(ticket!);
   const [ newNote, setNewNote ] = useState('');
   const [ isUpdating, setIsUpdating ] = useState(false);
-  const [ newHistoryAction, setNewHistoryAction] = useState({
-    formfields: {
-      action: '',
-      oldValue: '',
-      newValue: ''
-    }
-  });
   const [ ticketNotes, setTicketNotes ] = useState<TicketNote[] | null>();
-  const [ ticketHistory, setTicketHistory ] = useState<TicketHistory[] | null>();
   const { control, handleSubmit, reset } = useForm<TicketFormValuesUnion>({ defaultValues: fields });
 
   useEffect(() => {
@@ -65,14 +58,8 @@ export default function TWSExtDrawer({
       const notes = await fetchTicketNote(ticket.id)
       setTicketNotes(notes);
     }
-
-    const setHisory = async () => {
-      const history = await fetchTicketHistory(ticket.id)
-      setTicketHistory(history);
-    }
-
+    
     setNotes();
-    setHisory();
   }, [ticket, setTicketNotes])
 
   const isActive = !['CANCELLED', 'RESOLVED', 'CLOSED'].includes(ticket!.status);
@@ -85,13 +72,10 @@ export default function TWSExtDrawer({
       const dueDateIso = (data?.dueDate) === 'string' && data.dueDate
         ? new Date(data.dueDate as string) : typeof data.startTime === 'string' && data.startTime
           ? new Date(data.startTime as string) : undefined;
-
       const startTimeDate = typeof data.startTime === 'string' && data.startTime
         ? new Date(data.startTime as string) : undefined;
-
       const endTimeDate = typeof data.endTime === 'string' && data.endTime
         ? new Date(data.endTime as string) : undefined;
-
       const payload: FieldValues | TicketFormValuesUnion = {
         ...data,
         dueDate: dueDateIso,
@@ -130,22 +114,6 @@ export default function TWSExtDrawer({
     }
   };
 
-  const addHistory = async () => {
-    if (!newHistoryAction) return;
-
-    try {
-      setIsUpdating(true);
-      await addTicketHistory(Number(ticket!.id), newHistoryAction.formfields);
-
-      showAlert("Action Successful!", 'success');
-      onUpdate?.();
-      onClose();
-    } catch {
-      showAlert("Update failed. Something went wrong!", 'warning')
-      setIsUpdating(false);
-    }
-  };
-
   const shouldAppendTicket = !excludedTypes.some(keyword => ticket?.type?.toLowerCase().includes(keyword));
 
   return (
@@ -173,16 +141,52 @@ export default function TWSExtDrawer({
       { isUpdating ? <Typography textAlign={'center'} py={6}> Updating.... </Typography> :
         <Box py={2} px={{ xs: 1, md: 2 }} display="grid" gap={3}>
           <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack gap={2}>
+              <Alert severity="warning" color="warning" sx={{ opacity: 0.75, mb: 2 }}>
+                Modifying this{' '}<strong>{ticket?.type === 'FEATURE_REQUEST' ? 'feature' : ticket?.type?.toLowerCase()}</strong>
+                {shouldAppendTicket ? ' ticket' : ''} will irreversibly update the details!
+              </Alert>
+
+              <Controller
+                name="title"
+                control={control}
+                render={({ field }) => 
+                  <TextField label="Title" required {...field} />}
+              />
+              <Controller
+                name={ticket?.type==="BUG" ? "steps" : "description"}
+                control={control}
+                render={({ field: { value, onChange }, fieldState }) => (
+                  <>
+                    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                      {ticket?.type==="BUG" ? "Steps" : "Description"}
+                    </Typography>
+        
+                    <LightweightRichEditor
+                      value={value ?? ''}
+                      onChange={onChange}
+                      placeholder={`Write your ${ticket?.type==="BUG" ? "steps" : "description"} here...`}
+                    />
+        
+                    {fieldState.error && (
+                      <Typography
+                        variant="caption"
+                        color="error"
+                        sx={{ mt: 0.5 }}
+                      >
+                        {fieldState.error.message}
+                      </Typography>
+                    )}
+                  </>
+                )}
+              />
+            </Stack>
             <Accordion defaultExpanded>
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Typography><strong>Unique Fields</strong></Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Stack gap={2}>
-                  <Alert severity="warning" color="warning" sx={{ opacity: 0.75, mb: 2 }}>
-                    Modifying this{' '}<strong>{ticket?.type === 'FEATURE_REQUEST' ? 'feature' : ticket?.type?.toLowerCase()}</strong>
-                    {shouldAppendTicket ? ' ticket' : ''} will change the details!
-                  </Alert>
                   {ticket!.type === 'BUG' && 'severity' in fields && (
                     <Controller
                       name="severity"
@@ -197,13 +201,6 @@ export default function TWSExtDrawer({
                           ))}
                         </TextField>
                       )}
-                    />
-                  )}
-                  {ticket!.type === 'BUG' && 'steps' in fields && (
-                    <Controller
-                      name="steps"
-                      control={control}
-                      render={({ field }) => <TextField label="Steps" multiline disabled={!isActive} {...field} />}
                     />
                   )}
                   {ticket!.type === 'FEATURE_REQUEST' && 'impact' in fields && (
@@ -387,104 +384,6 @@ export default function TWSExtDrawer({
                         disabled={!newNote.trim()}
                       >
                         Add comment
-                      </Button>
-                    </Stack>
-                  </Stack>
-                )}
-              </AccordionDetails>
-            </Accordion>
-
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography>
-                  History ({ticketHistory?.length ?? 0})
-                </Typography>
-              </AccordionSummary>
-
-              <AccordionDetails sx={{ pt: 1 }}>
-                {!ticketHistory?.length && (
-                  <Typography
-                    variant="caption"
-                    color="text.disabled"
-                    sx={{ px: 1, pb: 2, display: "block" }}
-                  >
-                    No history recorded for this ticket.
-                  </Typography>
-                )}
-
-                <Stack spacing={1.5}>
-                  {ticketHistory?.map((hist) => (
-                    <Stack
-                      key={hist.id}
-                      direction="row"
-                      spacing={2}
-                      alignItems="flex-start"
-                    >
-                      <Box
-                        sx={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: "50%",
-                          bgcolor: "text.disabled",
-                        }}
-                      />
-                      <Stack spacing={0.25} flex={1}>
-                        <Typography variant="body2" fontWeight={500}>
-                          {hist.action}
-                        </Typography>
-                        {(hist.oldValue || hist.newValue) && (
-                          <Typography variant="caption" color="text.secondary">
-                            {hist.oldValue && `From: ${hist.oldValue} `}
-                            {hist.newValue && `→ To: ${hist.newValue}`}
-                          </Typography>
-                        )}
-                        <Stack direction="row" spacing={1}>
-                          <Typography variant="caption" color="text.disabled">
-                            {new Date(hist.createdAt).toLocaleString()}
-                          </Typography>
-                          {hist.performedBy && (
-                            <Typography variant="caption" color="text.disabled">
-                              • {hist.performedBy.name}
-                            </Typography>
-                          )}
-                        </Stack>
-                      </Stack>
-                    </Stack>
-                  ))}
-                </Stack>
-
-                {isActive && isTeamAdmin && (
-                  <Stack spacing={1.5} mt={3}>
-                    <TextField
-                      name='action'
-                      size="small"
-                      value={newHistoryAction.formfields.action}
-                      onChange={(e) => setNewHistoryAction({ ...newHistoryAction })}
-                      placeholder="Log an action (e.g. Status changed to Closed)"
-                      fullWidth
-                    />
-                    <TextField
-                      name='oldValue'
-                      size="small"
-                      value={newHistoryAction.formfields.oldValue}
-                      onChange={(e) => setNewHistoryAction({ ...newHistoryAction})}
-                      placeholder="Log an old value for history"
-                      fullWidth
-                    />
-                    <TextField
-                      size="small"
-                      value={newHistoryAction.formfields.newValue}
-                      onChange={(e) => setNewHistoryAction({ ...newHistoryAction })}
-                      placeholder="Log a new value for history)"
-                      fullWidth
-                    />
-                    <Stack direction="row" justifyContent="flex-end">
-                      <Button
-                        variant="outlined"
-                        onClick={addHistory}
-                        disabled={!newHistoryAction.formfields.action.trim()}
-                      >
-                        Log history
                       </Button>
                     </Stack>
                   </Stack>

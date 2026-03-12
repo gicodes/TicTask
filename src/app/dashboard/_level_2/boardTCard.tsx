@@ -61,7 +61,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
     >
       <Stack spacing={1.5}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Stack direction="row" alignItems="center" gap={0.5} flex={1}>
+          <Stack direction="row" alignItems="flex-start" gap={0.5} flex={1}>
             <IconButton size="small" sx={{ p: 0.5, color: TYPE_COLORS[ticket.type]}}>
               {IconComponent ? <IconComponent size={18} /> : <TicketCheck size={18} />}
             </IconButton>

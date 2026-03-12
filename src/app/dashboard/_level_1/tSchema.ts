@@ -1,19 +1,26 @@
 import { PlannerTaskType, TicketsType, TicketType } from '../_level_0/constants';
 import GeneralForm from "../_level_2/ticketFormTypes/general";
 import FeatureForm from "../_level_2/ticketFormTypes/feature";
-import BugFixForm from "../_level_2/ticketFormTypes/bugFix";
 import InvoiceForm from "../_level_2/ticketFormTypes/invoice";
+import BugFixForm from "../_level_2/ticketFormTypes/bugFix";
 import EventForm from "../_level_2/ticketFormTypes/event";
+import NoteForm from '../_level_2/ticketFormTypes/notes';
 import TaskForm from "../_level_2/ticketFormTypes/task";
 import { Control, FieldValues } from 'react-hook-form';
 import { Ticket } from '@/types/ticket';
 import { z, ZodTypeAny } from 'zod';
 import { format } from "date-fns";
-
-import { FcDeployment, FcDocument, FcSupport } from "react-icons/fc";
-import { GrOptimize, GrPerformance, GrRotateLeft, GrTest } from "react-icons/gr";
-import { MdDesignServices, MdReadMore, MdSecurityUpdateGood, MdWarning } from "react-icons/md";
-import { Bug, Lightbulb, ReceiptText, CalendarClock, CheckSquare, CheckCircle, ToolCase, TicketCheck } from "lucide-react";
+import { 
+  Bug, 
+  Lightbulb, 
+  ReceiptText, 
+  CalendarClock, 
+  CheckSquare, 
+  Notebook,  
+  TicketCheck 
+} from "lucide-react";
+import { MdSecurityUpdateGood, MdSupport } from "react-icons/md";
+import SecurityForm from '../_level_2/ticketFormTypes/security';
 
 export interface TICKET_FORM_PROPS {
   open: boolean;
@@ -72,36 +79,20 @@ export interface BOARD_COLUMN {
 
 export type TicketTypeUnion = TicketType;
 export type PlannerTaskTypeUnion = PlannerTaskType;
-export type FormComponentType = React.ComponentType<{control: Control<FieldValues>; task?: boolean }>;
-export type TicketFormValuesUnion =
-  | GeneralFormValues
-  | BugFormValues
-  | FeatureFormValues
-  | InvoiceFormValues
-  | TaskFormValues
-  | EventMeetingFormValues;
+export type FormComponentType = React.ComponentType<{control: Control<FieldValues>; type?: TicketType }>;
+export type TicketFormValuesUnion = GeneralFormValues | NotesFormValues | BugFormValues | FeatureFormValues | InvoiceFormValues | TaskFormValues | EventMeetingFormValues;
 
 export const TICKET_TYPE_ICONS: Record<TicketsType, React.ComponentType<{ size?: number }>> = {
+  GENERAL: TicketCheck,
   BUG: Bug,
-  FEATURE_REQUEST: Lightbulb,
-  TASK: CheckSquare,
+  NOTE: Notebook,
   INVOICE: ReceiptText,
+  FEATURE_REQUEST: Lightbulb,
+  SUPPORT: MdSupport,
+  SECURITY: MdSecurityUpdateGood,
+  TASK: CheckSquare,
   EVENT: CalendarClock,
   MEETING: CalendarClock,
-  GENERAL: TicketCheck,
-  DOCUMENTATION: FcDocument,
-  SUPPORT: FcSupport,
-  ISSUE: MdWarning,
-  OPTIMIZATION: GrOptimize,
-  MAINTENANCE: ToolCase,
-  RESEARCH: MdReadMore,
-  TEST: GrTest,
-  SECURITY: MdSecurityUpdateGood,
-  PERFORMANCE: GrPerformance,
-  DESIGN: MdDesignServices,
-  TICKET: CheckCircle,
-  RELEASE: GrRotateLeft,
-  DEPLOYMENT: FcDeployment
 };
 
 export const generalSchema = z.object({
@@ -109,21 +100,40 @@ export const generalSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().optional(),
   priority: z.enum(['LOW','MEDIUM','HIGH','URGENT']).optional(),
-  assignTo: z.string().email().optional(),
+  assignTo: z.string().trim().pipe(z.union([
+    z.literal(""),                    
+    z.string().email("Invalid email address")
+  ])).optional().optional(),
   assignees: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
   dueDate: z.string().optional(),
 });
 export type GeneralFormValues = z.infer<typeof generalSchema>;
 
+export const noteSchema = z.object({
+  type: z.string().optional(),
+  title: z.string().min(1, 'Title is required'),
+  assignTo: z.string().trim().pipe(z.union([
+    z.literal(""),                    
+    z.string().email("Invalid email address")
+  ])).optional(),
+  description: z.string().optional(),
+  tags: z.array(z.string()).optional().default([]),
+  attachments: z.array(z.string()).optional(),
+  color: z.enum(['INFO', 'SUCCESS', 'DANGER', 'WARNING', 'SPECIAL', 'DEFAULT']).optional().default('INFO'),
+  isPinned: z.boolean().optional(),
+});
+export type NotesFormValues = z.infer<typeof noteSchema>;
+
 export const bugSchema = z.object({
   type: z.literal('BUG').optional(),
   title: z.string().min(1),
   description: z.string().optional(),
-  severity: z.enum(['LOW','MEDIUM','HIGH','URGENT']).default('HIGH'),
+  severity: z.enum(['LOW','MEDIUM','HIGH','CRITICAL']).default('HIGH'),
   steps: z.string().optional(),
+
   priority: z.enum(['LOW','MEDIUM','HIGH','URGENT']).optional(),
-  assignees: z.array(z.number()).optional(),
+  assigneesIds: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
   dueDate: z.string().optional(),
 });
@@ -134,8 +144,9 @@ export const featureSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
   impact: z.enum(['LOW','MEDIUM','HIGH']).default('MEDIUM'),
+
   priority: z.enum(['LOW','MEDIUM','HIGH','URGENT']).optional(),
-  assignees: z.array(z.number()).optional(),
+  assigneesIds: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
   dueDate: z.string().optional(),
 });
@@ -159,7 +170,10 @@ export const taskSchema = z.object({
   title: z.string().min(1).optional(),
   description: z.string().optional(),
   priority: z.enum(['LOW','MEDIUM','HIGH','CRITICAL']).optional(),
-  assignTo: z.string().email().optional(),
+  assignTo: z.string().trim().pipe(z.union([
+    z.literal(""),                    
+    z.string().email("Invalid email address")
+  ])).optional(),
   assignees: z.array(z.number()).optional(),
   checklist: z.array(z.string()).optional(),
   recurrence: z.string().optional(),
@@ -185,73 +199,52 @@ export const eventMeetingSchema = z.object({
 export type EventMeetingFormValues = z.infer<typeof eventMeetingSchema>;
 
 export const TICKET_FORMS: Record<TicketTypeUnion, FormComponentType> = {
+  NOTE: NoteForm,
   GENERAL: GeneralForm,
-  BUG: BugFixForm,
-  FEATURE_REQUEST: FeatureForm,
   INVOICE: InvoiceForm,
-  DOCUMENTATION: GeneralForm,
+  FEATURE_REQUEST: FeatureForm,
+  BUG: BugFixForm,
   SUPPORT: GeneralForm,
-  ISSUE: GeneralForm,
-  OPTIMIZATION: GeneralForm,
-  MAINTENANCE: GeneralForm,
-  RESEARCH: GeneralForm,
-  TEST: GeneralForm,
-  SECURITY: GeneralForm,
-  PERFORMANCE: GeneralForm,
-  DESIGN: GeneralForm,
-  TICKET: GeneralForm,
+  SECURITY: SecurityForm,
 };
 
 export const TICKET_SCHEMAS: Record<TicketTypeUnion, ZodTypeAny> = {
+  NOTE: noteSchema,
   GENERAL: generalSchema,
-  BUG: bugSchema,
-  FEATURE_REQUEST: featureSchema,
   INVOICE: invoiceSchema,
-  DOCUMENTATION: generalSchema,
+  FEATURE_REQUEST: featureSchema,
+  BUG: bugSchema,
   SUPPORT: generalSchema,
-  ISSUE: generalSchema,
-  OPTIMIZATION: generalSchema,
-  MAINTENANCE: generalSchema,
-  RESEARCH: generalSchema,
-  TEST: generalSchema,
   SECURITY: generalSchema,
-  PERFORMANCE: generalSchema,
-  DESIGN: generalSchema,
-  TICKET: generalSchema,
 };
 
 export const TICKET_DEFAULTS: Record<TicketTypeUnion, (defaultDueDate?: Date) => Record<string, unknown>> = {
-  GENERAL: () => ({ type: 'GENERAL', title: '', description: '', priority: 'MEDIUM', tags: [], assignees: [], }),
-  BUG: () => ({ type: 'BUG', title: '', severity: 'HIGH', steps: '', priority: 'HIGH', tags: [], assignees: [], }),
-  FEATURE_REQUEST: () => ({ type: 'FEATURE_REQUEST', title: '', impact: 'MEDIUM', description: '', assignees: [], }),
-  INVOICE: () => ({ type: 'INVOICE', title: '', amount: 0, currency: 'USD', description: '', assignTo: '', }),
-  DOCUMENTATION: () => ({ type: 'DOCUMENTATION', title: '', description: '', assignees: [], }),
-  SUPPORT: () => ({ type: 'SUPPORT', title: '', description: '', assignees: [], }),
-  ISSUE: () => ({ type: 'ISSUE', title: '', description: '', assignees: [], }),
-  OPTIMIZATION: () => ({ type: 'OPTIMIZATION', title: '', description: '', assignees: [], }),
-  MAINTENANCE: () => ({ type: 'MAINTENANCE', title: '', description: '', assignees: [], }),
-  RESEARCH: () => ({ type: 'RESEARCH', title: '', description: '', assignees: [], }),
-  TEST: () => ({ type: 'TEST', title: '', description: '', assignees: [], }),
-  SECURITY: () => ({ type: 'SECURITY', title: '', description: '', assignees: [], }),
-  PERFORMANCE: () => ({ type: 'PERFORMANCE', title: '', description: '', assignees: [], }),
-  DESIGN: () => ({ type: 'DESIGN', title: '', description: '', assignees: [], }),
-  TICKET: () => ({ type: 'TICKET', title: '', description: '', assignees: [], }),
+  GENERAL: () => ({ 
+    type: 'GENERAL', title: '', description: '', priority: 'MEDIUM', tags: [], assignees: [], }),
+  BUG: () => ({ 
+    type: 'BUG', title: '', severity: 'HIGH', steps: '', priority: 'HIGH', tags: [], assignees: [], }),
+  FEATURE_REQUEST: () => ({ 
+    type: 'FEATURE_REQUEST', title: '', impact: 'MEDIUM', description: '', assignees: [], }),
+  INVOICE: () => ({ 
+    type: 'INVOICE', title: '', amount: 0, currency: 'USD', description: '', assignTo: '', }),
+  SUPPORT: () => ({ 
+    type: 'SUPPORT', title: '', description: '', assignees: [], }),
+  SECURITY: () => ({ 
+    type: 'SECURITY', title: '', description: '', assignees: [], }),
+  NOTE: () => ({ 
+    type: 'NOTE', title: '', description: '', assignees: [], isPinned: false}),
 };
 
 export const TASK_FORMS: Record<PlannerTaskTypeUnion, FormComponentType> = {
   TASK: TaskForm,
   MEETING: EventForm,
   EVENT: EventForm,
-  RELEASE: GeneralForm,
-  DEPLOYMENT: GeneralForm,
 };
 
 export const TASK_SCHEMAS: Record<PlannerTaskTypeUnion, ZodTypeAny> = {
   TASK: taskSchema,
   MEETING: eventMeetingSchema,
   EVENT: eventMeetingSchema,
-  RELEASE: generalSchema,
-  DEPLOYMENT: generalSchema,
 };
 
 export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date) => Record<string, unknown>> = {
@@ -287,8 +280,6 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     attendees: [],
     tags: [],
   }),
-  RELEASE: () => ({ type: 'RELEASE', title: '', description: '', assignees: [], }),
-  DEPLOYMENT: () => ({ type: 'DEPLOYMENT', title: '', description: '', assignees: [], }),
 };
 
 export const CURRENCY_OPTIONS = [

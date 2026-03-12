@@ -1,70 +1,54 @@
 import { CreateTeamTicketPayload, TeamMember } from "./team";
 import { Client, User } from "./users";
 
-export interface TicketNote {
-  id: number;
-  content: string;
-  createdAt: string;
-  authorId?: number | null;
-  author?: User | null;
-}
-
-export interface TicketHistory {
-  id: number;
-  action: string;
-  oldValue?: string | null;
-  newValue?: string | null;
-  createdAt: string;
-  performedById?: number | null;
-  performedBy?: User | null;
-}
-
 export interface Ticket {
   id: number;
   title: string;
   description: string | null;
   type: AllTicketTypes;
   status: TicketStatus;
-  priority: TicketPriority | null;
 
-  tags: string[];
+  tags: string[] | null;
   dueDate: string | null;
-  startTime: string | null;
-  endTime: string | null;
-
-  amount: number | null;
-  currency: string | null;
-
-  data: Data;
+  priority: TicketPriority | null;
 
   createdAt: string;
   updatedAt: string;
   createdById: number;
   createdBy: User;
-  assignedToId: number | null;
-  assignedTo: User | null;
-  assignees?: TeamMember[] | [];
-  assigneesIds?: number[] | [];
-
-  teamId?: number;
-
-  client: Client;
   notes: TicketNote[];
   history: TicketHistory[];
+
+  assignTo?: string; // email string taken from CNT forms
+  assignedTo: User | null;
+  assignedToId: number | null;
+  assignees?: TeamMember[] | [];
+  assigneesIds?: number[] | [];
+  teamId?: number;
+
+  startTime: string | null;
+  endTime: string | null;
+  client: Client;
+  amount: number | null;
+  currency: string | null;
+
+  data: Data;
 }
 
 export type Data = {
-  extClient: string;
-  severity?: TicketPriority,
-  steps?: string,
-  impact?: TicketImpact,
-  location?: string,
-  attendees?: string[],
-  checklist?: string[] | [],
-  recurrence?: string;
-  estimatedTimeHours?: number,
-  attachments?: string[],
-  subtasks?: SubTask[]
+  severity?: TicketSeverity, // bug
+  impact?: TicketImpact, // feature
+  extClient: string; // invoice
+  color?: TicketColor; // note
+  isPinned: boolean; //note
+  recurrence?: string; // invoice / task
+  attachments?: string[], // note / task
+  checklist?: string[] | [], // task
+  steps?: string, // task
+  estimatedTimeHours?: number, // task
+  subtasks?: SubTask[] // task
+  location?: string, // event/ meeting
+  attendees?: string[], // event/ meeting
 }
 
 type SubTask = {
@@ -77,56 +61,47 @@ export interface Create_Ticket {
   id?: number;
   type: AllTicketTypes;
   title: string;
-  description?: string;
-  priority?: TicketPriority;
+  description: string;
+
   tags?: string[];
-
   dueDate?: string | null;
-  startTime?: string | null;
-  endTime?: string | null;
-
-  severity?: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+  priority?: TicketPriority;
+  severity?: TicketSeverity;
   steps?: string;
-  impact?: 'LOW' | 'MEDIUM' | 'HIGH';
-  amount?: number;
-  currency?: string;
-  recurrence?: string;
-  checklist?: string[];
-  subtasks?: SubTask[];
-  estimatedTimeHours?: number;
-  attachments?: string[];
-  location?: string;
-  attendees?: string[];
-  extClient?: string;
+  impact?: TicketImpact;
 
   createdById: number;
   assignTo?: string;
   assignees?: TeamMember[];
-
   teamId?: number;
+
+  extClient?: string;
+  amount?: number;
+  currency?: string;
+  recurrence?: string;
+  isPinned?: boolean;
+  color?: TicketColor;
+  attachments?: string[];
+  startTime?: string | null;
+  endTime?: string | null;
+  checklist?: string[];
+  subtasks?: SubTask[];
+  estimatedTimeHours?: number;
+  location?: string;
+  attendees?: string[];
 }
 
 export enum Ticket_Type {
   GENERAL = 'GENERAL',
-  INVOICE = 'INVOICE',
-  FEATURE = 'FEATURE_REQUEST',
-  EVENT = 'EVENT',
   BUG = 'BUG',
-  TASK = "TASK",
-  TICKET = 'TICKET',
-  ISSUE = 'ISSUE',
-  TEST = 'TEST',
-  DESIGN = 'DESIGN',
-  MEETING = 'MEETING',
-  RELEASE = 'RELEASE',
+  NOTE = 'NOTE',
+  INVOICE = 'INVOICE',
   SUPPORT = 'SUPPORT',
-  RESEARCH = 'RESEARCH',
   SECURITY = 'SECURITY',
-  DEPLOYMENT = 'DEPLOYMENT',
-  PERFORMANCE = 'PERFORMANCE',
-  MAINTENANCE = 'MAINTENANCE',
-  OPTIMIZATION = 'OPTIMIZATION',
-  DOCUMENTATION = 'DOCUMENTATION',
+  FEATURE = 'FEATURE_REQUEST',
+  TASK = "TASK",
+  EVENT = 'EVENT',
+  MEETING = 'MEETING',
 }
 
 export enum Ticket_Impact {
@@ -159,9 +134,16 @@ export enum Ticket_Status {
 }
 
 export type TicketImpact = 'LOW' | 'MEDIUM' | 'HIGH';
+
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+
+export type TicketSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+
+export type TicketColor = 'INFO' | 'SUCCESS' | 'DANGER' | 'WARNING' | 'SPECIAL' | 'DEFAULT';
+
 export type TicketStatus = 'UPCOMING'| 'OPEN'| 'IN_PROGRESS'| 'RESOLVED'| 'CLOSED'| 'CANCELLED';
-export type AllTicketTypes = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' | 'SUPPORT'| 'EVENT' | 'TASK' | 'ISSUE' | 'INVOICE' | 'MEETING' | 'DOCUMENTATION' | 'MAINTENANCE' | 'OPTIMIZATION' | 'DEPLOYMENT' | 'RELEASE' | 'RESEARCH' | 'SECURITY' | 'DESIGN' | 'TEST' | 'PERFORMANCE' | 'TICKET';
+
+export type AllTicketTypes = 'GENERAL'| 'BUG' |'FEATURE_REQUEST' | 'SUPPORT'| 'EVENT' | 'TASK' | 'NOTE' | 'INVOICE' | 'MEETING' | 'SECURITY';
 
 export const priorityOrder: Record<string, number> = {
   URGENT: 0,
@@ -179,9 +161,7 @@ export const statusOrder: Record<string, number> = {
   CLOSED: 5,
 };
 
-export type CreateTicketResult =
-  | { success: true; ticket: Ticket }  
-  | { success: false; error: string };
+export type CreateTicketResult = { success: true; ticket: Ticket } | { success: false; error: string };
 
 export type TeamTicketContextType = {
   tickets: Ticket[];
@@ -200,3 +180,21 @@ export type TeamTicketContextType = {
   getHistory: (ticketId: number) => Promise<TicketHistory[]>;
   invalidate: () => void;
 };
+
+export interface TicketNote {
+  id: number;
+  content: string;
+  createdAt: string;
+  authorId?: number | null;
+  author?: User | null;
+}
+
+export interface TicketHistory {
+  id: number;
+  action: string;
+  oldValue?: string | null;
+  newValue?: string | null;
+  createdAt: string;
+  performedById?: number | null;
+  performedBy?: User | null;
+}

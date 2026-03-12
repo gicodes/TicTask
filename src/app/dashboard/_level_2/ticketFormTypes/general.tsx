@@ -1,21 +1,21 @@
-import React from 'react';
 import { useAuth } from '@/providers/auth';
 import { Control, Controller } from 'react-hook-form';
 import { DatePicker } from '../../_level_1/tDateControl';
+import { LightweightRichEditor } from '../../_level_1/richTextEditior';
 import { Autocomplete, MenuItem, Stack, TextField, Typography } from '@mui/material';
-import { EVENT_TAG_SUGGESTIONS, TAG_SUGGESTIONS, TICKET_PRIORITIES,} from '../../_level_0/constants';
+import { TAG_SUGGESTIONS, TICKET_PRIORITIES, TicketType,} from '../../_level_0/constants';
 
-type Props = {
+export type GeneralFormProps = {
   control: Control;
-  task?: boolean;
+  type?: TicketType
   tagOptions?: readonly string[];
 };
 
-const GeneralForm = ({ control, task = false }: Props) => {
+const GeneralForm = ({ control, type = 'GENERAL' }: GeneralFormProps) => {
   const { user } = useAuth();
 
   return (
-    <Stack spacing={2} mt={2}>
+    <Stack spacing={2} mt={1}>
       <Controller
         name="title"
         control={control}
@@ -25,8 +25,29 @@ const GeneralForm = ({ control, task = false }: Props) => {
       <Controller
         name="description"
         control={control}
-        render={({ field }) => 
-          <TextField label="Description" multiline minRows={4} {...field} />}
+        render={({ field: { value, onChange }, fieldState }) => (
+          <>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              Description
+            </Typography>
+
+            <LightweightRichEditor
+              value={value ?? ''}
+              onChange={onChange}
+              placeholder={'Write your description here...'}
+            />
+
+            {fieldState.error && (
+              <Typography
+                variant="caption"
+                color="error"
+                sx={{ mt: 0.5 }}
+              >
+                {fieldState.error.message}
+              </Typography>
+            )}
+          </>
+        )}
       />
       <Controller
         name="priority"
@@ -41,7 +62,6 @@ const GeneralForm = ({ control, task = false }: Props) => {
           </TextField>
         )}
       />
-
       { user?.userType === 'BUSINESS' && (
         <Controller
           name="assignTo"
@@ -50,26 +70,25 @@ const GeneralForm = ({ control, task = false }: Props) => {
             <TextField type="email" label="Assign to team (member email)" {...field} />}
         />
       )}
-      <Controller
+      {type==="GENERAL" && <Controller
         name="tags"
         control={control}
         render={({ field }) => (
           <Autocomplete
             multiple
             freeSolo
-            options={task ? EVENT_TAG_SUGGESTIONS as readonly string[] 
-              : TAG_SUGGESTIONS as readonly string[]}
+            options={TAG_SUGGESTIONS as readonly string[]}
             value={field.value || []}
             onChange={(_, newValue) => field.onChange(newValue)}
             renderInput={(params) => 
               <TextField {...params} label="Tags" placeholder="Add tags" />}
           />
         )}
-      />
+      />}
 
       <Stack py={1} spacing={2}>
         <Typography variant="body2" sx={{ opacity: 0.75 }}>
-          Set date {task ? 'and time for this task' : 'for this ticket'}
+          Set date for this ticket
         </Typography>
         <DatePicker control={control} name="dueDate" defaultValue="" />
       </Stack>

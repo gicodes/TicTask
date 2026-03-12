@@ -1,8 +1,9 @@
 import React from "react";
 import { Button } from "@/assets/buttons";
 import { Add, Delete } from "@mui/icons-material";
-import { TextField, Stack, IconButton } from "@mui/material";
 import { Controller, Control, useFieldArray } from "react-hook-form";
+import { LightweightRichEditor } from "../../_level_1/richTextEditior";
+import { TextField, Stack, IconButton, Typography } from "@mui/material";
 
 type Props = { control: Control };
 
@@ -19,13 +20,35 @@ export default function TaskForm({ control }: Props) {
           <TextField label="Task Title" required {...field} />
         } 
       />
+
       <Controller 
         name="description" 
         control={control} 
-        render={({ field }) => 
-          <TextField label="Description" multiline minRows={3} {...field} />
-        } 
+        render={({ field: { value, onChange }, fieldState }) => (
+          <>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              Description
+            </Typography>
+
+            <LightweightRichEditor
+              value={value ?? ''}
+              onChange={onChange}
+              placeholder={'Write your description here...'}
+            />
+
+            {fieldState.error && (
+              <Typography
+                variant="caption"
+                color="error"
+                sx={{ mt: 0.5 }}
+              >
+                {fieldState.error.message}
+              </Typography>
+            )}
+          </>
+        )}
       />
+
       <Controller 
         name="assignTo" 
         control={control} 
@@ -33,6 +56,7 @@ export default function TaskForm({ control }: Props) {
           <TextField label="Assign to (email)" {...field} />
         } 
       />
+
       <Controller
         name="estimatedTimeHours"
         control={control}
@@ -49,6 +73,7 @@ export default function TaskForm({ control }: Props) {
           />
         )}
       />
+
       <Controller 
         name="recurrence" 
         control={control} 
@@ -56,6 +81,7 @@ export default function TaskForm({ control }: Props) {
           <TextField label="Recurrence (e.g. daily, weekly)" {...field} />
         } 
       />
+
       <div>
         <div 
           style={{
@@ -74,6 +100,7 @@ export default function TaskForm({ control }: Props) {
             Add
           </Button>
         </div>
+
         {checklist.fields.map((f, i) => (
           <div 
             key={f.id} 

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Ticket, TicketImpact, TicketPriority } from '@/types/ticket';
+import { Ticket, TicketImpact, TicketPriority, TicketSeverity } from '@/types/ticket';
 import { TICKET_TYPE_ICONS } from '@/app/dashboard/_level_1/tSchema';
 import { extractTicketData } from '@/app/dashboard/_level_1/tFieldExtract';
 import { getTypeColor, priorityColor } from '../../../../_level_1/tColorVariants';
@@ -173,7 +173,7 @@ export function TicketDetailPane({
           <Typography variant="subtitle2" fontWeight={600}> Tags </Typography>
 
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {ticket?.tags.length ? ticket.tags?.map((tag) => (
+            {ticket?.tags?.length ? ticket.tags?.map((tag) => (
               <Chip
                 key={tag}
                 label={tag}
@@ -244,7 +244,7 @@ export function TicketDetailPane({
               onChange={(e) => {
                 updateField('data', {
                   ...ticket.data,
-                  severity: e.target.value as TicketPriority,
+                  severity: e.target.value as TicketSeverity,
                 });
               }}
               disabled={!editMode}

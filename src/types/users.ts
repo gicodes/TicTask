@@ -69,7 +69,6 @@ export type Invitation = {
   expiresAt: string;
   teamId: number;
   invitedById: number;
-  
   createdAt: string;
 };
 
@@ -79,11 +78,9 @@ export type Client = {
   email?: string;
   phone?: string;
   company?: string;
-
   tickets: Ticket[];
   notes: TicketNote[];
   histories: TicketHistory[];
-
   createdAt: Date | string;
 }
 
@@ -100,7 +97,6 @@ export interface UserPreferences {
   statusUntil?: string; 
   statusMessage?: string;
   
-  partnerRoles: string[]; // same as partner.roles
   approved?: boolean;  // same as partner.approved
   preferredContact?: string; 
   collaborationGoals?: string; 

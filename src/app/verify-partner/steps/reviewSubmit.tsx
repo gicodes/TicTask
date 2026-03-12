@@ -104,10 +104,8 @@ export default function ReviewSubmitStep() {
           </Typography>
           <Chip
             label={
-              data.preferredContact === "email"
-                ? "Email"
-                : data.preferredContact === "phone"
-                ? "Phone / WhatsApp"
+              data.preferredContact === "email" ? "Email"
+                : data.preferredContact === "phone" ? "Phone / WhatsApp"
                 : "Both"
             }
             color="default"

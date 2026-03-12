@@ -9,6 +9,7 @@ import { useAuth } from '@/providers/auth';
 import { FaEllipsisV } from 'react-icons/fa';
 import { useTickets } from '@/providers/tickets';
 import React, { useEffect, useState } from 'react';
+import { RichTextViewer } from '../_level_1/richTextViewer';
 import { extractTicketData } from '../_level_1/tFieldExtract';
 import { TICTASK_QUICK_ACTIONS } from '../_level_0/constants';
 import { getTypeColor, priorityColor } from '../_level_1/tColorVariants';
@@ -169,9 +170,7 @@ export default function TicketDetailDrawer({
               </Box>
             </Stack>
             <Typography variant="h6">{ticket.title}</Typography>
-            <Typography variant="subtitle2" sx={{ whiteSpace: 'pre-wrap', my: 1, opacity: 0.75 }}>
-              {ticket.description}
-            </Typography>
+            <RichTextViewer html={ticket.description} />
 
             <Stack spacing={1} sx={{ px: 1, pb: 2 }}>
               <Typography variant="caption" sx={{ opacity: 0.5 }}>
@@ -227,7 +226,10 @@ export default function TicketDetailDrawer({
                   )}
                 </Box>
               </Stack>
-
+              {'steps' in fields && fields.steps && <>
+                <Typography className='highlight-glow' fontWeight={600} sx={{ opacity: 0.95}}>STEPS TO REPRODUCE</Typography>
+                <RichTextViewer html={fields.steps} />
+              </>}
               <Stack direction="row" flexWrap="wrap" gap={1} pb={1} pt={2}>
                 {'severity' in fields && fields.severity && 
                   <Chip label={`Severity: ${fields.severity}`} size="small" />}
@@ -251,8 +253,6 @@ export default function TicketDetailDrawer({
                   <Chip label={`${fields.attendees.length} attendees`} size="small" /> ): ''}
                 {'attachments' in fields && fields.attachments?.length && fields.attachments.length > 0 ? (
                   <Chip label={`${fields.attachments.length} attachments`} size="small" /> ): ''}
-                {'steps' in fields && fields.steps && 
-                  <><Chip label="Steps provided: " size="small" />{fields.steps}</>}
                 {'recurrence' in fields && fields.recurrence && 
                   <Chip label={`Recurs: ${fields.recurrence}`} size="small" />}
                 {'location' in fields && fields.location && 

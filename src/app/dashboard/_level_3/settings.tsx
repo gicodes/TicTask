@@ -195,7 +195,7 @@ export default function SettingsPage() {
             label={tNotifsLoading ? "Saving..." : "Email Notifications"}
             disabled={tNotifsLoading}
           />
-          {(user?.subscription?.active || user?.data?.partnerRoles || user?.data?.approved) && (
+          {(user?.subscription?.active || user?.data?.approved) && (
             <>
               <FormControlLabel
                 control={<Switch checked={pushNotif as boolean} onChange={handlePushNotifChange} />}

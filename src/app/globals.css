@@ -91,7 +91,7 @@ a {
 .custom-sharp { color: var(--success); }
 .custom-dull { color: var(--secondary); }
 .custom-link { 
-  color: rgb(58, 114, 219);
+  color: var(--info);
   cursor: pointer;
 }
 

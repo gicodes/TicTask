@@ -20,6 +20,7 @@ import { ZodType } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTicketLimits } from '@/hooks/useTicketLimits';
 import { Create_Ticket, CreateTicketResult } from '@/types/ticket';
+import { TASK_TYPE_META, TICKET_TYPE_META } from '../_level_0/constants';
 import { 
   useForm, 
   FormProvider, 
@@ -37,7 +38,10 @@ import {
   Alert,
   Typography,
   Card,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
+import { Info } from '@mui/icons-material';
 
 export default function TicketTaskCreateFormsDrawer({ 
   open,
@@ -108,7 +112,7 @@ export default function TicketTaskCreateFormsDrawer({
 
     try {
       if (itemType === "INVOICE" && (!isPartner || !user?.subscription?.active)) {
-        setErr('Invoice Tickets are Only available to Users with active subscription');
+        setErr('Invoice is not supported for users without active subscription');
         setIsSubmitting(false);
         return;
       }
@@ -121,6 +125,7 @@ export default function TicketTaskCreateFormsDrawer({
         }
       }
 
+      console.log("Got here!")
       const payloadBase: Record<string, unknown> = { ...(values as Record<string, unknown>) };
 
       if (Array.isArray(payloadBase.tags) === false && typeof payloadBase.tags === 'string') {
@@ -142,8 +147,11 @@ export default function TicketTaskCreateFormsDrawer({
         ? new Date(payloadBase.endTime as string)
         : undefined;
 
+              console.log("Got here!!")
+
       const payload = {
         ...payloadBase,
+        assignees: values.assignees ?? null,
         dueDate: dueDateIso,
         endTime: endTimeDate,
         startTime: startTimeDate,
@@ -155,6 +163,7 @@ export default function TicketTaskCreateFormsDrawer({
         throw new Error('Ticket creation is not available right now.');
       }
 
+            console.log("Got here!!!")
       const result = await createTicket(payload) as CreateTicketResult;
 
       if (result.success) {
@@ -171,9 +180,9 @@ export default function TicketTaskCreateFormsDrawer({
       }
     } catch (e) {
       const message = e instanceof Error ? e.message : "Something went wrong";
-      
       setErr(message);
       showAlert(message, "error");
+      methods.clearErrors();
     } finally {
       setIsSubmitting(false);
     }
@@ -228,7 +237,7 @@ export default function TicketTaskCreateFormsDrawer({
                   sx={{ opacity: 0.5 }}
                   textAlign={{ xs: 'center', sm: 'left'}} 
                 >
-                  Choose from {!task ? 'General, Invoice, etc' : 'Task, Event, etc'}
+                  Choose from {!task ? 'General, Invoice, etc' : 'Task, Event, Meeting'}
                 </Typography>
               </Stack>
               
@@ -258,11 +267,29 @@ export default function TicketTaskCreateFormsDrawer({
                     },
                   }}
                 >
-                  {Object.keys(registryForms).map((k) => (
-                    <MenuItem key={k} value={k}>
-                      {k === 'FEATURE_REQUEST' ? 'Feature' : (k[0]+k.slice(1).toLowerCase())}
-                    </MenuItem>
-                  ))}
+                  { Object.keys(registryForms).map((k) => {
+                    const meta = task
+                      ? TASK_TYPE_META[k as PlannerTaskTypeUnion]
+                      : TICKET_TYPE_META[k as TicketTypeUnion];
+                    
+                    return (
+                      <MenuItem key={k} value={k}>
+                        <Stack
+                          width="100%"
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          {meta?.label ?? k}
+                          <Tooltip title={meta.description} arrow placement="right">
+                            <IconButton size="small">
+                              <Info fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </Stack>
+                      </MenuItem>
+                    );
+                  })}
                 </TextField>
               </Box>
             </Box>
@@ -289,7 +316,7 @@ export default function TicketTaskCreateFormsDrawer({
                 </Typography>
                 {limits.remaining <= 3 && limits.remaining > 0 && (
                   <Typography variant="caption" color="warning.main">
-                    Almost out — consider upgrading
+                    Almost out — consider upgrading or free up space
                   </Typography>
                 )}
                 {limits.remaining <= 0 && (
@@ -310,7 +337,7 @@ export default function TicketTaskCreateFormsDrawer({
           { isSubmitting ? (
               <Typography textAlign={'center'} py={2}>Submitting...</Typography> 
           ) : (
-            <Box px={3}>
+            <Box px={3} mb={2}>
               <FormProvider {...methods}>
                 <form 
                   key={String(itemType)} 
@@ -328,6 +355,14 @@ export default function TicketTaskCreateFormsDrawer({
                     >
                       Create
                     </Button>
+                    { err && <Alert severity="error">{err}</Alert>}
+                    { methods.formState.errors && Object.keys(
+                      methods.formState.errors).length > 0 && (
+                        <Alert severity="warning">
+                          Please fix the errors above
+                        </Alert>
+                      )
+                    }
                     <Button 
                       tone="warm" 
                       onClick={cancelCNT}
@@ -340,20 +375,8 @@ export default function TicketTaskCreateFormsDrawer({
               </FormProvider>
             </Box>
           )}
-          { err && 
-            <Alert severity="error" sx={{ mt: 2 }}>
-              {err}
-            </Alert>
-          }
-          { methods.formState.errors && Object.keys(
-            methods.formState.errors).length > 0 && (
-              <Alert severity="warning" sx={{ mt: 2 }}>
-                Please fix the errors above
-              </Alert>
-            )
-          }
-      </Box>
-    }
+        </Box>
+      }
     </Drawer>
   );
 }

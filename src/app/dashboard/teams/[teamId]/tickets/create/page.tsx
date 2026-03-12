@@ -10,7 +10,7 @@ import { useTeamTicket } from '@/providers/teamTickets';
 import { AllTicketTypes, Create_Ticket } from '@/types/ticket';
 import { NavbarAvatar } from '@/app/dashboard/_level_1/navItems';
 import { DatePicker } from '@/app/dashboard/_level_1/tDateControl';
-import { ALL_TICKET_TYPES } from '@/app/dashboard/_level_0/constants';
+import { ALL_TICKET_TYPES, PLANNER_TASK_TYPES } from '@/app/dashboard/_level_0/constants';
 import { useForm, Controller, Control, FieldValues, Resolver } from 'react-hook-form';
 import {
   TICKET_FORMS,
@@ -34,9 +34,8 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
-const TASK_TYPES = ['TASK', 'EVENT', 'MEETING', 'RELEASE', 'DEPLOYMENT'] as const
-type TaskType = (typeof TASK_TYPES)[number]
-const isTaskType = (value: AllTicketTypes): value is TaskType => TASK_TYPES.includes(value as any)
+type TaskType = (typeof PLANNER_TASK_TYPES)[number]
+const isTaskType = (value: AllTicketTypes): value is TaskType => PLANNER_TASK_TYPES.includes(value as any)
 
 export default function TeamTicketCreatePage() {
   const router = useRouter()

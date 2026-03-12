@@ -1,4 +1,5 @@
-import { MenuItem, Stack, TextField } from "@mui/material";
+import { MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { LightweightRichEditor } from "../../_level_1/richTextEditior";
 import { Control, Controller } from "react-hook-form";
 
 const FeatureForm = ({ 
@@ -27,8 +28,28 @@ const FeatureForm = ({
       <Controller
         name="description"
         control={control}
-        render={({ field }) => (
-          <TextField label="Detailed Description" minRows={4} multiline {...field} />
+        render={({ field: { value, onChange }, fieldState }) => (
+          <>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              Description
+            </Typography>
+
+            <LightweightRichEditor
+              value={value ?? ''}
+              onChange={onChange}
+              placeholder={'Write your description here...'}
+            />
+
+            {fieldState.error && (
+              <Typography
+                variant="caption"
+                color="error"
+                sx={{ mt: 0.5 }}
+              >
+                {fieldState.error.message}
+              </Typography>
+            )}
+          </>
         )}
       />
     </Stack>

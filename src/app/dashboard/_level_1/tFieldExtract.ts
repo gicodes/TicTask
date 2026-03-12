@@ -6,14 +6,14 @@ export function extractTicketData(ticket: Ticket): TicketFormValuesUnion {
     type: ticket.type,
     title: ticket.title,
     description: ticket.description ?? '',
+    assigneesId: ticket.assigneesIds ?? undefined,
+  };
+  const base2 = {
     priority: ticket.priority ?? undefined,
     tags: ticket.tags ?? [],
-    amount: ticket.amount,
-    currency: ticket.currency,
-    startTime: ticket.startTime ?? undefined,
-    endTime: ticket.endTime ?? undefined,
+    assignTo: ticket.assignTo ?? undefined,
+    assignToId: ticket.assignedToId,
     dueDate: ticket.dueDate ?? undefined,
-    client: ticket.client ?? undefined,
   };
 
   const data = ticket.data;
@@ -22,41 +22,56 @@ export function extractTicketData(ticket: Ticket): TicketFormValuesUnion {
     case 'BUG':
       return {
         ...base,
-        severity: data.severity ?? 'HIGH',
+        type: 'BUG',
         steps: data.steps ?? '',
+        severity: data.severity ?? 'HIGH',
       };
     case 'FEATURE_REQUEST':
       return {
         ...base,
+        type: 'FEATURE_REQUEST',
         impact: data.impact ?? 'MEDIUM',
       };
+    case 'NOTE': 
+      return {
+        ...base,
+        ...base2,
+        type: 'NOTE',
+        color: data.color ?? 'DEFAULT',
+        isPinned: data.isPinned ?? false,
+        attachments: data.attachments ?? []
+      }
     case 'INVOICE':
       return {
-        ...base,    
+        ...base,
+        ...base2,
+        type: 'INVOICE', 
+        amount: ticket.amount!,
+        currency: ticket.currency!,
         extClient: data.extClient,
         recurrence: data.recurrence ?? '',
       };
     case 'TASK':
       return {
         ...base,
-        checklist: data?.checklist ?? [],
+        ...base2,
         subtasks: data?.subtasks ?? [],
-        estimatedTimeHours: data?.estimatedTimeHours,
-        attachments: data?.attachments ?? [],
+        checklist: data?.checklist ?? [],
         recurrence: data?.recurrence ?? '',
-        startTime: ticket?.startTime ?? undefined,
+        attachments: data?.attachments ?? [],
+        startTime: ticket.endTime ?? undefined,
+        estimatedTimeHours: data?.estimatedTimeHours,
       };
     case 'EVENT':
       return {
         ...base,
-        type: ticket?.type,
-        startTime: ticket?.startTime ?? undefined,
-        endTime: ticket?.endTime ?? undefined,
+        ...base2,
         location: data?.location ?? '',
         attendees: data.attendees ?? [],
+        endTime: ticket.endTime ?? undefined,
+        startTime: ticket.startTime ?? undefined,
       };
-    default:
-      return base;
+    default: return { ...base, ...base2 };
   }
 }
 
@@ -70,6 +85,5 @@ export const excludedTypes = [
   'meeting',
   'invoice',
   'ticket',
-  'documentation',
   'feature_request',
 ];
