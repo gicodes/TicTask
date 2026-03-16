@@ -52,7 +52,7 @@ export default function TeamTicketWorkspace() {
 
   const teamMembers = team?.members ?? [];
   const isAssigned = !!user?.id && (
-    user.id === localTicket?.assignedToId || (localTicket?.assigneesIds as number[] | undefined)?.includes(user.id));
+    user.id === localTicket?.assignedToId || (localTicket?.assignees?.map((u) => u.id === user.id)));
 
   useEffect(() => {
     if (!ticketId) return;
@@ -63,7 +63,6 @@ export default function TeamTicketWorkspace() {
 
       try {
         const ticketNum = Number(ticketId);
-
         if (isNaN(ticketNum)) throw new Error('Invalid ticket ID');
 
         const [ticketData, historyData, commentsData] = await Promise.all([
@@ -95,9 +94,7 @@ export default function TeamTicketWorkspace() {
   if (error || !localTicket) return (
     <Box p={4} mx={'auto'} width={300} textAlign={'center'} display={'grid'} gap={2}>
       <Typography color="error">{error || 'Ticket not found'}</Typography>
-      <Button onClick={() => router.back()}>
-        Go Back
-      </Button>
+      <Button onClick={() => router.back()}> Go Back </Button>
     </Box>
   );
 
@@ -107,6 +104,7 @@ export default function TeamTicketWorkspace() {
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
+
     try {
       await addComment(localTicket.id, newComment.trim());
       setNewComment('');
@@ -136,9 +134,11 @@ export default function TeamTicketWorkspace() {
   const handleUpdate = async () => {
     if (!localTicket) return;
 
-    setIsSubmitting(true);    
+    setIsSubmitting(true);  
+
     try {
       const safeUpdate: Record<string, unknown> = {
+        teamId: localTicket.teamId,
         title: localTicket.title?.trim() || undefined,
         description: localTicket.description?.trim() || undefined,
         status: localTicket.status || undefined,
@@ -162,10 +162,9 @@ export default function TeamTicketWorkspace() {
         assignTo: localTicket.assignedTo?.email || undefined,
         assignees: localTicket.assignees?.length ? localTicket.assignees.map(u => u.id) : undefined,
       };
+
       Object.keys(safeUpdate).forEach(key => safeUpdate[key] === undefined && delete safeUpdate[key]);
-
       await updateTicket(localTicket.id, safeUpdate);
-
       const refreshed = await getTicket(localTicket.id);
       if (refreshed) setLocalTicket(refreshed);
 
@@ -190,7 +189,6 @@ export default function TeamTicketWorkspace() {
             <Save />
           </Fab>
         )}
-
         <Stack direction="row" p={2} justifyContent="flex-end" spacing={2}>
           <Button
             variant={editMode ? 'contained' : 'outlined'}
@@ -227,7 +225,7 @@ export default function TeamTicketWorkspace() {
                 noWrap 
                 variant="h6" 
                 title={localTicket.title}
-                sx={{ ml: 1, flex: 1, maxWidth: { xs: 145, sm: 'none' }}} 
+                sx={{ ml: 1, flex: 1, width: { xs: 90, sm: 'none' }}} 
               >
                 {localTicket.title}
               </Typography>
@@ -281,7 +279,44 @@ export default function TeamTicketWorkspace() {
           </Toolbar>
         </AppBar>
 
-        <Box p={{ xs: 2, md: 4 }} maxWidth="xl" mx="auto">
+        {isAssigned && !editMode && 
+          <Card
+            sx={{
+              py: { xs: 2, sm: 3 },
+              mt: 5,
+              mx: 'auto',
+              boxShadow: 3,
+              borderRadius: 999,
+              maxWidth: 'fit-content',
+              background: 'transparent',
+            }}
+          >
+            <Stack
+              direction="row"
+              justifyContent="center"
+              gap={{ xs: 1.5, sm: 3 }}
+              flexWrap="wrap"
+            >
+              {TICTASK_QUICK_ACTIONS.map((qa, i) => (
+                <QA_Btn
+                  key={i}
+                  color={qa.color}
+                  title={qa.title}
+                  ticketID={localTicket.id}
+                  status={qa.status}
+                  disabled={!isActive}
+                  onClose={() => router.back()}
+                  onUpdate={() => {
+                    setLocalTicket((prev) => (prev ? { ...prev, status: qa.status } : null));
+                    updateTicket(localTicket.id, { status: qa.status });
+                  }}
+                />
+              ))}
+            </Stack>
+          </Card>
+        }
+
+        <Box p={{ xs: 1, md: 4 }} maxWidth="xl" mx="auto">
           <Stack direction={{ md: 'row' }} spacing={4}>
             <Box flex={3}>
               <TicketDetailPane
@@ -317,41 +352,6 @@ export default function TeamTicketWorkspace() {
               {tab === 1 && <HistoryPane history={ticketHistory} />}
             </Box>
           </Stack>
-
-          {isAssigned && <Card
-            sx={{
-              p: { xs: 2, sm: 3 },
-              mt: 5,
-              mx: 'auto',
-              boxShadow: 3,
-              borderRadius: 999,
-              maxWidth: 'fit-content',
-              background: 'transparent',
-            }}
-          >
-            <Stack
-              direction="row"
-              justifyContent="center"
-              gap={{ xs: 1.5, sm: 3 }}
-              flexWrap="wrap"
-            >
-              {TICTASK_QUICK_ACTIONS.map((qa, i) => (
-                <QA_Btn
-                  key={i}
-                  color={qa.color}
-                  title={qa.title}
-                  ticketID={localTicket.id}
-                  status={qa.status}
-                  disabled={!isActive}
-                  onClose={() => router.back()}
-                  onUpdate={() => {
-                    setLocalTicket((prev) => (prev ? { ...prev, status: qa.status } : null));
-                    updateTicket(localTicket.id, { status: qa.status });
-                  }}
-                />
-              ))}
-            </Stack>
-          </Card>}
         </Box>
       </Box>
     </Fade>

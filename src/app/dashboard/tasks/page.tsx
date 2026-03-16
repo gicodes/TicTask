@@ -17,7 +17,7 @@ const Page = () => {
     </Box>
   );
   
-  return (<PlannerPage />)
+  return (<PlannerPage team={false} />); // could extend to team owners, subscribers, team owners, partners.TierX
 }
 
 export default Page

@@ -227,13 +227,21 @@ export default function TWSExtDrawer({
                     <Controller name="currency" control={control} render={({ field }) => 
                       <TextField label="Currency" disabled={!isActive} {...field} />} />
                   )}
-                  {ticket!.type === 'INVOICE' && 'recurrence' in fields && (
-                    <Controller name="recurrence" control={control} render={({ field }) => 
-                      <TextField label="Recurrence" disabled={!isActive} {...field} />} />
-                  )}
                   {ticket!.type === 'INVOICE' && 'extClient' in fields && (
                     <Controller name="extClient" control={control} render={({ field }) => 
                       <TextField label="Clients" disabled={!isActive} {...field} />} />
+                  )}
+                  {ticket!.type === 'INVOICE' || ticket!.type === "TASK" && 'recurrence' in fields && (
+                    <Controller name="recurrence" control={control} render={({ field }) => 
+                      <TextField label="Recurrence" disabled={!isActive} {...field} />} />
+                  )}
+                  {ticket!.type === 'TASK' && 'estimatedTimeHours' in fields && (
+                    <Controller
+                      name="estimatedTimeHours"
+                      control={control}
+                      render={({ field }) => 
+                        <TextField label="Estimated Hours" type="number" disabled={!isActive} {...field} />}
+                    />
                   )}
                   {ticket!.type === 'TASK' && 'checklist' in fields && (
                     <Stack gap={1}>
@@ -247,19 +255,7 @@ export default function TWSExtDrawer({
                       {isActive && <TextField placeholder="Add checklist item" />}
                     </Stack>
                   )}
-                  {ticket!.type === 'TASK' && 'recurrence' in fields && (
-                    <Controller name="recurrence" control={control} render={({ field }) => 
-                      <TextField label="Recurrence" disabled={!isActive} {...field} />} />
-                  )}
-                  {ticket!.type === 'TASK' && 'estimatedTimeHours' in fields && (
-                    <Controller
-                      name="estimatedTimeHours"
-                      control={control}
-                      render={({ field }) => 
-                        <TextField label="Estimated Hours" type="number" disabled={!isActive} {...field} />}
-                    />
-                  )}
-                  {ticket!.type === 'TASK' && 'attachments' in fields && (
+                  {ticket!.type === 'TASK' || ticket!.type=== "NOTE" && 'attachments' in fields && (
                     <Stack gap={1}>
                       <Typography>Attachments</Typography>
                       {fields.attachments?.map((url, idx) => <Chip key={idx} label={url} />)}

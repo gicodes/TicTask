@@ -193,7 +193,10 @@ const NotificationsDrawer: React.FC = () => {
                         {n.message}
                       </Typography>
                       <Typography variant="caption" color="text.disabled">
-                        {new Date(n.createdAt).toLocaleString()}
+                        { new Date(n.createdAt).toLocaleString('en-US', { 
+                          dateStyle: 'full', 
+                          timeStyle: 'short' 
+                        })}
                       </Typography>
                     </Box>
 

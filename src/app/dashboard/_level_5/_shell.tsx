@@ -63,9 +63,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   }, [pathname, isRouteChanging]);
 
   if (!isMounted) return (
-    <Box display="flex" alignItems="center" height="100vh">
-      <Typography variant="h6" py={6} textAlign={'center'}> Loading...</Typography>
-    </Box>
+    <Box height="100vh" />
   );
 
   const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => 

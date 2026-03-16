@@ -1,27 +1,15 @@
 'use client';
 
-import AiInfo from './aiInfo';
-import { AiMessage } from '@/types/ai';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import AiChatPanel from './aiChatPanel';
 import { usePathname } from 'next/navigation';
-import { handleSendAI } from '../_level_1/aiSend';
 import {
   Box,
   Drawer,
   Fab,
-  Paper,
-  Stack,
-  Typography,
-  TextField,
-  IconButton,
-  Chip,
-  Avatar,
   Toolbar,
-  Tooltip,
-  MenuItem,
-  Select,
 } from '@mui/material';
-import { SmartToy, Send, Chat, ArrowBackIosNew, Info } from '@mui/icons-material';
+import { Chat } from '@mui/icons-material';
 
 export default function AiAssistantDrawer() {
   const pathname = usePathname();
@@ -30,49 +18,6 @@ export default function AiAssistantDrawer() {
   if (isAiPage) return null;
 
   const [open, setOpen] = useState(false);
-  const AI_OPTIONS = {
-    tictask: { label: "TicTask", icon: "🤖" },
-    skyler: { label: "Skyler", icon: "⛅️" },
-    kros: { label: "Krōs", icon: "➕" },
-  };
-  const [aiName, setAiName] = useState<keyof typeof AI_OPTIONS>("kros");
-  const [input, setInput] = useState('');
-    const getGreeting = (name: keyof typeof AI_OPTIONS): AiMessage => ({
-      role: "assistant",
-      aiName: AI_OPTIONS[name].label,
-      content: `Hi there! I am ${AI_OPTIONS[name].label==="TicTask" ? "TicTask AI" : AI_OPTIONS[name].label}, your assistant. How can I help you?`,
-    });
-    const [messages, setMessages] = useState<AiMessage[]>([]);
-    const [openInfo, setOpenInfo] = useState(false);
-    const MAX_HISTORY = 8;
-
-    useEffect(() => {
-      const key = `ai_chat_${aiName}`;
-      const stored = localStorage.getItem(key);
-  
-      if (stored) {
-        try {
-          const parsed: AiMessage[] = JSON.parse(stored);
-          setMessages(parsed.length ? parsed : [getGreeting(aiName)]);
-          return;
-        } catch { 
-          // ignore JSON parsing errors
-        }
-      }
-  
-      setMessages([getGreeting(aiName)]);
-    }, [aiName]);
-  
-    useEffect(() => {
-      if (!messages.length) return;
-  
-      const key = `ai_chat_${aiName}`;
-      const trimmed = messages.slice(-MAX_HISTORY);
-  
-      localStorage.setItem(key, JSON.stringify(trimmed));
-    }, [messages, aiName]);
-
-  const handleClose = () => setOpen(false);
 
   return (
     <>
@@ -100,132 +45,23 @@ export default function AiAssistantDrawer() {
             height: { xs: '100%', sm: '90vh' },
             marginTop: { xs: 0, sm: 5 },
             boxShadow: 5,
+            position: 'relative'
           },
         }}
       >
         <Toolbar sx={{ display: { xs: 'block', md: 'none'}}} />
+        
         <Box
           display="flex"
           alignItems="center"
           justifyContent="space-between"
           mt={{ xs: 1, md: 4}}
-          p={2}
           borderBottom="1px solid"
           borderColor="divider"
         >
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <SmartToy sx={{ color: 'var(--special)'}} />
-            <Typography fontWeight={600}>AI Assistant</Typography>
-          </Stack>
-          <Chip label="BETA" size="small" variant="outlined" sx={{ fontWeight: 600, bgcolor: 'orange', color: 'var(--surface-1)', p: 1.5}} />
-        </Box>
-
-        <Box flex={1} p={1} overflow="auto" sx={{ flexGrow: 1 }}>
-          <Stack spacing={2}>
-            <Box display={'flex'} justifyContent={'space-between'}>
-              <Select
-                size="small"
-                value={aiName}
-                onChange={(e) => setAiName(e.target.value as keyof typeof AI_OPTIONS)}
-                sx={{ minWidth: 150 }}
-              >
-                {Object.entries(AI_OPTIONS).map(([key, ai]) => (
-                  <MenuItem key={key} value={key}>
-                    {ai.icon} {ai.label}
-                  </MenuItem>
-                ))}
-              </Select>
-
-              <IconButton onClick={() => setOpenInfo(!openInfo)}>
-                <Info />
-              </IconButton>
-            </Box>
-            {openInfo && <AiInfo />}
-            {messages.map((msg, idx) => (
-              <Stack
-                key={idx}
-                direction="row"
-                justifyContent={msg.role === 'user' ? 'flex-end' : 'flex-start'}
-                spacing={1.5}
-              >
-                {msg.role === 'assistant' && (
-                  <Avatar sx={{ bgcolor: 'var(--special)', width: 28, height: 28 }}>
-                    <SmartToy fontSize="small" />
-                  </Avatar>
-                )}
-                <Paper
-                  sx={{
-                    p: 1.5,
-                    borderRadius: 3,
-                    maxWidth: '80%',
-                    bgcolor:
-                      msg.role === 'user'
-                        ? 'info.main'
-                        : 'background.paper',
-                    color:
-                      msg.role === 'user'
-                        ? 'primary.contrastText'
-                        : 'text.primary',
-                  }}
-                >
-                  <Typography variant="body2">{msg.content}</Typography>
-                </Paper>
-              </Stack>
-            ))}
-          </Stack>
-        </Box>
-
-        <Box
-          p={2}
-          display="flex"
-          alignItems="center"
-          gap={1}
-          borderTop="1px solid"
-          borderColor="divider"
-        >
-          <Tooltip title='Close AI Assistant'>
-            <Typography 
-              component={'button'} 
-              onClick={handleClose}
-              sx={{ 
-                bgcolor: 'transparent',
-                color: 'inherit',
-                border: 'none',
-                pr: 1,
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              <ArrowBackIosNew  />
-            </Typography>
-          </Tooltip>
-          <TextField
-            fullWidth
-            placeholder="Ask TicTask anything..."
-            size="small"
-            variant="outlined"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSendAI({ 
-              messages,
-              setMessages, 
-              setInput, 
-              input, 
-              aiName 
-            })}
-          />
-          <IconButton 
-            color="info" 
-            onClick={() => handleSendAI({ 
-              messages,
-              setMessages, 
-              setInput,
-              input, 
-              aiName 
-            })}
-          >
-            <Send />
-          </IconButton>
+          <Box flex={1} overflow="auto">
+            <AiChatPanel fullRender={false} />
+          </Box>
         </Box>
       </Drawer>
     </>

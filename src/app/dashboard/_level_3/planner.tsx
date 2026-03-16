@@ -1,6 +1,7 @@
 'use client';
 
 import { Box } from '@mui/material';
+import { Ticket } from '@/types/ticket';
 import PlannerList from '../_level_2/_list';
 import { useAlert } from '@/providers/alert';
 import { useTickets } from '@/providers/tickets';
@@ -11,8 +12,17 @@ import TaskDetailDrawer from '../_level_2/TWSMiniDrawer';
 import { TASK_LIST_HEADERS } from '../_level_0/constants';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DateSelectDialog } from '../_level_2/CNTonClickDialog';
+import { SlotInfo } from 'react-big-calendar';
 
-const PlannerPage: React.FC = () => {
+const PlannerPage = ({
+  team = false,
+  teamTickets,
+  fetchTeamTickets
+}: { 
+  team: boolean 
+  teamTickets?: Ticket[]
+  fetchTeamTickets?: () => void;
+}) => {
   const { showAlert } = useAlert()
   const { tickets, fetchTickets } = useTickets();
   const [view, setView] = useState<'calendar' | 'list'>('calendar')
@@ -25,33 +35,38 @@ const PlannerPage: React.FC = () => {
 
   useEffect(() => {
     const stored = localStorage.getItem('tictask_view');
-    if (stored === 'list' || stored === 'calendar') {
+    if (!team && stored === 'list' || stored === 'calendar') {
       setView(stored);
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('planner_view', view);
+    if (!team) localStorage.setItem('planner_view', view);
   }, [view]);
 
   const filteredTickets = useMemo(() => {
-    if (!search) return tickets;
+    if (!search) return team ? teamTickets : tickets;
     const q = search.toLowerCase();
 
-    return tickets.filter((t) =>
+    if (team) return teamTickets?.filter((t) =>
       [t.title, t.description, t.status, t.assignedTo?.name]
         .filter(Boolean)
         .some((f) => f?.toLowerCase().includes(q))
     );
-  }, [tickets, search]);
+    else return tickets.filter((t) =>
+      [t.title, t.description, t.status, t.assignedTo?.name]
+        .filter(Boolean)
+        .some((f) => f?.toLowerCase().includes(q))
+    );
+  }, [tickets, teamTickets, search]);
 
   const onTaskCreated = () => {
     setFormOpen(false);
     setCreateDate(null); 
   };
 
-  const handleSlotSelect = (slotInfo: { start: Date; end: Date }) => {
-    setCreateDate(slotInfo.start);
+  const handleSlotSelect = (slotInfo: SlotInfo) => {
+    setCreateDate(new Date(slotInfo.start));
     setDialogOpen(true);
   };
 
@@ -71,52 +86,55 @@ const PlannerPage: React.FC = () => {
         minHeight: '75vh' 
       }}
     >
-      <PlannerToolbar
+      {!team && <PlannerToolbar
         view={view}
         setView={setView}
         onOpenCreate={() => setFormOpen(true)}
         searchQuery={search}
         setSearchQuery={setSearch}
-      />
+      />}
 
-      {view === 'calendar' ? (
+      {team || view === 'calendar' ? (
         <PlannerCalendar
-          tasks={filteredTickets}
+          tasks={filteredTickets!!}
           onSelectTask={(id) => setSelected(id)}
           onSelectSlot={handleSlotSelect} 
         />
       ) : (
         <PlannerList
           columns={TASK_LIST_HEADERS}
-          tickets={filteredTickets}
+          tickets={filteredTickets!!}
           onOpen={(id) => setSelected(id)}
         />
       )}
 
-      <TaskDetailDrawer
-        open={!!selected}
-        onClose={() => setSelected(null)}
-        ticketId={selected ? String(selected) : undefined}
-        onUpdate={fetchTickets}
-      />
+      {!team && <>
+        <TaskDetailDrawer
+          open={!!selected}
+          onClose={() => setSelected(null)}
+          ticketId={selected ? String(selected) : undefined}
+          onUpdate={team ? fetchTeamTickets : fetchTickets}
+        />
 
-      <TaskFormDrawer
-        open={formOpen}
-        onClose={() => {
-          setFormOpen(false);
-          setCreateDate(null);
-        }}
-        task
-        onCreated={onTaskCreated}
-        defaultDueDate={createDate || undefined}  
-      />
+        <TaskFormDrawer
+          open={formOpen}
+          onClose={() => {
+            setFormOpen(false);
+            setCreateDate(null);
+          }}
+          task
+          onCreated={onTaskCreated}
+          defaultDueDate={createDate || undefined}  
+        />
 
-      <DateSelectDialog
-        open={dialogOpen}
-        date={createDate}
-        onConfirm={handleCreateConfirm}
-        onClose={() => setDialogOpen(false)}
-      />
+        <DateSelectDialog
+          open={dialogOpen}
+          date={createDate}
+          onConfirm={handleCreateConfirm}
+          onClose={() => setDialogOpen(false)}
+        />
+      </>
+      }
     </Box>
   );
 };

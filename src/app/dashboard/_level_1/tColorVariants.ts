@@ -7,9 +7,9 @@ export const getStatusColor = (status: string) => {
     case 'RESOLVED':
       return { bg: 'var(--surface-2)', color: 'var(--special)' };
     case 'CLOSED':
-      return { bg: 'var(--surface-1)', color: 'var(--dull-gray)' };
+      return { bg: 'transparent', color: 'var(--dull-gray)' };
     case 'CANCELLED':
-      return { bg: 'var(--surface-2)', color: 'var(--danger)' };
+      return { bg: 'transparent', color: 'var(--danger)' };
     case 'UPCOMING':
       return { bg: 'var(--surface-2)', color: 'var(--info)', };
     case 'TODAY':
@@ -22,6 +22,8 @@ export const getStatusColor = (status: string) => {
 export const priorityColor = (p: string) => {
   switch (p?.toUpperCase()) {
     case 'URGENT': 
+      return '#b00020';
+    case 'CRITICAL': 
       return '#b00020';
     case 'HIGH': 
       return '#e53935';
@@ -59,7 +61,7 @@ export const getTypeColor = (type: string) => {
       return 'var(--special)';
     case 'SUPPORT': 
       return 'var(--success)';
-    case 'PERFORMANCE': 
+    case 'NOTE': 
       return 'var(--success)'
     case 'EVENT' : 
       return '#0288d1';
@@ -73,12 +75,6 @@ export const getTypeColor = (type: string) => {
       return 'var(--error)';
     case 'INVOICE': 
       return '#358c29ff';
-    case 'MAINTENANCE': 
-      return '#ff7043';
-    case 'RELEASE': 
-      return '#8884ff';
-    case 'TEST': 
-      return '#fbc02d';
     default: 
       return 'var(--secondary)';
   }

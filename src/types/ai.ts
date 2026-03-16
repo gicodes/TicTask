@@ -11,6 +11,9 @@ export interface HandleSendProps {
   setInput: React.Dispatch<React.SetStateAction<string>>;
   input: string;
   aiName: string;
+  context: {
+    page: string
+  }
 }
 
 export interface AIChatCompletionResponse {
@@ -46,4 +49,10 @@ export interface AICommsBody {
     ticket?: any;
     history?: AiMessage[];
   };
+}
+
+export interface AiChatPanelProps {
+  fullRender: boolean;
+  bgColor?: '',
+  // other personal preference props
 }

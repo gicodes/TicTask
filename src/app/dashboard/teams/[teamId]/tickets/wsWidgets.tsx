@@ -1,6 +1,6 @@
 'use client';
 
-import { TeamWidgets } from '@/types/team';
+import { StatKey, TeamWSProps } from '@/types/team';
 import { useMemo, useState } from "react";
 import {
   Grid,
@@ -13,17 +13,22 @@ import {
 import { Button } from '@/assets/buttons';
 
 function StatCard({
-  label, value,
+  label,
+  value,
+  onClick,
 }: {
   label: string;
   value: number;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }) {
   const theme = useTheme();
   const isLight = theme.palette.mode === 'light';
 
   return (
     <Box
+      onClick={onClick}
       sx={{
+        cursor: onClick ? "pointer" : "default",
         px: { xs: 1, sm: 2 },
         py: { xs: 1, sm: 2 },
         minWidth: 80,
@@ -55,30 +60,10 @@ function StatCard({
   );
 }
 
-type WidgetKey =
-  | "total"
-  | "inProgress"
-  | "completed"
-  | "overdue"
-  | "dueToday"
-  | "createdThisWeek"
-  | "assignedToMe"
-  | "abandoned"
-  | "highPriority";
-
-type WidgetPreference = {
-  key: WidgetKey;
-  visible: boolean;
-  order: number;
-};
-
-type Props = TeamWidgets & {
-  preferences?: WidgetPreference[]; // optional user config
-};
-
-export default function WorkspaceWidgets(props: Props) {
+export default function WorkspaceWidgets(props: TeamWSProps) {
   const {
     total,
+    pinnedNotes,
     overdue,
     dueToday,
     inProgress,
@@ -88,6 +73,7 @@ export default function WorkspaceWidgets(props: Props) {
     highPriority,
     abandoned,
     preferences,
+    onStatClick,
   } = props;
 
   const theme = useTheme();
@@ -100,6 +86,7 @@ export default function WorkspaceWidgets(props: Props) {
   const allWidgets = useMemo(
     () => [
       { key: "total", label: "Total", value: total },
+      { key: "pinnedNotes", label: "Pinned", value: pinnedNotes},
       { key: "assignedToMe", label: "For Me", value: assignedToMe },
       { key: "inProgress", label: "Ongoing", value: inProgress },
       { key: "completed", label: "Completed", value: completed },
@@ -163,7 +150,15 @@ export default function WorkspaceWidgets(props: Props) {
       >
         {displayedWidgets.map((widget) => (
           <Grid key={widget.key}>
-            <StatCard label={widget.label} value={widget.value} />
+            <StatCard
+              label={widget.label}
+              value={widget.value}
+              onClick={
+                onStatClick
+                  ? onStatClick(widget.key as StatKey)
+                  : undefined
+              }
+            />
           </Grid>
         ))}
       </Grid>

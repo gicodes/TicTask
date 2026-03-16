@@ -33,7 +33,7 @@ export default function Onboarding() {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   
   const checkUserPrevSignedIn = async () => {
-    const { data, status } = useSession();
+    const { data, status } = useSession({ required: true });
     if (data?.user || status==="loading" ) await signOut({ redirect: false});
     else return;
   };

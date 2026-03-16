@@ -3,7 +3,7 @@ import { TicketColor } from '@/types/ticket';
 import { useTheme } from '@mui/material/styles';
 import { NotesFormValues } from '../../_level_1/tSchema';
 import { colorTooltipMap } from '../../_level_0/constants';
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext, Controller, Control } from 'react-hook-form';
 import { LightweightRichEditor } from '../../_level_1/richTextEditior';
 import {
   Box,
@@ -19,12 +19,14 @@ import {
 import { PaletteColor } from '@mui/material/styles';
 import { PushPinOutlined, PushPin } from '@mui/icons-material';
 
-export default function NoteForm() {
+const NoteForm = ({ 
+    control 
+  }: { control: Control }
+) => {
   const theme = useTheme();
   const autoTitleRef = useRef(true);
-  const { control, setValue, watch } = useFormContext<NotesFormValues>();
   const [titleEditing, setTitleEditing] = useState(false);
-
+  const { setValue, watch } = useFormContext<NotesFormValues>();
   const description = watch('description') ?? '';
   const title = watch('title') ?? '';
   const color = (watch('color') ?? 'DEFAULT') as TicketColor;
@@ -248,3 +250,5 @@ export default function NoteForm() {
     </Paper>
   );
 }
+
+export default NoteForm

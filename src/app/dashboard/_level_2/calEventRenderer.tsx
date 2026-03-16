@@ -1,35 +1,35 @@
 import { getStatusColor, getTypeColor, priorityColor } from '../_level_1/tColorVariants';
-import { TicketPriority, TicketStatus, AllTicketTypes } from '@/types/ticket';
+import { PlannerEvent } from '@/types/planner';
 import { useMemo } from 'react';
 
-export interface TicketEvent {
-  type: Partial<AllTicketTypes>;
-  priority: TicketPriority;
-  title: string;
-  status: TicketStatus;
-  start: Date | string;
-  end: Date | string;
-}
-
-export interface EventSlot {
-  start: Date;
-  end: Date;
-}
-
-export default function EventRenderer({ event }: { event: TicketEvent }) {
+export default function EventRenderer({ event }: { event: PlannerEvent }) {
   const todaysDate = new Date().toLocaleDateString();
-  const dueDate = new Date(event.start || event.end).toLocaleDateString();
+  const dueDate = 
+    new Date(event.dueDate!).toLocaleDateString() ?? 
+    new Date(event.endTime!).toLocaleDateString() ?? 
+    new Date(event.startTime!).toLocaleDateString();
+    
+  const notActive = (event.status === "CANCELLED" || event.status=== "CLOSED" || event.status=== "RESOLVED")
 
   const color = useMemo(() => {
+    if (notActive)
+      return priorityColor("LOW");
     if (dueDate===todaysDate)
       return getStatusColor('OPEN').color;
     if (event.priority)
       return priorityColor(event.priority);
+    if (event.severity)
+      return priorityColor(event.severity);
+    if (event.impact)
+      return priorityColor(event.impact)
     else (event.type) 
       return getTypeColor(event.type)
   }, [event.priority]);
 
-  return (
+  if (notActive) 
+    return  null;
+  else
+    return (
     <div 
       style={{ 
         display: 'flex', 

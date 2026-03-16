@@ -11,7 +11,8 @@ import {
   CardContent, 
   Grid, 
   IconButton, 
-  Stack 
+  Stack, 
+  Alert
 } from "@mui/material";
 import { NavbarAvatar } from "@/app/dashboard/_level_1/navItems";
 
@@ -26,6 +27,13 @@ export default function MembersPage() {
     if (!email) return;
     await inviteMember(email, user?.id);
   };
+
+  const handleRemoveMember = async (id: number) => {
+    if (id && id === user?.id) {
+      return (
+      alert("Owner Cannot Remove Self. If you want to continue with this action, go to [Team > Settings > Leave Team] to remove yourself")
+    )} else removeMember(id);
+  }
 
   const members = team?.members ?? [];
 
@@ -70,7 +78,7 @@ export default function MembersPage() {
                   {isOwner && (
                     <IconButton
                       color="error"
-                      onClick={() => removeMember(m.id)}
+                      onClick={() => handleRemoveMember(m.id)}
                     >
                       <DeleteOutline />
                     </IconButton>

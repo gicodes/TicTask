@@ -9,8 +9,8 @@ import React, {
   KeyboardEvent,
 } from 'react';
 import CalendarTimeline from './calTimeline';
+import EventRenderer from './calEventRenderer';
 import ViewSelect, { InternalView} from './calViewSelect';
-import EventRenderer, { TicketEvent } from './calEventRenderer';
 import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
 import { getStatusColor, priorityColor, getTypeColor } from '../_level_1/tColorVariants';
 
@@ -20,7 +20,7 @@ import { Box, useTheme } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CalendarSkeleton, { calendarStyle } from '../_level_1/calendarStyle';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import { Calendar as BigCalendar, momentLocalizer, View } from 'react-big-calendar';
+import { Calendar as BigCalendar, momentLocalizer, SlotInfo, View } from 'react-big-calendar';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
@@ -97,10 +97,11 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       id: t.id,
       type: t.type,
       title: t.title,
-      start: new Date(t.dueDate!),
-      end: new Date(new Date(t.dueDate!).getTime() + 60 * 60 * 1000),
+      startTime: new Date(t.dueDate!),
+      endTime: new Date(new Date(t.dueDate!).getTime() + 60 * 60 * 1000),
       status: t.status!,
       priority: t.priority!,
+      end: new Date(t.dueDate!)
     }));
 
     setEventsState(mapped);
@@ -188,6 +189,7 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       if (isMobile) {
         const s = mobileFormat(today);
         const e = mobileFormat(weekEnd);
+
         return `${s} - ${e}`;
       }
       return `${desktopFormat(today)} - ${desktopFormat(weekEnd)}`;
@@ -205,17 +207,24 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
     return isMobile ? mobileFormat(date) : desktopFormat(date);
   }, [currentDate, bigCalendarView, internalView, isMobile]);
 
-  const eventPropGetter = useCallback((event: TicketEvent) => {
+  const eventPropGetter = useCallback((event: PlannerEvent) => {
     const todaysDate = new Date().toLocaleDateString();
-    const dueDate = new Date(event.start || event.end).toLocaleDateString();
 
-    const color = dueDate === todaysDate
-      ? getStatusColor('TODAY').color : event.priority
+    const dueDate = 
+      new Date(event.dueDate!).toLocaleDateString() ??
+      new Date(event.startTime!).toLocaleDateString() ?? 
+      new Date(event.endTime!).toLocaleDateString();
+
+    const bg = 
+      ( event.status==="CANCELLED" || event.status === "RESOLVED" || event.status=== "CLOSED") ? getStatusColor("CLOSED").bg 
+      : dueDate === todaysDate ? getStatusColor('TODAY').color : event.priority
       ? priorityColor(event.priority) : getTypeColor(event.type);
+    const color = event.status === "IN_PROGRESS" ? getStatusColor("IN_PROGRESS").color : getStatusColor("OPEN").color
 
     return {
       style: {
-        backgroundColor: color,
+        backgroundColor: bg,
+        color,
         border: 'none',
         borderRadius: 0,
         padding: '5px 10px',
@@ -288,7 +297,8 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             events={eventsState}
             date={currentDate}
             view={bigCalendarView}
-            endAccessor={(ev) => new Date(ev.end)}
+            startAccessor="startTime"
+            endAccessor="endTime"
             onView={(v) => {
               setInternalView(v as InternalView);
               try {

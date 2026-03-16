@@ -5,7 +5,7 @@ import QueryProvider from "@/providers/query";
 import StripeProvider from "@/providers/stripe";
 import { AuthProvider } from "@/providers/auth";
 import { AlertProvider } from "@/providers/alert";
-import ConditionalLayout from "@/providers/_layout";
+import ConditionalLayout, { SessionManager } from "@/providers/_layout";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SubscriptionProvider } from '@/providers/subscription';
 import EmotionCacheProvider from '@/providers/emotion/ThemeProvider';
@@ -26,6 +26,7 @@ export default function RootLayout(
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <EmotionCacheProvider> 
           <AuthProvider>
+          <SessionManager/>
             <AlertProvider>
               <QueryProvider>
                 <SubscriptionProvider>

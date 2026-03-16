@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Ticket, TicketImpact, TicketPriority, TicketSeverity } from '@/types/ticket';
+import { Button } from '@/assets/buttons';
+import { Ticket, TicketImpact, TicketSeverity } from '@/types/ticket';
 import { TICKET_TYPE_ICONS } from '@/app/dashboard/_level_1/tSchema';
 import { extractTicketData } from '@/app/dashboard/_level_1/tFieldExtract';
 import { getTypeColor, priorityColor } from '../../../../_level_1/tColorVariants';
@@ -17,13 +18,19 @@ import {
   FormControl,
   InputLabel,
   IconButton,
+  Switch,
+  List,
+  ListItem,
+  ListItemText,
 } from '@mui/material';
 import { TicketCheck, } from 'lucide-react';
 import { Add as AddIcon } from '@mui/icons-material';
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { RichTextViewer } from '@/app/dashboard/_level_1/richTextViewer';
 import { EstimatedTimeField } from '@/app/dashboard/_level_1/estTimeHours';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { LightweightRichEditor } from '@/app/dashboard/_level_1/richTextEditior';
 
 export function TicketDetailPane({
   ticket,
@@ -107,27 +114,26 @@ export function TicketDetailPane({
           )}
         </Stack>
 
-        <Box>
+        <Box mb={3}>
           {editMode ? (
-            <TextField
-              multiline
-              fullWidth
-              rows={5}
-              value={ticket.description ?? ''}
-              onChange={(e) => updateField('description', e.target.value)}
-              placeholder="Enter ticket description..."
-              variant="outlined"
-              sx={{ mb: 4 }}
-            />
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                Description
+              </Typography>
+
+              <LightweightRichEditor
+                value={ticket.description ?? ''}
+                onChange={(value) => updateField('description', value)}
+                placeholder="Write your description here..."
+              />
+            </Box>
           ) : (
-            <Typography variant="body1" whiteSpace="pre-wrap" sx={{ minHeight: 80, mb: 4 }}>
-              {ticket.description || 'No description provided.'}
-            </Typography>
+            <RichTextViewer html={ticket.description} />
           )}
         </Box>
 
         <Stack spacing={1} mb={4}>
-          <Typography variant="subtitle2" fontWeight={600}> Assignees</Typography>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom> Assignees</Typography>
 
           {editMode ? (
             <Select
@@ -170,7 +176,7 @@ export function TicketDetailPane({
         </Stack>
 
         <Stack spacing={1} mb={4}>
-          <Typography variant="subtitle2" fontWeight={600}> Tags </Typography>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom> Tags </Typography>
 
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
             {ticket?.tags?.length ? ticket.tags?.map((tag) => (
@@ -205,7 +211,7 @@ export function TicketDetailPane({
 
         <Stack direction="row" spacing={3} flexWrap="wrap" mb={2}>
           {isEventOrMeeting && <FormControl sx={{ minWidth: 220 }}>
-            <Typography variant="caption" gutterBottom> Start Time </Typography>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom> Start Time </Typography>
             {editMode ? (
               <DateTimePicker
                 value={ticket.startTime ? new Date(ticket.startTime) : null}
@@ -214,13 +220,16 @@ export function TicketDetailPane({
               />
             ) : (
               <Typography variant="body2">
-                {ticket.startTime ? new Date(ticket.startTime).toLocaleString() : '—'}
+                {ticket.startTime ? new Date(ticket.startTime).toLocaleString('en-US', { 
+                  dateStyle: 'full', 
+                  timeStyle: 'short' 
+                }) : '—'}
               </Typography>
             )}
           </FormControl>}
 
           {isEventOrMeeting && <FormControl sx={{ minWidth: 220 }}>
-            <Typography variant="caption" gutterBottom> End Time </Typography>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom> End Time </Typography>
             {editMode ? (
               <DateTimePicker
                 value={ticket.endTime ? new Date(ticket.endTime) : null}
@@ -229,13 +238,32 @@ export function TicketDetailPane({
               />
             ) : (
               <Typography variant="body2">
-                {ticket.endTime ? new Date(ticket.endTime).toLocaleString() : '—'}
+                {ticket.endTime ? new Date(ticket.endTime).toLocaleString('en-US', { 
+                  dateStyle: 'full', 
+                  timeStyle: 'short' 
+                }) : '—'}
               </Typography>
             )}
           </FormControl>}
         </Stack>
 
         <Stack spacing={3} mb={3}>
+          {'steps' in fields && (
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                Description
+              </Typography>
+
+              <LightweightRichEditor
+                value={ticket.description ?? ''}
+                onChange={(value) => updateField('data',  {
+                  ...ticket.data,
+                  steps: value,
+                })}
+                placeholder="Write your Steps here..."
+              />
+            </Box>
+          )}
           {'severity' in fields && (
             <TextField
               label="Severity"
@@ -292,6 +320,24 @@ export function TicketDetailPane({
               </FormControl>
             </Stack>
           )}
+          {ticket.type==="INVOICE" && 'extClient' in fields && (
+            <TextField
+              label="Recipient E-mail"
+              size="small"
+              value={fields.extClient ?? ''}
+              onChange={() => {}}
+              disabled={!editMode}
+            />
+          )}
+          {ticket.type==="INVOICE" || ticket.type==="TASK" && 'recurrence' in fields && (
+            <TextField
+              label="Recurrence"
+              size="small"
+              value={fields.recurrence ?? ''}
+              onChange={() => {}}
+              disabled={!editMode}
+            />
+          )}
           {ticket.type === "TASK" && 'estimatedTimeHours' in fields && (
             <EstimatedTimeField
               estimatedHours={fields.estimatedTimeHours as number ?? null}
@@ -304,6 +350,18 @@ export function TicketDetailPane({
               }}
             />
           )}
+          {ticket.type === 'TASK' && 'checklist' in fields && (
+            <Stack gap={1}>
+              <Typography>Checklist</Typography>
+              {fields.checklist?.map((item, idx) => (
+                <Stack key={idx} direction="row" alignItems="center">
+                  <Switch disabled={!editMode} />
+                  <Typography>{item}</Typography>
+                </Stack>
+              ))}
+              {editMode && <TextField placeholder="Add checklist item" />}
+            </Stack>
+          )}
           {isEventOrMeeting &&'location' in fields && (
             <TextField
               label="Location"
@@ -314,19 +372,62 @@ export function TicketDetailPane({
               fullWidth
             />
           )}
-          {ticket.type==="TASK" || ticket.type==="INVOICE" && 'recurrence' in fields && (
-            <TextField
-              label="Recurrence"
-              size="small"
-              value={fields.recurrence ?? ''}
-              onChange={() => {}}
+          {ticket.type === 'TASK' || ticket.type=== "NOTE" && 'attachments' in fields && (
+            <Stack gap={1}>
+              <Typography>Attachments</Typography>
+              {fields.attachments?.map((url, idx) => <Chip key={idx} label={url} />)}
+              {editMode && <Button>Upload Attachment</Button>}
+            </Stack>
+          )}
+          {ticket.type === 'TASK' && 'subtasks' in fields && (
+            <Stack gap={1}>
+              <Typography>Subtasks</Typography>
+              <List>
+                {fields.subtasks?.map((sub, idx) => (
+                  <ListItem key={idx}>
+                    <ListItemText primary={sub.title} secondary={sub.done ? 'Done' : 'Pending'} />
+                  </ListItem>
+                ))}
+              </List>
+              {editMode && <TextField placeholder="Add subtask" />}
+            </Stack>
+          )}
+          {['EVENT', 'MEETING'].includes(ticket.type) && 'startTime' in fields && (
+            <DatePicker 
+              name="startTime" 
+              defaultValue={new Date(fields.startTime!) ?? undefined} 
               disabled={!editMode}
+              label="Start Time"
             />
+          )}
+          {['EVENT', 'MEETING'].includes(ticket.type) && 'endTime' in fields && (
+            <DatePicker
+              name="endTime"
+              defaultValue={new Date(fields.endTime!) ?? ""}
+              disabled={!editMode}
+              label="End Time"
+            />
+          )}
+          {['EVENT', 'MEETING'].includes(ticket.type) && 'attendees' in fields && (
+            <Stack gap={1} p={1}>
+              <Typography><strong>Attendees</strong></Typography>
+              {!fields.attendees || fields.attendees.length < 1 && 
+                <Typography variant='body2' sx={{ opacity: 0.75}}>No attendees for this event</Typography>
+              }
+              {fields.attendees &&
+                <Stack direction={'row'} flexWrap={'wrap'} gap={1}>
+                  {fields.attendees?.map((attendee, idx) => 
+                    <Chip key={idx} label={attendee} sx={{ maxWidth: 'fit-content'}}/>
+                  )}
+                </Stack>
+              }
+              {editMode && <TextField placeholder="Add attendee" />}
+            </Stack>
           )}
         </Stack>
 
         <FormControl sx={{ minWidth: 180, maxWidth: 250, mb: 2 }}>
-          <Typography variant="subtitle2" gutterBottom fontWeight={700}> Due Date </Typography>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom> Due Date </Typography>
           {editMode ? (
             <DatePicker
               value={ticket.dueDate ? new Date(ticket.dueDate) : null}
@@ -334,18 +435,25 @@ export function TicketDetailPane({
               slotProps={{ textField: { size: 'small', fullWidth: true } }}
             />
           ) : (
-            <Chip label={ticket.dueDate ? new Date(ticket.dueDate).toDateString() : '—'} size="medium" color='info' />
+            <Chip 
+              label={ticket.dueDate ? new Date(ticket.dueDate).toDateString() : '—'} 
+              size="medium" 
+              sx={{ bgcolor: ticket.dueDate ? 'gray' : 'rgba(0,0,0,0.25)'}} 
+            />
           )}
         </FormControl>
 
-        <Stack spacing={1} sx={{ p: 2, bgcolor: 'var(--surface-1)'}}>
-          <Typography variant="caption">
+        <Stack spacing={1} sx={{ borderRadius: 3, py: 2, px: 3, bgcolor: 'var(--background)',}}>
+          <Typography variant="subtitle2" gutterBottom>
             Created by {ticket.createdById === userId ? <strong>you</strong> : ticket.createdBy?.name || ticket.createdById}{' '}
-            on {ticket.createdAt ? new Date(ticket.createdAt).toLocaleString() : 'unknown'}
+            on {ticket.createdAt ? new Date(ticket.createdAt).toLocaleString('en-US', { 
+                  dateStyle: 'full', 
+                  timeStyle: 'short' 
+                }) : 'unknown'}
           </Typography>
 
           {ticket.assignedToId && (
-            <Typography variant="caption" sx={{ opacity: 0.75 }}>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
               Assigned to {ticket.assignedToId === userId ? <strong>you</strong> : ticket.assignedTo?.name || ticket.assignedToId}.
             </Typography>
           )}

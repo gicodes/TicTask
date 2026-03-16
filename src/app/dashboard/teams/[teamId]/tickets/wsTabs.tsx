@@ -2,7 +2,7 @@
 
 import { Tabs, Tab, Box, Chip, useTheme, alpha } from '@mui/material';
 
-type View = 'board' | 'list' | 'timeline' | 'gantt';
+type View = 'board' | 'calendar' | 'list' | 'timeline' | 'gantt';
 
 export default function WorkspaceTabs({
   view,
@@ -47,6 +47,7 @@ export default function WorkspaceTabs({
       >
         <Tab value="board" label="Board" />
         <Tab value="list" label="List" />
+        <Tab value="calendar" label="Calendar" />
 
         <Tab
           value="timeline"

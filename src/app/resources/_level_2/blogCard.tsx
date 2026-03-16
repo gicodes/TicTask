@@ -33,7 +33,10 @@ export const BlogCard = ({ title, slug, createdAt, excerpt, coverImage }: BlogCa
       )}
       <CardContent>
         <Typography variant="overline" color="text.secondary">
-          {new Date(createdAt).toLocaleString()}
+          { new Date(createdAt).toLocaleString('en-US', { 
+            dateStyle: 'full', 
+            timeStyle: 'short' 
+          })}
         </Typography>
         <Typography variant="h6" fontWeight={700} gutterBottom>
           {title}

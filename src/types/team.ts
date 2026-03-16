@@ -1,6 +1,6 @@
-import { AppNotification } from "./notification";
 import { Subscription } from "./subscription";
-import { Ticket, Ticket_Priority, TicketPriority } from "./ticket";
+import { AppNotification } from "./notification";
+import { Ticket, TicketPriority } from "./ticket";
 import { Invitation, User, UserPreferences } from "./users";
 
 export type TeamRole = 'OWNER' | 'ADMIN' | 'MEMBER';
@@ -56,18 +56,6 @@ export type UpdateTeamPayload = Partial<{
   description: string;
 }>;
 
-export interface TeamWidgets {
-  total: number;
-  overdue: number;
-  dueToday: number;
-  inProgress: number;
-  createdThisWeek: number;
-  completed: number;
-  assignedToMe: number;
-  abandoned: number;
-  highPriority: number;
-}
-
 export interface TeamAnalytics {
   totalTickets: number;
   openTickets: number;
@@ -92,3 +80,44 @@ export interface CreateTeamTicketPayload {
   priority?: TicketPriority;
   assigneeId?: number;
 }
+
+export type StatKey =
+  | "total"
+  | "pinnedNotes"
+  | "assignedToMe"
+  | "inProgress"
+  | "completed"
+  | "overdue"
+  | "dueToday"
+  | "createdThisWeek"
+  | "abandoned"
+  | "highPriority";
+
+export type StatData = Record<StatKey, Ticket[]>;
+
+export type TeamWidgets = Record<StatKey, number>;
+
+export type WidgetPreference = {
+  key: StatKey;
+  visible: boolean;
+  order: number;
+};
+
+export type TeamWSProps = TeamWidgets & {
+  preferences?: WidgetPreference[];
+  onStatClick?: (key: StatKey) => (e: React.MouseEvent<HTMLElement>) => void;
+};
+
+export type StatsMenuProps = {
+  anchor: HTMLElement | null;
+  close: () => void;
+  tickets: Ticket[];
+  openDetail: (id: number) => void;
+};
+
+export type PinnedProps = {
+  anchor: HTMLElement | null;
+  close: () => void;
+  tickets: Ticket[];
+  openDetail: (id: number) => void;
+};

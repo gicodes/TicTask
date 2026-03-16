@@ -22,7 +22,7 @@ export default function DashboardLayout(
   children: React.ReactNode }>
 ) { 
   return (
-    <Suspense fallback={<span>Loading...</span>}>
+    <Suspense fallback={<span></span>}>
       <ThemeProvider>
         <CssBaseline />
         <LoadingProvider>

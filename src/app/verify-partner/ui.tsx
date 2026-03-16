@@ -97,8 +97,6 @@ export default function PartnerOnboardingPage() {
           throw new Error("No valid user data in response");
         }
 
-        console.log(response)
-
         reset({
           fullName: response.user.name || "",
           email: response.user.email,

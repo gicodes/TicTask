@@ -81,7 +81,7 @@ export function useTeam() {
     await teamsApi.leaveTeam(team?.id!);
 
     showAlert("You have left the team!", 'success')
-    router.push("/dashboard");
+    router.push("/dashboard/teams");
   };
 
   const removeMember = async (userId: number) => {

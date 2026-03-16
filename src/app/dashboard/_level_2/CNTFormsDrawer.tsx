@@ -21,13 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTicketLimits } from '@/hooks/useTicketLimits';
 import { Create_Ticket, CreateTicketResult } from '@/types/ticket';
 import { TASK_TYPE_META, TICKET_TYPE_META } from '../_level_0/constants';
-import { 
-  useForm, 
-  FormProvider, 
-  FieldValues, 
-  Control, 
-  Resolver 
-} from 'react-hook-form';
+import { useForm, FormProvider, FieldValues, Control, Resolver } from 'react-hook-form';
 import {
   Drawer,
   Box,
@@ -101,7 +95,6 @@ export default function TicketTaskCreateFormsDrawer({
   useEffect(() => {
     methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
   }, [defaultDueDate, itemType, task, methods, registryDefaults]);
-
   
   const isPartner = user?.data?.approved;
 
@@ -125,7 +118,6 @@ export default function TicketTaskCreateFormsDrawer({
         }
       }
 
-      console.log("Got here!")
       const payloadBase: Record<string, unknown> = { ...(values as Record<string, unknown>) };
 
       if (Array.isArray(payloadBase.tags) === false && typeof payloadBase.tags === 'string') {
@@ -138,16 +130,13 @@ export default function TicketTaskCreateFormsDrawer({
           : typeof payloadBase.startTime === 'string' && payloadBase.startTime
             ? new Date(payloadBase.startTime as string)
             : undefined;
-
       const startTimeDate = typeof payloadBase.startTime === 'string' && payloadBase.startTime
         ? new Date(payloadBase.startTime as string)
         : undefined;
-
       const endTimeDate = typeof payloadBase.endTime === 'string' && payloadBase.endTime
         ? new Date(payloadBase.endTime as string)
         : undefined;
 
-              console.log("Got here!!")
 
       const payload = {
         ...payloadBase,
@@ -163,7 +152,6 @@ export default function TicketTaskCreateFormsDrawer({
         throw new Error('Ticket creation is not available right now.');
       }
 
-            console.log("Got here!!!")
       const result = await createTicket(payload) as CreateTicketResult;
 
       if (result.success) {

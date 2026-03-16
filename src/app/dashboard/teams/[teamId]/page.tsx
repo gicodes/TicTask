@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Card, CardContent, Stack, Typography, Chip } from "@mui/material";
+import { Box, Card, CardContent, Stack, Typography, Chip, Alert } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import { useTeam } from "@/hooks/useTeam";
 import { useAuth } from "@/providers/auth";
@@ -13,7 +13,7 @@ export default function OverviewPage() {
   const { team, loading, isOwner } = useTeam();
 
   if (loading) return <Typography py={6} textAlign={'center'}>Loading...</Typography>;
-  if (!team) return <Typography py={6} textAlign={'center'}>Team not found</Typography>
+  if (!team) return <Alert severity="warning" sx={{ mx: 'auto', maxWidth: 500}}>Team not found</Alert>
 
   if (!isAuthenticated) return;
 
