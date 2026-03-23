@@ -45,7 +45,6 @@ export default function AiAssistantDrawer() {
             height: { xs: '100%', sm: '90vh' },
             marginTop: { xs: 0, sm: 5 },
             boxShadow: 5,
-            position: 'relative',
           },
         }}
       >
@@ -53,11 +52,7 @@ export default function AiAssistantDrawer() {
         
         <Box
           display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          mt={{ xs: 1, md: 4}}
-          borderBottom="1px solid"
-          borderColor="divider"
+          mt={{ xs: 1, md: 2.5}}
         >
           <Box flex={1} overflow="auto">
             <AiChatPanel fullRender={false} />

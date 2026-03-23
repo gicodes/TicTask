@@ -77,7 +77,8 @@ export default function AiChatPanel({
         background: 'transparent',
         width: fullRender ? '100%' : 'fit-content',
         minHeight: fullRender ? '100vh' : 'auto',
-      }}>
+      }}
+    >
       <Box display="flex" p={2} justifyContent="space-between">
         <Select
           size="small"
@@ -121,7 +122,7 @@ export default function AiChatPanel({
             <Paper
               sx={{
                 p: 1.5,
-                borderRadius: 3,
+                position: 'relative',
                 maxWidth: fullRender ? 500 : '75%',
                 bgcolor:
                   msg.role === 'user'
@@ -131,13 +132,32 @@ export default function AiChatPanel({
                   msg.role === 'user'
                     ? 'black'
                     : 'text.primary',
+                borderRadius: msg.role === 'assistant' ? ' 0 8px 8px' : '8px 0 8px 8px',
+                borderTop: msg.role === 'assistant' ? "0.01px solid var(--special)" : "0.01px solid var(--foreground)",
+                ":before": {
+                  content: '""',
+                  position: 'absolute',
+                  top: -1,
+                  right: msg.role === 'user' ? -15 : '',
+                  left: msg.role === 'assistant' ? -15 : '',
+                  width: 0,
+                  height: 0,
+                  borderLeft: msg.role === 'user' ? "" : "15px solid transparent",
+                  borderRight: msg.role === 'assistant' ? "" : "15px solid transparent",
+                  borderTop: msg.role === 'assistant' ? "10px solid var(--special)" : "10px solid var(--foreground)",
+                  zIndex: 1,
+                },
               }}
             >
               <Typography variant="body2">
                 {msg.content}
               </Typography>
             </Paper>
-            {msg.role === 'user' && <Person fontSize="small" />}
+            {msg.role === 'user' && 
+              <Avatar sx={{ bgcolor: 'var(--foreground)' }}>
+                <Person fontSize='small' />
+              </Avatar>
+            }
           </Stack>
         ))}
         
@@ -156,13 +176,18 @@ export default function AiChatPanel({
           borderRadius: 99,
           background: 'rgba(0,0,0,0.1)',
           width: { 
-            xs: fullRender ? '100%' : 360,
-            sm: fullRender ? 1000 : 360
+            xs: "100%",
+            sm: fullRender ? 1000 : "100%"
+          },
+          minWidth: 345,
+          maxWidth: {
+            xs: 420,
+            sm: fullRender ? "none" : 380,
           },
           px: 1
         }}
       >
-        <Stack p={1.5} direction={'row'} gap={1}>
+        <Stack p={1} direction={'row'} gap={1}>
           <TextField
             fullWidth
             size="small"
