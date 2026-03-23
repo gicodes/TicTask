@@ -16,7 +16,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import { unknown } from 'zod';
-import { KANBAN_BOARD_PROPS } from '../_level_1/tSchema';
+import { KANBAN_BOARD_PROPS } from '../../_level_1/tSchema';
 
 export default function Board({
   grouped,
