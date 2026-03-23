@@ -1,16 +1,18 @@
 'use client';
 
+import { checkUserPrevSignedIn } from '@/hooks/usePrevSignedIn';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { signIn, useSession, signOut } from 'next-auth/react';
 import { GenericAPIRes } from '@/types/axios';
 import { UserType } from '@/types/onboarding';
 import { useAlert } from '@/providers/alert';
+import { useAuth } from '@/providers/auth';
 import { apiPost } from '@/lib/axios';
 import { useState } from 'react';
 import OnboardingUI from './ui';
 
 export default function Onboarding() {
   const router = useRouter();
+  const { login } = useAuth()
   const { showAlert } = useAlert();
   const params = useSearchParams();
   const token = params.get('token');
@@ -31,12 +33,7 @@ export default function Onboarding() {
   const [error, setError] = useState<string | null>(null);
   const [userType, setUserType] = useState<UserType>('PERSONAL');
   const [authenticated, setAuthenticated] = useState<boolean>(false);
-  
-  const checkUserPrevSignedIn = async () => {
-    const { data, status } = useSession({ required: true });
-    if (data?.user || status==="loading" ) await signOut({ redirect: false});
-    else return;
-  };
+
   checkUserPrevSignedIn();
 
   const stepsTotal = 3;
@@ -54,10 +51,12 @@ export default function Onboarding() {
         { step, data },
         { Authorization: `Bearer ${token}` }
       );
+
       return res;
     } catch (err: unknown) {
       if (typeof err === "object" && err!==null && "message" in err) 
         setError(err.message as string)
+
       return { ok: false, message: 'Something went wrong.' };
     } finally {
       setLoading(false);
@@ -76,8 +75,7 @@ export default function Onboarding() {
     const data = 
       step === 1 ? { password }
       : step === 2 ? userType === 'PERSONAL'
-        ? { userType, name, country, phone }
-        : { userType, orgName, industry, teamSize, hqCountry, website, bio }
+        ? { userType, name, country, phone } : { userType, orgName, industry, teamSize, hqCountry, website, bio }
       : {};
 
     const res = await saveStep(step, data);
@@ -115,13 +113,15 @@ export default function Onboarding() {
         const email = res?.user?.email;
         showAlert("Onboarding Complete. Signing in may take a few seconds...", "success")
 
-        const r = await signIn('credentials', { redirect: false, email, password });
+        const r = await login({ email: email!, password });
+
         if (r?.error) {
           setError(r.error || 'Invalid credentials');
         } else {
           setAuthenticated(true);
           router.push('/dashboard');
-        }      
+        }
+
       } else setError(res.message || "Failed to save final step.");
     } catch {
       setError("Something went wrong. Please try again.");

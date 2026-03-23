@@ -1,10 +1,11 @@
 'use client';
 
 import { Create_Ticket, Ticket, Ticket_Impact, Ticket_Severity, TicketHistory, TicketNote } from '@/types/ticket';
-import { TICKET_WORKSPACE_PROPS, TicketFormValuesUnion } from '../_level_1/tSchema';
-import { excludedTypes, extractTicketData } from '../_level_1/tFieldExtract';
+import { TICKET_WORKSPACE_PROPS, TicketFormValuesUnion } from '../../_level_1/tSchema';
+import { excludedTypes, extractTicketData } from '../../_level_1/tFieldExtract';
+import { LightweightRichEditor } from '../../_level_1/richTextEditior';
 import { useForm, Controller, FieldValues } from 'react-hook-form';
-import { DatePicker } from '../_level_1/tDateControl';
+import { DatePicker } from '../../_level_1/tDateControl';
 import { useTickets } from '@/providers/tickets';
 import { useAlert } from '@/providers/alert';
 import { useEffect, useState } from 'react';
@@ -33,7 +34,6 @@ import {
   Alert,
 } from '@mui/material';
 import { CloseSharp, ExpandMore } from '@mui/icons-material';
-import { LightweightRichEditor } from '../_level_1/richTextEditior';
 
 export default function TWSExtDrawer({ 
   open, 

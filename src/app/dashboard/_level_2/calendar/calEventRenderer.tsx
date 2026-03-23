@@ -1,4 +1,4 @@
-import { getStatusColor, getTypeColor, priorityColor } from '../_level_1/tColorVariants';
+import { getStatusColor, getTypeColor, priorityColor } from '../../_level_1/tColorVariants';
 import { PlannerEvent } from '@/types/planner';
 import { useMemo } from 'react';
 

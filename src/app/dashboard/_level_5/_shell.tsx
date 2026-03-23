@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Logo from '@/assets/txtLogo';
 import { useAuth } from '@/providers/auth';
 import { usePathname } from 'next/navigation';
-import AiAssistantDrawer from '../_level_2/aiDrawer';
+import AiAssistantDrawer from '../_level_2/AI/aiDrawer';
 import { ReactNode, useEffect, useState } from 'react';
 import { SetStatusButton } from '../_level_2/statusBar';
 import { useAuthRedirect } from '@/hooks/useAuthRedirect';

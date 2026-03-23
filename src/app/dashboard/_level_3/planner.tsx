@@ -2,17 +2,17 @@
 
 import { Box } from '@mui/material';
 import { Ticket } from '@/types/ticket';
-import PlannerList from '../_level_2/_list';
 import { useAlert } from '@/providers/alert';
+import { SlotInfo } from 'react-big-calendar';
 import { useTickets } from '@/providers/tickets';
-import PlannerCalendar from '../_level_2/_calendar';
-import TaskFormDrawer from '../_level_2/CNTFormsDrawer';
+import PlannerList from '../_level_2/list/_list';
 import PlannerToolbar from '../_level_2/taskPageToolbar';
-import TaskDetailDrawer from '../_level_2/TWSMiniDrawer';
+import TaskDetailDrawer from '../_level_2/viewTicket/TWSMiniDrawer';
 import { TASK_LIST_HEADERS } from '../_level_0/constants';
 import React, { useEffect, useMemo, useState } from 'react';
-import { DateSelectDialog } from '../_level_2/CNTonClickDialog';
-import { SlotInfo } from 'react-big-calendar';
+import PlannerCalendar from '../_level_2/calendar/_calendar';
+import TaskFormDrawer from '../_level_2/createTicket/CNTFormsDrawer';
+import { DateSelectDialog } from '../_level_2/createTicket/CNTonClickDialog';
 
 const PlannerPage = ({
   team = false,
@@ -104,7 +104,7 @@ const PlannerPage = ({
         <PlannerList
           columns={TASK_LIST_HEADERS}
           tickets={filteredTickets!!}
-          onOpen={(id) => setSelected(id)}
+          onOpen={(id: number) => setSelected(id)}
         />
       )}
 

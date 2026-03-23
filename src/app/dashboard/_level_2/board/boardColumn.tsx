@@ -1,7 +1,7 @@
 import React from 'react';
 import TicketCard from './boardTCard';
-import NoTickets from '../_level_1/tEmpty';
-import { BOARD_COLUMN } from '../_level_1/tSchema';
+import NoTickets from '../../_level_1/tEmpty';
+import { BOARD_COLUMN } from '../../_level_1/tSchema';
 import { Badge, Box, Typography } from '@mui/material';
 
 export const BoardColumn: React.FC<BOARD_COLUMN> = ({ 

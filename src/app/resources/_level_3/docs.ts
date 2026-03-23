@@ -61,13 +61,25 @@ export const TABLE_OF_CONTENTS_DEV = [
 
 export const CONTENTS: Record<string, DocTextBlock[]> = {
   "What Is TicTask": [
-    "TicTask is a lightweight, collaborative ticketing and task management platform built for fast, transparent teamwork.", 
-    "By leveraging the fundamental concepts and principles of SWE, TicTask runs a system that helps to streamline your workflow and boost productivity.  It helps individuals and teams capture work, assign ownership, track progress, and ship faster.",
-    { type: 'callout', title: 'Core idea', content: 'Keep tasks simple, make ownership clear, and make progress visible.' }
+    "TicTask is a lightweight tool built for minimal, modern and efficient workflow.",
+    "Although work can be personal, TicTask uniquely platforms both personal and collaborative tools to enable fast, transparent teamwork, ownership, clarity and flexibility across highly affordable workspaces.", 
+    "By leveraging the fundamental concepts of software engineering, the product is designed to breakdown workflow into custom(izable) tickets [Modularity begets Productivity], separate organizations and team workspaces [Separation of Concerns] and integrate users' data i.e. profile, ticket, teams with Artificial Intelligence (AI) at the core [Abstraction].", 
+    "This helps individuals and teams capture work, assign ownership, track progress, and react faster.",
+    { type: 'callout', title: 'Core idea', content: 'Tickets are simply tasks or tools for work. Keep tickets simple, make ownership clear, and make progress visible.' }
   ],
 
   "Key Features & Target Audience": [
-    "TicTask focuses on a handful of high-value features: Tasks & subtasks, assignments, activity feed, simple workflows, role-based permissions, and email notifications.",
+    "TicTask focuses on a handful of high-value features: Assignment (of tickets), Activity feed, Simple workflows, Team workspaces, Role-based permissions, and Notification system(s).",
+    { type: 'list', content: [
+      'Support for download, print and share across various sections',
+      'Notes, Invoices, Events, Meetings, Tasks, and more options as Tickets',
+      'Ticket comments, history, tags, assignments, etc for tracking ticket progress',
+      "Big, Custom Calendar displaying dated tickets so you don't miss a task or event",
+      'Educational insights with open-source, up-to-date resources and templates',
+      'Personalized alerts with emails, in-app and push notification options',
+      'Social and interactive contents with blogs and open-ended FAQs'
+    ]},
+    "Target Audience Include:",
     { type: 'list', content: [
       'Task and project-orientated individuals',
       'Small teams shipping product features',
@@ -78,7 +90,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
   ],
 
   "Quick Start — Create Account & Onboard": [
-    { type: 'inline', content: "1) Sign up: Enter your personal or business email and submit. You will receive a verification link shortly, valid for 15 minutes. Click on the link to confirm your email and continue."}, '',
+    { type: 'inline', content: "(1) "}, { type: 'link', content: 'Sign up', href: '/auth/join/user' },{ type: 'inline', content: " ::: Enter your personal or business email and submit. You will receive a verification link shortly, valid for 15 minutes. Click on the link to confirm your email and continue."}, '',
     { type: 'inline', content: "2) Onboard: You have been re-directed to Tictask's"}, { type: 'outline', content: "Onboarding Page"}, { type: 'inline', content: "You are to setup your account how you'd like it to be."}, 
     "Create password → Choose account type: Personal or Business → Save to complete onboarding and continue to Dashboard.", 
     { type: 'inline', content: "3) Dashboard: Once onboarding is complete, you will be re-directed to your dashboard (Tickets Hub). You can also visit dashboard from the welcome email sent to your email."}, '',
@@ -108,29 +120,44 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
   ],
 
   "Roles & Permissions": [
-    "TicTask uses simple RBAC to control a user and viewer's accessibilty. These roles include; User as personal, User as organization/ team, Admin and Viewers.",
-    { type: 'outline', content: "Personal"}, { type: 'inline', content: "create and manage tickets and tasks on free tier. Subscription unlocks extended features."},  "",
-    { type: 'outline', content: "Organization", color: 'success'}, { type: 'inline', content: "create and manage teams with admin features. Subscription is required, while team members can use free tier."}, '',
-    { type: 'badge', content: 'moderators', color: 'info'}, { type: 'inline', content: "manage in-app performances, docs review and client requests (CRM), Technical resources, codebase and logs (IT mods)"}, "",
+    "TicTask uses simple RBAC to control a user and viewer's accessibilty. These roles include: User as Individual, User as Organization/ Team, Admin and Viewers.",
+    { type: 'outline', content: "Individual"}, { type: 'inline', content: "create and manage tickets and tasks on free tier. Subscription unlocks extended features."},  "",
+    { type: 'outline', content: "Organization", color: 'success'}, { type: 'inline', content: "create and manage teams with owner privileges. Subscription is required, while team members can use for free."}, '',
+    { type: 'badge', content: 'Moderator', color: 'info'}, { type: 'inline', content: "manage in-app performances, docs review and client requests (CRM), Technical resources, codebase and logs (IT mods)"}, "",
     { type: 'outline', content: "Admin", color: 'secondary'}, { type: 'inline', content: "manage product roadmap, app security & the business end with metrics from app-watch"}, "", 
-    { type: 'callout', title: 'Note', content: 'Custom roles i.e. Moderators are not supported by default. Setting up a custom role requires registering as partner.' }
+    { type: 'callout', title: 'Note', content: 'Custom roles i.e. Moderators are not supported by default. Setting up a custom role requires registering as collaborator.' }
   ],
 
   "Common Flows — Tasks, Comments, Attachments": [
     "Create → Assign → Work → Comment → Close",
     "Attach files from local device or cloud storage and mention teammates using @ to trigger notifications.",
-    { type: 'list', content: ['Create task', 'Assign task', 'Accept/ Decline task', 'Add comment', 'Attach files', 'Search ticket', 'Create team', 'Invite member', 'Accept/ Decline invite'] }
+    { type: 'list', content: [
+      'Create ticket', 
+      'Assign ticket', 
+      'Accept/ Decline ticket (BETA)',
+      'Start/ Resolve/ Cancel ticket', 
+      'Add comment', 
+      'Attach files', 
+      'Search ticket', 
+      'Create team', 
+      'Invite member', 
+      'Accept/ Decline invite',
+    ] }
   ],
 
   "Notifications & Activity Feed": [
-    "Notifications arrive by email and in-app alerts. Use the bell menu to view recent activity. You can quiet notifications per-task or per-workspace and configure the notification provider i.e. Email, SMS or Slack.",
-    "Your Activity feed shows actions and notifications on activities noticed on your account. The feeds are temporarily stored for your timely viewing, and is not persisted to a database nor accessible after viewing and timeout.",
-    { type: 'callout', title: 'Pro tip', content: 'Using notification providers you monitor frequently for tickets and tasks notifications can be an effective approach' }
+    "Notifications arrive by email, push and in-app alerts. Use the bell menu to view recent activity. You can quiet notifications per-task or per-workspace and configure the notification provider i.e. Email, SMS or Slack.",
+    "Push notifications are sent through browsers (Chrome, Safari, Firefox, Edge) and require user permission (iOS users must install or add TicTask to homepage). Push alert method only work for team owners and paid users.",
+    "Your Activity feed shows actions and notifications on activities noticed on your account. The feeds are temporarily stored for your timely viewing, and may not always be persisted to a database nor accessible after reading and deleting.",
+    { type: 'callout', title: 'Pro tip', content: 'Using providers you monitor frequently for ticket notifications can be an effective approach to a productive workflow' }
   ],
 
   "Pricing & Billing": [
-    "We offer a free tier for personal accounts, basic tier for small teams and pro plans for teams needing advanced features like SSO, audit logs, and longer retention.",
-    "Billing is per workspace and billing information is required on business accounts. Standard monthly billing cycle is 30 days, and payments due triggers a 5-day grace period with persistent billing re-trials. Failed payment disables all business features and dissolves teams temporarily.",
+    "We offer freemium for individual accounts, basic/ standard tier for small teams and pro, enterprise plans for larger teams needing advanced features like SSO, audit logs, and longer retention.",
+    "Billing is per team, and billing information is required for business accounts.", 
+    "Business account = Team owner. Team owner can invite a number of members depending on paid plan. However, if a paid plan downgrades or exceeds the limit number of members, owner get billed per extra user or team.", 
+    "Accounts with expired, failed or no subscription can always use TicTask with freemium. Freemium accounts have limited features, and can get invited to paid teams without being billed directly for team membership(s). Meanwhile, individual accounts that need paid features can also, easily setup billing and enjoy upgraded experiences.",
+    "Standard monthly billing cycle is 30 days, and payment due triggers a 5-day grace period with persistent billing re-trials. Failed payment disables all business features and dissolves teams temporarily.",
     { type: 'link', href: '/product/pricing', content: 'See detailed pricing' }
   ],
 
@@ -145,8 +172,8 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     "Often times, we are stuck with problems mostly because we are, and feel alone when looking for a solution. Troubleshooting on TicTask should be a collective effort, especially because we are here to solve your day-to-day issues.",
     "To ensure you get the best experience, we have several channels for team support.", 
     { type: 'link', href: '/company#contact-us', content: "Contact us"}, '', 
-    { type: 'link', href: '#', content: "AI assistance"}, '', 
-    { type: 'link', href: '#', content: "Community posts"}, '',
+    { type: 'link', href: '/resources#ai', content: "AI assistance"}, '', 
+    { type: 'link', href: '/resources/blog', content: "Community posts"}, '',
     { type: 'link', href: '/resoources/faq', content: 'Frequently Asked Questions' }, '',
     { type: 'callout', title: 'FAQ — common', content: 'Is my data secure? — Yes, absolutely. We use enterprise-grade encryption and role-based access.' },
   ],

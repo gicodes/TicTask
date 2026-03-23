@@ -14,7 +14,7 @@ interface DateSelectDialogProps {
   open: boolean;
   date: Date | null;
   onClose: () => void;
-  onConfirm: (date: Date) => void;
+  onConfirm: (date: Date, id?: number) => void;
 }
 
 export const DateSelectDialog: React.FC<DateSelectDialogProps> = ({

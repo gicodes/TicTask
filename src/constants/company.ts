@@ -5,7 +5,7 @@ export const TEAM = [
   { name: "Gideon Iduma", role: "Founder & CEO, TicTask", location: "Abuja, Nigeria" },
   { name: "Humphery Atteng", role: "Operations & Experience", location: "Lagos, Nigeria" },
   // { name: "Gi Codes (Gideon)", role: "Product Lead", location: "Abuja, Nigeria" },
-  { name: "Kemisola Isijola", role: "Growth & Partnerships", location: "Ontario, Canada" },
+  { name: "Obiaju Akachukwu", role: "Growth & Partnerships", location: "Lagos, Nigeria" },
   { name: "Select Engineering", role: "Marketing & B2B", location: "Ontario, Canada" }
 ];
 

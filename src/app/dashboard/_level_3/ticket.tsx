@@ -1,16 +1,16 @@
 'use client'
 
-import { Box, Divider, Drawer, Typography } from '@mui/material';
+import React, { useEffect, useMemo, useState } from 'react';
 import { CloseSharp } from '@mui/icons-material';
 import { Ticket } from '@/types/ticket';
-import TicketsList from '../_level_2/_list';
-import TicketBoard from '../_level_2/_board';
 import { FaPlusCircle } from 'react-icons/fa';
 import { useTickets } from '@/providers/tickets';
+import TicketsList from '../_level_2/list/_list';
+import TicketBoard from '../_level_2/board/_board';
 import Toolbar from '../_level_2/ticketsPageToolbar';
-import TicketFormDrawer from '../_level_2/CNTFormsDrawer';
-import TicketDetailDrawer from '../_level_2/TWSMiniDrawer';
-import React, { useEffect, useMemo, useState } from 'react';
+import { Box, Divider, Drawer, Typography } from '@mui/material';
+import TicketDetailDrawer from '../_level_2/viewTicket/TWSMiniDrawer';
+import TicketFormDrawer from '../_level_2/createTicket/CNTFormsDrawer';
 import { TICKET_LIST_HEADERS, TICKET_STATUSES, TICKET_TYPES } from '../_level_0/constants';
 
 export function useDebounce<T>(value: T, delay = 300): T {

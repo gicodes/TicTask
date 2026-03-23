@@ -1,6 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { 
+  useEffect, 
+  useMemo, 
+  useState 
+} from 'react';
 import Link from 'next/link';
 import WorkspaceTabs from './wsTabs';
 import WorkspaceShell from './wsShell';
@@ -9,15 +13,15 @@ import WorkspaceWidgets from './wsWidgets';
 import { useAuth } from '@/providers/auth';
 import { useRouter } from 'next/navigation';
 import { Add, Search } from '@mui/icons-material';
-import TicketsList from '../../../_level_2/_list';
-import TicketBoard from '../../../_level_2/_board';
+import TicketsList from '../../../_level_2/list/_list';
 import { useTeamTicket } from '@/providers/teamTickets';
+import TicketBoard from '../../../_level_2/board/_board';
+import PlannerPage from '@/app/dashboard/_level_3/planner';
 import { StatData, StatKey, TeamWidgets } from '@/types/team';
 import { Ticket, TicketStatus, Ticket_Status } from '@/types/ticket';
 import StatsTicketsMenu from '@/app/dashboard/_level_1/statsTicketMenu';
 import { Stack, TextField, InputAdornment, Typography } from '@mui/material';
 import { TICKET_STATUSES, TICKET_LIST_HEADERS,} from '../../../_level_0/constants';
-import PlannerPage from '@/app/dashboard/_level_3/planner';
 
 export function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
@@ -37,6 +41,7 @@ const TERMINAL_STATUSES: TicketStatus[] = [
 ];
 
 export default function TeamTicketsWorkspace() {
+  const router = useRouter();
   const { isAuthenticated, user } = useAuth();
   const { tickets, updateTicket, fetchTickets } = useTeamTicket();
   const [view, setView] = useState<'board' | 'list' | 'calendar' | 'timeline' | 'gantt'>('board');
@@ -48,11 +53,9 @@ export default function TeamTicketsWorkspace() {
   const [selected, setSelected] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedQuery = useDebounce(searchQuery);
-  const router = useRouter();
   
   const filteredTickets = useMemo(() => {
     if (!debouncedQuery.trim()) return tickets;
-
     const q = debouncedQuery.toLowerCase();
 
     return tickets.filter(t =>

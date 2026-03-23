@@ -9,11 +9,11 @@ import { useAuth } from '@/providers/auth';
 import { FaEllipsisV } from 'react-icons/fa';
 import { useTickets } from '@/providers/tickets';
 import React, { useEffect, useState } from 'react';
-import { RichTextViewer } from '../_level_1/richTextViewer';
-import { extractTicketData } from '../_level_1/tFieldExtract';
-import { TICTASK_QUICK_ACTIONS } from '../_level_0/constants';
-import { getTypeColor, priorityColor } from '../_level_1/tColorVariants';
-import { TICKET_WORKSPACE_PROPS, TICKET_TYPE_ICONS } from '../_level_1/tSchema';
+import { RichTextViewer } from '../../_level_1/richTextViewer';
+import { extractTicketData } from '../../_level_1/tFieldExtract';
+import { TICTASK_QUICK_ACTIONS } from '../../_level_0/constants';
+import { getTypeColor, priorityColor } from '../../_level_1/tColorVariants';
+import { TICKET_WORKSPACE_PROPS, TICKET_TYPE_ICONS } from '../../_level_1/tSchema';
 import {
   Box,
   Drawer,

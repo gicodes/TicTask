@@ -151,7 +151,7 @@ export default function SettingsPage() {
                   color: mode === value ? '#fff' : 'inherit',
                   border: '1px solid',
                   borderColor: mode === value ? 'primary.main' : 'divider',
-                  ':hover': { color: 'var(--bw)' },
+                  ':hover': { color: 'var(--inverse)' },
                 }}
               >
                 {icon}

@@ -12,13 +12,13 @@ import CalendarTimeline from './calTimeline';
 import EventRenderer from './calEventRenderer';
 import ViewSelect, { InternalView} from './calViewSelect';
 import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
-import { getStatusColor, priorityColor, getTypeColor } from '../_level_1/tColorVariants';
+import { getStatusColor, priorityColor, getTypeColor } from '../../_level_1/tColorVariants';
 
 import moment from 'moment';
 import { format, addDays } from 'date-fns';
 import { Box, useTheme } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import CalendarSkeleton, { calendarStyle } from '../_level_1/calendarStyle';
+import CalendarSkeleton, { calendarStyle } from '../../_level_1/calendarStyle';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { Calendar as BigCalendar, momentLocalizer, SlotInfo, View } from 'react-big-calendar';
 

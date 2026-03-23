@@ -23,10 +23,10 @@ import {
   Repeat,
 } from 'lucide-react';
 import { Ticket } from '@/types/ticket';
-import NoTickets from '../_level_1/tEmpty';
-import { TICKET_LIST_PROPS } from '../_level_1/tSchema';
-import { extractTicketData } from '../_level_1/tFieldExtract';
-import { priorityColor, getStatusColor } from '../_level_1/tColorVariants';
+import NoTickets from '../../_level_1/tEmpty';
+import { TICKET_LIST_PROPS } from '../../_level_1/tSchema';
+import { extractTicketData } from '../../_level_1/tFieldExtract';
+import { priorityColor, getStatusColor } from '../../_level_1/tColorVariants';
 
 export default function TicketsList({ 
   columns, 

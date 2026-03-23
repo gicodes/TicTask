@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import AiInfo from '../_level_1/aiInfo';
 import { useAiChat } from '@/hooks/useAI';
-import AITyping from '../_level_1/aiTyping';
+import AiInfo from '../../_level_1/aiInfo';
 import { usePathname } from 'next/navigation';
-import { handleSendAI } from '../_level_1/aiSend';
+import AITyping from '../../_level_1/aiTyping';
+import { handleSendAI } from '../../_level_1/aiSend';
 import { AiChatPanelProps, AiMessage } from '@/types/ai';
 import {
   Box,

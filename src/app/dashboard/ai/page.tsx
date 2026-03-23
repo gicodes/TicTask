@@ -3,7 +3,7 @@
 import React from 'react'
 import { useAuth } from '@/providers/auth';
 import { Box, Typography } from '@mui/material';
-import AiChatPanel from '../_level_2/aiChatPanel';
+import AiChatPanel from '../_level_2/AI/aiChatPanel';
 import AuthRedirectBtn from '@/assets/authRedirectBtn';
 
 const Page = () => {

@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { Ticket } from '@/types/ticket';
-import { extractTicketData, formatAmount } from '../_level_1/tFieldExtract';
-import { priorityColor, getTypeColor, TYPE_COLORS } from '../_level_1/tColorVariants';
+import { TICKET_TYPE_ICONS } from '../../_level_1/tSchema';
+import { extractTicketData, formatAmount } from '../../_level_1/tFieldExtract';
+import { priorityColor, getTypeColor, TYPE_COLORS } from '../../_level_1/tColorVariants';
 import {
   Paper,
   Typography,
@@ -24,7 +25,6 @@ import {
   TicketCheck,
 } from 'lucide-react';
 import { FaMoneyBill } from 'react-icons/fa';
-import { TICKET_TYPE_ICONS } from '../_level_1/tSchema';
 
 interface TicketCardProps {
   ticket: Ticket;

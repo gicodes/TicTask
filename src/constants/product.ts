@@ -81,7 +81,7 @@ export const PLANS = [
     features: [
       "Team workspace",
       "Up to 100 tickets",
-      "Up to 2 teams, 5 members, 360 team tickets",
+      "One team, up to 6 members, 360 team tickets",
       "Standard AI assistance",
       "Analytics & metrics",
       "Invoice linking",
@@ -100,7 +100,7 @@ export const PLANS = [
     features: [
       "Everything on Standard",
       "Unlimited tickets",
-      "Up to 5 teams, 10 members, Unlimited team tickets",
+      "Up to 3 teams, 6 members each, 1080 team tickets",
       "Advanced AI assistance",
       "Analytics export enabled",
       "Integrations (Slack, GitHub, Drive)",
@@ -119,7 +119,7 @@ export const PLANS = [
     features: [
       "Everything on Standard & Pro",
       "Custom pricing starting from $25",
-      "Up to 12 team workspaces, 12 members maximum",
+      "6+ teams, 12+ members each, unlimited team tickets",
       "Timeline & Gantt view",
       "Roles & permissions",
       "Advanced workflow automation",
