@@ -61,7 +61,7 @@ export const BLOG_POSTS = [{
 export const FAQs = [
   {
     q: "Is there a free plan for all users?",
-    a: "Yes, we offer a 14-day free trial. No credit card required. However not 'all' users qualify",
+    a: "We offer freemium for all individual accounts, and a 14-day free trial on Standard plan. No credit card required.",
   },
   {
     q: "How can I join TicTask as a moderator",
@@ -77,6 +77,6 @@ export const FAQs = [
   },
   {
     q: "How can I get customer support?",
-    a: "You can reach out to us via the contact form or direct email",
+    a: "You can reach out to us via the contact-us link (see the bottom of home page or go to company/contact-us page)",
   },
 ];

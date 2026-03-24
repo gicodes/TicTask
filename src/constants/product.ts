@@ -79,7 +79,7 @@ export const PLANS = [
     priceMonthly: 6,
     priceYearly: 60,
     features: [
-      "Team workspace",
+      "Personal workspace + Team workspace",
       "Up to 100 tickets",
       "One team, up to 6 members, 360 team tickets",
       "Standard AI assistance",

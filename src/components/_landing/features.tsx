@@ -65,7 +65,7 @@ const features = [
     description:
       "Control who can do what. TicTask ensures secure and organized workflows with flexible roles and permissions.",
     bulletPoints: [
-      "Define roles like Admin, Manager, and Member",
+      "Defined roles like team owner, moderator, and member",
       "Granular permissions for sensitive actions",
       "Prevent accidental changes or data loss",
       "Scale your team with confidence",

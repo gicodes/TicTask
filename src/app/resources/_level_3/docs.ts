@@ -63,7 +63,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
   "What Is TicTask": [
     "TicTask is a lightweight tool built for minimal, modern and efficient workflow.",
     "Although work can be personal, TicTask uniquely platforms both personal and collaborative tools to enable fast, transparent teamwork, ownership, clarity and flexibility across highly affordable workspaces.", 
-    "By leveraging the fundamental concepts of software engineering, the product is designed to breakdown workflow into custom(izable) tickets [Modularity begets Productivity], separate organizations and team workspaces [Separation of Concerns] and integrate users' data i.e. profile, ticket, teams with Artificial Intelligence (AI) at the core [Abstraction].", 
+    "By leveraging the fundamental concepts of software engineering, the product is designed to breakdown workflow into custom(izable) tickets [Modularity begets Productivity], separate organizations and team workspaces [Separation of Concerns] and integrate users' data i.e. profile, ticket, teams with Artificial Intelligence (AI) at the core [Abstraction & Encapsulation].", 
     "This helps individuals and teams capture work, assign ownership, track progress, and react faster.",
     { type: 'callout', title: 'Core idea', content: 'Tickets are simply tasks or tools for work. Keep tickets simple, make ownership clear, and make progress visible.' }
   ],
@@ -91,15 +91,16 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
 
   "Quick Start — Create Account & Onboard": [
     { type: 'inline', content: "(1) "}, { type: 'link', content: 'Sign up', href: '/auth/join/user' },{ type: 'inline', content: " ::: Enter your personal or business email and submit. You will receive a verification link shortly, valid for 15 minutes. Click on the link to confirm your email and continue."}, '',
-    { type: 'inline', content: "2) Onboard: You have been re-directed to Tictask's"}, { type: 'outline', content: "Onboarding Page"}, { type: 'inline', content: "You are to setup your account how you'd like it to be."}, 
-    "Create password → Choose account type: Personal or Business → Save to complete onboarding and continue to Dashboard.", 
-    { type: 'inline', content: "3) Dashboard: Once onboarding is complete, you will be re-directed to your dashboard (Tickets Hub). You can also visit dashboard from the welcome email sent to your email."}, '',
+    { type: 'inline', content: "2) Onboard ::: You have been re-directed to Tictask's"}, { type: 'outline', content: "Onboarding Page"}, { type: 'inline', content: "You are to setup your account how you'd like it to run."}, 
+    "Create password → Choose account type: Individual or Business → Save to complete onboarding and continue to Dashboard.", 
+    { type: 'inline', content: "3) Dashboard ::: Once onboarding is complete, you will be re-directed to your dashboard (Tickets Hub). Start using TicTask by creating your first ticket(s) or learn more. You can also visit dashboard from the link in the welcome mail sent to you post-signup."}, '',
     { type: 'callout', title: 'Safety tip', content: 'TicTask will never request your password in email. Keep your password private and mind the time constraints' }
   ],
 
   "Login & Account Management": [
     "Password-based login is the default. We are constantly working to add and improve our sign-in methods.", 
     { type: 'point', content: "Email and password"},
+    "You should store your password safely, as is the primary means of signing in ",
     { type: 'point', content: "SSO/ Auth providers"},
     { type: 'badge', content: "Google"},
     { type: 'badge', content: "Slack", color: 'secondary'},

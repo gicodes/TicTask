@@ -96,7 +96,7 @@ export default function TicketTaskCreateFormsDrawer({
     methods.reset(registryDefaults[itemType as keyof typeof registryDefaults](defaultDueDate));
   }, [defaultDueDate, itemType, task, methods, registryDefaults]);
   
-  const isPartner = user?.data?.approved;
+  const isPartner = user?.data?.approved || user?.partner;
 
   const onSubmit = async (values: FieldValues) => {
     setErr(null);
@@ -104,7 +104,8 @@ export default function TicketTaskCreateFormsDrawer({
     setIsSubmitting(true);
 
     try {
-      if (itemType === "INVOICE" && (!isPartner || !user?.subscription?.active)) {
+      if (itemType === "INVOICE" && isPartner || user?.subscription?.active) {
+      } else {        
         setErr('Invoice is not supported for users without active subscription');
         setIsSubmitting(false);
         return;

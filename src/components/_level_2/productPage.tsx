@@ -190,7 +190,7 @@ export const ProductShowcase = () => {
               </Typography>
               <Typography variant="body2">
                 Designed for teams that rely on timing and accountability.
-                Get push notifications, reminders, advanced roles,
+                Get push notifications, reminders,
                 deeper analytics, and smarter AI assistance.
               </Typography>
             </Grid>
