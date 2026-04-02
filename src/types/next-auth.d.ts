@@ -20,6 +20,8 @@ declare module "next-auth" {
     accessToken: string;
     refreshToken: string;
     pushSubscriptions?: PushSubscriptions[];
+    status?: UserStatus;
+    statusUntil?: string | null;
   }
 
   interface Session extends DefaultSession {
@@ -47,5 +49,7 @@ declare module "next-auth/jwt" {
     accessToken: string | undefined | null;
     refreshToken: string | null;
     expires?: number | null;
+    status?: UserStatus;
+    statusUntil?: string | null;
   }
 }

@@ -9,7 +9,7 @@ export const useUpdateWorkspaceName = (param?: number) => {
   let userId: number | undefined;
 
   if (!param) {
-    userId = user?.id
+    userId = user?.id;
   } else userId = param;
 
   const [wSNLoading, setLoading] = useState(false);

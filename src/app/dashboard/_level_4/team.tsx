@@ -166,29 +166,51 @@ export default function TeamsPage() {
           anchor="right"
           open={readAboutTeam}
           onClose={() => setReadAboutTeam(false)}
+          sx={{ width: { xs: '100%', sm: 360 }}}
         >
-          <Box sx={{ width: 360, p: 4, mt: 5 }}>
+          <Box sx={{ width: { xs: '100%', sm: 360 }, pt: 4, px: 2, mt: 5 }}>
             <Box display={'flex'} justifyContent={'end'} onClick={() => setReadAboutTeam(false)}> 
               <CloseSharp color="error" sx={{ boxShadow: 2, borderRadius: '50%', p: 1}} fontSize="large" /> 
             </Box>
             <Typography variant="h6" fontWeight={700} mb={2}>
+              What is a Team?
+            </Typography>
+            <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
+              Group of users [from an organization, business, friend circle, etc] collaborating on tasks, issues & projects together. 
+            </Typography>
+
+            <Divider sx={{ my: 5 }} />
+            <Typography variant="h6" fontWeight={700} mb={2}>
+              Teams Manager
+            </Typography>
+            <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
+              Shows team(s) you have created in the past, or currently manage.
+              Each team has its own members, tickets and workflow. <br/><br/>
+              To create a Team, click<span className="btn">✛ Create Team</span> <br/> <br/>
+              You have a limit number of teams you can create, depending on subscription and tier.
+            </Typography>
+
+            <Divider sx={{ my: 5 }} />
+            <Typography variant="h6" fontWeight={700} mb={2}>
               Why Use Teams?
             </Typography>
             <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
-              Teams allow you to collaborate, manage tickets together,
-              assign responsibilities, and centralize workflows.
+              Teams allow you to collaborate, manage tickets, permissions,
+              assign roles, and centralize workflows.
             </Typography>
 
             <Divider sx={{ my: 5 }} />
 
-            <Typography fontWeight={600}>Best Use Cases</Typography>
+            <Typography variant="h6" fontWeight={700}>
+              Best Use Cases
+            </Typography>
             <ul style={{ padding: 10}}>
               <li>Internal company departments</li>
               <li>Client management groups</li>
               <li>Project-based collaboration</li>
               <li>Shared ticket playground</li>
             </ul>
-            <Typography mt={5} p={1} variant="body2" className="highlight-glow">
+            <Typography my={5} p={1} variant="body2" className="highlight-glow">
               Teams unlock advanced ticket collaboration 
             </Typography>
           </Box>

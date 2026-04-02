@@ -8,6 +8,8 @@ export interface VerifyEmailRequest {
   role: "ADMIN" | "USER";
   name?: string;
   password?: string;
+  refCode?: string;
+  adminToken?: string;
 }
 
 export interface VerifyEmailResponse {

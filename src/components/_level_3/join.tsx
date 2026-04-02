@@ -6,6 +6,7 @@ import { apiPost } from "@/lib/axios";
 import { Role } from '@/types/users';
 import { Button } from '@/assets/buttons';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useAlert } from '@/providers/alert';
 import SignInOptions from '../_level_1/signInOptions';
 import { AuthDivider } from '../_level_1/orAuthDivider';
@@ -26,17 +27,19 @@ import {
 
 export const Join = ({ roleParam }: { roleParam: Role }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { showAlert } = useAlert();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<Role>('USER');
   const [showToken, setShowToken] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const refCode = searchParams.get('ref');
   const [formData, setFormData] = useState({ 
     email: '', 
     password: '', 
     name: '', 
-    adminToken: ''
+    adminToken: '',
   });
 
   useEffect(() => {
@@ -56,6 +59,7 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
       const payload: VerifyEmailRequest = {
         email: formData.email,
         role,
+        ...(refCode ? { refCode } : {}),
         ...(role === "ADMIN" ? { name: formData.name, password: formData.password, adminToken: formData.adminToken } : {}),
       };
 

@@ -1,14 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import api from '@/lib/axios';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/providers/auth';
 import { useAlert } from '@/providers/alert';
+import GenericGridPageLayout from '../_level_1/genGridPageLayout';
+import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 import { 
   Share, 
   PersonAdd, 
   ContentCopy, 
-  CheckCircle 
+  CheckCircle, 
+  People,
+  MonetizationOn,
+  BuildCircle
 } from '@mui/icons-material';
 import { 
   Stack, 
@@ -17,17 +23,39 @@ import {
   CardContent, 
   Button, 
   TextField, 
-  IconButton 
+  IconButton, 
+  Grid,
+  Chip,
+  Divider
 } from '@mui/material';
-import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
-import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 
 export default function ReferPage() {
   const { user } = useAuth();
   const { showAlert } = useAlert();
+  const [inviteLink, setInviteLink] = useState('');
   const [copied, setCopied] = useState(false);
-  
-  const inviteLink = `https://tictask.ng/invite?ref=${encodeURIComponent(user?.email || '')}`;
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) return;
+
+    api.get('/invite/referral/code')
+      .then(({ data }) => {
+        setInviteLink(data.link);
+      })
+      .catch(err => showAlert('Failed to load invite link', 'error'));
+
+    api.get('/invite/referral/stats')
+      .then(({ data }) => {
+        setStats(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, [user]);
 
   const handleCopy = async () => {
     try {
@@ -63,8 +91,9 @@ export default function ReferPage() {
     }
   };
 
-  const handleInviteEmail = () => {
+  const  handleInviteEmail = () => {
     if (!user) return;
+
     const subject = encodeURIComponent('Join me on TicTask 🚀');
     const body = encodeURIComponent(`
       Hey!\n\nI’m inviting you to join me on TicTask — 
@@ -91,15 +120,17 @@ export default function ReferPage() {
           <Card sx={{ borderRadius: 4, boxShadow: '0 6px 20px rgba(0,0,0,0.08)' }}>
             <CardContent>
               <Stack spacing={3}>
-                <Typography variant="body1" fontWeight={501}>
-                  Share your referral link
-                </Typography>
+                <Stack spacing={1}>
+                  <Typography sx={{ opacity: 0.8}}>
+                    Your referral link
+                  </Typography>
 
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <TextField fullWidth value={inviteLink} size="small" InputProps={{ readOnly: true }} />
-                  <IconButton onClick={handleCopy} color="inherit">
-                    {copied ? <CheckCircle color="success" /> : <ContentCopy />}
-                  </IconButton>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <TextField fullWidth value={inviteLink} size="small" InputProps={{ readOnly: true }} />
+                    <IconButton onClick={handleCopy} color="inherit">
+                      {copied ? <CheckCircle color="success" /> : <ContentCopy />}
+                    </IconButton>
+                  </Stack>
                 </Stack>
 
                 <Stack direction={{ xs: 'column', sm: 'row'}} spacing={2}>
@@ -141,6 +172,86 @@ export default function ReferPage() {
             </CardContent>
           </Card>
         </motion.div>
+
+        {!loading && stats && (
+          <Grid container spacing={3} justifyContent="center" alignItems="stretch">
+            <Grid minWidth={150}>
+              <Card sx={{ bgcolor: '#e3f2fd', color: 'black', borderRadius: 4 }}>
+                <CardContent>
+                  <Stack alignItems="center" spacing={1}>
+                    <People color="primary" sx={{ fontSize: 40 }} />
+                    <Typography variant="h4" fontWeight="bold">{stats.totalReferrals || "-"}</Typography>
+                    <Typography>Total Invites</Typography>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid minWidth={150}>
+              <Card sx={{ bgcolor: '#e8f5e9', color: 'black', borderRadius: 4 }}>
+                <CardContent>
+                  <Stack alignItems="center" spacing={1}>
+                    <CheckCircle color="success" sx={{ fontSize: 40 }} />
+                    <Typography variant="h4" fontWeight="bold">{stats.successfulReferrals || "-"}</Typography>
+                    <Typography>Successful Signups</Typography>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid minWidth={150}>
+              <Card sx={{ bgcolor: '#fff3e0', color: 'black', borderRadius: 4 }}>
+                <CardContent>
+                  <Stack alignItems="center" spacing={1}>
+                    <MonetizationOn color="warning" sx={{ fontSize: 40 }} />
+                    <Typography variant="h4" fontWeight="bold">
+                      {stats.totalCreditsEarned || "--"}
+                    </Typography>
+                    <Typography>Credits Earned</Typography>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid minWidth={150}>
+              <Card sx={{ bgcolor: 'whitesmoke', color: 'black', borderRadius: 4, }}>
+                <CardContent>
+                  <Stack alignItems="center" spacing={1}>
+                    <BuildCircle color="secondary" sx={{ fontSize: 40 }} />
+                    <Typography variant="h4" fontWeight="bold"> {stats.totalCreditsEarned > 5 ? "100%" : "--"} </Typography>
+                    <Typography>Community Builder</Typography>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        )}
+
+        {stats?.recentReferrals?.length > 0 && (
+          <Card sx={{ borderRadius: 4 }}>
+            <CardContent>
+              <Typography variant="h6" fontWeight={700} gutterBottom>Recent Invites</Typography>
+              <Divider sx={{ mb: 2 }} />
+              <Stack spacing={2}>
+                {stats.recentReferrals.map((ref: any) => (
+                  <Stack key={ref.id} direction="row" justifyContent="space-between" alignItems="center">
+                    <Stack>
+                      <Typography>{ref.referee.name || ref.referee.email}</Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {new Date(ref.createdAt).toLocaleString()}
+                      </Typography>
+                    </Stack>
+                    <Chip 
+                      label={ref.referee.isOnboarded ? "Joined" : "Pending"} 
+                      color={ref.referee.isOnboarded ? "success" : "default"} 
+                      size="small"
+                    />
+                  </Stack>
+                ))}
+              </Stack>
+            </CardContent>
+          </Card>
+        )}
       </Stack>
     </GenericGridPageLayout>
   );

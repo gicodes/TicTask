@@ -179,32 +179,34 @@ export const ProductShowcase = () => {
           </Typography>
 
           <Typography variant="body2" sx={{ opacity: 0.85 }}>
-            TicTask adapts to how serious your workflow becomes —
-            no forced upgrades, no bloated complexity.
+            TicTask adapts to how serious your workflow becomes — no forced upgrades, no bloated complexity.
           </Typography>
 
           <Grid container spacing={4}>
-            <Grid>
-              <Typography fontWeight={700} gutterBottom>
-                Pro
-              </Typography>
-              <Typography variant="body2">
-                Designed for teams that rely on timing and accountability.
-                Get push notifications, reminders,
-                deeper analytics, and smarter AI assistance.
-              </Typography>
-            </Grid>
-
-            <Grid>
-              <Typography fontWeight={700} gutterBottom>
-                Enterprise
-              </Typography>
-              <Typography variant="body2">
-                Built for organizations running parallel teams.
-                Unlock multiple workspaces, timeline & Gantt views,
-                workflow automation, integrations, and compliance-level control.
-              </Typography>
-            </Grid>
+            {[{ title: 'Pro', desc: "Perfect for small and growing teams. Break down projects into actionable tickets, and enjoy refined AI assistance to stay focused and organized. With up to 3 teams and 6 members in each team." },
+              { title: 'Enterprise', desc: "Built for organizations running parallel (6+) teams. Unlock multiple workspaces, timeline & Gantt views, workflow automation, integrations, and compliance-level control. Supports custom workflow." }
+            ].map((plan) => (
+              <Grid padding={3} borderRadius={2} boxShadow={1}>
+                <Box 
+                  key={plan.title}
+                  borderRadius={999}
+                  maxWidth={200} 
+                  boxShadow={2}
+                  mx={'auto'} 
+                  py={1} 
+                  px={2}
+                  mb={3}
+                >
+                  <Typography fontWeight={700}> {plan.title} </Typography>
+                </Box>
+                
+                {plan.desc && (
+                  <Typography variant="body2" key={plan.title} maxWidth={300}>
+                    {plan.desc}
+                  </Typography>
+                )}
+              </Grid>
+            ))}
           </Grid>
         </Stack>
       </Box>
@@ -238,6 +240,7 @@ export const ProductCTA = () => {
     <section>
       <Box
         py={14}
+        px={1}
         gap={6}
         textAlign="center"
         display="flex"
@@ -269,7 +272,7 @@ export const ProductCTA = () => {
           }}
         />
 
-        <Stack spacing={3} alignItems="center" maxWidth="sm">
+        <Stack spacing={3} padding={1} alignItems="center" maxWidth="sm">
           <Typography variant="h4" fontWeight={800}>
             Ready to experience work without friction?
           </Typography>

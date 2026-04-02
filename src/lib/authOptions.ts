@@ -66,7 +66,7 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, trigger, user }) {
       if (user) {
         const accessTokenExpires = getTokenExpiry(user.accessToken);
 
@@ -84,6 +84,11 @@ export const authOptions: NextAuthOptions = {
 
       if (Date.now() < (token.accessTokenExpires as number) - 60_000) {
         return token;
+      }
+
+      if (trigger === "update" && token?.user?.data) {
+        token.status = token.user.data.status;
+        token.statusUntil = token.user.data.statusUntil;
       }
 
       try {
@@ -127,7 +132,9 @@ export const authOptions: NextAuthOptions = {
 
       session.user = token.user as User;
       session.accessToken = token.accessToken;
-
+      
+      session.user.status = token.status;
+      session.user.statusUntil = token.statusUntil;
       return session;
     },
   },

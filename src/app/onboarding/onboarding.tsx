@@ -2,6 +2,7 @@
 
 import { checkUserPrevSignedIn } from '@/hooks/usePrevSignedIn';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { GenericAPIRes } from '@/types/axios';
 import { UserType } from '@/types/onboarding';
 import { useAlert } from '@/providers/alert';
@@ -12,7 +13,8 @@ import OnboardingUI from './ui';
 
 export default function Onboarding() {
   const router = useRouter();
-  const { login } = useAuth()
+  const { login } = useAuth();
+  const { status } = useSession();
   const { showAlert } = useAlert();
   const params = useSearchParams();
   const token = params.get('token');
@@ -54,8 +56,7 @@ export default function Onboarding() {
 
       return res;
     } catch (err: unknown) {
-      if (typeof err === "object" && err!==null && "message" in err) 
-        setError(err.message as string)
+      if (typeof err === "object" && err!==null && "message" in err) setError(err.message as string)
 
       return { ok: false, message: 'Something went wrong.' };
     } finally {
@@ -73,8 +74,7 @@ export default function Onboarding() {
     }
 
     const data = 
-      step === 1 ? { password }
-      : step === 2 ? userType === 'PERSONAL'
+      step === 1 ? { password } : step === 2 ? userType === 'PERSONAL'
         ? { userType, name, country, phone } : { userType, orgName, industry, teamSize, hqCountry, website, bio }
       : {};
 
@@ -113,15 +113,15 @@ export default function Onboarding() {
         const email = res?.user?.email;
         showAlert("Onboarding Complete. Signing in may take a few seconds...", "success")
 
-        const r = await login({ email: email!, password });
+        const r = await login({ email: email!, password }); 
 
         if (r?.error) {
           setError(r.error || 'Invalid credentials');
         } else {
+          console.log(status)
           setAuthenticated(true);
           router.push('/dashboard');
         }
-
       } else setError(res.message || "Failed to save final step.");
     } catch {
       setError("Something went wrong. Please try again.");

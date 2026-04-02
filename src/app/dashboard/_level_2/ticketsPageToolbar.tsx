@@ -7,14 +7,16 @@ import {
   Stack, 
   Tooltip, 
   TextField,
-  ButtonGroup, 
   InputAdornment,
   useMediaQuery,
   Collapse,
   IconButton,
+  Switch, 
+  FormControlLabel
 } from '@mui/material';
 import { PenTool } from 'lucide-react';
 import { FaPlusCircle, FaList } from 'react-icons/fa';
+import {  } from '@mui/material';
 import { Close, Search, ViewKanban } from '@mui/icons-material';
 
 const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({ 
@@ -49,14 +51,13 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
 
       <Collapse in={!isMobile || open} sx={{ width: '100%'}}>
         <Stack
-          spacing={{ xs: 1, sm: 2, md: 3, lg: 5 }}
+          spacing={{ xs: 2, md: 3, lg: 5 }}
           direction={{ xs: 'column', sm: 'row' }}
           justifyContent="space-between"
           width="100%"
           mb={{ xs: 1, sm: 0 }}
         >
-
-          <section id="search">
+          <section id="search" className='full-width'>
             <TextField
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -78,66 +79,69 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
             />
           </section>
 
-          <section id="view-toggle">
-            <ButtonGroup sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Tooltip 
-                title={view==="board" ? 
-                  "Showing tickets in kanban. Currently on this view" 
-                  : "Switch to kanban for board view"} 
+          <Stack 
+            direction={'row'} 
+            spacing={2} 
+            alignItems="center" 
+            width={'100%'}
+            justifyContent={'space-between'}
+          >
+            <section id="view-toggle">
+              <Tooltip
+                title={
+                  view === "board"
+                    ? "Currently in board view. Toggle to switch to list view"
+                    : "Currently in list view. Toggle to switch to board view"
+                }
                 arrow
               >
-                <div> 
-                  <Button 
-                    onClick={() => setView('board')} 
-                    tone={view === 'board' ? "primary" : 'action'} 
-                    variant={view === 'board' ? 'contained' : 'outlined'} 
-                    startIcon={<ViewKanban />} 
-                    sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0, }} 
-                  > 
-                    BOARD 
-                  </Button> 
-                </div> 
-              </Tooltip> 
-              
-              <Tooltip 
-                arrow
-                title={view==="list" ? 
-                  "Showing tickets as list. Currently on this view" 
-                  : "Switch to list, see tickets in table view"} 
-                
-              > 
-                <div> 
-                  <Button 
-                    tone={view === 'list' ? 'primary' : "action"} 
-                    variant={view === 'list' ? 'contained' : 'outlined'} 
-                    onClick={() => setView('list')} 
-                    startIcon={<FaList />} 
-                    sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, }} 
-                  > 
-                    LIST 
-                  </Button> 
-                </div> 
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={view === 'board'}
+                      onChange={(e) =>
+                        setView(e.target.checked ? 'board' : 'list')
+                      }
+                      color="info"
+                    />
+                  }
+                  label={
+                    <Box sx={{ opacity: 0.8, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      <Box display={{ xs: 'none', sm: 'block'}} mr={0.5} fontSize={15}>
+                        {view === 'board' ? 'Board' : 'List'}
+                      </Box>
+                      {view === 'board' ? <ViewKanban
+                        color={view === 'board' ? 'action' : 'disabled'}
+                      />
+                      : <FaList
+                        color={view === 'list' ? 'var(--primary)' : 'var(--disabled)'}
+                      />
+                    }
+                    </Box>
+                    }
+                  sx={{ m: 0 }}
+                />
               </Tooltip>
-            </ButtonGroup>
-          </section>
+            </section>
 
-          <section 
-            id="new-ticket-btn" 
-            className='flex justify-center'
-          >
-            <Tooltip title="Create New Ticket">
-              <div>
-                <Button
-                  startIcon={<FaPlusCircle />}
-                  onClick={onOpenCreate}
-                  tone="action"
-                  sx={{ minWidth: 196 }}
-                >
-                  NEW TICKET
-                </Button>
-              </div>
-            </Tooltip>
-          </section>
+            <section 
+              id="new-ticket-btn" 
+              className='flex justify-center'
+            >
+              <Tooltip title="Create New Ticket">
+                <div>
+                  <Button
+                    startIcon={<FaPlusCircle />}
+                    onClick={onOpenCreate}
+                    tone="action"
+                    sx={{ minWidth: 196 }}
+                  >
+                    NEW TICKET
+                  </Button>
+                </div>
+              </Tooltip>
+            </section>
+          </Stack>
 
         </Stack>
       </Collapse>

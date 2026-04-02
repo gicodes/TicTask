@@ -104,11 +104,13 @@ export default function TicketTaskCreateFormsDrawer({
     setIsSubmitting(true);
 
     try {
-      if (itemType === "INVOICE" && isPartner || user?.subscription?.active) {
-      } else {        
-        setErr('Invoice is not supported for users without active subscription');
-        setIsSubmitting(false);
-        return;
+      if (itemType === "INVOICE"){
+        if (isPartner || user?.subscription?.active) {
+        } else {        
+          setErr('Invoice is not supported for users without active subscription');
+          setIsSubmitting(false);
+          return;
+        }
       }
 
       if (task && (itemType === 'MEETING' || itemType==='EVENT')) {

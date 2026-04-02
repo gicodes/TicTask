@@ -137,7 +137,7 @@ export default function AiChatPanel({
                 ":before": {
                   content: '""',
                   position: 'absolute',
-                  top: -1,
+                  top: -0.5,
                   right: msg.role === 'user' ? -15 : '',
                   left: msg.role === 'assistant' ? -15 : '',
                   width: 0,
