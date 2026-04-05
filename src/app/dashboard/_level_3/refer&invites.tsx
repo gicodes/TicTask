@@ -71,7 +71,7 @@ export default function ReferPage() {
 
   const handleShare = async () => {
     if (!user) return;
-    const shareUrl = `${window.location.origin}/user/${user.id}`;
+    const shareUrl = inviteLink;
     const shareData = {
       title: `${user.name || 'A user'} invites you to TicTask!`,
       text: 'Check out TicTask and enjoy your personal or team workspace!',
