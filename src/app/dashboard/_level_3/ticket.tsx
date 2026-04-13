@@ -83,6 +83,7 @@ const TicketsPage: React.FC = () => {
       <Box mb={{ xs: 2 }} display="flex" justifyContent="flex-end">
         <Typography
           sx={{ 
+            fontSize: { xs: 11, sm: 14, md: 15},
             opacity: 0.75,
             cursor: 'pointer', 
             height: 'fit-content',

@@ -337,6 +337,10 @@ a.secondary {
   align-items: center;
 }
 
+.indexPitch {
+  margin: 20px 0 40px;
+}
+
 .container {
   padding: 1rem;
   max-width: 1200;

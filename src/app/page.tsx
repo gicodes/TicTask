@@ -6,6 +6,7 @@ import Footer from "@/components/_landing/footer";
 import IndexPitch from "@/components/_landing/pitch";
 import Features from "@/components/_landing/features";
 import ProPlatform from "@/components/_landing/platforms";
+import Demo from "@/components/_landing/demo";
 
 export default function Home() {
   return (
@@ -15,9 +16,9 @@ export default function Home() {
           <Hero />
         </div>
         <div className={styles.demoDisplay}>
-          {/* display animated media of the user flow or onboarding */}
+          <Demo />
         </div>
-        <div className={styles.IndexPitch}>
+        <div className={styles.indexPitch}>
           <IndexPitch />
         </div>
         <div className={styles.proPlatforms}>

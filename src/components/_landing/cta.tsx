@@ -47,7 +47,7 @@ const CTA = () => {
         <Button onClick={GetPro}>
           Get TicTask Pro
         </Button>
-        <Button tone="secondary" onClick={() => router.push('https://calendly.com/your-tictask-schedule')}>
+        <Button tone="secondary" onClick={() => router.push('https://calendly.com/tictask')}>
           Schedule Payment
         </Button>
       </div>

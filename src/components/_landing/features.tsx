@@ -21,7 +21,7 @@ import {
 const features = [
   {
     icon: <MdEditCalendar />,
-    imageUrl: "/features/ticketing-system.png",
+    imageUrl: "/features/99W9e.jpg",
     title: "Your mind ➞ TicTask ➞ Action",
     description:
       "Use TicTask to capture and organize tasks as they come to your mind. Then, easily convert them into actionable events.",
@@ -30,6 +30,19 @@ const features = [
       "Organize your tasks with tags and priorities",
       "Set deadlines and reminders with due date",
       "Convert tasks into calendar events seamlessly",
+    ],
+  },
+  {
+    icon: <MdGroups />,
+    imageUrl: "/features/DHeWP.jpg",
+    title: "Built for Teams",
+    description:
+      "Collaborate with your entire team in real time. Share tasks, assign responsibilities, and keep everyone aligned in one workspace.",
+    bulletPoints: [
+      "Assign tickets and tasks to teammates",
+      "Track progress across shared boards",
+      "Leave comments and feedback on tasks",
+      "Stay in sync with team-wide notifications",
     ],
   },
   {
@@ -46,22 +59,9 @@ const features = [
     ],
   },
   {
-    icon: <MdGroups />,
-    imageUrl: "/features/teams.avif",
-    title: "Built for Teams",
-    description:
-      "Collaborate with your entire team in real time. Share tasks, assign responsibilities, and keep everyone aligned in one workspace.",
-    bulletPoints: [
-      "Assign tickets and tasks to teammates",
-      "Track progress across shared boards",
-      "Leave comments and feedback on tasks",
-      "Stay in sync with team-wide notifications",
-    ],
-  },
-  {
     icon: <MdAdminPanelSettings />,
-    imageUrl: "/features/ticketing_system.jpg",
     title: "Role-Based Access Control",
+    imageUrl: "/features/fVwnw.jpg",
     description:
       "Control who can do what. TicTask ensures secure and organized workflows with flexible roles and permissions.",
     bulletPoints: [
@@ -73,7 +73,7 @@ const features = [
   },
   {
     icon: <MdInsights />,
-    imageUrl: "/features/analytics.avif",
+    imageUrl: "/features/ticketing_system.jpg",
     title: "Insights That Drive Action",
     description:
       "Go beyond task lists. TicTask gives you visibility into how your team is working, helping you improve efficiency.",
@@ -114,7 +114,7 @@ const Features = () => {
                   <Box
                     sx={{
                       borderRadius: 5,
-                      minHeight: 300,
+                      minHeight: 333,
                       width: "100%",
                       minWidth: { xs: 300, sm: 360, md: 420, lg: 500 },              
                       backgroundSize: "cover",
