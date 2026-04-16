@@ -6,7 +6,7 @@ import { Box, Container, Typography, Divider, Link, Stack } from '@mui/material'
 
 const COMPANY = 'TicTask';
 const EFFECTIVE = 'December 31, 2025';
-const CONTACT_EMAIL = 'legal@tictask.ng';
+const CONTACT_EMAIL = 'info@tictask.org';
 
 export default function TermsOfServicePage() {
   return (

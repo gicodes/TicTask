@@ -5,7 +5,7 @@ import { Container, Typography, Divider, Box, Link, Stack } from '@mui/material'
 
 const PRIVACY_COMPANY = 'TicTask';
 const PRIVACY_EFFECTIVE = 'December 31, 2025';
-const PRIVACY_CONTACT = 'privacy@tictask.ng';
+const PRIVACY_CONTACT = 'info@tictask.org';
 
 export default function PrivacyPolicyPage() {
   return (

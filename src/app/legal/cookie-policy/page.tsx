@@ -5,7 +5,7 @@ import { Container, Typography, Box, Divider, Stack, Link } from '@mui/material'
 
 const COOKIE_COMPANY = 'TicTask';
 const COOKIE_EFFECTIVE = 'December 31, 2025';
-const COOKIE_CONTACT = 'privacy@tictask.ng';
+const COOKIE_CONTACT = 'info@tictask.org';
 
 export default function CookiePolicyPage() {
   return (
