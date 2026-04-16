@@ -3,7 +3,7 @@ export const getStatusColor = (status: string) => {
     case 'OPEN':
       return { bg: 'var(--surface-2)', color: 'var(--foreground)' };
     case 'IN_PROGRESS':
-      return { bg: '#1a1a1a', color: '#ccc' };
+      return { bg: '#1a1a1a', color: '#ffffff' };
     case 'RESOLVED':
       return { bg: 'var(--surface-2)', color: 'var(--special)' };
     case 'CLOSED':
