@@ -253,9 +253,9 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
   "High-level Architecture": [
     "TicTask follows a service-oriented architecture (SOA) built on Node.js + TypeScript, with React on the frontend and PostgreSQL as the main datastore.",
     { type: 'list', content: [
-      'Frontend — Next.js + React + MUI + Zustand/ Redux (state management)',
-      'Backend — Express.js/ Fastify services organized by domain',
-      'Database — PostgreSQL with Prisma ORM and schema migrations',
+      'Frontend — React/ Next.js, Typescript, Material UI, and custom hooks for data fetching and state management',
+      'Backend — Express.js/ Node.js services with TypeScript, organized into modular controllers, services, and middleware, following SOLID principles',
+      'Database — PostgreSQL with Prisma ORM for schema management and type safety',
       'Caching — Redis (for sessions, queues, and notifications)',
       'Deployment — Dockerized microservices orchestrated via Docker Compose (dev) or Kubernetes (prod)',
       'CI/CD — GitHub Actions for lint/test/build/deploy pipelines'
@@ -279,8 +279,12 @@ export const CONTENTS_DEV: Record<string, DocTextBlock[]> = {
         |   |    ├── routes/       # API routes
         |   |    ├── validators/   # Validation schemas
         |   |    ├── index.ts      # Server entry point
+        |   |    |   
         |   ├── Dockerfile
         |   ├── tsconfig.json
+        |
+        ├── pdf-services/ 
+        |   ├── src/              # PDF generation microservice (Node.js)
         |
         ├── frontend/             # Frontend app (React/ Nextjs)
         |

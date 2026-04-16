@@ -39,14 +39,14 @@ export const TEAM_BIO = "We are a small, distributed team passionate about build
 
 export const CAREERS = [
   {
-    title: "Frontend Engineer",
-    type: "Full-time • Remote",
-    desc: "Shape how teams experience flow in the browser. Build elegant, performant interfaces using Next.js, TypeScript, and modern design systems.",
-  },
-  {
     title: "Backend Engineer",
     type: "Full-time • Remote",
     desc: "Design scalable APIs and data models that make collaboration effortless. Work with Node.js, Prisma, and distributed systems.",
+  },
+  {
+    title: "DevOps Engineer",
+    type: "Full-time • Remote",
+    desc: "Build and maintain the infrastructure that powers TicTask. Work with AWS, Kubernetes, and CI/CD pipelines to ensure our platform is reliable and scalable.",
   },
   {
     title: "Product Designer",

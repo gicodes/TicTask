@@ -94,6 +94,7 @@ export default function TicketsList({
   const renderStatusCell = (ticket: Ticket) => {
     const status = ticket.status === 'IN_PROGRESS' ? 'IN PROGRESS' : ticket.status;
     const { bg, color } = getStatusColor(ticket.status);
+    
     return (
       <Chip
         label={status}
