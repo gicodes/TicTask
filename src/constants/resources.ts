@@ -77,6 +77,6 @@ export const FAQs = [
   },
   {
     q: "How can I get customer support?",
-    a: "You can reach out to us via the contact-us link (see the bottom of home page or go to company/contact-us page)",
+    a: "You can reach out to us via the contact us page (see bottom of home page)",
   },
 ];

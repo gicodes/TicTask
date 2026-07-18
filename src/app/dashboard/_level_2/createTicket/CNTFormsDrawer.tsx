@@ -97,6 +97,7 @@ export default function TicketTaskCreateFormsDrawer({
   }, [defaultDueDate, itemType, task, methods, registryDefaults]);
   
   const isPartner = user?.data?.approved || user?.partner;
+  const isAdmin = user?.role==="ADMIN"
 
   const onSubmit = async (values: FieldValues) => {
     setErr(null);
@@ -105,7 +106,7 @@ export default function TicketTaskCreateFormsDrawer({
 
     try {
       if (itemType === "INVOICE"){
-        if (isPartner || user?.subscription?.active) {
+        if (isAdmin || isPartner || user?.subscription?.active) {
         } else {        
           setErr('Invoice is not supported for users without active subscription');
           setIsSubmitting(false);

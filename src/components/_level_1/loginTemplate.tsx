@@ -100,7 +100,7 @@ const LoginTemplate = ({
             setRemember={setRemember}
           />
         </Box>
-        {error && (<Typography color="error" fontSize="0.9rem">{message}</Typography>)}
+        {error && (<Typography color="error.main" fontSize="0.9rem" textAlign={'center'}>{message}</Typography>)}
         <Button
           type="submit"
           fullWidth

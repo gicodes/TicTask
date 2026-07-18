@@ -8,6 +8,7 @@ import { useAuth } from '@/providers/auth';
 import { useAlert } from '@/providers/alert';
 import { useThemeMode } from '@/providers/theme';
 import SettingsCard from '../_level_2/settingsCard';
+import AuthRedirectBtn from '@/assets/authRedirectBtn';
 import { forgotPassword } from '@/hooks/useForgotPass';
 import { useSubscription } from '@/providers/subscription';
 import { useUpdateWorkspaceName } from '@/hooks/useUpdateWorkSpaceName';
@@ -40,6 +41,7 @@ export default function SettingsPage() {
   const { user } = useAuth();
   const { showAlert } = useAlert();
   const { mode, setThemeMode } = useThemeMode();
+  const { loading: authLoading, isAuthenticated } = useAuth();
   const { requestPushPermission, unsubscribePush } = useNotifications();
   const { updateWorkspaceName } = useUpdateWorkspaceName(user?.id);
   const { updateEmailNotifications, tNotifsLoading } = useUpdateEmailNotifSetting(user?.id);
@@ -123,6 +125,15 @@ export default function SettingsPage() {
     <Button tone='secondary' onClick={action}>
       Connect {title}
     </Button>
+  );
+  
+
+  if (authLoading) return <Box textAlign={'center'} p={4}> Loading...</Box>;
+
+  if (!isAuthenticated) return (
+     <Box textAlign={'center'} p={4}> 
+      <Typography>Please <AuthRedirectBtn />  to access profile </Typography>
+    </Box>
   );
 
   return (

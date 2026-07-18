@@ -26,10 +26,10 @@ const features = [
     description:
       "Use TicTask to capture and organize tasks as they come to your mind. Then, easily convert them into actionable events.",
     bulletPoints: [
-      "Quickly jot down ideas, tasks as (new) tickets & tasks",
-      "Organize your tasks with tags and priorities",
-      "Set deadlines and reminders with due date",
+      "Quickly jot down ideas as tasks or tickets",
+      "Organize your task by priority and severity",
       "Convert tasks into calendar events seamlessly",
+      "Capture deadline with reminders prior to due date",
     ],
   },
   {
@@ -40,7 +40,7 @@ const features = [
       "Collaborate with your entire team in real time. Share tasks, assign responsibilities, and keep everyone aligned in one workspace.",
     bulletPoints: [
       "Assign tickets and tasks to teammates",
-      "Track progress across shared boards",
+      "Track progress across team workspace",
       "Leave comments and feedback on tasks",
       "Stay in sync with team-wide notifications",
     ],
@@ -55,7 +55,7 @@ const features = [
       "End-to-end encryption",
       "Regular security audits",
       "Two-factor authentication",
-      "Compliance with data protection regulations",
+      "Compliance with regulations",
     ],
   },
   {
@@ -65,7 +65,7 @@ const features = [
     description:
       "Control who can do what. TicTask ensures secure and organized workflows with flexible roles and permissions.",
     bulletPoints: [
-      "Defined roles like team owner, moderator, and member",
+      "Defined roles such as owner/ admin, moderator, member",
       "Granular permissions for sensitive actions",
       "Prevent accidental changes or data loss",
       "Scale your team with confidence",
@@ -147,7 +147,7 @@ const Features = () => {
                         sx={{
                           fontSize: 40,
                           bgcolor: "#222",
-                          color: "#0ff",
+                          color: "#fff",
                           p: 2,
                           borderRadius: "50%",
                         }}

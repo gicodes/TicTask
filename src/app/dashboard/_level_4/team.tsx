@@ -175,8 +175,25 @@ export default function TeamsPage() {
             <Typography variant="h6" fontWeight={700} mb={2}>
               What is a Team?
             </Typography>
-            <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
-              Group of users [from an organization, business, friend circle, etc] collaborating on tasks, issues & projects together. 
+            <Typography
+              variant="body1"
+              sx={{
+                opacity: 0.88,
+                lineHeight: 1.9,
+                fontSize: { xs: '0.96rem', sm: '1rem' },
+              }}
+            >
+              A <strong>Team</strong> is the smallest collaborative unit within Tictask.
+              group of individuals working together toward shared goals, task
+              or project.
+              <br /><br />
+              A team may represent a department in an organization, a business unit, a
+              startup crew, a project squad, or even a circle of friends coordinating
+              activities together.
+              <br /><br />
+              Every team has an owner, several members and a workflow. 
+              Team members are granted basic permissions (i.e. creating, collaborating on tickets), while 
+              owners and administrators can customize workflows, manage members and set permissions and roles. 
             </Typography>
 
             <Divider sx={{ my: 5 }} />
@@ -184,10 +201,14 @@ export default function TeamsPage() {
               Teams Manager
             </Typography>
             <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
-              Shows team(s) you have created in the past, or currently manage.
-              Each team has its own members, tickets and workflow. <br/><br/>
-              To create a Team, click<span className="btn">✛ Create Team</span> <br/> <br/>
-              You have a limit number of teams you can create, depending on subscription and tier.
+              <strong>Team Manager</strong> show team(s) you currently manage, are part of, or created in the past.
+              <br /><br/>
+              Team Managers are team owners by default, and can create or manage multiple teams simulteanously.
+              <br/><strong> Organization</strong> account + <strong>active</strong> subscription is required to fully access teams manager.
+              <br/><br/>
+              To create a Team, click<span className="btn">✛ Create Team</span>
+              <br/><br/>
+              <i>[ Active subscription plan determines the number of teams you can create, and max number of members allowed in each team ]</i>
             </Typography>
 
             <Divider sx={{ my: 5 }} />

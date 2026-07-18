@@ -7,7 +7,8 @@
   NOTE: This file is a developer convenience and can be split into smaller files in the repo.
 */
 
-import { DocTextBlock } from "@/types/resources"
+import { DocTextBlock } from "@/types/resources";
+import { SiGoogle, SiSlack, SiX } from "react-icons/si";
 
 // -------------------------
 // TABLE OF CONTENTS (Public)
@@ -98,16 +99,18 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
   ],
 
   "Login & Account Management": [
-    "Password-based login is the default. We are constantly working to add and improve our sign-in methods.", 
-    { type: 'point', content: "Email and password"},
+    "Password-based login is the default. We are constantly working to add and improve our sign-in methods.",
+    { type: "point", content: "Email and password" },
     "You should store your password safely, as is the primary means of signing in ",
-    { type: 'point', content: "SSO/ Auth providers"},
-    { type: 'badge', content: "Google"},
-    { type: 'badge', content: "Slack", color: 'secondary'},
-    { type: 'badge', content: "X", color: 'default'},
-    '',
-    { type: 'point', content: 'Two-factor authentication (optional) '}, { type: 'inline', content: 'Enables extra security for sensitive workspaces.' }, 
-    { type: 'inline', content: 'To manage, personalize or delete your account, visit '}, { type: 'link', content: ' account management.', href: '/dashboard/settings#account-management' },
+    { type: "point", content: "SSO/ Auth providers" },
+    { type: "icon", content: <SiGoogle color="lightblue" />},
+    { type: "icon", content: <SiSlack color="violet" /> },
+    { type: "icon", content: <SiX  color="white"/> }, 
+    "",
+    { type: "point", content: "Two-factor authentication (optional)" },
+    { type: "inline", content: "Enables extra security for sensitive workspaces." },
+    { type: "inline", content: "To manage, personalize or delete your account, visit " },
+    { type: "link", content: " account management.", href: "/dashboard/settings#account-management" },
     "Password reset uses time-limited links. If you use SSO (Google/Github), we will link the external provider to your account during first login.",
   ],
 

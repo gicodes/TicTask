@@ -23,9 +23,9 @@ export interface FAQProps {
 }
 
 export type DocTextBlock = string | {
-  type: 'link' | 'code' | 'callout' | 'list' | 'badge' | 'point' | 'paragraph' | 'strong' | 'italic' | 'highlight' | 'disabled' | 'outline' | 'inline',
+  type: 'link' | 'code' | 'callout' | 'list' | 'badge' | 'point' | 'paragraph' | 'strong' | 'italic' | 'highlight' | 'disabled' | 'outline' | 'inline' | 'icon',
   title?: string,
-  content: string | string[],
+  content: string | string[] | React.ReactNode,
   href?: string,
   color?: 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success' | 'default'
 }

@@ -52,7 +52,7 @@ export const DocSection = ({
                 return (
                   <section key={i} id={`${i+1}`}>
                     <ul style={{ paddingLeft: '1.5rem', marginBottom: '1rem' }}>
-                      { typeof b.content=="object" && b.content.map((li: string, idx: number) => 
+                      { Array.isArray(b.content) && (b.content as string[]).map((li: string, idx: number) => 
                         <li key={idx}><Typography my={1}>{li}</Typography></li>)}
                     </ul>
                   </section>
@@ -79,6 +79,10 @@ export const DocSection = ({
                     color: b.color === 'default' ? 'var(--background)' : undefined 
                   }} 
                 />
+              case 'icon':
+                return <span key={i} style={{ padding: '0 10px', display: 'inline-flex', alignItems: 'center' }}>
+                  {b.content}
+                </span>
               case 'point':
                 return <Typography key={i} my={1.5} fontWeight={501}>➢ {b.content}</Typography>
               case 'highlight':
