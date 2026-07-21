@@ -34,19 +34,25 @@ export default function TeamsPage() {
 
   const handleCreate = async () => {
     if (!name.trim()) return;
+    setSubmitting((true));
 
-    setSubmitting((true))
+    try {
+      const success = await createTeam({
+        name,
+        description,
+      });
 
-    const success = await createTeam({
-      name,
-      description,
-    });
-
-    if (success) {
-      setOpen(false);
-      setName("");
+      if (success) {
+        setOpen(false);
+        setName("");
+        setSubmitting(false)
+        setDescription("");
+      }
+    } catch {
+      setSubmitting(false);
+      console.log("Something went wrong!")
+    } finally { 
       setSubmitting(false)
-      setDescription("");
     }
   };
 
