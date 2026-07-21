@@ -130,3 +130,18 @@ export const PLANS = [
     highlight: false,
   },
 ];
+
+export const DIFFERENTIAL = [
+  { 
+    title: 'Standard', 
+    desc: "Great for individuals and small teams getting started. Manage tasks, simple projects, and basic collaboration with clean AI support." 
+  },
+  { 
+    title: 'Pro', 
+    desc: "Perfect for small and growing teams. Break down projects into actionable tickets, and enjoy refined AI assistance to stay focused and organized. With up to 3 teams and 6 members in each team." 
+  },
+  { 
+    title: 'Enterprise', 
+    desc: "Built for organizations running parallel (6+) teams. Unlock multiple workspaces, timeline & Gantt views, workflow automation, integrations, and compliance-level control. Supports custom workflow." 
+  }
+];

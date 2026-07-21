@@ -1,21 +1,23 @@
 'use client';
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Box, 
-  Grid, 
   Typography, 
-  Card, 
-  Badge, 
-  Stack 
+  IconButton, 
+  Stack,
+  Chip 
 } from "@mui/material";
 import { 
-  MdAdminPanelSettings, 
   MdEditCalendar, 
   MdGroups, 
-  MdInsights, 
   MdSecurity,
+  MdAdminPanelSettings, 
+  MdInsights,
   MdCheckCircle,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
 } from "react-icons/md";
 
 const features = [
@@ -23,8 +25,7 @@ const features = [
     icon: <MdEditCalendar />,
     imageUrl: "/features/99W9e.jpg",
     title: "Your mind ➞ TicTask ➞ Action",
-    description:
-      "Use TicTask to capture and organize tasks as they come to your mind. Then, easily convert them into actionable events.",
+    description: "Use TicTask to capture and organize tasks as they come to your mind. Then, easily convert them into actionable events.",
     bulletPoints: [
       "Quickly jot down ideas as tasks or tickets",
       "Organize your task by priority and severity",
@@ -36,8 +37,7 @@ const features = [
     icon: <MdGroups />,
     imageUrl: "/features/DHeWP.jpg",
     title: "Built for Teams",
-    description:
-      "Collaborate with your entire team in real time. Share tasks, assign responsibilities, and keep everyone aligned in one workspace.",
+    description: "Collaborate with your entire team in real time. Share tasks, assign responsibilities, and keep everyone aligned in one workspace.",
     bulletPoints: [
       "Assign tickets and tasks to teammates",
       "Track progress across team workspace",
@@ -49,8 +49,7 @@ const features = [
     icon: <MdSecurity />,
     imageUrl: "/features/security.jpeg",
     title: "Security First",
-    description:
-      "Consistently update our systems and software to ensure your experience is safe and secure.",
+    description: "Consistently update our systems and software to ensure your experience is safe and secure.",
     bulletPoints: [
       "End-to-end encryption",
       "Regular security audits",
@@ -60,12 +59,11 @@ const features = [
   },
   {
     icon: <MdAdminPanelSettings />,
-    title: "Role-Based Access Control",
     imageUrl: "/features/fVwnw.jpg",
-    description:
-      "Control who can do what. TicTask ensures secure and organized workflows with flexible roles and permissions.",
+    title: "Role-Based Access Control",
+    description: "Control who can do what. TicTask ensures secure and organized workflows with flexible roles and permissions.",
     bulletPoints: [
-      "Defined roles such as owner/ admin, moderator, member",
+      "Defined roles such as owner/admin, moderator, member",
       "Granular permissions for sensitive actions",
       "Prevent accidental changes or data loss",
       "Scale your team with confidence",
@@ -75,8 +73,7 @@ const features = [
     icon: <MdInsights />,
     imageUrl: "/features/ticketing_system.jpg",
     title: "Insights That Drive Action",
-    description:
-      "Go beyond task lists. TicTask gives you visibility into how your team is working, helping you improve efficiency.",
+    description: "Go beyond task lists. TicTask gives you visibility into how your team is working, helping you improve efficiency.",
     bulletPoints: [
       "Track ticket resolution times",
       "See team workload distribution",
@@ -86,105 +83,215 @@ const features = [
   },
 ];
 
-const Features = () => {
-  return (
-    <Box py={8} maxWidth={1200} mx={'auto'}>
-      <Grid container spacing={8}>
-        {features.map((f, i) => {
-          const isEven = i % 2 === 1;
+const FeaturesShowcase = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-          return (
-            <Grid
-              key={i}
-              container
-              spacing={{xs: 4, sm: 4, md: 4}}
-              width={'100%'}
-              alignItems="center"
-              justifyContent={{ xs: 'center', sm: 'space-around' }}
-              direction={{ xs: "column", md: isEven ? "row-reverse" : "row" }}
-            >
-              <Grid>
-                <motion.div
-                  style={{ overflow: "hidden" }} 
-                  initial={{ opacity: 0, x: isEven ? 60 : -60 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % features.length);
+    }, 4800);
+    return () => clearInterval(timer);
+  }, [isAutoPlaying]);
+
+  const goTo = (index: number) => {
+    setCurrentIndex(index);
+    setIsAutoPlaying(false);
+    setTimeout(() => setIsAutoPlaying(true), 8000);
+  };
+
+  const prev = () => goTo((currentIndex - 1 + features.length) % features.length);
+  const next = () => goTo((currentIndex + 1) % features.length);
+
+  const current = features[currentIndex];
+
+  return (
+    <Box
+      sx={{
+        position: 'relative',
+        minHeight: { xs: 360, md: 669 },
+        display: 'flex',
+        alignItems: 'center',
+        bgcolor: '#0a0a0a',
+        color: 'white',
+        overflow: 'hidden',
+      }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, scale: 1.08 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `url(${current.imageUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'brightness(0.45) contrast(1.1)',
+          }}
+        />
+      </AnimatePresence>
+
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(90deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.75) 50%, rgba(10,10,10,0.85) 100%)',
+          zIndex: 1,
+        }}
+      />
+
+      <Box 
+        sx={{ 
+          marginBottom: 10,
+          position: 'relative', 
+          zIndex: 2, 
+          width: '100%', 
+          px: { xs: 3, md: 6, lg: 10 } }}
+        >
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          spacing={{ xs: 6, md: 10 }}
+          alignItems="center"
+          maxWidth="1400px"
+          mx="auto"
+        >
+          <Box sx={{ flex: 1, maxWidth: { md: '500px', lg: '600px' } }}>
+            <Box minHeight={100}>
+              <Chip
+                label="FEATURES"
+                sx={{
+                  bgcolor: 'rgba(255,255,255,0.1)',
+                  color: 'white',
+                  fontWeight: 600,
+                  mb: 3,
+                  px: 2,
+                }}
+              />
+            </Box>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.6 }}
+              >
+                <Stack direction="row" alignItems="center" gap={2} mb={3}>
                   <Box
                     sx={{
-                      borderRadius: 5,
-                      minHeight: 333,
-                      width: "100%",
-                      minWidth: { xs: 300, sm: 360, md: 420, lg: 500 },              
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      backgroundImage: `url(${f.imageUrl})`,
-                    }}
-                  />
-                </motion.div>
-              </Grid>
-
-              <Grid>
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 200 }}
-                >
-                  <Card
-                    elevation={0}
-                    sx={{
-                      py: 3,
-                      px: 1,
                       width: '100%',
-                      color: "inherit",
-                      borderRadius: "16px",
-                      bgcolor: "transparent",
-                      maxWidth: { xs: 'none', sm: 500, md: 360, lg: 420 }
+                      maxWidth: { xs: 32, sm: 50, md: 64},
+                      height: { xs: 32, sm: 50, md: 64},
+                      borderRadius: '50%',
+                      bgcolor: 'rgba(255,255,255,0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 36,
+                      backdropFilter: 'blur(8px)',
                     }}
                   >
-                    <Stack direction="row" gap={2} mb={2} alignItems="center" px={1}>
-                      <Badge
-                        sx={{
-                          fontSize: 40,
-                          bgcolor: "#222",
-                          color: "#fff",
-                          p: 2,
-                          borderRadius: "50%",
-                        }}
-                      >
-                        {f.icon}
-                      </Badge>
-                      <Typography variant="h5">{f.title}</Typography>
+                    {current.icon}
+                  </Box>
+                  <Typography 
+                    variant="h2" 
+                    fontWeight={800} 
+                    lineHeight={1.1}
+                    fontSize={{ xs: 30, sm: 36, md: 44, lg: 60}}
+                  >
+                    {current.title}
+                  </Typography>
+                </Stack>
+
+                <Typography variant="h6" sx={{ opacity: 0.9, mb: 5, maxWidth: 420 }}>
+                  {current.description}
+                </Typography>
+
+                <Stack spacing={2.5}>
+                  {current.bulletPoints.map((point, idx) => (
+                    <Stack key={idx} direction="row" alignItems="flex-start" gap={2}>
+                      <MdCheckCircle size={22} color="#22ff88" style={{ marginTop: 3 }} />
+                      <Typography variant="body1" sx={{ opacity: 0.95 }}>
+                        {point}
+                      </Typography>
                     </Stack>
+                  ))}
+                </Stack>
+              </motion.div>
+            </AnimatePresence>
+          </Box>
 
-                    <Typography variant="subtitle2" mb={2} px={2}>
-                      {f.description}
-                    </Typography>
+          <Box sx={{ 
+            position: { md: 'absolute' }, 
+            right: { md: 60, lg: 100 }, 
+            bottom: { md: 80 },
+            mt: { xs: 4, md: 0 },
+            zIndex: 3 
+          }}>
+            <Stack direction="row" gap={1.5}>
+              <IconButton
+                onClick={prev}
+                sx={{
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  color: 'white',
+                  '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                }}
+              >
+                <MdKeyboardArrowLeft size={28} />
+              </IconButton>
+              <IconButton
+                onClick={next}
+                sx={{
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  color: 'white',
+                  '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                }}
+              >
+                <MdKeyboardArrowRight size={28} />
+              </IconButton>
+            </Stack>
 
-                    <Box>
-                      {f.bulletPoints.map((point, idx) => (
-                        <Stack
-                          key={idx}
-                          px={1}
-                          mb={1}
-                          gap={1}
-                          direction="row"
-                          alignItems="center"
-                        >
-                          <MdCheckCircle color="darkslateblue" size={15} />
-                          <Typography variant="subtitle2">{point}</Typography>
-                        </Stack>
-                      ))}
-                    </Box>
-                  </Card>
-                </motion.div>
-              </Grid>
-            </Grid>
-          );
-        })}
-      </Grid>
+            <Stack direction="row" justifyContent="center" spacing={1.5} mt={4}>
+              {features.map((_, idx) => (
+                <Box
+                  key={idx}
+                  onClick={() => goTo(idx)}
+                  sx={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    bgcolor: idx === currentIndex ? '#fff' : 'rgba(255,255,255,0.3)',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.7)' },
+                  }}
+                />
+              ))}
+            </Stack>
+          </Box>
+        </Stack>
+      </Box>
+
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          height: 3,
+          bgcolor: 'rgba(255,255,255,0.7)',
+          width: `${((currentIndex + 1) / features.length) * 100}%`,
+          transition: 'width 0.4s linear',
+          zIndex: 4,
+        }}
+      />
     </Box>
   );
 };
 
-export default Features;
+export default FeaturesShowcase;

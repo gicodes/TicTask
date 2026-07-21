@@ -55,7 +55,6 @@ const ProPlatform = () => {
           </Box>
         ))}
         </motion.div>
-        <Divider sx={{ mt: 5, bgcolor:'#555'}} />
     </Box>
   );
 };
