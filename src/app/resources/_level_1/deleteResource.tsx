@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Trash2 } from "lucide-react";
 import { apiDelete } from "@/lib/axios";
 import { useAlert } from "@/providers/alert";
@@ -18,24 +17,36 @@ export default function DeleteButton({
   onDeleted 
 }: DeleteButtonProps
 ) {
-  const { showAlert } = useAlert();
+  const { showAlert, confirm } = useAlert();
 
   const handleDelete = async () => {
-    const confirmDelete = confirm(
-      "Are you sure you want to delete this item? This action cannot be undone."
+    const confirmed = await confirm(
+      "Are you sure you want to delete this item? This action cannot be undone.",
+      "Delete Item"
     );
-    if (!confirmDelete) return;
+
+    if (!confirmed) return;
 
     try {
       await apiDelete(`${endpoint}/${id}`);
+
       onDeleted?.();
-      showAlert("Delete Success", "success")
+
+      showAlert("Delete Success", "success");
     } catch (err) {
-      console.error("❌ Delete failed:", err);
-      let errMessage;
-      if (err && typeof err==="object" && "message" in err) 
-        errMessage = err.message || "Failed to delete the item.";
-      showAlert(`${errMessage}`, "error")
+      console.error(err);
+
+      let errMessage = "Failed to delete item.";
+
+      if (
+        err &&
+        typeof err === "object" &&
+        "message" in err
+      ) {
+        errMessage = String(err.message);
+      }
+
+      showAlert(errMessage, "error");
     }
   };
 

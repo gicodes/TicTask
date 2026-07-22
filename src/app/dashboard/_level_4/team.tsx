@@ -50,7 +50,6 @@ export default function TeamsPage() {
       }
     } catch {
       setSubmitting(false);
-      console.log("Something went wrong!")
     } finally { 
       setSubmitting(false)
     }
@@ -189,17 +188,17 @@ export default function TeamsPage() {
                 fontSize: { xs: '0.96rem', sm: '1rem' },
               }}
             >
-              A <strong>Team</strong> is the smallest collaborative unit within Tictask.
+              A <strong>Team</strong> is the smallest collaborative unit, or
               group of individuals working together toward shared goals, task
               or project.
               <br /><br />
               A team may represent a department in an organization, a business unit, a
-              startup crew, a project squad, or even a circle of friends coordinating
+              startup crew, a project squad, or even a circle of friends cordinating
               activities together.
               <br /><br />
               Every team has an owner, several members and a workflow. 
-              Team members are granted basic permissions (i.e. creating, collaborating on tickets), while 
-              owners and administrators can customize workflows, manage members and set permissions and roles. 
+              Team members are granted basic permissions (i.e. create ticket, manage/ close projects, get alerts on changes), while 
+              owners and administrators can customize workflows, manage members and set these permissions and roles. 
             </Typography>
 
             <Divider sx={{ my: 5 }} />

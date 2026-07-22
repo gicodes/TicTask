@@ -95,7 +95,7 @@ export const extendedMenuItems: Record<string, { label: string; href: string }[]
   Products: [
     { label: "Overview", href: "/product" },
     { label: "Pricing", href: "/product/pricing" },
-    { label: "Demo", href: "/product/demo" },
+    { label: "Demo", href: "/product#demo" },
   ],
   Resources: [
     { label: "Overview", href: "/resources" },
