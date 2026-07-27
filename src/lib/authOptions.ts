@@ -8,6 +8,7 @@ import type { NextAuthOptions } from "next-auth";
 import { getTokenExpiry } from "./jwtDecode";
 import { nextAuthApiPost } from "./axios";
 import { User } from "@/types/users";
+import { getCurrentUser } from "./getCurrentUser";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
@@ -66,9 +67,7 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, trigger, session, user }) {
-        console.log({ trigger, session });
-
+    async jwt({ token, user }) {
       if (user) {
         const accessTokenExpires = getTokenExpiry(user.accessToken);
 
@@ -78,20 +77,6 @@ export const authOptions: NextAuthOptions = {
           refreshToken: user.refreshToken,
           accessTokenExpires,
         };
-      }
-
-      if (trigger === "update") {
-        if (token.user && token.user.data) {
-          if (session?.status) {
-            token.user.data.status = session.status;
-          }
-
-          if (session?.statusUntil) {
-            token.user.data.statusUntil = session.statusUntil;
-          }
-        }
-
-        return token;
       }
 
       if (!token.accessToken || !token.accessTokenExpires) {
@@ -134,14 +119,21 @@ export const authOptions: NextAuthOptions = {
 
     async session({ session, token }) {
       session.error = token.error;
-
-      if (token.user) {
-        session.user = {
-          ...(token.user as User),
-        };      
-      }
-
       session.accessToken = token.accessToken;
+
+      if (token.accessToken) {
+        try {
+          session.user = await getCurrentUser(
+            token.accessToken
+          );
+        } catch (err) {
+          console.error("Failed to hydrate session user:", err);
+
+          if (token.user) {
+            session.user = token.user as User;
+          }
+        }
+      }
 
       return session;
     }

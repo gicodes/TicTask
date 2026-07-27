@@ -28,10 +28,7 @@ export function useUpdateUserStatus(userId: number) {
           },
         });
 
-        await update({
-          status: payload.status,
-          statusUntil: payload.statusUntil
-        });
+        await update();
 
         showAlert(
           `Your status is now set to ${payload.status.toLowerCase()}!`,
