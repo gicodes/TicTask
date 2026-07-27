@@ -222,8 +222,7 @@ export const Join = ({ roleParam }: { roleParam: Role }) => {
         </Box>
 
         { role === 'USER' && <>
-          <AuthDivider />
-          <SignInOptions />
+          {/* <SignInOptions /> */}
         </>}
 
         <Stack mt={10} gap={2} direction="row" justifyContent="space-around" alignItems="center">

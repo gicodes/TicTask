@@ -5,6 +5,7 @@ import { Button } from '@/assets/buttons';
 import { FaXTwitter } from 'react-icons/fa6';
 import { useAlert } from '@/providers/alert';
 import { FaGoogle, FaSlack } from 'react-icons/fa';
+import { AuthDivider } from './orAuthDivider';
 
 interface Option {
   name: string
@@ -49,6 +50,7 @@ const SignInOptions = () => {
 
   return (
     <Stack gap={2}>
+      <AuthDivider />
       { signInOptions.map((option, key) => (
         <Button
           key={key}

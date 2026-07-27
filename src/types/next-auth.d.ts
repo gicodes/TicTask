@@ -26,8 +26,9 @@ declare module "next-auth" {
 
   interface Session extends DefaultSession {
     user: User;
-    accessToken: string | undefined;
+    accessToken: string | undefined | null;
     refreshToken: string;
+    error: unknown;
   }
 
   interface JWTCallbackParams {

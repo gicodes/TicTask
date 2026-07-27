@@ -66,7 +66,9 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, trigger, user }) {
+    async jwt({ token, trigger, session, user }) {
+        console.log({ trigger, session });
+
       if (user) {
         const accessTokenExpires = getTokenExpiry(user.accessToken);
 
@@ -78,17 +80,26 @@ export const authOptions: NextAuthOptions = {
         };
       }
 
+      if (trigger === "update") {
+        if (token.user && token.user.data) {
+          if (session?.status) {
+            token.user.data.status = session.status;
+          }
+
+          if (session?.statusUntil) {
+            token.user.data.statusUntil = session.statusUntil;
+          }
+        }
+
+        return token;
+      }
+
       if (!token.accessToken || !token.accessTokenExpires) {
         return token;
       }
 
       if (Date.now() < (token.accessTokenExpires as number) - 60_000) {
         return token;
-      }
-
-      if (trigger === "update" && token?.user?.data) {
-        token.status = token.user.data.status;
-        token.statusUntil = token.user.data.statusUntil;
       }
 
       try {
@@ -114,29 +125,26 @@ export const authOptions: NextAuthOptions = {
           accessTokenExpires,
         };
       } catch (err) {
-        console.error("Refresh failed:", err);
-
         return {
-          accessToken: null,
-          refreshToken: null,
-          accessTokenExpires: null,
-          user: null,
+          ...token,
+          error: "RefreshAccessTokenError",
         };
       }
     },
 
     async session({ session, token }) {
-      if (!token?.accessToken || !token?.user) {
-        return null as any;
+      session.error = token.error;
+
+      if (token.user) {
+        session.user = {
+          ...(token.user as User),
+        };      
       }
 
-      session.user = token.user as User;
       session.accessToken = token.accessToken;
-      
-      session.user.status = token.status;
-      session.user.statusUntil = token.statusUntil;
+
       return session;
-    },
+    }
   },
 };
 

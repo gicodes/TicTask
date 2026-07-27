@@ -22,6 +22,7 @@ import { SiAwsorganizations } from 'react-icons/si';
 import { GiArmorUpgrade, GiTeamIdea} from 'react-icons/gi';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 import GenericGridPageLayout from '../_level_1/genGridPageLayout';
+import { Plan } from '@/types/subscription';
 
 export default function SubscriptionPage() {
   const { showAlert } = useAlert();
@@ -44,10 +45,11 @@ export default function SubscriptionPage() {
     </Box>
   );
 
-  const handleUpgrade = async (planId: string) => {
+  const handleUpgrade = async (plan: Plan) => {
     try {
-      const res = await upgradeToCheckout(planId);
-      const url = typeof res === 'string' ? res : ((res as { url?: string })?.url ?? '');
+      const res = await upgradeToCheckout(plan, "monthly");
+      const response = res as string | { url?: string };
+      const url = typeof response === 'string' ? response : response.url ?? '';
       if (url) {
         window.location.href = url;
       } else {
@@ -147,7 +149,7 @@ export default function SubscriptionPage() {
                     <Button
                       startIcon={user?.userType==="BUSINESS" ? <GiTeamIdea /> : <GiArmorUpgrade />}
                       variant="contained"
-                      onClick={() => handleUpgrade("PRO_MONTH")}
+                      onClick={() => handleUpgrade(Plan.PRO_MONTH)}
                     >
                       Upgrade to Pro
                     </Button>
@@ -156,7 +158,7 @@ export default function SubscriptionPage() {
                       startIcon={<SiAwsorganizations color='var(--special)' style={{ opacity: 0.85}} />}
                       variant="contained"
                       tone='action'
-                      onClick={() => handleUpgrade("ENTERPRISE_MONTH")}
+                      onClick={() => handleUpgrade(Plan.ENTERPRISE_MONTH)}
                     >
                       Go Enterprise
                     </Button>

@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Alert, Box, Toolbar, Typography } from "@mui/material";
 import { ConfirmVerificationRequest, ConfirmVerificationResponse } from "@/types/axios";
 import { useAuth } from "@/providers/auth";
+import AuthRedirectBtn from "@/assets/authRedirectBtn";
 
 const VerifyPage = () => {
   const { user } = useAuth();
@@ -76,6 +77,7 @@ const VerifyPage = () => {
       mx="auto" 
       minWidth={200} 
       minHeight="75vh" 
+      textAlign={'center'}
       maxWidth={'fit-content'}
     >
       <Alert severity={status==="error" ? 'error' : status==="success" ? 'success' : 'info'}>
@@ -86,6 +88,11 @@ const VerifyPage = () => {
 
       <Toolbar />
 
+      { status==="error" && !user && 
+        <Box p={4}> 
+          <Typography>Please <AuthRedirectBtn />  to access profile </Typography>
+        </Box>
+      }
       { status==="error" &&
         <Button component={Link} href="/" startIcon={<ArrowBack/>}> 
           Go Home

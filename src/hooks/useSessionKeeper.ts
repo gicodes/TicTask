@@ -1,29 +1,43 @@
 'use client';
 
-import { useEffect } from "react";
-import { getSession } from "next-auth/react";
+import { useEffect } from 'react';
+import { getSession } from 'next-auth/react';
 
-export default function useSessionKeeper(interval = 60_000) {
+export function useSessionKeeper(interval = 10 * 60 * 1000) {
   useEffect(() => {
-    let active = true;
-
-    const refreshSession = async () => {
-      if (!active) return;
+    const refresh = async () => {
+      if (
+        !navigator.onLine ||
+        document.visibilityState !== 'visible'
+      ) {
+        return;
+      }
 
       try {
         await getSession();
       } catch (err) {
-        console.error("Session refresh failed", err);
+        if (process.env.NODE_ENV === "development") {
+          console.error("Session refresh failed", err);
+        }
+        // Feature updates will report once to Sentry
       }
     };
 
-    refreshSession();
+    refresh();
 
-    const id = setInterval(refreshSession, interval);
+    const id = setInterval(refresh, interval);
+
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        refresh();
+      }
+    };
+
+    document.addEventListener('visibilitychange', onVisible);
 
     return () => {
-      active = false;
       clearInterval(id);
+      document.removeEventListener('visibilitychange', onVisible);
     };
   }, [interval]);
 }

@@ -2,36 +2,18 @@
 
 import { useAuth } from "@/providers/auth";
 import { apiGet, apiPost } from "@/lib/axios";
-import type { Subscription, Plan } from "@/types/subscription";
+import type { 
+  Subscription, 
+  Plan, 
+  SubscriptionContextProps, 
+  GetSubAPIResponse, 
+  Interval, 
+  PaymentProvider 
+} from "@/types/subscription";
+import { GenericAPIRes } from "@/types/axios";
+import { resolveIntervalFromPlan } from "@/lib/pricing";
 import React, { createContext, useContext, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type {
-  GenericAPIRes,
-  StripeCheckOutSessionRequest,
-  StripeCheckOutSessionResponse,
-  StripeCheckOutSessionResponseData
-} from "@/types/axios";
-import { resolveIntervalFromPlan } from "@/lib/pricing";
-
-type Interval = "monthly" | "yearly";
-
-interface SubscriptionContextProps {
-  subscription: Subscription | null;
-  loading: boolean;
-
-  isActive: boolean;
-  isPro: boolean;
-  isEnterprise: boolean;
-  isFreeTrial: boolean;
-  interval?: Interval;
-
-  refresh(): Promise<void>;
-  cancel(): Promise<void>;
-  upgradeToCheckout(planId: string): Promise<string>;
-
-  getPro(): Promise<{ redirect?: string; message?: string }>;
-  startFreeTrial(days?: number): Promise<Subscription | null>;
-}
 
 const SubscriptionContext = createContext<SubscriptionContextProps | undefined>(undefined);
 
@@ -40,99 +22,90 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const qc = useQueryClient();
 
   const subQuery = useQuery<Subscription | null>({
-  queryKey: ["subscription", user?.id],
-  enabled: Boolean(user?.id),
-  staleTime: 60_000,
-  retry: false,
-  queryFn: async () => {
-    if (!user?.id) return null;
-
-    try {
-      const res = await apiGet<GenericAPIRes>(`/subscription/${user.id}`);
-
-      if (res.status === 404) return null;
-
-      if (!res.ok) {
-        console.warn("Subscription fetch failed");
+    queryKey: ["subscription", user?.id],
+    enabled: Boolean(user?.id),
+    staleTime: 60_000,
+    retry: false,
+    queryFn: async () => {
+      if (!user?.id) return null;
+      
+      try {
+        const res: GetSubAPIResponse = await apiGet(`/subscription/${user.id}`);
+        return res?.data.subscription;
+      } catch {
         return null;
       }
-
-      return res.data as Subscription;
-    } catch {
-      // NEVER crash render tree
-      return null;
-    }
-  },
-});
-
+    },
+  });
 
   const subscription = subQuery.data ?? null;
 
-  const startTrial = useMutation<Subscription | null, Error, number>({
+  const startTrial = useMutation<Subscription, unknown, number>({
     mutationFn: async (days = 14) => {
       if (!user?.id) throw new Error("Not authenticated");
-
       const res = await apiPost<GenericAPIRes>("/subscription", {
         id: user.id,
         plan: "FREE",
         duration: days,
       });
-
-      if (!res.ok) throw new Error(res.error?.message);
+      if (!res.ok) throw new Error(res.error?.message || "Failed to start trial");
+      
       return res.data as Subscription;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["subscription", user?.id] }),
   });
 
-  const createCheckout = useMutation<
-    StripeCheckOutSessionResponseData,
-    Error,
-    string
-  >({
-    mutationFn: async (planId) => {
+  const checkoutMutation = useMutation<{ authorization_url?: string; url?: string }, unknown, { plan: Plan; billingCycle?: Interval; provider?: PaymentProvider }>({
+    mutationFn: async ({ plan, billingCycle = "monthly", provider = "paystack" }) => {
       if (!user?.id) throw new Error("Not authenticated");
 
-      const body: StripeCheckOutSessionRequest = {
+      const res = await apiPost<GenericAPIRes>("/subscription/checkout", {
         userId: user.id,
-        plan: planId,
-      };
+        plan,
+        billingCycle,
+        provider,
+      });
 
-      const res = await apiPost<
-        StripeCheckOutSessionResponse,
-        StripeCheckOutSessionRequest
-      >("/subscription/stripe/checkout", body);
+      if (!res.ok || !res.data) throw new Error(res.error?.message || "Checkout failed");
 
-      if (!res.ok || !res.data) throw new Error(res.error?.message);
       return res.data;
     },
+    onError: (err: any) => console.error("Checkout error:", err),
   });
 
   const cancel = useMutation({
     mutationFn: async () => {
       if (!user?.id) throw new Error("Not authenticated");
       const res = await apiPost<GenericAPIRes>("/subscription/cancel", { id: user.id });
-      if (!res.ok) throw new Error(res.error?.message);
+      if (!res.ok) throw new Error(res.error?.message || "Cancel failed");
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["subscription", user?.id] }),
   });
 
-  const upgradeToCheckout = async (priceId: string) => {
-    const data = await createCheckout.mutateAsync(priceId);
-    return { url: data.url };
+  const upgradeToCheckout = async (plan: Plan, billingCycle: Interval = "monthly") => {
+    const data = await checkoutMutation.mutateAsync({ plan, billingCycle });
+    const redirectUrl = data.authorization_url || data.url;
+
+    if (redirectUrl) {
+      window.location.href = redirectUrl; // Paystack opens in same tab
+      return redirectUrl;
+    }
+    
+    return undefined;
   };
 
   const plan = (subscription?.plan ?? "FREE") as Plan;
-  const isActive = !!subscription?.active;
+  const isActive = !!subscription?.active && (subscription.expiresAt ? new Date(subscription.expiresAt) > new Date() : true);
+  
   const interval = isActive ? resolveIntervalFromPlan(plan) : undefined;
-
-  const isPro = isActive && ["PRO_MONTH", "PRO_ANNUAL"].includes(plan);
-  const isEnterprise = isActive && ["ENTERPRISE_MONTH", "ENTERPRISE_ANNUAL"].includes(plan);
+  const isPro = isActive && plan.toString().includes("PRO");
+  const isEnterprise = isActive && plan.toString().includes("ENTERPRISE");
   const isFreeTrial = isActive && plan === "FREE";
 
   const getPro = async () => {
     if (!user) return { redirect: "/auth/login?returnUrl=/product/pricing" };
     if (isPro || isEnterprise) return { message: "You already have an active Pro subscription." };
-
+    
     return { redirect: "/product/pricing" };
   };
 
@@ -146,10 +119,13 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     isFreeTrial,
     interval,
 
-    refresh: async () => { await subQuery.refetch(); },
-    cancel: async () => cancel.mutateAsync(),    
-    upgradeToCheckout: async (planId: string) => (await upgradeToCheckout(planId)).url,
-    startFreeTrial: async (days) => startTrial.mutateAsync(days || 14),
+    refresh: async () => {
+      await subQuery.refetch();
+    },
+    
+    upgradeToCheckout,
+    cancel: () => cancel.mutateAsync(),
+    startFreeTrial: (days) => startTrial.mutateAsync(days || 14),
     getPro,
   }), [
     subscription,
@@ -158,6 +134,9 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     isEnterprise,
     isFreeTrial,
     interval,
+    subQuery,
+    cancel,
+    startTrial,
   ]);
 
   return (

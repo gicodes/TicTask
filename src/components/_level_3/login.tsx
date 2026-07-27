@@ -24,8 +24,7 @@ export const Login = ({ roleParam }: { roleParam: Role }) => {
           { isUser ? 
             <>
               <CredentialsForm /> 
-              <AuthDivider />
-              <SSOArea />
+              {/* <SSOArea /> */}
             </>
             : (roleParam === "ADMIN" || roleParam === "AGENT") && <AdminLogin />
           }

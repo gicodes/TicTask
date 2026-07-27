@@ -11,7 +11,7 @@ interface UpdateStatusPayload {
 
 export function useUpdateUserStatus(userId: number) {
   const { showAlert } = useAlert();
-  const { update: updateSession } = useSession(); 
+  const { update } = useSession(); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +28,10 @@ export function useUpdateUserStatus(userId: number) {
           },
         });
 
-        await updateSession();
+        await update({
+          status: payload.status,
+          statusUntil: payload.statusUntil
+        });
 
         showAlert(
           `Your status is now set to ${payload.status.toLowerCase()}!`,
@@ -41,7 +44,7 @@ export function useUpdateUserStatus(userId: number) {
       } finally {
         setLoading(false);
       }
-    }, [userId, updateSession, showAlert]
+    }, [userId, update, showAlert]
   );
 
   return {

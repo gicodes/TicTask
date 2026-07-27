@@ -2,7 +2,7 @@
 
 import { checkUserPrevSignedIn } from '@/hooks/usePrevSignedIn';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { GenericAPIRes } from '@/types/axios';
 import { UserType } from '@/types/onboarding';
 import { useAlert } from '@/providers/alert';
@@ -14,7 +14,6 @@ import OnboardingUI from './ui';
 export default function Onboarding() {
   const router = useRouter();
   const { login } = useAuth();
-  const { status } = useSession();
   const { showAlert } = useAlert();
   const params = useSearchParams();
   const token = params.get('token');
@@ -118,9 +117,10 @@ export default function Onboarding() {
         if (r?.error) {
           setError(r.error || 'Invalid credentials');
         } else {
-          console.log(status)
           setAuthenticated(true);
-          router.push('/dashboard');
+          await getSession();
+
+          router.replace("/dashboard");
         }
       } else setError(res.message || "Failed to save final step.");
     } catch {
