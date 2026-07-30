@@ -13,7 +13,7 @@ export const ResponsePage = () => {
   const params = useSearchParams();
   const qc = useQueryClient();
 
-  const status = params.get("status"); // success | failed
+  const status = params.get("status");
   const reference = params.get("reference") || params.get("trxref");
 
   const [message, setMessage] = useState("Processing your payment...");
@@ -26,6 +26,7 @@ export const ResponsePage = () => {
         ? "Payment was cancelled or failed." 
         : "Invalid payment response.");
       setLoading(false);
+
       return;
     }
 
@@ -35,6 +36,8 @@ export const ResponsePage = () => {
         await qc.invalidateQueries({ queryKey: ["subscription"] });
         setMessage("Payment successful! Your subscription is now active.");
         setVerified(true);
+        
+        router.push("/dashboard/subscription");
       } catch (err) {
         setMessage("Payment received but verification is taking longer than expected. Please refresh your dashboard.");
       } finally {
@@ -43,6 +46,7 @@ export const ResponsePage = () => {
     };
 
     verify();
+    
   }, [status, reference, qc]);
 
   return (
