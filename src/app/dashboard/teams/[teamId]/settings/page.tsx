@@ -34,11 +34,9 @@ export default function SettingsPage() {
 
    const subscriptionPlan = 
     team?.subscription?.plan === "STANDARD" ? "Standard"
-    : team?.subscription?.plan === ("PRO_MONTH") ? "Pro x Month" 
-    : team?.subscription?.plan === ("ENTERPRISE_MONTH") ? "Enterprise x Month"
-    : team?.subscription?.plan === ("PRO_ANNUAL") ? "Pro x Year" 
-    : team?.subscription?.plan === ("ENTERPRISE_ANNUAL") ? "Enterprise x Month"
-    : "Pro +"
+    : team?.subscription?.plan === ("PRO") ? "Pro" 
+    : team?.subscription?.plan === ("ENTERPRISE") ? "Enterprise"
+    : "Privileged"
 
   if (!isAuthenticated) return;
 

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/assets/buttons';
 import { useAlert } from '@/providers/alert';
@@ -14,15 +15,21 @@ import {
   CardContent, 
   Divider, 
   Grid, 
-  LinearProgress 
+  LinearProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material';
 import { useAuth } from '@/providers/auth';
+import { Plan, Interval } from '@/types/subscription';
 import { VscLinkExternal } from 'react-icons/vsc';
 import { SiAwsorganizations } from 'react-icons/si';
-import { GiArmorUpgrade, GiTeamIdea} from 'react-icons/gi';
-import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
+import { GiArmorUpgrade, GiTeamIdea } from 'react-icons/gi';
 import GenericGridPageLayout from '../_level_1/genGridPageLayout';
-import { Plan } from '@/types/subscription';
+import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 
 export default function SubscriptionPage() {
   const { showAlert } = useAlert();
@@ -33,52 +40,62 @@ export default function SubscriptionPage() {
     isEnterprise, 
     isFreeTrial, 
     loading, 
+    billingCycle,
     upgradeToCheckout, 
     cancel 
   } = useSubscription();
 
-  if (loading) return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', minHeight: 400 }}>
-      <Typography variant="body1" sx={{ opacity: 0.7 }}>
-        Loading your subscription...
-      </Typography>
-    </Box>
-  );
+  const [open, setOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+  const [cycle, setCycle] = useState<Interval>("monthly");
+  const [upgrading, setUpgrading] = useState(false);
 
-  const handleUpgrade = async (plan: Plan) => {
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', minHeight: 400 }}>
+        <Typography variant="body1" sx={{ opacity: 0.7 }}>
+          Loading your subscription...
+        </Typography>
+      </Box>
+    );
+  }
+
+  const openUpgradeModal = (plan: Plan) => {
+    setSelectedPlan(plan);
+    setCycle(billingCycle || "monthly"); // pre-select current cycle if available
+    setOpen(true);
+  };
+
+  const handleConfirmUpgrade = async () => {
+    if (!selectedPlan) return;
+
     try {
-      const res = await upgradeToCheckout(plan, "monthly");
-      const response = res as string | { url?: string };
-      const url = typeof response === 'string' ? response : response.url ?? '';
+      setUpgrading(true);
+      const url = await upgradeToCheckout(selectedPlan, cycle);
+
       if (url) {
         window.location.href = url;
       } else {
         showAlert('Failed to start checkout session', 'error');
+        setUpgrading(false);
       }
     } catch (e) {
       console.error(e);
       showAlert('Failed to start checkout session', 'error');
+      setUpgrading(false);
     }
   };
 
-  const plan = subscription?.plan ?? "FREE";
+  const plan = subscription?.plan ?? 'FREE';
+  const formattedPlan = plan
+    ? `${plan.charAt(0).toUpperCase()}${plan.slice(1).toLowerCase()}`
+    : plan;
   const expiresAt = subscription?.expiresAt
     ? new Date(subscription.expiresAt).toLocaleDateString()
     : '—';
 
-  const displayPlanName =
-    plan === "PRO_MONTH" || plan === "PRO_ANNUAL"
-      ? "Pro"
-      : plan === "ENTERPRISE_MONTH" || plan === "ENTERPRISE_ANNUAL"
-      ? "Enterprise"
-      : "Free";
-
-  const interval =
-    plan.endsWith("_MONTH") ? "Monthly" :
-    plan.endsWith("_ANNUAL") ? "Annual" : "";
-
   const aiCredits = isEnterprise ? 1000 : isPro ? 500 : 100;
-  const usedCredits = 0; // Feature updates will fetch usage
+  const usedCredits = 0;
   const automationRuns = isEnterprise ? 1000 : isPro ? 200 : 20;
 
   return (
@@ -103,7 +120,7 @@ export default function SubscriptionPage() {
             >
               <Box>
                 <Typography variant="h6" fontWeight={700}>
-                  {displayPlanName} {interval && `(${interval})`}
+                  {formattedPlan} {billingCycle && `(${billingCycle})`}
                 </Typography>
 
                 {isFreeTrial ? (
@@ -123,11 +140,7 @@ export default function SubscriptionPage() {
 
               <Stack direction="row" spacing={2}>
                 {isPro || isEnterprise ? (
-                  <Stack 
-                    direction={{ 
-                      xs: 'column', sm: 'row'}} 
-                      spacing={{xs: 1, sm: 2}}
-                    >
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2 }}>
                     <Button 
                       variant="outlined" 
                       startIcon={<CreditCard />} 
@@ -135,7 +148,6 @@ export default function SubscriptionPage() {
                     >
                       Manage Billing
                     </Button>
-
                     <Button variant="text" tone="error" onClick={cancel}>
                       Cancel
                     </Button>
@@ -147,21 +159,23 @@ export default function SubscriptionPage() {
                     direction={{ xs: 'column', lg: 'row' }} 
                   >
                     <Button
-                      startIcon={user?.userType==="BUSINESS" ? <GiTeamIdea /> : <GiArmorUpgrade />}
+                      startIcon={user?.userType === "BUSINESS" ? <GiTeamIdea /> : <GiArmorUpgrade />}
                       variant="contained"
-                      onClick={() => handleUpgrade(Plan.PRO_MONTH)}
+                      onClick={() => openUpgradeModal(Plan.PRO)}
                     >
                       Upgrade to Pro
                     </Button>
 
-                    <Button
-                      startIcon={<SiAwsorganizations color='var(--special)' style={{ opacity: 0.85}} />}
-                      variant="contained"
-                      tone='action'
-                      onClick={() => handleUpgrade(Plan.ENTERPRISE_MONTH)}
-                    >
-                      Go Enterprise
-                    </Button>
+                    {user?.organization && (
+                      <Button
+                        startIcon={<SiAwsorganizations color='var(--special)' style={{ opacity: 0.85 }} />}
+                        variant="contained"
+                        tone='action'
+                        onClick={() => openUpgradeModal(Plan.ENTERPRISE)}
+                      >
+                        Go Enterprise
+                      </Button>
+                    )}
                   </Stack>
                 )}
               </Stack>
@@ -239,6 +253,63 @@ export default function SubscriptionPage() {
           </CardContent> 
         </Card>           
       </motion.div>
+
+      <Dialog 
+        open={open} 
+        onClose={() => !upgrading && setOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle fontWeight={700}>
+          Choose Billing Cycle
+        </DialogTitle>
+
+        <DialogContent>
+          <Typography variant="body2" sx={{ opacity: 0.7, mb: 3 }}>
+            Select how you want to be billed for the{' '}
+            <strong>{selectedPlan}</strong> plan.
+          </Typography>
+
+          <ToggleButtonGroup
+            value={cycle}
+            exclusive
+            onChange={(_, val) => val && setCycle(val)}
+            fullWidth
+            sx={{
+              "& .MuiToggleButton-root": {
+                textTransform: "none",
+                py: 1.5,
+              },
+            }}
+          >
+            <ToggleButton value="monthly">
+              Monthly
+            </ToggleButton>
+            <ToggleButton value="yearly">
+              Yearly <Typography component="span" variant="caption" sx={{ ml: 0.5, opacity: 0.7 }}>
+                (Save 20%)
+              </Typography>
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </DialogContent>
+
+        <DialogActions sx={{ px: 3, pb: 3 }}>
+          <Button 
+            variant="text" 
+            onClick={() => setOpen(false)} 
+            disabled={upgrading}
+          >
+            Cancel
+          </Button>
+          <Button 
+            variant="contained" 
+            onClick={handleConfirmUpgrade}
+            disabled={upgrading}
+          >
+            {upgrading ? "Redirecting..." : "Continue to Payment"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </GenericGridPageLayout>
   );
 }

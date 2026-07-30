@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import CheckoutResult from "./res/ui2";
+import CheckoutResult from "./r/ui2";
 import { Suspense } from "react";
 
 export default function Page() {

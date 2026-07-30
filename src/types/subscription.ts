@@ -3,11 +3,12 @@ import { User } from "./users";
 export enum Plan {
   FREE = "FREE",
   STANDARD = "STANDARD",
-  PRO_MONTH = "PRO_MONTH",
-  PRO_ANNUAL = "PRO_ANNUAL",
-  ENTERPRISE_MONTH = "ENTERPRISE_MONTH",
-  ENTERPRISE_ANNUAL = "ENTERPRISE_ANNUAL",
+  PRO = "PRO",
+  ENTERPRISE = "ENTERPRISE",
 }
+
+export type Interval = "monthly" | "yearly";
+export type PaymentProvider = "paystack" | "flutterwave" | "stripe";
 
 export type Subscription = {
   id: number;
@@ -25,8 +26,6 @@ export type Subscription = {
   stripeSubscriptionId: string;
   stripeCustomerId: string;
   
-  interval: "monthly" | 'yearly';
-
   startedAt: string;
   expiresAt: string;
   createdAt: string;
@@ -45,9 +44,6 @@ export interface PushSubscriptions {
   createdAt: string;
   updatedAt: string;
 }
-
-export type Interval = "monthly" | "yearly";
-export type PaymentProvider = "paystack" | "flutterwave" | "stripe";
 
 export interface GetSubAPIResponse {
   ok: boolean,
@@ -73,7 +69,7 @@ export interface SubscriptionContextProps {
   isPro: boolean;
   isEnterprise: boolean;
   isFreeTrial: boolean;
-  interval?: Interval;
+  billingCycle?: Interval;
 
   refresh(): Promise<void>;
   cancel(): Promise<void>;

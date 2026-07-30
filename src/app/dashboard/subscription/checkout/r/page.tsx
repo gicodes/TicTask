@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { ResponsePage } from "../ui";
+import { ResponsePage } from "./ui";
 import { Suspense } from "react";
 
 export default function Page() {

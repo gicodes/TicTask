@@ -72,7 +72,6 @@ export const PLANS = [
     highlight: false,
   },
   {
-
     name: "Standard",
     plan: "STANDARD",
     desc: "For business personel & small teams (2-5 members)",

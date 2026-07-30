@@ -19,11 +19,11 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Button } from "@/assets/buttons";
-import { PLAN_IDS } from "@/lib/pricing";
 import { useAuth } from "@/providers/auth";
 import { CheckCircle } from "lucide-react";
 import { PLANS } from "@/constants/product";
 import { useRouter } from "next/navigation";
+import { Plan } from "@/types/subscription";
 import { useAlert } from "@/providers/alert";
 import { useSubscription } from "@/providers/subscription";
 
@@ -31,37 +31,37 @@ export default function PricingSection() {
   const router = useRouter();
   const { user } = useAuth();
   const { showAlert } = useAlert();
-  const { subscription, upgradeToCheckout, interval } = useSubscription();
+  const { subscription, upgradeToCheckout, billingCycle } = useSubscription();
   const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
   const isBusiness = user?.userType === "BUSINESS";
 
-  const plans = isBusiness
-    ? PLANS.filter((p) => ["Standard", "Pro", "Enterprise"].includes(p.name)) : PLANS;
-    
+  const plans = PLANS.filter(
+    (p) => p.name !== "Enterprise" && (isBusiness ? ["Standard", "Pro"].includes(p.name) : true)
+  );
+
   const activePlan = subscription?.plan?.toLowerCase();
 
   const getButtonLabel = (plan: string) => {
     if (!user) return "Continue";
 
     if (activePlan === plan.toLowerCase()) {
-      if (interval === "monthly" && billing === "yearly")
+      if (billingCycle === "monthly" && billing === "yearly")
         return "Switch to Annual";
       return "Extend Subscription";
     }
     return "Select Plan";
   };
 
-  const handleCheckout = async (plan: string) => {
+  const handleCheckout = async (plan: Plan) => {
     if (!user) {
       showAlert("Please login to continue", "warning");
       router.push("/auth/login?returnUrl=/product/pricing");
       return;
     }
 
-    const planKey = plan.toLowerCase() as keyof typeof PLAN_IDS;
-    const planId = PLAN_IDS[planKey][billing];
-    const url = await upgradeToCheckout(planId);
-    router.push(url);
+    const url = await upgradeToCheckout(plan, billing);
+    
+    router.push(url!);
   };
 
   return (
@@ -162,7 +162,7 @@ export default function PricingSection() {
                       ))}
                     </List>
 
-                    <Button onClick={() => handleCheckout(plan.name)}>
+                    <Button onClick={() => handleCheckout(plan.name.toUpperCase() as Plan)}>
                       {getButtonLabel(plan.plan)}
                     </Button>
                   </Stack>

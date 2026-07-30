@@ -11,7 +11,6 @@ import type {
   PaymentProvider 
 } from "@/types/subscription";
 import { GenericAPIRes } from "@/types/axios";
-import { resolveIntervalFromPlan } from "@/lib/pricing";
 import React, { createContext, useContext, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -49,13 +48,16 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
         duration: days,
       });
       if (!res.ok) throw new Error(res.error?.message || "Failed to start trial");
-      
       return res.data as Subscription;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["subscription", user?.id] }),
   });
 
-  const checkoutMutation = useMutation<{ authorization_url?: string; url?: string }, unknown, { plan: Plan; billingCycle?: Interval; provider?: PaymentProvider }>({
+  const checkoutMutation = useMutation<
+    { authorization_url?: string; url?: string },
+    unknown,
+    { plan: Plan; billingCycle?: Interval; provider?: PaymentProvider }
+  >({
     mutationFn: async ({ plan, billingCycle = "monthly", provider = "paystack" }) => {
       if (!user?.id) throw new Error("Not authenticated");
 
@@ -67,10 +69,8 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       });
 
       if (!res.ok || !res.data) throw new Error(res.error?.message || "Checkout failed");
-
       return res.data;
     },
-    onError: (err: any) => console.error("Checkout error:", err),
   });
 
   const cancel = useMutation({
@@ -82,30 +82,31 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     onSuccess: () => qc.invalidateQueries({ queryKey: ["subscription", user?.id] }),
   });
 
-  const upgradeToCheckout = async (plan: Plan, billingCycle: Interval = "monthly") => {
-    const data = await checkoutMutation.mutateAsync({ plan, billingCycle });
+  const plan = (subscription?.plan ?? "FREE") as Plan;
+  const billingCycle = (subscription?.billingCycle as Interval) || undefined;
+
+  const isActive =
+    !!subscription?.active &&
+    (subscription.expiresAt ? new Date(subscription.expiresAt) > new Date() : true);
+
+  const isPro = isActive && plan === "PRO";
+  const isEnterprise = isActive && plan === "ENTERPRISE";
+  const isFreeTrial = isActive && plan === "FREE";
+
+  const upgradeToCheckout = async (plan: Plan, cycle: Interval = "monthly") => {
+    const data = await checkoutMutation.mutateAsync({ plan, billingCycle: cycle });
     const redirectUrl = data.authorization_url || data.url;
 
     if (redirectUrl) {
-      window.location.href = redirectUrl; // Paystack opens in same tab
+      window.location.href = redirectUrl;
       return redirectUrl;
     }
-    
     return undefined;
   };
-
-  const plan = (subscription?.plan ?? "FREE") as Plan;
-  const isActive = !!subscription?.active && (subscription.expiresAt ? new Date(subscription.expiresAt) > new Date() : true);
-  
-  const interval = isActive ? resolveIntervalFromPlan(plan) : undefined;
-  const isPro = isActive && plan.toString().includes("PRO");
-  const isEnterprise = isActive && plan.toString().includes("ENTERPRISE");
-  const isFreeTrial = isActive && plan === "FREE";
 
   const getPro = async () => {
     if (!user) return { redirect: "/auth/login?returnUrl=/product/pricing" };
     if (isPro || isEnterprise) return { message: "You already have an active Pro subscription." };
-    
     return { redirect: "/product/pricing" };
   };
 
@@ -117,12 +118,9 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     isPro,
     isEnterprise,
     isFreeTrial,
-    interval,
+    billingCycle,
 
-    refresh: async () => {
-      await subQuery.refetch();
-    },
-    
+    refresh: async () => { await subQuery.refetch(); },
     upgradeToCheckout,
     cancel: () => cancel.mutateAsync(),
     startFreeTrial: (days) => startTrial.mutateAsync(days || 14),
@@ -133,7 +131,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     isPro,
     isEnterprise,
     isFreeTrial,
-    interval,
+    billingCycle,
     subQuery,
     cancel,
     startTrial,
