@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from "@/providers/auth";
-import { apiGet, apiPost } from "@/lib/axios";
+import { apiDelete, apiGet, apiPost } from "@/lib/axios";
 import type { 
   Subscription, 
   Plan, 
@@ -18,10 +18,13 @@ const SubscriptionContext = createContext<SubscriptionContextProps | undefined>(
 
 export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
+
+  const baseRoute = "/subscription";
+
   const qc = useQueryClient();
 
-  const subQuery = useQuery<Subscription | null>({
-    queryKey: ["subscription", user?.id],
+  const subQuery = useQuery({
+    queryKey: ["subscription"],
     enabled: Boolean(user?.id),
     staleTime: 60_000,
     retry: false,
@@ -29,8 +32,9 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       if (!user?.id) return null;
       
       try {
-        const res: GetSubAPIResponse = await apiGet(`/subscription/${user.id}`);
-        return res?.data.subscription;
+        const res = await apiGet<GetSubAPIResponse>(baseRoute);
+
+        return res.data ?? null;
       } catch {
         return null;
       }
@@ -42,11 +46,13 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const startTrial = useMutation<Subscription, unknown, number>({
     mutationFn: async (days = 14) => {
       if (!user?.id) throw new Error("Not authenticated");
-      const res = await apiPost<GenericAPIRes>("/subscription", {
-        id: user.id,
+      if (user.userType==="BUSINESS") throw new Error("Business account requires a paid subscription");
+      
+      const res = await apiPost<GenericAPIRes>(baseRoute, {
         plan: "FREE",
         duration: days,
       });
+
       if (!res.ok) throw new Error(res.error?.message || "Failed to start trial");
       return res.data as Subscription;
     },
@@ -54,18 +60,17 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   });
 
   const checkoutMutation = useMutation<
-    { authorization_url?: string; url?: string },
-    unknown,
+    { authorization_url?: string; url?: string }, unknown,
     { plan: Plan; billingCycle?: Interval; provider?: PaymentProvider }
   >({
     mutationFn: async ({ plan, billingCycle = "monthly", provider = "paystack" }) => {
       if (!user?.id) throw new Error("Not authenticated");
 
-      const res = await apiPost<GenericAPIRes>("/subscription/checkout", {
-        userId: user.id,
+      const res = await apiPost<GenericAPIRes>(`${baseRoute}/checkout`, {
         plan,
         billingCycle,
         provider,
+        email: user.email
       });
 
       if (!res.ok || !res.data) throw new Error(res.error?.message || "Checkout failed");
@@ -76,17 +81,17 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const cancel = useMutation({
     mutationFn: async () => {
       if (!user?.id) throw new Error("Not authenticated");
-      const res = await apiPost<GenericAPIRes>("/subscription/cancel", { id: user.id });
+      const res = await apiDelete<GenericAPIRes>(`${baseRoute}`);
+
       if (!res.ok) throw new Error(res.error?.message || "Cancel failed");
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["subscription", user?.id] }),
   });
 
-  const plan = (subscription?.plan ?? "FREE") as Plan;
+  const plan = subscription?.plan;
   const billingCycle = (subscription?.billingCycle as Interval) || undefined;
 
-  const isActive =
-    !!subscription?.active &&
+  const isActive = !!subscription?.active &&
     (subscription.expiresAt ? new Date(subscription.expiresAt) > new Date() : true);
 
   const isPro = isActive && plan === "PRO";
@@ -113,11 +118,12 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const value = useMemo<SubscriptionContextProps>(() => ({
     subscription,
     loading: subQuery.isLoading,
-
     isActive,
+
     isPro,
     isEnterprise,
     isFreeTrial,
+
     billingCycle,
 
     refresh: async () => { await subQuery.refetch(); },

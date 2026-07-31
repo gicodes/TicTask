@@ -32,27 +32,15 @@ export type Subscription = {
 
   teamId: number;
   userId: number;
-};
 
-export interface PushSubscriptions {
-  id: number;
-  enabled: boolean;
-  user: User;
-  userId: number;
-  p256dh: string;
-  auth: string;
-  createdAt: string;
-  updatedAt: string;
-}
+  daysRemaining?: number;
+  expired?: string | Date;
+};
 
 export interface GetSubAPIResponse {
   ok: boolean,
   subscribed: true,
-  data: {
-    subscription: Subscription;
-    daysRemaining: number;
-    expired: string;
-  }
+  data: Subscription,
 }
 
 export interface CheckoutResData {
@@ -77,4 +65,20 @@ export interface SubscriptionContextProps {
 
   startFreeTrial(days?: number): Promise<Subscription | null>;
   getPro(): Promise<{ redirect?: string; message?: string }>;
+}
+
+export interface PushSubscriptions {
+  id: number;
+  enabled: boolean;
+  user: User;
+  userId: number;
+  p256dh: string;
+  auth: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TeamSubscriptionProviderProps {
+  teamId: number;
+  children: React.ReactNode;
 }

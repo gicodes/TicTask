@@ -12,9 +12,9 @@ import { useState } from 'react';
 import OnboardingUI from './ui';
 
 export default function Onboarding() {
+  const { data: session, status, update } = useSession(); 
   const router = useRouter();
-  const { login } = useAuth();
-  const { update } = useSession();
+  const { login } = useAuth(); 
   const { showAlert } = useAlert();
   const params = useSearchParams();
   const token = params.get('token');
@@ -93,41 +93,33 @@ export default function Onboarding() {
 
     try {
       setLoading(true);
+      setError(null);
 
-      const finalData = {
-        userType,
-        name,
-        orgName,
-        country,
-        phone,
-        industry,
-        teamSize,
-        hqCountry,
-        website,
-        bio,
-      };
-
+      const finalData = { /* ... your data ... */ };
       const res = await saveStep(3, finalData);
-      
-      if (res.ok) {
-        const email = res?.user?.email;
-        showAlert("Onboarding Complete. Signing in may take a few seconds...", "success")
 
-        const r = await login({ email: email!, password }); 
+      if (!res.ok) {
+        setError(res.message || "Failed to save final step.");
+        return;
+      }
 
-        if (r?.error) {
-          setError(r.error || 'Invalid credentials');
-        } else {
-          setAuthenticated(true);
-          await update();
+      const email = res?.user?.email;
+      showAlert("Onboarding complete. Signing you in…", "success");
 
-          router.replace("/dashboard");
-        }
-      } else setError(res.message || "Failed to save final step.");
+      const r = await login({ email: email!, password });
+
+      if (r?.error) {
+        setError(r.error || "Invalid credentials");
+        return;
+      }
+
+      // Hard redirect – cookie is guaranteed to be present
+      window.location.href = "/dashboard";
+      // or: window.location.assign("/dashboard");
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 

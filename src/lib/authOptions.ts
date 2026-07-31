@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         const accessTokenExpires = getTokenExpiry(user.accessToken);
 
@@ -79,11 +79,15 @@ export const authOptions: NextAuthOptions = {
         };
       }
 
-      if (!token.accessToken || !token.accessTokenExpires) {
-        return token;
+      if (trigger === "update") {
+        return { ...token };
       }
 
-      if (Date.now() < (token.accessTokenExpires as number) - 60_000) {
+      if (
+        token.accessToken &&
+        token.accessTokenExpires &&
+        Date.now() < (token.accessTokenExpires as number) - 60_000
+      ) {
         return token;
       }
 
@@ -92,7 +96,12 @@ export const authOptions: NextAuthOptions = {
           `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
           {
             method: "POST",
-            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              refreshToken: token.refreshToken,
+            }),
           }
         );
 
@@ -102,12 +111,22 @@ export const authOptions: NextAuthOptions = {
 
         const data = await res.json();
 
-        const accessTokenExpires = getTokenExpiry(data.accessToken);
+        const newAccessToken = data.accessToken ?? data.access_token;
+
+        const newRefreshToken = data.refreshToken ?? data.refresh_token ?? token.refreshToken;
+
+        if (!newAccessToken) {
+          throw new Error("Refresh response missing accessToken");
+        }
+
+        const accessTokenExpires = getTokenExpiry(newAccessToken);
 
         return {
           ...token,
-          accessToken: data.accessToken,
+          accessToken: newAccessToken,
+          refreshToken: newRefreshToken,
           accessTokenExpires,
+          error: undefined,
         };
       } catch (err) {
         return {
@@ -121,7 +140,11 @@ export const authOptions: NextAuthOptions = {
       session.error = token.error;
       session.accessToken = token.accessToken;
 
-      if (token.accessToken) {
+      if (token.user) {
+        session.user = token.user as User;
+      }
+
+      if (token.accessToken && !token.error) {
         try {
           session.user = await getCurrentUser(
             token.accessToken

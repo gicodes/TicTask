@@ -1,12 +1,12 @@
 'use client';
 
-import { useRouter, useSearchParams } from "next/navigation";
 import { Box, Alert, Typography, CircularProgress } from "@mui/material";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Button } from "@/assets/buttons";
-import Link from "next/link";
-import { useQueryClient } from "@tanstack/react-query";
 import { apiPost } from "@/lib/axios";
+import Link from "next/link";
 
 export const ResponsePage = () => {
   const router = useRouter();
@@ -32,8 +32,8 @@ export const ResponsePage = () => {
 
     const verify = async () => {
       try {
-        await apiPost("/subscription/verify", { reference });
-        await qc.invalidateQueries({ queryKey: ["subscription"] });
+        await apiPost("/subscription/payment/verify", { reference });
+        await qc.invalidateQueries({ queryKey: ["subscription", "me"] });
         setMessage("Payment successful! Your subscription is now active.");
         setVerified(true);
         
