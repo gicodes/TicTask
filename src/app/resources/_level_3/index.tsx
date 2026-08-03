@@ -1,8 +1,12 @@
 "use client";
 
-import { Card, CardContent, Box, Stack, Typography, Button } from "@mui/material";
+import { Card, CardContent, Box, Stack, Typography, IconButton} from "@mui/material";
 import { RESOURCES } from "@/constants/resources";
+import { Button } from "@/assets/buttons";
+import { useRef } from "react";
 import Link from "next/link";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 export const ResourceHero = ({
   title, subtitle
@@ -33,122 +37,217 @@ export const ResourceHero = ({
 }
 
 export const ResourceGrid = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: "left" | "right") => {
+    if (!scrollRef.current) return;
+    const cardWidth = 340; // approximate card + gap
+    scrollRef.current.scrollBy({
+      left: direction === "left" ? -cardWidth : cardWidth,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <section>
       <Box
-        display="flex"
-        flexWrap="wrap"
-        justifyContent="center"
-        maxWidth="lg"
-        mx="auto"
-        gap={4}
-        px={{ xs: 2, sm: 3 }}
-        py={10}
+        sx={{
+          position: "relative",
+          maxWidth: "100%",
+          py: { xs: 6, md: 10 },
+          overflow: "hidden",
+        }}
       >
-        {RESOURCES.map((r) => (
-          <Card
-            key={r.title}
-            elevation={0}
+        {/* Navigation Arrows */}
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            position: "absolute",
+            top: "50%",
+            left: 0,
+            right: 0,
+            transform: "translateY(-50%)",
+            justifyContent: "space-between",
+            px: { md: 2, lg: 4 },
+            zIndex: 10,
+            pointerEvents: "none",
+          }}
+        >
+          <IconButton
+            onClick={() => scroll("left")}
             sx={{
-              position: "relative",
-              width: "100%",
-              maxWidth: 380,
-              minHeight: 280,
-              borderRadius: 3,
-              overflow: "hidden",
-              cursor: "pointer",
-              backgroundImage: `url(${r.image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+              pointerEvents: "auto",
+              bgcolor: "rgba(255,255,255,0.9)",
+              backdropFilter: "blur(8px)",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+              width: 48,
+              height: 48,
               "&:hover": {
-                transform: "translateY(-8px)",
-                boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
-                "& .overlay": {
-                  background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.2) 100%)",
-                },
-                "& .content": {
-                  transform: "translateY(0)",
-                },
+                bgcolor: "white",
+                transform: "scale(1.08)",
               },
+              transition: "all 0.25s ease",
             }}
           >
-            <Box
-              className="overlay"
-              sx={{
-                position: "absolute",
-                inset: 0,
-                background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.15) 100%)",
-                transition: "background 0.35s ease",
-              }}
-            />
+            <ArrowBackIosNewIcon fontSize="small" />
+          </IconButton>
 
-            <CardContent
-              className="content"
+          <IconButton
+            onClick={() => scroll("right")}
+            sx={{
+              pointerEvents: "auto",
+              bgcolor: "rgba(255,255,255,0.9)",
+              backdropFilter: "blur(8px)",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+              width: 48,
+              height: 48,
+              "&:hover": {
+                bgcolor: "white",
+                transform: "scale(1.08)",
+              },
+              transition: "all 0.25s ease",
+            }}
+          >
+            <ArrowForwardIosIcon fontSize="small" />
+          </IconButton>
+        </Box>
+
+        {/* Horizontal Scroll Track */}
+        <Box
+          ref={scrollRef}
+          sx={{
+            display: "flex",
+            gap: 3,
+            overflowX: "auto",
+            scrollSnapType: "x mandatory",
+            scrollBehavior: "smooth",
+            px: { xs: 2, sm: 3, md: 6, lg: 8 },
+            pb: 2, // room for scrollbar / shadow
+            // Hide scrollbar but keep functionality
+            scrollbarWidth: "none",
+            "&::-webkit-scrollbar": { display: "none" },
+            // Soft edge fade (optional polish)
+            maskImage: {
+              xs: "none",
+              md: "linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%)",
+            },
+          }}
+        >
+          {RESOURCES.map((r) => (
+            <Card
+              key={r.title}
+              elevation={0}
               sx={{
                 position: "relative",
-                zIndex: 1,
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-end",
-                p: 3.5,
-                color: "white",
-                transform: "translateY(4px)",
-                transition: "transform 0.35s ease",
+                flex: "0 0 auto",
+                width: { xs: "85vw", sm: 320, md: 340 },
+                minHeight: 300,
+                borderRadius: 3.5,
+                overflow: "hidden",
+                cursor: "pointer",
+                scrollSnapAlign: "center",
+                backgroundImage: `url(${r.image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                boxShadow: "0 12px 32px rgba(0,0,0,0.18)",
+
+                "&:hover": {
+                  transform: "translateY(-10px) scale(1.02)",
+                  boxShadow: "0 24px 48px rgba(0,0,0,0.28)",
+                  "& .overlay": {
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.2) 100%)",
+                  },
+                  "& .content": {
+                    transform: "translateY(0)",
+                  },
+                },
               }}
             >
-              <Typography
-                variant="h5"
-                fontWeight={700}
+              {/* Gradient Overlay */}
+              <Box
+                className="overlay"
                 sx={{
-                  mb: 1,
-                  letterSpacing: "-0.02em",
-                  textShadow: "0 2px 8px rgba(0,0,0,0.4)",
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.38) 55%, rgba(0,0,0,0.18) 100%)",
+                  transition: "background 0.4s ease",
                 }}
-              >
-                {r.title}
-              </Typography>
+              />
 
-              <Typography
-                variant="body2"
+              <CardContent
+                className="content"
                 sx={{
-                  mb: 2.5,
-                  opacity: 0.9,
-                  lineHeight: 1.5,
-                  textShadow: "0 1px 4px rgba(0,0,0,0.3)",
-                }}
-              >
-                {r.desc}
-              </Typography>
-
-              <Button
-                component={Link}
-                href={r.link}
-                fullWidth
-                sx={{
-                  mt: "auto",
-                  py: 1.2,
-                  borderRadius: 2,
-                  backgroundColor: "rgba(255,255,255,0.15)",
-                  backdropFilter: "blur(8px)",
+                  position: "relative",
+                  zIndex: 1,
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  p: 3.5,
                   color: "white",
-                  border: "1px solid rgba(255,255,255,0.25)",
-                  fontWeight: 600,
-                  letterSpacing: "0.02em",
-                  transition: "all 0.25s ease",
-                  "&:hover": {
-                    backgroundColor: "rgba(255,255,255,0.28)",
-                    borderColor: "rgba(255,255,255,0.5)",
-                    transform: "scale(1.02)",
-                  },
+                  transform: "translateY(6px)",
+                  transition: "transform 0.4s ease",
                 }}
               >
-                Explore →
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+                <Typography
+                  variant="h5"
+                  fontWeight={700}
+                  sx={{
+                    mb: 1,
+                    letterSpacing: "-0.025em",
+                    textShadow: "0 2px 10px rgba(0,0,0,0.45)",
+                  }}
+                >
+                  {r.title}
+                </Typography>
+
+                <Typography
+                  variant="body2"
+                  sx={{
+                    mb: 2.5,
+                    opacity: 0.92,
+                    lineHeight: 1.55,
+                    textShadow: "0 1px 6px rgba(0,0,0,0.35)",
+                  }}
+                >
+                  {r.desc}
+                </Typography>
+
+                <Box
+                  component={Link}
+                  href={r.link}
+                  sx={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    py: 1.25,
+                    borderRadius: 2,
+                    bgcolor: "rgba(255,255,255,0.14)",
+                    backdropFilter: "blur(10px)",
+                    color: "white",
+                    border: "1px solid rgba(255,255,255,0.28)",
+                    fontWeight: 600,
+                    fontSize: "0.9rem",
+                    letterSpacing: "0.02em",
+                    textDecoration: "none",
+                    transition: "all 0.25s ease",
+                    "&:hover": {
+                      bgcolor: "rgba(255,255,255,0.26)",
+                      borderColor: "rgba(255,255,255,0.55)",
+                      transform: "scale(1.03)",
+                    },
+                  }}
+                >
+                  Explore →
+                </Box>
+              </CardContent>
+            </Card>
+          ))}
+        </Box>
       </Box>
     </section>
   );

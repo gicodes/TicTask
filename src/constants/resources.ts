@@ -3,19 +3,19 @@ export const RESOURCES = [
     title: "Getting Started",
     desc: "Your first 10 minutes with TicTask",
     link: "/resources/docs",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80", // onboarding / desk
+    image: "https://images.unsplash.com/photo-1471958680802-1345a694ba6d?q=80&w=1566&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   },
   {
     title: "Templates",
     desc: "Jumpstart workflows with ready-made templates",
     link: "/resources/templates",
-    image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80", // documents / planning
+    image: "https://images.unsplash.com/photo-1695634281181-b2357af34c61?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     title: "Updates",
     desc: "See what’s new and improved",
     link: "/resources/changelog",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", // dashboard / analytics
+    image: "https://images.unsplash.com/photo-1653130892179-98a1a5a19f32?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
   },
   {
     title: "Blog",
@@ -27,7 +27,7 @@ export const RESOURCES = [
     title: "FAQ",
     desc: "Find out more from frequently asked questions",
     link: "/resources/faq",
-    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80", // questions / notes
+    image: "https://images.unsplash.com/photo-1652077859695-de2851a95620?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     title: "Developer",
