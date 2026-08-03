@@ -259,7 +259,15 @@ export default function SubscriptionPage() {
           </ToggleButtonGroup>
         </DialogContent>
 
-        <DialogActions sx={{ px: 3, pb: 3, display: 'flex', justifyContent: 'space-between' }}>
+        <DialogActions 
+          sx={{ 
+            px: 3, 
+            pb: 3, 
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            justifyContent: 'space-between' 
+          }}
+        >
           <Button tone="retreat" onClick={() => setOpen(false)} disabled={upgrading}>
             Cancel
           </Button>
