@@ -125,13 +125,19 @@ export const NavbarAvatar = ({
   user, 
   size = 36}: AvatarProps
 ) => { 
+  const getInitials = (text: string) => {
+    const parts = text.split(' ').filter(Boolean);
+    if (parts.length === 0) return '...';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return parts.slice(0, 2).map((n) => n[0]).join('').toUpperCase();
+  };
+
   const avatarName = () => {
     if (!user) return '...';
-
-    if (user.name) return user.name.split(' ').map(n => n[0]).join('').toUpperCase();
-    if (!user.name && user.organization) return user.organization.split(' ').map(n => n[0]).join('').toUpperCase();
+    if (user.name) return getInitials(user.name);
+    if (!user.name && user.organization) return getInitials(user.organization);
     return '...';
-  }
+  };
   
   return (
   <Box position={'relative'} maxHeight={50} alignContent={'center'}>
