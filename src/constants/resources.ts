@@ -1,10 +1,40 @@
 export const RESOURCES = [
-  { title: "Getting Started", desc: "Your first 10 minutes with TicTask", link: "/resources/docs" },
-  { title: "Templates", desc: "Jumpstart workflows with ready-made templates", link: "/resources/templates" },
-  { title: "Updates", desc: "See what’s new and improved", link: "/resources/changelog" },
-  { title: "Blog", desc: "Insights and stories from the TicTask team", link: "/resources/blog" },
-  { title: "FAQ", desc: "Find out more from frequently asked questions", link: '/resources/faq'},
-  { title: "Developer", desc: "Read and contribute to our open-source files", link: '/resources/docs/dev'}
+  {
+    title: "Getting Started",
+    desc: "Your first 10 minutes with TicTask",
+    link: "/resources/docs",
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80", // onboarding / desk
+  },
+  {
+    title: "Templates",
+    desc: "Jumpstart workflows with ready-made templates",
+    link: "/resources/templates",
+    image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80", // documents / planning
+  },
+  {
+    title: "Updates",
+    desc: "See what’s new and improved",
+    link: "/resources/changelog",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", // dashboard / analytics
+  },
+  {
+    title: "Blog",
+    desc: "Insights and stories from the TicTask team",
+    link: "/resources/blog",
+    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80", // writing / laptop
+  },
+  {
+    title: "FAQ",
+    desc: "Find out more from frequently asked questions",
+    link: "/resources/faq",
+    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80", // questions / notes
+  },
+  {
+    title: "Developer",
+    desc: "Read and contribute to our open-source files",
+    link: "/resources/docs/dev",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80", // code / terminal
+  },
 ];
 
 export const TEMPLATES = [
