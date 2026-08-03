@@ -1,7 +1,8 @@
-import { LinkItem } from "../_level_0/constants";
+import { AuthUser } from "@/types/auth";
 import { AvatarProps } from "@/types/users";
 import { CgMenuGridR } from "react-icons/cg";
 import { FaUserGroup } from "react-icons/fa6";
+import { LinkItem } from "../_level_0/constants";
 import { SiAwsorganizations } from "react-icons/si";
 import { GiHelp, GiThreeFriends } from 'react-icons/gi';
 import { RiBloggerLine, RiRobot2Fill } from "react-icons/ri";
@@ -11,7 +12,6 @@ import { BsFillCreditCard2BackFill, BsCalendar2Date } from "react-icons/bs";
 import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle, FaPeopleCarry } from 'react-icons/fa';
 import { FcInvite, FcSerialTasks, FcDocument, FcBearish, FcDataEncryption, FcMoneyTransfer, FcParallelTasks } from "react-icons/fc";
 import { MdCategory, MdSettings, MdPaid, MdCampaign, MdQuestionAnswer, MdSwitchAccount, MdWorkHistory, MdLogout } from "react-icons/md";
-import { AuthUser } from "@/types/auth";
 
 export const NAV_ITEMS = [
   { label: 'Console', path: '/dashboard/admin', icon: <GrTasks/>},
@@ -124,7 +124,16 @@ export const userLinks: LinkItem[] = [
 export const NavbarAvatar = ({ 
   user, 
   size = 36}: AvatarProps
-) => (
+) => { 
+  const avatarName = () => {
+    if (!user) return '...';
+
+    if (user.name) return user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+    if (!user.name && user.organization) return user.organization.split(' ').map(n => n[0]).join('').toUpperCase();
+    return '...';
+  }
+  
+  return (
   <Box position={'relative'} maxHeight={50} alignContent={'center'}>
     <Avatar
       src={user?.photo || ''}
@@ -136,7 +145,7 @@ export const NavbarAvatar = ({
       }}
     >
       <Typography color={'var(--bw)'} fontSize={size ? size / 2.4 : 15}>
-        {user ? user.name?.split(' ').slice(0,2).map(n => n[0]?.toUpperCase()).join('') : 'NA'}
+        {avatarName()}
       </Typography>
     </Avatar>
     <Box position={'absolute'} bottom={-5} right={-1} maxHeight={1}>
@@ -151,7 +160,7 @@ export const NavbarAvatar = ({
       />
     </Box>
   </Box>
-);
+)};
 
 export const NewFeatureBadge = () => (
   <Badge 

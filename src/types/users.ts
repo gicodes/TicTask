@@ -114,6 +114,7 @@ export interface AvatarProps {
   user: {
     name: string;
     photo?: string;
+    organization?: string;
     data?: { status: UserStatus }
   } | null;
 }

@@ -85,7 +85,7 @@ export default function PartnerJoinPage() {
           <Typography variant="body1" sx={{ opacity: 0.85 }}>
             {context === "collab"
               ? "Contribute to TicTask’s open-source mission and make teamwork better for everyone."
-              : "Let’s collaborate to bring better workflows to teams everywhere."}
+              : "Let’s collaborate to bring better workflow to teams everywhere."}
           </Typography>
 
           <TextField

@@ -193,7 +193,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                         className='hover-bg-effect'
                         onClick={handleCloseUserMenu}
                       >
-                        <Typography variant='caption'>{user?.name || 'Not Available'}</Typography>
+                        <Typography variant='caption'>{user?.name || user?.organization || 'Not Available'}</Typography>
                         <Typography variant='caption' sx={{ opacity: 0.5, fontSize: 11}}>
                           {user?.email || 'please sign in'}
                         </Typography>

@@ -67,10 +67,9 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         const accessTokenExpires = getTokenExpiry(user.accessToken);
-
         return {
           user: user as User,
           accessToken: user.accessToken,
@@ -79,8 +78,15 @@ export const authOptions: NextAuthOptions = {
         };
       }
 
-      if (trigger === "update") {
-        return { ...token };
+      if (trigger === "update" && session) {
+        return {
+          ...token,
+          accessToken: session.accessToken ?? token.accessToken,
+          refreshToken: session.refreshToken ?? token.refreshToken,
+          accessTokenExpires: session.accessTokenExpires
+            ?? (session.accessToken ? getTokenExpiry(session.accessToken) : token.accessTokenExpires),
+          error: undefined,
+        };
       }
 
       if (
@@ -91,48 +97,41 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
 
+      if (!token.refreshToken) {
+        return { ...token, error: "RefreshAccessTokenError" };
+      }
+
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
           {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              refreshToken: token.refreshToken,
-            }),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refreshToken: token.refreshToken }),
           }
         );
 
         if (!res.ok) {
-          throw new Error("Refresh request failed");
+          const text = await res.text();
+          throw new Error(`Refresh failed (${res.status}): ${text}`);
         }
 
         const data = await res.json();
-
         const newAccessToken = data.accessToken ?? data.access_token;
-
         const newRefreshToken = data.refreshToken ?? data.refresh_token ?? token.refreshToken;
 
-        if (!newAccessToken) {
-          throw new Error("Refresh response missing accessToken");
-        }
-
-        const accessTokenExpires = getTokenExpiry(newAccessToken);
+        if (!newAccessToken) throw new Error("No accessToken in refresh response");
 
         return {
           ...token,
           accessToken: newAccessToken,
           refreshToken: newRefreshToken,
-          accessTokenExpires,
+          accessTokenExpires: getTokenExpiry(newAccessToken),
           error: undefined,
         };
       } catch (err) {
-        return {
-          ...token,
-          error: "RefreshAccessTokenError",
-        };
+        console.error("[JWT] Refresh failed:", err);
+        return { ...token, error: "RefreshAccessTokenError" };
       }
     },
 

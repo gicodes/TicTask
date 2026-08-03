@@ -143,10 +143,15 @@ const TicketsPage: React.FC = () => {
             Creating tickets?
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
-            Starts with identifying what kind of ticket you want to create.{" "}<br/>
-            <strong>Tickets Hub</strong> offer <strong>{Object.entries(TICKET_TYPES).length}</strong> options when creating, but more ticket options can be viewed and managed here i.e. Task/ Event/ Meeting.<br/><br/> 
-
-            To manually create a ticket, find and click <button className='btn items-center flex gap-1'><FaPlusCircle/> NEW TICKET</button> 
+            Starts with identifying what kind of ticket you want to create.{" "}<br/><br/>
+            <strong>Tickets Hub</strong> lets you create any of the following ticket types: <br/>
+            <ul style={{ padding: 10}}>
+              {TICKET_TYPES.map((type) => (
+                <li key={type}>{type.slice(0,1).toUpperCase() + type.slice(1).toLowerCase()}</li>
+              ))}
+            </ul>
+            While it also allows you to view, modify and manage more (event-based) tickets with. <br/> You can also create task/ event-based tickets with <strong>Task Manager</strong>.
+            <br/> <br/>To manually create a ticket, find and click <button className='btn items-center flex gap-1'><FaPlusCircle/> NEW TICKET</button> 
             ✦ On a mobile device? Expand toolbar (top-left corner) to see action buttons ✦<br/>
           </Typography>
 
@@ -156,7 +161,7 @@ const TicketsPage: React.FC = () => {
             Tickets Hub vs Task Manager?
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
-            While both tools are similar and help you manage tickets, <strong>Tickets Hub</strong> offer range and simplicity.{" "}<br/>
+            While both tools are similar and help you manage tickets, <strong>Tickets Hub</strong> offer range and simplicity.{" "}
             <strong>Task manager</strong> handle specific tickets with timeline & built-in calendar to track tickets.{" "}
           </Typography>
 

@@ -36,7 +36,7 @@ export default function PricingSection() {
   const isBusiness = user?.userType === "BUSINESS";
 
   const plans = PLANS.filter(
-    (p) => p.name !== "Enterprise" && (isBusiness ? ["Standard", "Pro"].includes(p.name) : true)
+    (p) => (isBusiness ? ["Standard", "Pro", "Enterprise"].includes(p.name) : p.name !== "Enterprise")
   );
 
   const activePlan = subscription?.plan?.toLowerCase();

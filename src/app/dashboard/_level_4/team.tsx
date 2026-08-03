@@ -235,6 +235,8 @@ export default function TeamsPage() {
               <li>Client management groups</li>
               <li>Project-based collaboration</li>
               <li>Shared ticket playground</li>
+              <li>Open-source collaboration</li>
+              
             </ul>
             <Typography my={5} p={1} variant="body2" className="highlight-glow">
               Teams unlock advanced ticket collaboration 

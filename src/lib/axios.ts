@@ -36,25 +36,36 @@ api.interceptors.request.use(async (config) => {
 ----------------------------------------------------- */
 
 let isRefreshing = false;
-let queuedRequests: Array<(token: string) => void> = [];
+let failedQueue: Array<{
+  resolve: (token: string) => void;
+  reject: (err: unknown) => void;
+}> = [];
+
+const processQueue = (error: unknown, token: string | null = null) => {
+  failedQueue.forEach((p) => {
+    if (error) p.reject(error);
+    else p.resolve(token!);
+  });
+  failedQueue = [];
+};
 
 api.interceptors.response.use(
   (response) => response,
-
   async (error) => {
     const original = error.config;
 
-    // If not 401 or already retried, reject
     if (error.response?.status !== 401 || original._retry) {
       return Promise.reject(error);
     }
 
-    // Queue request if we're already refreshing
     if (isRefreshing) {
-      return new Promise((resolve) => {
-        queuedRequests.push((newToken: string) => {
-          original.headers["Authorization"] = `Bearer ${newToken}`;
-          resolve(api(original));
+      return new Promise((resolve, reject) => {
+        failedQueue.push({
+          resolve: (token: string) => {
+            original.headers["Authorization"] = `Bearer ${token}`;
+            resolve(api(original));
+          },
+          reject,
         });
       });
     }
@@ -63,23 +74,27 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      const refreshResponse = await nextAuthApi.post("/auth/refresh", {});
+      // Force NextAuth to run the jwt callback (which does the real refresh)
+      // The easiest reliable way:
+      const sessionRes = await fetch("/api/auth/session", {
+        method: "GET",
+        credentials: "include",
+      });
+      const newSession = await sessionRes.json();
 
-      if (refreshResponse.status === 200) {
-        await fetch("/api/auth/session?update");
-
-        const newSession = await getSession();
-        const newToken = newSession?.accessToken;
-
-        // Replay queued requests
-        queuedRequests.forEach((cb) => cb(newToken!));
-        queuedRequests = [];
-
-        // Retry original request
-        original.headers["Authorization"] = `Bearer ${newToken}`;
+      if (newSession?.accessToken && !newSession.error) {
+        processQueue(null, newSession.accessToken);
+        original.headers["Authorization"] = `Bearer ${newSession.accessToken}`;
         return api(original);
       }
+
+      // Permanent failure
+      processQueue(new Error("Unable to refresh session"), null);
+      // Optional: force logout
+      // await signOut({ callbackUrl: "/auth/login" });
+      return Promise.reject(error);
     } catch (refreshError) {
+      processQueue(refreshError, null);
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;
