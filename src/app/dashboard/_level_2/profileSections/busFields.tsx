@@ -9,9 +9,9 @@ import {
 } from '@mui/material';
 import { FaBriefcase } from 'react-icons/fa6';
 import { BsPersonWorkspace } from 'react-icons/bs';
-import { SiAwsorganizations } from 'react-icons/si';
 import { MdWorkspacesFilled } from 'react-icons/md';
 import { Groups3, Language } from '@mui/icons-material';
+import { FcOrganization } from 'react-icons/fc';
 
 export function BusinessSection({
   profile,
@@ -27,7 +27,7 @@ export function BusinessSection({
       <Stack spacing={1.5}>
 
         <Stack direction="row" alignItems="center" spacing={1}>
-          <SiAwsorganizations />
+          <FcOrganization />
           {isEditing && profile?.userType === "BUSINESS" ? (
             <TextField
               size="small"

@@ -32,11 +32,13 @@ export default function SettingsPage() {
     showAlert("Team information succesfully updated!", 'success')
   };
 
-   const subscriptionPlan = 
+  const subscriptionPlan = 
     team?.subscription?.plan === "STANDARD" ? "Standard"
     : team?.subscription?.plan === ("PRO") ? "Pro" 
     : team?.subscription?.plan === ("ENTERPRISE") ? "Enterprise"
     : "Privileged"
+
+  const expiresAt = team?.subscription?.expiresAt ? new Date(team?.subscription.expiresAt).toLocaleDateString() : '—';
 
   if (!isAuthenticated) return;
 
@@ -57,7 +59,7 @@ export default function SettingsPage() {
           </Stack>
 
           <Box py={2}>
-            <Typography sx={{ opacity: 0.75 }}> <i>Not Available To Your Team Yet</i></Typography>
+            <Typography sx={{ opacity: 0.75 }}> <i>Coming soon to teams</i></Typography>
           </Box>
         </CardContent>
       </Card>
@@ -117,7 +119,7 @@ export default function SettingsPage() {
           </Stack>
 
           <Box py={2}>
-            <Typography sx={{ opacity: 0.75 }}> <i>Not Available To Your Team Yet</i></Typography>
+            <Typography sx={{ opacity: 0.75 }}> <i>Coming soon to teams</i></Typography>
           </Box>
         </CardContent>
       </Card>
@@ -126,15 +128,15 @@ export default function SettingsPage() {
         title="Subscriptions"
         subtitle="View your current plan and manage your subscription."
       >
-        <Stack spacing={2}>
+        <Stack spacing={2} pt={2}>
           <Typography variant="body1">
             <strong>Current Plan:</strong> {subscriptionPlan}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <strong>Renews on:</strong> {team?.subscription?.expiresAt ?? "---"}
+            Renews on {expiresAt}
           </Typography>
           
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} pt={1}>
             <Button component={Link} href="/dashboard/subscription">
               Manage Subscription
             </Button>

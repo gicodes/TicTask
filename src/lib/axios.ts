@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 const NEXTAUTH_API_BASE_URL = process.env.API_URL || "http://localhost:4000/api";
@@ -16,16 +16,46 @@ const nextAuthApi: AxiosInstance = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+let isRefreshing = false;
+let failedQueue: Array<{ resolve: (token: string) => void; reject: (error: unknown) => void }> = [];
+let cachedSession: any = null;
+let cacheExpiry = 0;
+
+const processQueue = (error: unknown, token: string | null) => {
+  failedQueue.forEach((promise) => {
+    if (error) {
+      promise.reject(error);
+    } else {
+      promise.resolve(token as string);
+    }
+  });
+
+  failedQueue = [];
+};
+
 /* -----------------------------------------------------
   REQUEST INTERCEPTOR: Attach NextAuth accessToken
 ----------------------------------------------------- */
-api.interceptors.request.use(async (config) => {
-  const session = await getSession();
-  const token = session?.accessToken;
+async function getCachedSession() {
+  const now = Date.now();
+  if (cachedSession && now < cacheExpiry) return cachedSession;
 
-  if (token) {
+  const session = await getSession();
+  cachedSession = session;
+  cacheExpiry = now + 30_000;
+  return session;
+}
+
+api.interceptors.request.use(async (config) => {
+  const session = await getCachedSession();
+
+  if (session?.error === "RefreshAccessTokenError") {
+    return Promise.reject(new Error("Session expired – please log in again"));
+  }
+
+  if (session?.accessToken) {
     config.headers = config.headers || {};
-    config.headers["Authorization"] = `Bearer ${token}`;
+    config.headers["Authorization"] = `Bearer ${session.accessToken}`;
   }
 
   return config;
@@ -34,21 +64,6 @@ api.interceptors.request.use(async (config) => {
 /* -----------------------------------------------------
   RESPONSE INTERCEPTOR: Refresh on 401 + retry request
 ----------------------------------------------------- */
-
-let isRefreshing = false;
-let failedQueue: Array<{
-  resolve: (token: string) => void;
-  reject: (err: unknown) => void;
-}> = [];
-
-const processQueue = (error: unknown, token: string | null = null) => {
-  failedQueue.forEach((p) => {
-    if (error) p.reject(error);
-    else p.resolve(token!);
-  });
-  failedQueue = [];
-};
-
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -74,13 +89,7 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      // Force NextAuth to run the jwt callback (which does the real refresh)
-      // The easiest reliable way:
-      const sessionRes = await fetch("/api/auth/session", {
-        method: "GET",
-        credentials: "include",
-      });
-      const newSession = await sessionRes.json();
+      const newSession = await getSession();
 
       if (newSession?.accessToken && !newSession.error) {
         processQueue(null, newSession.accessToken);
@@ -88,11 +97,12 @@ api.interceptors.response.use(
         return api(original);
       }
 
-      // Permanent failure
       processQueue(new Error("Unable to refresh session"), null);
-      // Optional: force logout
-      // await signOut({ callbackUrl: "/auth/login" });
-      return Promise.reject(error);
+
+      const { signOut } = await import("next-auth/react");
+      await signOut({ callbackUrl: "/auth/login" });
+
+      return Promise.reject(new Error("Session expired – please log in again"));
     } catch (refreshError) {
       processQueue(refreshError, null);
       return Promise.reject(refreshError);
@@ -105,7 +115,6 @@ api.interceptors.response.use(
 /* -------------------------------------------------------------------
   Axios to express API Helper Methods ft GET, POST, PATCH, PUT, DELETE
 ---------------------------------------------------------------------- */
-
 export async function apiGet<TResponse>(url: string, config?: AxiosRequestConfig): Promise<TResponse> {
   const res: AxiosResponse<TResponse> = await api.get(url, config);
   return res.data;

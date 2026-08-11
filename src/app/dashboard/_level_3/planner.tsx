@@ -34,7 +34,7 @@ const PlannerPage = ({
   const [selected, setSelected] = useState<string | number | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem('tictask_view');
+    const stored = localStorage.getItem('planner_view');
     if (!team && stored === 'list' || stored === 'calendar') {
       setView(stored);
     }

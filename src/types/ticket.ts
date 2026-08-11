@@ -26,6 +26,11 @@ export interface Ticket {
   assigneesIds?: number[] | [];
   teamId?: number;
 
+  startedAt: string | null;
+  closedAt: string | null;
+  startedBy: User;
+  closedBy: User;
+
   startTime: string | null;
   endTime: string | null;
   client: Client;

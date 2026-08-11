@@ -45,8 +45,8 @@ export default function TicketsList({
 
     if (isToday) {
       return (
-        <Typography variant='body2' color='warning'>
-          <strong>Today</strong> <span className='font-xxs'>@{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        <Typography variant='body2'>
+          <strong>Today</strong> - <span className='custom-warm'>{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
         </Typography>
       );
     }
@@ -266,6 +266,9 @@ export default function TicketsList({
                     {columns?.includes('Priority') && <TableCell>
                       {renderPriorityCell(ticket)}
                     </TableCell>}
+                    {columns?.includes('Type') && <TableCell>
+                      {renderTypeCell(ticket)}
+                    </TableCell>}
                     {columns?.includes('Due Date') && <TableCell>
                       {formatDate(
                         ticket.dueDate, 
@@ -283,9 +286,6 @@ export default function TicketsList({
                     </TableCell>}
                     {columns?.includes('Assignee') && <TableCell>
                       {renderAssigneeCell(ticket)}
-                    </TableCell>}
-                    {columns?.includes('Type') && <TableCell>
-                      {renderTypeCell(ticket)}
                     </TableCell>}
                     {columns?.includes('Last Updated') && (
                       <TableCell>

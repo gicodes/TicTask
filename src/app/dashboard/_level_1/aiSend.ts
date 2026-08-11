@@ -1,6 +1,6 @@
-import { api } from "@/lib/apiFetch";
 import { getSession } from "next-auth/react";
 import { AIRefinedResponse, HandleSendProps, AiMessage } from "@/types/ai";
+import { apiGet, apiPost } from "@/lib/axios";
 
 export const handleSendAI = async ({ 
   messages,
@@ -37,7 +37,7 @@ export const handleSendAI = async ({
       payload: newMessage,
     };
 
-    const res = await api<AIRefinedResponse>("/v1/ai/generate", {
+    const res = await apiPost<AIRefinedResponse>("/v1/ai/generate", {
       method: "POST",
       body: JSON.stringify(body),
     });

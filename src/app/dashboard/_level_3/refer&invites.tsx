@@ -180,7 +180,7 @@ export default function ReferPage() {
                 <CardContent>
                   <Stack alignItems="center" spacing={1}>
                     <People color="primary" sx={{ fontSize: 40 }} />
-                    <Typography variant="h4" fontWeight="bold">{stats.totalReferrals || "-"}</Typography>
+                    <Typography variant="h4" fontWeight="bold">{stats.totalReferrals || "0"}</Typography>
                     <Typography>Total Invites</Typography>
                   </Stack>
                 </CardContent>
@@ -192,7 +192,7 @@ export default function ReferPage() {
                 <CardContent>
                   <Stack alignItems="center" spacing={1}>
                     <CheckCircle color="success" sx={{ fontSize: 40 }} />
-                    <Typography variant="h4" fontWeight="bold">{stats.successfulReferrals || "-"}</Typography>
+                    <Typography variant="h4" fontWeight="bold">{stats.successfulReferrals || "0"}</Typography>
                     <Typography>Successful Signups</Typography>
                   </Stack>
                 </CardContent>
@@ -205,7 +205,7 @@ export default function ReferPage() {
                   <Stack alignItems="center" spacing={1}>
                     <MonetizationOn color="warning" sx={{ fontSize: 40 }} />
                     <Typography variant="h4" fontWeight="bold">
-                      {stats.totalCreditsEarned || "--"}
+                      {stats.totalCreditsEarned || "0"}
                     </Typography>
                     <Typography>Credits Earned</Typography>
                   </Stack>
@@ -218,7 +218,7 @@ export default function ReferPage() {
                 <CardContent>
                   <Stack alignItems="center" spacing={1}>
                     <BuildCircle color="secondary" sx={{ fontSize: 40 }} />
-                    <Typography variant="h4" fontWeight="bold"> {stats.totalCreditsEarned > 5 ? "100%" : "--"} </Typography>
+                    <Typography variant="h4" fontWeight="bold"> {stats.totalCreditsEarned > 5 ? "100%" : "N/A"} </Typography>
                     <Typography>Community Builder</Typography>
                   </Stack>
                 </CardContent>

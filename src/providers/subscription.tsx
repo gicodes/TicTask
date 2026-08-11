@@ -91,6 +91,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const plan = subscription?.plan;
   const billingCycle = (subscription?.billingCycle as Interval) || undefined;
 
+  const isStandard = subscription?.plan==="STANDARD";
   const isActive = !!subscription?.active &&
     (subscription.expiresAt ? new Date(subscription.expiresAt) > new Date() : true);
 
@@ -111,7 +112,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
 
   const getPro = async () => {
     if (!user) return { redirect: "/auth/login?returnUrl=/product/pricing" };
-    if (isPro || isEnterprise) return { message: "You already have an active Pro subscription." };
+    if (isStandard || isPro || isEnterprise) return { message: "You already have an active subscription." };
     return { redirect: "/product/pricing" };
   };
 

@@ -34,6 +34,7 @@ import { Ticket_Status, Ticket_Type } from '@/types/ticket';
 import { Loader2, Trash2, AlertCircle } from 'lucide-react';
 import { getStatusColor } from '../../_level_1/tColorVariants';
 import { ADMIN_TICKETS_QUERY, DELETE_TICKET_MUTATION } from '../_level_1/graphQL';
+import { useAuth } from '@/providers/auth';
 
 interface TicketNode {
   id: string;
@@ -58,6 +59,7 @@ interface TicketsData {
 }
 
 export default function AdminTicketsPage() {
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const { showAlert } = useAlert();
 
@@ -115,7 +117,7 @@ export default function AdminTicketsPage() {
     window.location.reload();
   };
 
-  return (
+  if (user && user?.role==="ADMIN") return (
     <Box>
       <Box 
         display="flex" 
@@ -319,5 +321,13 @@ export default function AdminTicketsPage() {
         </CardContent>
       </Card>
     </Box>
-  );
+  )
+  else { 
+    return (
+      <Box textAlign="center" py={10} color="error.main">
+        <AlertCircle size={48} style={{ margin: '0 auto 16px' }} />
+        <Typography>You do not have permission to view this page.</Typography>
+      </Box>
+    )
+  } 
 }

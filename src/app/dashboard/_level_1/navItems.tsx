@@ -1,17 +1,38 @@
 import { AuthUser } from "@/types/auth";
 import { AvatarProps } from "@/types/users";
-import { CgMenuGridR } from "react-icons/cg";
+import { CgMenuGridR, CgOrganisation } from "react-icons/cg";
 import { FaUserGroup } from "react-icons/fa6";
 import { LinkItem } from "../_level_0/constants";
-import { SiAwsorganizations } from "react-icons/si";
 import { GiHelp, GiThreeFriends } from 'react-icons/gi';
 import { RiBloggerLine, RiRobot2Fill } from "react-icons/ri";
 import { Avatar, Box, Typography, Badge } from '@mui/material';
 import { GrResources, GrUpdate, GrTasks } from "react-icons/gr";
 import { BsFillCreditCard2BackFill, BsCalendar2Date } from "react-icons/bs";
 import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle, FaPeopleCarry } from 'react-icons/fa';
-import { FcInvite, FcSerialTasks, FcDocument, FcBearish, FcDataEncryption, FcMoneyTransfer, FcParallelTasks } from "react-icons/fc";
-import { MdCategory, MdSettings, MdPaid, MdCampaign, MdQuestionAnswer, MdSwitchAccount, MdWorkHistory, MdLogout } from "react-icons/md";
+import { 
+  FcInvite,  
+  FcBearish,  
+  FcDocument, 
+  FcSerialTasks,
+  FcMoneyTransfer, 
+  FcParallelTasks,
+  FcDataEncryption,
+} from "react-icons/fc";
+import { 
+  MdPaid, 
+  MdLogout,
+  MdCategory, 
+  MdSettings, 
+  MdCampaign, 
+  MdWorkHistory, 
+  MdSwitchAccount, 
+  MdQuestionAnswer, 
+} from "react-icons/md";
+
+/* 
+  Nav items are used to render the navigation menu in the dashboard.
+  Featuring: Nav items, More nav items, Auth items, Navbar avatar, New feature badge, Pro badge
+*/
 
 export const NAV_ITEMS = [
   { label: 'Console', path: '/dashboard/admin', icon: <GrTasks/>},
@@ -22,20 +43,18 @@ export const NAV_ITEMS = [
   { label: 'Settings', path: '/dashboard/settings', icon: <MdSettings /> }, 
   { label: 'Teams', path: '/dashboard/teams', icon: <FaUsers />},
   { label: 'Invite', path: '/dashboard/invite', icon: <FcInvite /> },
-  
   { label: 'All Tickets', path: '/dashboard/admin/tickets', icon: <FcParallelTasks /> },
   { label: 'All Users', path: '/dashboard/admin/users', icon: <FaUserGroup /> },
   { label: 'Subscriptions', path: '/dashboard/admin/finances', icon: <FcMoneyTransfer /> },
-  { label: 'All Teams', path: '/dashboard/admin/organizations', icon: <SiAwsorganizations /> },
-  
+  { label: 'All Teams', path: '/dashboard/admin/organizations', icon: <CgOrganisation /> },
   { label: 'Marketing', path: '/dashboard/marketing', icon: <MdCampaign /> },
   { label: "Metrics", path: '/dashboard/metrics', icon: <FcDataEncryption /> },
   { label: 'Careers', path: '/dashboard/admin/careers', icon: <MdWorkHistory />},
   { label: 'Partners', path: '/dashboard/admin/partners', icon: <GiThreeFriends />},
   { label: 'Products', path: '/product', icon: <MdCategory />, external: true },
   { label: 'Legal', path: '/legal', icon: <FcDocument />, external: true},
-  { label: 'More', path: '#', icon: <CgMenuGridR />, more: true }, // more includes Docs, FAQ, blog, community and register Go to Signup
-
+  { label: 'More', path: '#', icon: <CgMenuGridR />, more: true }, 
+  // more includes Docs, FAQ, blog, community and register Go to Signup
   { label: 'System Logs', path: '/dashboard/admin/logs', icon: <FcBearish /> },
   { label: 'Resources', path: '/resources', icon: <GrResources />},
 ];
@@ -51,13 +70,13 @@ export const MORE_NAV_ITEMS = [
 export const getFilteredNav = (user: AuthUser | null) => {
   if (!user) {
     const allowed = [
-      'Tickets Hub', 'Task Manager', 'AI assistant', 'Products', 'Invite', 'Legal', 'Settings'
+      'Tickets Hub', 'Task Manager', 'Products', 'Invite', 'Legal', 'Settings'
     ];
     return NAV_ITEMS.filter(item => allowed.includes(item.label));
   }
 
   const allowed = [
-    'Tickets Hub', 'Task Manager', 'AI assistant', 'Products', 'Invite', 'Legal', 'Subscription', 'Settings',
+    'Tickets Hub', 'Task Manager', 'Products', 'Invite', 'Legal', 'Subscription', 'Settings',
   ];
 
   if (user?.role==="USER") allowed.push('More')
@@ -71,6 +90,7 @@ export const getFilteredNav = (user: AuthUser | null) => {
   }
 
   const uniqueAllowed = [...new Set(allowed)];
+
   return NAV_ITEMS.filter(item => uniqueAllowed.includes(item.label));
 };
 
@@ -85,41 +105,6 @@ export const AUTH_ITEMS: LinkItem[] = [
   { label: <div className='flex gap-2 items-center'> <MdLogout fontSize='inherit'/>Logout</div>, href: "#", cta: true },
 ]
 
-export const menuItems = [
-  { label: "Products", href: "/product" },
-  { label: "Resources", href: "/resources" },
-  { label: "Company", href: "/company" },
-];
-
-export const extendedMenuItems: Record<string, { label: string; href: string }[]> = {
-  Products: [
-    { label: "Overview", href: "/product" },
-    { label: "Pricing", href: "/product/pricing" },
-    { label: "Demo", href: "/product#demo" },
-  ],
-  Resources: [
-    { label: "Overview", href: "/resources" },
-    { label: "FAQ", href: "/resources/faq" },
-    { label: "Blog", href: "/resources/blog" },
-    { label: "Documentation", href: "/resources/docs" },
-  ],
-  Company: [
-    { label: "Overview", href: "/company" },
-    { label: "Careers", href: "/company/careers" },
-    { label: "Partner", href: "/company/partner" },
-    { label: "Contact Us", href: "/company/#contact-us" },
-  ],
-};
-
-export const guestLinks: LinkItem[] = [
-  { label: "Login", href: "/auth/login" },
-  { label: "Join For Free", href: "/auth/join/user", cta: true },
-];
-
-export const userLinks: LinkItem[] = [
-  { label: "Logout", href: ""},
-  { label: "Dashboard", href: "/dashboard", cta: true },
-];
 
 export const NavbarAvatar = ({ 
   user, 
@@ -129,6 +114,7 @@ export const NavbarAvatar = ({
     const parts = text.split(' ').filter(Boolean);
     if (parts.length === 0) return '...';
     if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    
     return parts.slice(0, 2).map((n) => n[0]).join('').toUpperCase();
   };
 
@@ -136,37 +122,39 @@ export const NavbarAvatar = ({
     if (!user) return '...';
     if (user.name) return getInitials(user.name);
     if (!user.name && user.organization) return getInitials(user.organization);
+    
     return '...';
   };
   
   return (
-  <Box position={'relative'} maxHeight={50} alignContent={'center'}>
-    <Avatar
-      src={user?.photo || ''}
-      sx={{
-        bgcolor: user ? 'var(--surface-1)' :  'var(--surface-2)', 
-        width: size,
-        height: size,
-        border: '0.1px solid var(--dull-gray)'
-      }}
-    >
-      <Typography color={'var(--bw)'} fontSize={size ? size / 2.4 : 15}>
-        {avatarName()}
-      </Typography>
-    </Avatar>
-    <Box position={'absolute'} bottom={-5} right={-1} maxHeight={1}>
-      <FaCircle 
-        size={size ? size / 4 : 9} 
-        color={
-          user?.data?.status===undefined ? 'var(--disabled)' 
-          : user?.data?.status==="ACTIVE" ? 'limegreen' 
-          : user?.data?.status==="AWAY" ? 'gold' 
-          : user?.data?.status==="BUSY" ? 'tomato' : 'gray'
-        }
-      />
+    <Box position={'relative'} maxHeight={50} alignContent={'center'}>
+      <Avatar
+        src={user?.photo || ''}
+        sx={{
+          bgcolor: user ? 'var(--surface-1)' :  'var(--surface-2)', 
+          width: size,
+          height: size,
+          border: '0.1px solid var(--dull-gray)'
+        }}
+      >
+        <Typography color={'var(--bw)'} fontSize={size ? size / 2.4 : 15}>
+          {avatarName()}
+        </Typography>
+      </Avatar>
+      <Box position={'absolute'} bottom={-5} right={-1} maxHeight={1}>
+        <FaCircle 
+          size={size ? size / 4 : 9} 
+          color={
+            user?.data?.status===undefined ? 'var(--disabled)' 
+            : user?.data?.status==="ACTIVE" ? 'limegreen' 
+            : user?.data?.status==="AWAY" ? 'gold' 
+            : user?.data?.status==="BUSY" ? 'tomato' : 'gray'
+          }
+        />
+      </Box>
     </Box>
-  </Box>
-)};
+  )
+};
 
 export const NewFeatureBadge = () => (
   <Badge 

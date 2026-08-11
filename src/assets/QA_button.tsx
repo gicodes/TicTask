@@ -1,5 +1,7 @@
 import { Button } from "@mui/material";
 import { useTickets } from "@/providers/tickets";
+import { useTeamTicket } from "@/providers/teamTickets";
+import { Ticket } from "@/types/ticket";
 
 export type QA_Status = 'RESOLVED' | 'CANCELLED' | 'IN_PROGRESS';
 export type QA_ColorVariations = 'success' | 'secondary' | 'warning';
@@ -10,6 +12,7 @@ interface QuickActions {
   status: QA_Status;
   title: string;
   disabled: boolean;
+  team?:boolean;
   onClose?: () => void;
   onUpdate?: () => void;
 }
@@ -20,17 +23,38 @@ export const QA_Btn = ({
   title, 
   status, 
   disabled=false,
+  team=false,
   onUpdate,
   onClose,
 } : QuickActions ) => {
   const { updateTicket } = useTickets();
+  const { updateTicket: updateTeamTicket } = useTeamTicket();
 
-  const handleQuickAction = () => {
-    updateTicket(Number(ticketID), { status: status }).then(() => {
-      onUpdate?.();
-      onClose?.();
-    });
-  }
+  const handleQuickAction = async () => {
+    const now = new Date().toISOString();
+
+    if (team) {
+      const payload: Record<string, any> = { status };
+
+      if (status === 'IN_PROGRESS') {
+        payload.startedAt = now;
+      }
+
+      if (status === 'RESOLVED' || status === 'CANCELLED') {
+        payload.closedAt = now;
+      }
+
+      await updateTeamTicket(Number(ticketID), payload);
+    } else {
+      await updateTicket(Number(ticketID), { status }).then(() => {
+        onUpdate?.();
+        onClose?.();
+      });
+    }
+
+    onUpdate?.();
+    onClose?.();
+  };
 
   return (
     <Button  

@@ -25,7 +25,7 @@ const BugFixForm = ({
             <MenuItem value="LOW">Low</MenuItem>
             <MenuItem value="MEDIUM">Medium</MenuItem>
             <MenuItem value="HIGH">High</MenuItem>
-            <MenuItem value="URGENT">Critical</MenuItem>
+            <MenuItem value="CRITICAL">Critical</MenuItem>
           </TextField>
         )}
       />

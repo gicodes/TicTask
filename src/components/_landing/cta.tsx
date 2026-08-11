@@ -17,12 +17,12 @@ const CTA = () => {
 
   const GetPro = async () => {
     if (!user) {
-      showAlert("Sign in to continue", "warning");
+      showAlert("Sign in to continue", "info");
       setTimeout(() => router.push('/auth/login?returnUrl=/product/pricing'), 1200);
       return
     };
 
-    if (!subscription || !subscription.active) {
+    if (user?.userType==="PERSONAL" && !subscription?.active) {
       showAlert("Redirecting to pricing…", "info");
 
       requestAnimationFrame(() => {
@@ -36,6 +36,8 @@ const CTA = () => {
       showAlert("You have an active Pro Subscription running!");
       return;
     }
+
+    await getPro();
   }
   
   return (
@@ -47,8 +49,16 @@ const CTA = () => {
         <Button onClick={GetPro}>
           Get TicTask Pro
         </Button>
-        <Button tone="secondary" onClick={() => router.push('https://calendly.com/tictask')}>
-          Schedule Payment
+        <Button
+          tone="secondary"
+          onClick={() => {
+            window.open(
+              `https://calendly.com/tictask?email=${encodeURIComponent(user?.email ?? "")}`,
+              "_blank"
+            );
+          }}
+        >
+          Schedule call
         </Button>
       </div>
     </div>

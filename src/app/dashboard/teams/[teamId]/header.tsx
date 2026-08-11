@@ -4,6 +4,7 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { Box, Stack, Typography, Tabs, Tab, Chip } from "@mui/material";
 import { useTeam } from "@/hooks/useTeam";
 import { useAuth } from "@/providers/auth";
+import AuthRedirectBtn from "@/assets/authRedirectBtn";
 
 export default function WorkspaceHeader() {
   const { teamId } = useParams<{ teamId: string }>();
@@ -15,10 +16,10 @@ export default function WorkspaceHeader() {
 
   if (loading || !team) return null;
   if (!isAuthenticated) return (
-    <Typography textAlign={'center'}> 
-      Team unavailable in offline mode ⚠️
-    </Typography>
-  )
+    <Box textAlign={'center'} p={4}> 
+      <Typography>Please <AuthRedirectBtn />  to access Teams </Typography>
+    </Box>
+  );
 
   const currentTab = () => {
     if (pathname.includes("/tickets")) return 1;
@@ -42,9 +43,9 @@ export default function WorkspaceHeader() {
 
   const subscriptionPlan = 
     team?.subscription?.plan === "STANDARD" ? "Standard"
-    : team?.subscription?.plan?.includes("PRO") ? "Pro" 
-    : team?.subscription?.plan?.includes("ENTERPRISE") ? "Enterprise"
-    : "Pro +"
+    : team?.subscription?.plan==="PRO" ? "Pro" 
+    : team?.subscription?.plan==="ENTERPRISE" ? "Enterprise"
+    : "Privileged"
 
   return (
     <Box>

@@ -36,7 +36,7 @@ const TicketsPage: React.FC = () => {
 
   useEffect(() => {
     const stored = localStorage.getItem('tictask_view');
-    if (stored === 'list' || stored === 'board') {
+    if (stored === 'board' || stored === 'list') {
       setView(stored);
     }
   }, []);
@@ -132,7 +132,7 @@ const TicketsPage: React.FC = () => {
             What are tickets?
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
-            Tickets are simple but powerful tools you can use to track & manage issues, notes or tasks.{" "}
+            Tickets are simple but powerful tools you can use to create & manage tasks, issues or events.{" "}
             They can represent anything that matter to you— bug to fix, project to finish, client invoice or even a personal goal.{" "}<br/>
             With customizable fields, statuses, and tags, tickets help you organize your work and collaborate with others effectively.
           </Typography>

@@ -44,11 +44,33 @@ export type TeamMember = {
   team: Team;
 };
 
+export interface MemberStat {
+  userId: number;
+  name: string;
+  open: number;
+  resolved: number;
+  avgHours: number | null;
+  sharePct: number;
+}
+
+export interface VolumePoint {
+  date: string;
+  count: number;
+}
+
 export interface Analytics {
   totalTickets: number;
   completedTickets: number;
   openTickets: number;
+  inProgressTickets: number;
+  avgResolutionHours: number | null;
+  avgOpenAgeDays: number | null;
+  totalTrend: number;
+  resolvedTrend: number;
+  resolutionTrend: number;
+  volumeSeries: VolumePoint[];
   membersCount: number;
+  memberStats: MemberStat[];
 }
 
 export type UpdateTeamPayload = Partial<{

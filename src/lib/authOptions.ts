@@ -3,12 +3,14 @@ import GoogleProvider from "next-auth/providers/google";
 import SlackProvider from "next-auth/providers/slack";
 import XProvider from "next-auth/providers/twitter";
 
-import { LoginRequest, LoginResponse } from "@/types/axios";
-import type { NextAuthOptions } from "next-auth";
+import { getCurrentUser } from "./getCurrentUser";
 import { getTokenExpiry } from "./jwtDecode";
 import { nextAuthApiPost } from "./axios";
-import { User } from "@/types/users";
-import { getCurrentUser } from "./getCurrentUser";
+
+import type { LoginRequest, LoginResponse } from "@/types/axios";
+import type { NextAuthOptions } from "next-auth";
+import type { User } from "@/types/users";
+import type { JWT } from "next-auth/jwt";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
@@ -30,6 +32,7 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials) {
         try {
           const res = await nextAuthApiPost<LoginResponse, LoginRequest>(
@@ -67,14 +70,16 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user, trigger, session }): Promise<JWT> {
       if (user) {
-        const accessTokenExpires = getTokenExpiry(user.accessToken);
+        const authUser = user as User;
         return {
-          user: user as User,
-          accessToken: user.accessToken,
-          refreshToken: user.refreshToken,
-          accessTokenExpires,
+          ...token,
+          user: authUser,
+          accessToken: authUser.accessToken,
+          refreshToken: authUser.refreshToken,
+          accessTokenExpires: getTokenExpiry(authUser.accessToken),
+          error: undefined,
         };
       }
 
@@ -83,8 +88,11 @@ export const authOptions: NextAuthOptions = {
           ...token,
           accessToken: session.accessToken ?? token.accessToken,
           refreshToken: session.refreshToken ?? token.refreshToken,
-          accessTokenExpires: session.accessTokenExpires
-            ?? (session.accessToken ? getTokenExpiry(session.accessToken) : token.accessTokenExpires),
+          accessTokenExpires:
+            session.accessTokenExpires ??
+            (session.accessToken
+              ? getTokenExpiry(session.accessToken)
+              : token.accessTokenExpires),
           error: undefined,
         };
       }
@@ -102,58 +110,53 @@ export const authOptions: NextAuthOptions = {
       }
 
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ refreshToken: token.refreshToken }),
-          }
-        );
+        const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+        const res = await fetch(`${apiBase}/auth/refresh`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ refreshToken: token.refreshToken }),
+        });
 
         if (!res.ok) {
-          const text = await res.text();
-          throw new Error(`Refresh failed (${res.status}): ${text}`);
+          throw new Error(`Refresh failed (${res.status})`);
         }
 
         const data = await res.json();
         const newAccessToken = data.accessToken ?? data.access_token;
-        const newRefreshToken = data.refreshToken ?? data.refresh_token ?? token.refreshToken;
-
-        if (!newAccessToken) throw new Error("No accessToken in refresh response");
+        if (!newAccessToken) throw new Error("No accessToken in response");
 
         return {
           ...token,
           accessToken: newAccessToken,
-          refreshToken: newRefreshToken,
+          refreshToken: data.refreshToken ?? data.refresh_token ?? token.refreshToken,
           accessTokenExpires: getTokenExpiry(newAccessToken),
           error: undefined,
         };
       } catch (err) {
-        console.error("[JWT] Refresh failed:", err);
-        return { ...token, error: "RefreshAccessTokenError" };
+        console.error("Token refresh error:", err);
+        return {
+          ...token,
+          accessToken: undefined,
+          refreshToken: undefined,
+          accessTokenExpires: 0,
+          error: "RefreshAccessTokenError",
+        };
       }
     },
 
     async session({ session, token }) {
-      session.error = token.error;
-      session.accessToken = token.accessToken;
+      session.error = token.error as string | undefined;
+      session.accessToken = token.accessToken as string | undefined;
 
       if (token.user) {
         session.user = token.user as User;
       }
 
-      if (token.accessToken && !token.error) {
+      if (token.accessToken && !token.error && token.shouldHydrate) {
         try {
-          session.user = await getCurrentUser(
-            token.accessToken
-          );
-        } catch (err) {
-          console.error("Failed to hydrate session user:", err);
-
-          if (token.user) {
-            session.user = token.user as User;
-          }
+          session.user = await getCurrentUser(token.accessToken as string);
+        } catch {
+          // fall back to token.user
         }
       }
 

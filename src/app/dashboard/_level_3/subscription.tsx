@@ -127,7 +127,7 @@ export default function SubscriptionPage() {
                   <Typography variant="body2" sx={{ opacity: 0.7 }}>
                     Free Trial — Ends on {expiresAt}
                   </Typography>
-                ) : isPro || isEnterprise ? (
+                ) : (isStandard || isPro || isEnterprise) ? (
                   <Typography variant="body2" sx={{ opacity: 0.7 }}>
                     Active — Renews on {expiresAt}
                   </Typography>
@@ -239,7 +239,8 @@ export default function SubscriptionPage() {
         <DialogTitle fontWeight={700}>Choose Billing Cycle</DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ opacity: 0.7, mb: 3 }}>
-            Select how you want to be billed for the <strong>{selectedPlan}</strong> plan.
+            Select how you want to be billed for the {" "}
+            <strong>{selectedPlan ? `${selectedPlan.slice(0,1).toUpperCase() + selectedPlan.slice(1).toLocaleLowerCase()}` : ''}</strong> plan.
           </Typography>
 
           <ToggleButtonGroup
@@ -263,16 +264,21 @@ export default function SubscriptionPage() {
           sx={{ 
             px: 3, 
             pb: 3, 
+            gap: 1,
             display: 'flex',
+            justifyContent: 'space-between',
             flexDirection: { xs: 'column', sm: 'row' },
-            justifyContent: 'space-between' 
           }}
         >
-          <Button tone="retreat" onClick={() => setOpen(false)} disabled={upgrading}>
-            Cancel
-          </Button>
           <Button variant="contained" onClick={handleConfirmUpgrade} disabled={upgrading}>
             {upgrading ? 'Redirecting...' : 'Continue to Payment'}
+          </Button>
+          <Button 
+            tone="retreat" 
+            onClick={() => setOpen(false)} 
+            disabled={upgrading}
+          >
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>

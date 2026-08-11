@@ -1,8 +1,8 @@
 import { Button } from "@/assets/buttons";
 import { Plan } from "@/types/subscription";
 import { Stack } from "@mui/material";
+import { FcOrganization } from "react-icons/fc";
 import { GiTeamIdea, GiTeamUpgrade } from "react-icons/gi";
-import { SiAwsorganizations } from "react-icons/si";
 
 type Props = {
   isPersonal: boolean;
@@ -37,7 +37,7 @@ export function UpgradeButtons({ isPersonal, isBusiness, hasOrganization, onUpgr
 
       {isBusiness && hasOrganization && (
         <Button
-          startIcon={<SiAwsorganizations />}
+          startIcon={<FcOrganization />}
           variant="contained"
           onClick={() => onUpgrade(Plan.ENTERPRISE)}
         >

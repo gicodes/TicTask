@@ -107,6 +107,7 @@ export default function TicketTaskCreateFormsDrawer({
     try {
       if (itemType === "INVOICE"){
         if (isAdmin || isPartner || user?.subscription?.active) {
+          // do nothing
         } else {        
           setErr('Invoice is not supported for users without active subscription');
           setIsSubmitting(false);
@@ -134,9 +135,11 @@ export default function TicketTaskCreateFormsDrawer({
           : typeof payloadBase.startTime === 'string' && payloadBase.startTime
             ? new Date(payloadBase.startTime as string)
             : undefined;
+
       const startTimeDate = typeof payloadBase.startTime === 'string' && payloadBase.startTime
         ? new Date(payloadBase.startTime as string)
         : undefined;
+        
       const endTimeDate = typeof payloadBase.endTime === 'string' && payloadBase.endTime
         ? new Date(payloadBase.endTime as string)
         : undefined;
@@ -288,7 +291,7 @@ export default function TicketTaskCreateFormsDrawer({
           </Card>
 
           <Alert 
-            sx={{ mx: 'auto', maxWidth: 321 }} 
+            sx={{ mx: 'auto', maxWidth: 360 }} 
             severity={
               limitsLoading ? "info" : 
               limits && limits.remaining <= 0 ? "error" :
@@ -302,8 +305,7 @@ export default function TicketTaskCreateFormsDrawer({
                   <strong>
                     {limits.remaining}
                     {limits.remaining === 0 && " (limit reached!)"}
-                  </strong>{" "}
-                  / {limits.limit}
+                  </strong>/ {limits.limit}
                   {limits.isTeamActive && " (via team)"}
                 </Typography>
                 {limits.remaining <= 3 && limits.remaining > 0 && (

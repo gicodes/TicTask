@@ -3,6 +3,7 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import {
+  Box,
   Alert,
   Dialog,
   DialogTitle,
@@ -16,7 +17,7 @@ type AlertType = 'success' | 'error' | 'info' | 'warning';
 
 type AlertContextType = {
   showAlert: (message: string, severity?: AlertType) => void;
-  confirm: (message: string, title?: string) => Promise<boolean>;
+  confirm: (message: string, title?: string, deleteText?: string) => Promise<boolean>;
 };
 
 const AlertContext = createContext<AlertContextType | undefined>(undefined);
@@ -30,6 +31,7 @@ export function useAlert() {
 export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [deleteText, setDeleteText] = useState('Delete')
 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [confirmTitle, setConfirmTitle] = useState("");
@@ -45,9 +47,10 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const confirm = useCallback(
-    (message: string, title = "Confirm") => {
+    (message: string, title = "Confirm", deleteText = "Delete") => {
       setConfirmTitle(title);
       setConfirmMessage(message);
+      setDeleteText(deleteText)
       setConfirmOpen(true);
 
       return new Promise<boolean>((resolve) => {
@@ -81,12 +84,20 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
         onClose={() => setOpen(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert sx={{ zIndex: 999}} elevation={6} variant="filled" onClose={() => setOpen(false)} severity={severity}>
+        <Alert 
+          sx={{ 
+            zIndex: 999}} 
+            elevation={6} 
+            variant="filled" 
+            severity={severity}
+            onClose={() => setOpen(false)} 
+          >
           {message}
         </Alert>
       </Snackbar>
+
       <Dialog open={confirmOpen} onClose={handleCancel}>
-        <DialogTitle>{confirmTitle}</DialogTitle>
+        <DialogTitle><strong>{confirmTitle}</strong></DialogTitle>
 
         <DialogContent>
           <DialogContentText>
@@ -95,19 +106,22 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
         </DialogContent>
 
         <DialogActions>
-          <Button tone='retreat' onClick={handleCancel}>
-            Cancel
-          </Button>
+          <Box sx={{ p: 1, display: 'flex', flexWrap: 'wrap', gap: 2}}>
+            <Button tone='retreat' onClick={handleCancel}>
+              Cancel
+            </Button>
 
-          <Button
-            tone="danger"
-            variant="contained"
-            onClick={handleConfirm}
-          >
-            Delete
-          </Button>
+            <Button
+              tone="danger"
+              variant="contained"
+              onClick={handleConfirm}
+            >
+              {deleteText}
+            </Button>
+          </Box>
+          
         </DialogActions>
-      </Dialog>
+      </Dialog> 
     </AlertContext.Provider>
   );
 };

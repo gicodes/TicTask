@@ -1,9 +1,8 @@
 import React from 'react'
 import { MdSettings } from 'react-icons/md'
 import { RiRobot2Fill } from 'react-icons/ri'
-import { SiAwsorganizations } from 'react-icons/si'
 import { Box, Card, Divider, Typography } from '@mui/material'
-import { FcSerialTasks, FcDataEncryption, FcInvite } from 'react-icons/fc'
+import { FcSerialTasks, FcDataEncryption, FcInvite, FcOrganization } from 'react-icons/fc'
 import { BsCalendar2Date, BsFillCreditCard2BackFill } from 'react-icons/bs'
 
 const Page = () => {
@@ -29,7 +28,6 @@ const Page = () => {
           user settings, workspace tools, and global navigation. It stays clean and responsive across all screen sizes.
         </Typography>
 
-        {/* MOBILE MENU ICON */}
         <Typography variant="h6" fontWeight={501} mt={3}>Mobile Menu Icon</Typography>
         <Typography mt={1}>
           On small screens (Top-left corner) i.e. mobile, smartphones, etc.. the sidebar menu is hidden.  
@@ -57,7 +55,6 @@ const Page = () => {
           Since you already have a <strong>Go to Home</strong> link inside the user menu, redirecting the logo to the dashboard is simple and more user-friendly.
         </Typography>
 
-        {/* USER IDENTITY BLOCK */}
         <Typography variant="h6" fontWeight={501} mt={4}>User Identity Block</Typography>
         <Typography mt={1}>
           This section (Top-right corner) displays the user&apos;s avatar, name, email, and role.  
@@ -73,7 +70,6 @@ const Page = () => {
           This allows users to quickly confirm their identity and access personal settings.
         </Typography>
 
-        {/* SET STATUS */}
         <Typography variant="h6" fontWeight={501} mt={4}>Set Status</Typography>
         <Typography mt={1}>
           🗿 &quot;Set Status&quot; action allow users to update their presence, custom emoji status, or team availability.
@@ -85,7 +81,6 @@ const Page = () => {
           🔕 &quot;Mute Notifications&quot; action allows users to silence notifications temporarily.
         </Typography>
 
-        {/* EXTERNAL LINKS */}
         <Typography variant="h6" fontWeight={501} mt={4}>External Links & Utilities</Typography>
         <Typography mt={1}>
           The header menu includes several helpful external pages that support onboarding, learning, 
@@ -186,7 +181,7 @@ const Page = () => {
         {/* ============================= */}
         {/*    TEAM PAGE                 */}
         {/* ============================= */}
-        <Typography alignItems={'center'} gap={2} display={'flex'} variant="h6" fontWeight={501} mt={4} mb={1}><SiAwsorganizations /> Teams</Typography>
+        <Typography alignItems={'center'} gap={2} display={'flex'} variant="h6" fontWeight={501} mt={4} mb={1}><FcOrganization /> Teams</Typography>
         <Typography>
           The <strong>Teams Page</strong> manages your teams and all workspace members.  
           From here, you can adjust access, roles, and collaboration settings.

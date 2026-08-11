@@ -49,8 +49,11 @@ export const getTeam = (teamId: number) =>
 export const getTeamMembers = (teamId: number) =>
   request(`/${teamId}/members`);
 
-export const getTeamAnalytics = async (teamId: number) => {
-  return request(`/${teamId}/analytics`)
+export const getTeamAnalytics = async (
+  teamId: number,
+  range: "7d" | "30d" | "90d" = "30d"
+) => {
+  return request(`/${teamId}/analytics?range=${range}`);
 };
 
 export const updateTeamInfo = async (

@@ -110,6 +110,7 @@ export function TeamTicketProvider({
     ticketId: number,
     updates: Partial<Ticket>
   ) => {
+    console.log("Hit me with updates", updates)
     if (!teamId) return null;
 
     try {

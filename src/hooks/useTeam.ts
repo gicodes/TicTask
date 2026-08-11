@@ -1,20 +1,20 @@
 "use client";
 
+import { Team, Analytics, UpdateTeamPayload } from "@/types/team";
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Team, Analytics, UpdateTeamPayload } from "@/types/team";
 import { useAlert } from "@/providers/alert";
 import { useAuth } from "@/providers/auth";
 import * as teamsApi from "@/lib/teams";
 
 export function useTeam() {
-  const { teamId } = useParams() as { teamId?: string };
   const router = useRouter();
   const { user } = useAuth();
-  const { showAlert } = useAlert();
+  const { showAlert, confirm } = useAlert();
+  const { teamId } = useParams() as { teamId?: number };
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
 
-  const [team, setTeam] = useState<Team>(null);
+  const [team, setTeam] = useState<Team | null>(null);
   const [loading, setLoading] = useState(true);
 
   const isOwner = user?.id === team?.ownerId;
@@ -63,10 +63,10 @@ export function useTeam() {
     }
   };
 
-  const fetchAnalytics = async () => {
-    if (!team?.id) return;
-    const data = await teamsApi.getTeamAnalytics(team.id);
-
+  const fetchAnalytics = async (opts?: { range?: "7d" | "30d" | "90d" }) => {
+    if (!teamId) return;
+    const range = opts?.range ?? "30d";
+    const data = await teamsApi.getTeamAnalytics(teamId, range);
     setAnalytics(data);
   };
 
@@ -78,6 +78,13 @@ export function useTeam() {
   };
 
   const leaveCurrentTeam = async () => {
+    const ok = await confirm(
+      "Are you sure you want to leave this team?",
+      "Confirm Team Exit",
+      "Leave Now"
+    )
+    if (!ok) return false;
+
     await teamsApi.leaveTeam(team?.id!);
 
     showAlert("You have left the team!", 'success')
@@ -105,8 +112,12 @@ export function useTeam() {
   const dissolveTeam = async () => {
     if (!teamId) return false;
 
-    if (!confirm("Are you sure you want to dissolve this team?"))
-      return false;
+    const ok = await confirm(
+      "Are you sure you want to dissolve this team?",
+      "Confirm dissolve team",
+      "Dissolve"
+    )
+    if (!ok) return false;
 
     try {
       await teamsApi.dissolveTeam(Number(teamId));
@@ -125,11 +136,11 @@ export function useTeam() {
     isOwner,
     fetchTeam,
     analytics,
-    fetchAnalytics,
     updateTeam,
-    leaveCurrentTeam,
     inviteMember,
     removeMember,
     dissolveTeam,
+    fetchAnalytics,
+    leaveCurrentTeam,
   };
 }

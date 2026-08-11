@@ -38,7 +38,6 @@ export default function TeamTicketWorkspace() {
   const { user } = useAuth();
   const { ticketId } = useParams<{ ticketId: string }>();
   const { getTicket, getComments, getHistory, updateTicket, addComment } = useTeamTicket();
-
   const [ticketHistory, setTicketHistory] = useState<TicketHistory[]>([]);
   const [ticketComments, setTicketComments] = useState<TicketNote[]>([]);
   const [localTicket, setLocalTicket] = useState<Ticket | null>(null);
@@ -81,7 +80,7 @@ export default function TeamTicketWorkspace() {
         setTicketComments(commentsData ?? []);
       } catch (err) {
         console.error('Failed to load ticket:', err);
-        setError('Failed to load ticket data');
+        setError('Failed to load ticket. Check your connection.');
       } finally {
         setLoading(false);
       }
@@ -133,7 +132,6 @@ export default function TeamTicketWorkspace() {
 
   const handleUpdate = async () => {
     if (!localTicket) return;
-
     setIsSubmitting(true);  
 
     try {
@@ -282,7 +280,8 @@ export default function TeamTicketWorkspace() {
         {isAssigned && !editMode && 
           <Card
             sx={{
-              py: { xs: 2, sm: 3 },
+              py: { xs: 1, sm: 2 },
+              px: 1,
               mt: 5,
               mx: 'auto',
               boxShadow: 3,
@@ -294,7 +293,7 @@ export default function TeamTicketWorkspace() {
             <Stack
               direction="row"
               justifyContent="center"
-              gap={{ xs: 1.5, sm: 3 }}
+              gap={{ xs: 1, sm: 2, lg: 3 }}
               flexWrap="wrap"
             >
               {TICTASK_QUICK_ACTIONS.map((qa, i) => (
@@ -306,6 +305,7 @@ export default function TeamTicketWorkspace() {
                   status={qa.status}
                   disabled={!isActive}
                   onClose={() => router.back()}
+                  team
                   onUpdate={() => {
                     setLocalTicket((prev) => (prev ? { ...prev, status: qa.status } : null));
                     updateTicket(localTicket.id, { status: qa.status });

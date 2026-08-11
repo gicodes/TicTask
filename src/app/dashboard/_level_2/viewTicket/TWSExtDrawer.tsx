@@ -43,7 +43,7 @@ export default function TWSExtDrawer({
 }: TICKET_WORKSPACE_PROPS ) {  
   const { user } = useAuth();
   const { showAlert } = useAlert();
-  const { updateTicket, addTicketComment, fetchTicketNote, fetchTicketHistory, addTicketHistory } = useTickets();
+  const { updateTicket, addTicketComment, fetchTicketNote } = useTickets();
   
   const fields = extractTicketData(ticket!);
   const [ newNote, setNewNote ] = useState('');

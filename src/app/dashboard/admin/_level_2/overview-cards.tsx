@@ -24,12 +24,11 @@ import { format } from 'date-fns';
 import { BiUser } from "react-icons/bi";
 import { TbLogs } from "react-icons/tb";
 import { RiBloggerLine } from "react-icons/ri";
-import { SiAwsorganizations } from "react-icons/si";
 import { Download, Refresh, Search } from "@mui/icons-material";
 import { MdQuestionAnswer, MdWorkHistory } from "react-icons/md";
 import { FaUsers, FaUserGroup, FaAddressBook } from "react-icons/fa6";
 import { GiMoneyStack, GiThreeFriends, GiTicket } from "react-icons/gi";
-import { FcSerialTasks, FcDataEncryption, FcParallelTasks, FcMoneyTransfer } from "react-icons/fc";
+import { FcSerialTasks, FcDataEncryption, FcParallelTasks, FcMoneyTransfer, FcOrganization } from "react-icons/fc";
 
 export const handleSavePDF = () => window.print();
 
@@ -371,7 +370,7 @@ export const Icons = {
   Metrics: () => <FcDataEncryption size={24} />,
   Revenue: () => <FcMoneyTransfer size={24} />,
   Money: () => <GiMoneyStack size={24} />,
-  Teams: () => <SiAwsorganizations size={24} />,
+  Teams: () => <FcOrganization size={24} />,
   Users: () => <FaUserGroup size={24} />,
   User: () => <BiUser size={24} />,
   Logs: () => <TbLogs size={24} />,

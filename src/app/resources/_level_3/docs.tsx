@@ -8,7 +8,8 @@
 */
 
 import { DocTextBlock } from "@/types/resources";
-import { SiGoogle, SiSlack, SiX } from "react-icons/si";
+import { BsSlack } from "react-icons/bs";
+import { SiGoogle, SiX } from "react-icons/si";
 
 // -------------------------
 // TABLE OF CONTENTS (Public)
@@ -62,11 +63,13 @@ export const TABLE_OF_CONTENTS_DEV = [
 
 export const CONTENTS: Record<string, DocTextBlock[]> = {
   "What Is TicTask": [
-    "TicTask is a lightweight tool built for minimal, modern and efficient workflow.",
-    "Although work can be personal, TicTask uniquely platforms both personal and collaborative tools to enable fast, transparent teamwork, ownership, clarity and flexibility across highly affordable workspaces.", 
-    "By leveraging the fundamental concepts of software engineering, the product is designed to breakdown workflow into custom(izable) tickets [Modularity begets Productivity], separate organizations and team workspaces [Separation of Concerns] and integrate users' data i.e. profile, ticket, teams with Artificial Intelligence (AI) at the core [Abstraction & Encapsulation].", 
-    "This helps individuals and teams capture work, assign ownership, track progress, and react faster.",
-    { type: 'callout', title: 'Core idea', content: 'Tickets are simply tasks or tools for work. Keep tickets simple, make ownership clear, and make progress visible.' }
+    "TicTask is a lightweight system built for minimal, modern and efficient workflow.",
+    "Although work can be personal, this system uniquely platforms both personal and collaborative tools to enable task management, teamwork, ownership, clarity and flexibility across highly affordable workspaces.", 
+    "By leveraging fundamental concepts of productivity, workflow can be broken down to:",
+    "Tickets as tasks, events or reminders", 
+    "Team with separate workspace(s)", 
+    "Notifications with personalised settings.", 
+    { type: 'callout', title: 'Core idea', content: 'TicTask gives you simple but powerful tools to create and manage tasks, notes or tasks. It goes and grows beyond that, subject to your workflow.' }
   ],
 
   "Key Features & Target Audience": [
@@ -104,7 +107,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     "You should store your password safely, as is the primary means of signing in ",
     { type: "point", content: "SSO/ Auth providers" },
     { type: "icon", content: <SiGoogle color="lightblue" />},
-    { type: "icon", content: <SiSlack color="violet" /> },
+    { type: "icon", content: <BsSlack color="violet" /> },
     { type: "icon", content: <SiX  color="white"/> }, 
     "",
     { type: "point", content: "Two-factor authentication (optional)" },
@@ -189,10 +192,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
 
   "Contact & Support": [
     "We have several lines and channels open to receive your message.", 
-    "We typically give priority response to emails from admin@tictask.org — Available 9:00–18:00 (GMT). For urgent incidents, use the in-app emergency contact or your workspace admin line.",
-    { type: 'badge', content: 'Email' },
-    { type: 'badge', content: 'Slack', color: 'secondary' },    
-    { type: 'badge', content: 'Phone', color: 'success' },
+    "We typically give priority response to emails from admin@tictask.org — Available 9:00–18:00 (GMT).", "For urgent incidents, use the in-app emergency contact or your workspace admin line.",
   ]
 }
 

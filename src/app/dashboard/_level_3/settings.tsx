@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { User } from '@/types/users';
+import type { User } from '@/types/users';
 import { Button } from '@/assets/buttons';
 import { useAuth } from '@/providers/auth';
 import { useAlert } from '@/providers/alert';
@@ -29,6 +29,8 @@ import { useNotifications } from '@/providers/notifications';
 import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 import { Sun, Moon, Laptop, Bell, Shield, User2, Globe, PlugZap, CreditCard, Check } from 'lucide-react';
+import DevicesAndSessions from '../_level_2/accountSettings/loggedInDevices';
+
 
 const isIOS = () => {
   const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -39,7 +41,7 @@ const isStandalone = () => window.matchMedia("(display-mode: standalone)").match
 
 export default function SettingsPage() {
   const { user } = useAuth();
-  const { showAlert } = useAlert();
+  const { showAlert, confirm } = useAlert();
   const { mode, setThemeMode } = useThemeMode();
   const { loading: authLoading, isAuthenticated } = useAuth();
   const { requestPushPermission, unsubscribePush } = useNotifications();
@@ -80,7 +82,15 @@ export default function SettingsPage() {
     if (isIOS() && !isStandalone()) setShowIOSGuidance(true)
   }, []);
 
-  const handleForgotPassword = () => {
+  const handleForgotPassword = async () => {
+    const ok = await confirm(
+      "Click Continue to receive a magic link to reset your password",
+      "Continue with password reset?",
+      'Continue'
+    )
+
+    if (!ok) return;
+
     const email = user?.email;
     if (!email) {
       showAlert('Your account is not signed in or recognized', 'warning');
@@ -306,15 +316,12 @@ export default function SettingsPage() {
         title="Security"
         subtitle="Manage session security and data privacy."
       >
-        <Stack spacing={2}>
+        <Stack pt={2} spacing={4}>
           <FormControlLabel 
             control={<Switch checked={autoSave} onChange={() => setAutoSave(!autoSave)} />}
             label="Enable last session on refresh"
           />
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <Button>Logged in devices</Button>
-            <Button tone='warm'>Log out all sessions</Button>
-          </Stack>
+          <DevicesAndSessions />
         </Stack>
       </SettingsCard>
 
@@ -346,12 +353,12 @@ export default function SettingsPage() {
             </Box> 
           </>
         ) : (
-          <Stack spacing={2}>
+          <Stack spacing={2} pt={2}>
             <Typography variant="body1">
-              <strong>Current Plan:</strong> {plan}
+              <strong>Current Plan:</strong> {plan.at(0)?.toUpperCase() + plan.slice(1).toLowerCase()}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              <strong>Renews on:</strong> {expiresAt}
+              Renews on {expiresAt}
             </Typography>
             
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>

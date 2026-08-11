@@ -1,12 +1,13 @@
 'use client'
 
-import React, { useEffect, useState, useMemo } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useTeam } from '@/hooks/useTeam';
 import { Button } from '@/assets/buttons';
 import { useAuth } from '@/providers/auth';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useParams, useRouter } from 'next/navigation';
 import { useTeamTicket } from '@/providers/teamTickets';
+import React, { useEffect, useState, useMemo } from 'react';
 import { AllTicketTypes, Create_Ticket } from '@/types/ticket';
 import { NavbarAvatar } from '@/app/dashboard/_level_1/navItems';
 import { DatePicker } from '@/app/dashboard/_level_1/tDateControl';
@@ -173,8 +174,8 @@ export default function TeamTicketCreatePage() {
     <>
       <AppBar position="static" color="default" elevation={0}>
         <Toolbar>
-          <IconButton edge="start" onClick={() => router.back()}>
-            <ArrowBackIcon />
+          <IconButton edge="start">
+            <Link href={`/dashboard/teams/{team?.id}/tickets`}><ArrowBackIcon /></Link>
           </IconButton>
           <Typography variant="h6" fontWeight={600} sx={{ ml: 2, flex: 1 }}>
             Create Team Ticket
@@ -210,9 +211,7 @@ export default function TeamTicketCreatePage() {
                   ))}
                 </TextField>
 
-                <Typography fontWeight={600} mt={2}>
-                  Team Space
-                </Typography>
+                <Typography fontWeight={600} mt={2}> Team Space</Typography>
 
                 <Stack gap={0.75}>
                   {teamMembers.length === 0 ? (
@@ -237,10 +236,10 @@ export default function TeamTicketCreatePage() {
                     render={({ field }) => (
                       <Select
                         multiple
-                        label="Assignees"
+                        label="Assign To"
                         {...field}
                         value={field.value ?? []}
-                        onChange={(e) => field.onChange(e.target.value)}
+                        onChange={(event) => field.onChange(event.target.value)}
                         renderValue={(selected: number[]) => (
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                             {selected.map((value) => {

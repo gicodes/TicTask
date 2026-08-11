@@ -13,6 +13,7 @@ import WorkspaceWidgets from './wsWidgets';
 import { useAuth } from '@/providers/auth';
 import { useRouter } from 'next/navigation';
 import { Add, Search } from '@mui/icons-material';
+import AuthRedirectBtn from '@/assets/authRedirectBtn';
 import TicketsList from '../../../_level_2/list/_list';
 import { useTeamTicket } from '@/providers/teamTickets';
 import TicketBoard from '../../../_level_2/board/_board';
@@ -44,11 +45,10 @@ export default function TeamTicketsWorkspace() {
   const router = useRouter();
   const { isAuthenticated, user } = useAuth();
   const { tickets, updateTicket, fetchTickets } = useTeamTicket();
+  
   const [view, setView] = useState<'board' | 'list' | 'calendar' | 'timeline' | 'gantt'>('board');
-
   const [statAnchor, setStatAnchor] = useState<HTMLElement | null>(null);
   const [activeStat, setActiveStat] = useState<StatKey | null>(null);
-
   const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
   const [selected, setSelected] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -203,7 +203,7 @@ export default function TeamTicketsWorkspace() {
 
   if (!isAuthenticated) return (
     <WorkspaceShell>
-      <DateToday />
+      <Typography textAlign={'center'} p={4}>Please <AuthRedirectBtn />  to access profile </Typography>
     </WorkspaceShell>
   );
 

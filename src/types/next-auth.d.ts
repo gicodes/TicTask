@@ -19,6 +19,8 @@ declare module "next-auth" {
     data?: UserPreferences
     accessToken: string;
     refreshToken: string;
+    error?: "RefreshAccessTokenError";
+
     pushSubscriptions?: PushSubscriptions[];
     status?: UserStatus;
     statusUntil?: string | null;
@@ -48,7 +50,9 @@ declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     user?: import("next-auth").User | null;
     accessToken: string | undefined | null;
-    refreshToken: string | null;
+    refreshToken: string | null | undefined;
+    accessTokenExpires?: number;
+    error?: "RefreshAccessTokenError"
     expires?: number | null;
     status?: UserStatus;
     statusUntil?: string | null;

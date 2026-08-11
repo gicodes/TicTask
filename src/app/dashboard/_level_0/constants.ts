@@ -63,9 +63,9 @@ export type PlannerTaskType = (typeof PLANNER_TASK_TYPES)[number];
 
 export const TICKET_STATUSES = ['UPCOMING', 'IN_PROGRESS', 'OPEN', 'RESOLVED', 'CLOSED', 'CANCELLED'];
 
-export const TICKET_LIST_HEADERS = ['No.', 'Title', 'Priority', 'Due Date', 'Status', 'Type', 'Last Updated']
+export const TICKET_LIST_HEADERS = ['No.', 'Title', 'Priority', 'Type', 'Due Date', 'Status', 'Last Updated']
 
-export const TASK_LIST_HEADERS = ['No.', 'Title', 'Due Date', 'Status', 'Tags', 'Type']
+export const TASK_LIST_HEADERS = ['No.', 'Title', 'Type', 'Due Date', 'Status', 'Tags',]
 
 export const TICTASK_QUICK_ACTIONS = [
   {

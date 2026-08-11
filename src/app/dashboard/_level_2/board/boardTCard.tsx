@@ -36,8 +36,21 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
   const IconComponent = TICKET_TYPE_ICONS[ticket.type];
 
   const hasDueDate = !!ticket.dueDate;
-  const isOverdue = hasDueDate && new Date(ticket.dueDate!) < new Date();
-  const dueDateLabel = hasDueDate ? new Date(ticket.dueDate!).toLocaleDateString() : '';
+  const now = new Date();
+  const due = hasDueDate ? new Date(ticket.dueDate!) : null;
+
+  const isSameDay = (a: Date, b: Date) =>
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate();
+  const isDue = hasDueDate && due !== null && isSameDay(due, now);
+
+  const hoursPast = hasDueDate && due !== null
+    ? (now.getTime() - due.getTime()) / (1000 * 60 * 60)
+    : 0;
+  const isOverDue = hasDueDate && hoursPast > 48;
+
+  const dueDateLabel = hasDueDate && due ? due.toLocaleDateString() : '';
 
   return (
     <Paper
@@ -206,11 +219,16 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
             {hasDueDate && (
               <Typography
                 variant="caption"
-                letterSpacing={isOverdue ? 1.5 : 0.5}
-                color={isOverdue ? 'error' : 'text.secondary'}
+                letterSpacing={isOverDue || isDue ? 1 : 0.5}
+                color={isOverDue ? 'error' : isDue ? 'warning.main' : 'text.secondary'}
               >
-                {isOverdue ? <>
-                  <strong>OVERDUE ⛔️</strong></> : <>Due on {dueDateLabel}</>}
+                {isOverDue ? (
+                  <strong>OVERDUE ⛔️</strong>
+                ) : isDue ? (
+                  <strong>DUE TODAY</strong>
+                ) : (
+                  <>Due on {dueDateLabel}</>
+                )}
               </Typography>
             )}
           </Box>

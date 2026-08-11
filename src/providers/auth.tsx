@@ -13,7 +13,11 @@ import { AuthContextProps, AuthUser, LoginProps } from '@/types/auth';
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => (
-  <SessionProvider refetchOnWindowFocus>
+  <SessionProvider 
+    refetchOnWindowFocus
+    refetchInterval={5 * 60}
+    refetchWhenOffline={false} 
+  >
     <AuthInnerProvider>{children}</AuthInnerProvider>
   </SessionProvider>
 );

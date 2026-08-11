@@ -98,7 +98,7 @@ export const PLANS = [
     priceYearly: 360,
     features: [
       "Everything on Standard",
-      "Unlimited tickets",
+      "Up to 250 tickets",
       "Up to 3 teams, 6 members each, 1080 team tickets",
       "Advanced AI assistance",
       "Analytics export enabled",

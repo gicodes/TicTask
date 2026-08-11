@@ -67,3 +67,22 @@ export interface AuthContextProps {
   removeUser: (email: string, removedBy?: string) => Promise<void>;
   logout: () => Promise<void>;
 }
+
+export type SessionItem = {
+  id: string;
+  userId?: number;
+  user?: AuthUser;
+  email?: string;
+  name?: string;
+  role?: Role;
+  device?: string;
+  ip?: string;
+
+  isCurrent: boolean;
+  accessToken?: string;
+
+  createdAt: string | Date;
+  updatedAt?: string | Date;
+  expiresAt?: string | Date;
+  [key: string]: unknown;
+}

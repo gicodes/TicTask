@@ -7,8 +7,8 @@ import Logo from "@/assets/txtLogo";
 import { Button } from "@/assets/buttons";
 import MenuIcon from "@mui/icons-material/Menu";
 import { CancelRounded } from "@mui/icons-material";
-import { userLinks, guestLinks, menuItems, extendedMenuItems } from "@/app/dashboard/_level_1/navItems";
 import { AppBar, Box, IconButton, Toolbar, Stack, Drawer, List, ListItem, Popover,} from "@mui/material";
+import { extendedMenuItems, guestLinks, menuItems, userLinks } from "@/app/dashboard/_level_0/navItems";
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();

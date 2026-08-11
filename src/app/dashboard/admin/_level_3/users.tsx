@@ -23,6 +23,7 @@ import {
 } from '@mui/material';
 import { User_Type } from '@/types/users';
 import { Button } from '@/assets/buttons';
+import { useAuth } from '@/providers/auth';
 import { useAlert } from '@/providers/alert';
 import { useDebounce } from '../../_level_3/ticket';
 import AdminComponents from '../_level_2/overview-cards';
@@ -50,6 +51,7 @@ interface UsersData {
 }
 
 export default function AdminUsersPage() {
+  const { user } = useAuth(); 
   const { showAlert } = useAlert();
   const queryClient = useQueryClient();
 
@@ -107,6 +109,22 @@ export default function AdminUsersPage() {
     deleteUser({ variables: { id }});
     window.location.reload();
   };
+
+  if (!user) return (
+    <Box textAlign="center" py={10} color="error.main">
+      <AlertCircle size={48} style={{ margin: '0 auto 16px' }} />
+      <Typography>You are not authorized to be here. Please Contact admin.</Typography>
+    </Box>
+  );
+
+  if (user?.role !== 'ADMIN') {
+    return (
+      <Box textAlign="center" py={10} color="error.main">
+        <AlertCircle size={48} style={{ margin: '0 auto 16px' }} />
+        <Typography>You do not have permission to view this page.</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box>

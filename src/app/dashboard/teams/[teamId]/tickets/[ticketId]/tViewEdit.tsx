@@ -251,11 +251,11 @@ export function TicketDetailPane({
           {'steps' in fields && (
             <Box>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                Description
+                Steps to reproduce
               </Typography>
 
               <LightweightRichEditor
-                value={ticket.description ?? ''}
+                value={ticket.data.steps ?? ''}
                 onChange={(value) => updateField('data',  {
                   ...ticket.data,
                   steps: value,
@@ -438,7 +438,9 @@ export function TicketDetailPane({
             <Chip 
               label={ticket.dueDate ? new Date(ticket.dueDate).toDateString() : '—'} 
               size="medium" 
-              sx={{ bgcolor: ticket.dueDate ? 'gray' : 'rgba(0,0,0,0.25)'}} 
+              sx={{ 
+                color: 'black',
+                bgcolor: ticket.dueDate ? 'wheat' : 'rgba(0,0,0,0.25)'}} 
             />
           )}
         </FormControl>
