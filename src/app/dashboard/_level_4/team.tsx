@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/assets/buttons";
 import { useMyTeams } from "@/hooks/useMyTeams";
@@ -55,11 +55,13 @@ export default function TeamsPage() {
     }
   };
 
-  const sortedTeams = [...teams].sort(
-    (a, b) =>
-      new Date(b.updatedAt).getTime() -
-      new Date(a.updatedAt).getTime()
-  );
+  const sortedTeams = useMemo(() => {
+    return [...teams].sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() -
+        new Date(a.updatedAt).getTime()
+    );
+  }, [teams]);
 
   return (
     <GenericGridPageLayout> 
