@@ -445,7 +445,16 @@ export function TicketDetailPane({
           )}
         </FormControl>
 
-        <Stack spacing={1} sx={{ borderRadius: 3, py: 2, px: 3, bgcolor: 'var(--background)',}}>
+        <Stack 
+          spacing={1} 
+          sx={{ 
+            py: 2, 
+            px: 3, 
+            borderRadius: 3, 
+            color: 'var(--background)',
+            bgcolor: 'var(--foregound)', 
+          }}
+        >
           <Typography variant="subtitle2" gutterBottom>
             Created by {ticket.createdById === userId ? <strong>you</strong> : ticket.createdBy?.name || ticket.createdById}{' '}
             on {ticket.createdAt ? new Date(ticket.createdAt).toLocaleString('en-US', { 

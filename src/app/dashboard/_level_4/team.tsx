@@ -55,6 +55,12 @@ export default function TeamsPage() {
     }
   };
 
+  const sortedTeams = [...teams].sort(
+    (a, b) =>
+      new Date(b.updatedAt).getTime() -
+      new Date(a.updatedAt).getTime()
+  );
+
   return (
     <GenericGridPageLayout> 
       <GenericDashboardPagesHeader 
@@ -83,6 +89,11 @@ export default function TeamsPage() {
         <Card sx={{ borderRadius: 4 }}>
           <CardContent>
             <Stack spacing={2}>
+              { loading && 
+                <Typography textAlign="center" py={12}>
+                  Loading your teams...
+                </Typography>
+              }
               {teams.length === 0 && !loading && (
                 <Typography textAlign="center" py={12}>
                   No team yet
@@ -100,7 +111,7 @@ export default function TeamsPage() {
                     </Typography>
                   </Stack>
 
-                  {teams.map(team => (
+                  {sortedTeams.map(team => (
                     <Link key={team.id} href={`/dashboard/teams/${team.id}`}>
                       <Box
                         sx={{
