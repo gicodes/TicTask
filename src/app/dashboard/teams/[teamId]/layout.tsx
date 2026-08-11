@@ -11,7 +11,7 @@ export default function WorkspaceLayout({
   return (
     <Box sx={{ px: { xs: 2, md: 4 }, py: { xs: 4, md: 6 } }}>
       <WorkspaceHeader />
-      <Box mt={4}>
+      <Box mt={1}>
         <TeamWrapper>
           {children}
         </TeamWrapper>

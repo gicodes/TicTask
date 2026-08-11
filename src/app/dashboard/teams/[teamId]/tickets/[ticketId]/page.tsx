@@ -80,7 +80,7 @@ export default function TeamTicketWorkspace() {
         setTicketComments(commentsData ?? []);
       } catch (err) {
         console.error('Failed to load ticket:', err);
-        setError('Failed to load ticket. Check your connection.');
+        setError('Failed to load ticket. Check your connection or re-login.');
       } finally {
         setLoading(false);
       }
@@ -91,9 +91,9 @@ export default function TeamTicketWorkspace() {
   if (loading) return (<Typography p={4} textAlign={'center'}>Loading ticket...</Typography>);
 
   if (error || !localTicket) return (
-    <Box p={4} mx={'auto'} width={300} textAlign={'center'} display={'grid'} gap={2}>
+    <Box p={4} mx={'auto'} textAlign={'center'} display={'grid'} gap={2}>
       <Typography color="error">{error || 'Ticket not found'}</Typography>
-      <Button onClick={() => router.back()}> Go Back </Button>
+      <Button sx={{ maxWidth: 200}} onClick={() => router.back()}> Go Back </Button>
     </Box>
   );
 
