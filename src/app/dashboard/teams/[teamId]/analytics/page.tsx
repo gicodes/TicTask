@@ -107,7 +107,7 @@ export default function AnalyticsPage() {
 
   if (!isPro && !isEnt) {
     return (
-      <Box maxWidth={720} mx="auto" py={6} px={2}>
+      <Box maxWidth={720} py={6} px={2}>
         <Card variant="outlined" sx={{ borderRadius: 3, overflow: "hidden" }}>
           <CardContent sx={{ p: 4 }}>
             <Stack spacing={3} alignItems="flex-start">
