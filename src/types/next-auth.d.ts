@@ -2,6 +2,7 @@ import { DefaultSession, DefaultUser } from "next-auth";
 import { NextApiRequest, NextApiResponse } from "next";
 import { JWT as DefaultJWT } from "next-auth/jwt";
 import { PushSubscriptions } from "./subscription";
+import { TeamMember } from "./team";
 
 declare module "next-auth" {
   interface User extends DefaultUser {
@@ -22,6 +23,7 @@ declare module "next-auth" {
     error?: "RefreshAccessTokenError";
 
     pushSubscriptions?: PushSubscriptions[];
+    teamMemberships?: TeamMember[];
     status?: UserStatus;
     statusUntil?: string | null;
   }

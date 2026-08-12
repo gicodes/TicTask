@@ -1,8 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Button } from '@/assets/buttons';
-import { Ticket, TicketImpact, TicketSeverity } from '@/types/ticket';
+import { Ticket } from '@/types/ticket';
 import { TICKET_TYPE_ICONS } from '@/app/dashboard/_level_1/tSchema';
 import { extractTicketData } from '@/app/dashboard/_level_1/tFieldExtract';
 import { getTypeColor, priorityColor } from '../../../../_level_1/tColorVariants';
@@ -18,17 +17,14 @@ import {
   FormControl,
   InputLabel,
   IconButton,
-  Switch,
-  List,
-  ListItem,
-  ListItemText,
 } from '@mui/material';
-import { TicketCheck, } from 'lucide-react';
-import { Add as AddIcon } from '@mui/icons-material';
-import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
+import { TicketCheck, Plus } from 'lucide-react';
+import { DateTimePicker } from '@mui/x-date-pickers';
+import { TeamTicketViewProps } from '@/types/tViewProps';
+import { TicketActivityTimeline } from './TicketActivityTimeline';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { TicketTypeSpecificFields } from './TicketTypeSpecificField';
 import { RichTextViewer } from '@/app/dashboard/_level_1/richTextViewer';
-import { EstimatedTimeField } from '@/app/dashboard/_level_1/estTimeHours';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { LightweightRichEditor } from '@/app/dashboard/_level_1/richTextEditior';
 
@@ -38,34 +34,29 @@ export function TicketDetailPane({
   editMode,
   teamMembers,
   userId,
-}: {
-  ticket: Ticket;
-  setTicket: React.Dispatch<React.SetStateAction<Ticket | null>>;
-  editMode: boolean;
-  teamMembers: any[];
-  userId: number;
-}) {
+}: TeamTicketViewProps) {
+  const fields = extractTicketData(ticket)
+  const isEventOrMeeting = ticket.type === 'EVENT' || ticket.type === 'MEETING'
+  const [newTag, setNewTag] = useState('')
   const TypeIcon = TICKET_TYPE_ICONS[ticket.type as keyof typeof TICKET_TYPE_ICONS] ?? <TicketCheck />;
-  const fields = extractTicketData(ticket);
-  const isEventOrMeeting = ticket.type === "EVENT" || ticket.type === "MEETING";
-
-  const [newTag, setNewTag] = useState('');
 
   const handleAddTag = () => {
-    if (!newTag.trim()) return;
-    setTicket((prev) => prev ? { ...prev, tags: [...(prev.tags || []), newTag.trim()] } : null);
-    setNewTag('');
-  };
+    if (!newTag.trim()) return
+    setTicket((prev) =>
+      prev ? { ...prev, tags: [...(prev.tags || []), newTag.trim()] } : null
+    )
+    setNewTag('')
+  }
 
   const handleRemoveTag = (tagToRemove: string) => {
-    setTicket((prev) =>
-      prev ? { ...prev, tags: prev.tags?.filter((t) => t !== tagToRemove) || [] } : null
-    );
-  };
+    setTicket((prev) => prev ? { ...prev, tags: prev.tags?.filter(
+      (t) => t !== tagToRemove) || [] } : null
+    )
+  }
 
   const updateField = <K extends keyof Ticket>(field: K, value: Ticket[K]) => {
-    setTicket((prev) => (prev ? { ...prev, [field]: value } : null));
-  };
+    setTicket((prev) => (prev ? { ...prev, [field]: value } : null))
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -85,7 +76,7 @@ export function TicketDetailPane({
           </Typography>
 
           {editMode ? (
-            <FormControl size="small" sx={{ minWidth: 120, maxWidth: 180 }}>
+            <FormControl size="small" sx={{ width: { xs: 140, sm: 160 }, flexShrink: 0 }}>
               <InputLabel>Priority</InputLabel>
               <Select
                 value={ticket.priority || ''}
@@ -93,34 +84,85 @@ export function TicketDetailPane({
                 onChange={(e) => updateField('priority', e.target.value as any)}
               >
                 <MenuItem value="">None</MenuItem>
-                <MenuItem value="LOW">Low</MenuItem>
-                <MenuItem value="MEDIUM">Medium</MenuItem>
-                <MenuItem value="HIGH">High</MenuItem>
-                <MenuItem value="URGENT">Urgent</MenuItem>
+                {['LOW', 'MEDIUM', 'HIGH', 'URGENT'].map((priority) => (
+                  <MenuItem key={priority} value={priority}>
+                    {priority.charAt(0) + priority.slice(1).toLowerCase()}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           ) : (
             ticket.priority && (
-              <Chip
-                label={ticket.priority}
-                size="medium"
+              <Box
                 sx={{
-                  bgcolor: priorityColor(ticket.priority),
-                  color: '#fff',
-                  fontWeight: 600,
+                  width: { xs: 100, sm: 120 },
+                  minHeight: 40,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.5,
+                  px: 1.5,
+                  borderRadius: 2,
+                  border: '1px solid',
+                  borderColor: `${priorityColor(ticket.priority)}33`,
+                  bgcolor: `${priorityColor(ticket.priority)}0D`,
+                  flexShrink: 0,
                 }}
-              />
+              >
+                <Box
+                  sx={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    bgcolor: priorityColor(ticket.priority),
+                    flexShrink: 0,
+                    boxShadow: `0 0 0 3px ${priorityColor(ticket.priority)}18`,
+                  }}
+                />
+                <Box sx={{ minWidth: 0, display: 'grid' }}>
+                  <Typography variant="caption" color="text.secondary" display="block" lineHeight={1.1}>
+                    Priority
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    fontWeight={700}
+                    lineHeight={1.35}
+                    noWrap
+                    sx={{ color: priorityColor(ticket.priority) }}
+                  >
+                    {ticket.priority.charAt(0) + ticket.priority.slice(1).toLowerCase()}
+                  </Typography>
+                </Box>
+              </Box>
             )
           )}
         </Stack>
 
-        <Box mb={3}>
+        <Box
+          my={3}
+          sx={{
+            position: 'relative',
+            borderRadius: 2,
+            transition: 'all 0.2s ease',
+            ...(editMode && {
+              p: 2,
+              border: '1px solid',
+              borderColor: 'primary.main',
+              bgcolor: (theme) =>
+                theme.palette.mode === 'dark'
+                  ? 'rgba(25, 118, 210, 0.06)'
+                  : 'rgba(25, 118, 210, 0.04)',
+              boxShadow: (theme) =>
+                theme.palette.mode === 'dark'
+                  ? '0 0 0 1px rgba(25, 118, 210, 0.3), 0 0 16px rgba(25, 118, 210, 0.15)'
+                  : '0 0 0 1px rgba(25, 118, 210, 0.2), 0 0 12px rgba(25, 118, 210, 0.12)',
+            }),
+          }}
+        >
           {editMode ? (
             <Box>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                 Description
               </Typography>
-
               <LightweightRichEditor
                 value={ticket.description ?? ''}
                 onChange={(value) => updateField('description', value)}
@@ -133,27 +175,49 @@ export function TicketDetailPane({
         </Box>
 
         <Stack spacing={1} mb={4}>
-          <Typography variant="subtitle2" color="text.secondary" gutterBottom> Assignees</Typography>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+            People on this ticket
+          </Typography>
 
           {editMode ? (
             <Select
               multiple
               fullWidth
-              value={ticket.assignees?.map((a) => a.id) ?? (ticket.assignedToId ? [ticket.assignedToId] : [])}
+              displayEmpty
+              value={
+                ticket.assignees?.map((a) => a.id) ??
+                (ticket.assignedToId ? [ticket.assignedToId] : [])
+              }
               onChange={(e) => {
-                const ids = e.target.value as number[];
+                const ids = e.target.value as number[]
                 setTicket((prev) =>
-                  prev ? { ...prev, assignees: teamMembers.filter((m) => ids.includes(m.id)) } : null
-                );
+                  prev
+                    ? {
+                        ...prev,
+                        assignees: teamMembers.filter((m) => ids.includes(m.id)),
+                      }
+                    : null
+                )
               }}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {(selected as number[]).map((id) => {
-                    const member = teamMembers.find((m) => m.id === id);
-                    return <Chip key={id} label={member?.name ?? `User ${id}`} size="small" />;
-                  })}
-                </Box>
-              )}
+              renderValue={(selected: number[]) => {
+                if (selected.length === 0) {
+                  return (
+                    <Typography color="text.secondary" fontSize={12.5}>
+                      Click the dropdown to see teammates
+                    </Typography>
+                  )
+                }
+                return (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {selected.map((id) => {
+                      const member = teamMembers.find((m) => m.id === id)
+                      return (
+                        <Chip key={id} label={member?.name ?? `User ${id}`} size="small" />
+                      )
+                    })}
+                  </Box>
+                )
+              }}
             >
               {teamMembers.map((m) => (
                 <MenuItem key={m.id} value={m.id}>
@@ -162,33 +226,182 @@ export function TicketDetailPane({
               ))}
             </Select>
           ) : (
-            <Box display="flex" gap={1} flexWrap="wrap">
-              {(() => {
-                const list = ticket.assignees?.length ? ticket.assignees : ticket.assignedTo ? [ticket.assignedTo] : [];
-                if (list.length === 0) return <Typography variant="caption"><i>Unassigned</i></Typography>;
+            (() => {
+              const list = ticket.assignees?.length
+                ? ticket.assignees
+                : ticket.assignedTo
+                  ? [ticket.assignedTo]
+                  : []
 
-                return list.map((a) => (
-                  <Chip key={a.id ?? a.name} label={a.name ?? `User ${a.id}`} color={a.id === userId ? "primary" : "default"} />
-                ));
-              })()}
-            </Box>
+              if (list.length === 0) {
+                return (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1.25,
+                      px: 2,
+                      py: 1.5,
+                      borderRadius: 2.5,
+                      border: '1px dashed',
+                      borderColor: 'divider',
+                      bgcolor: 'var(--surface-1)',
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 34,
+                        height: 34,
+                        borderRadius: '50%',
+                        display: 'grid',
+                        placeItems: 'center',
+                        bgcolor: 'action.hover',
+                        color: 'text.disabled',
+                      }}
+                    >
+                      —
+                    </Box>
+                    <Box>
+                      <Typography variant="body2" color="text.secondary">
+                        No one assigned
+                      </Typography>
+                      <Typography variant="caption" color="text.disabled">
+                        This ticket is currently unassigned
+                      </Typography>
+                    </Box>
+                  </Box>
+                )
+              }
+
+              return (
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: {
+                      xs: '1fr',
+                      sm: list.length > 1 ? 'repeat(2, minmax(0, 1fr))' : '1fr',
+                    },
+                    gap: 1,
+                  }}
+                >
+                  {list.map((a) => {
+                    const isCurrentUser = a.id === userId
+                    const name = a.name ?? `User ${a.id}`
+
+                    return (
+                      <Box
+                        key={a.id ?? a.name}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1.25,
+                          px: 1.5,
+                          py: 1.25,
+                          borderRadius: 2.5,
+                          border: '1px solid',
+                          borderColor: isCurrentUser ? 'rgba(99, 102, 241, 0.22)' : 'divider',
+                          bgcolor: isCurrentUser
+                            ? 'rgba(99, 102, 241, 0.055)'
+                            : 'var(--surface-1)',
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: 38,
+                            height: 38,
+                            borderRadius: '50%',
+                            display: 'grid',
+                            placeItems: 'center',
+                            flexShrink: 0,
+                            bgcolor: isCurrentUser ? 'primary.main' : 'action.hover',
+                            color: isCurrentUser ? 'primary.contrastText' : 'text.secondary',
+                            fontSize: 14,
+                            fontWeight: 700,
+                          }}
+                        >
+                          {name
+                            .split(' ')
+                            .map((part) => part[0])
+                            .slice(0, 2)
+                            .join('')
+                            .toUpperCase()}
+                        </Box>
+                        <Box sx={{ minWidth: 0, flex: 1 }}>
+                          <Typography variant="body2" fontWeight={600} noWrap>
+                            {name}
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            color={isCurrentUser ? 'primary.main' : 'text.secondary'}
+                            noWrap
+                          >
+                            {isCurrentUser ? 'You' : 'Assigned teammate'}
+                          </Typography>
+                        </Box>
+                        {isCurrentUser && (
+                          <Box
+                            sx={{
+                              width: 7,
+                              height: 7,
+                              borderRadius: '50%',
+                              bgcolor: 'primary.main',
+                              flexShrink: 0,
+                            }}
+                          />
+                        )}
+                      </Box>
+                    )
+                  })}
+                </Box>
+              )
+            })()
           )}
         </Stack>
 
-        <Stack spacing={1} mb={4}>
-          <Typography variant="subtitle2" color="text.secondary" gutterBottom> Tags </Typography>
+        <Stack spacing={1.25} mb={4}>
+          <Typography variant="subtitle2" color="text.secondary" fontWeight={600}>
+            Tags
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 0.75,
+              minHeight: 42,
+              px: 1.5,
+              py: 1,
+              borderRadius: 2.5,
+              border: '1px solid',
+              borderColor: editMode ? 'divider' : 'transparent',
+              bgcolor: editMode ? 'var(--surface-1)' : 'transparent',
+            }}
+          >
+            {ticket?.tags?.length ? (
+              ticket.tags.map((tag) => (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  size="small"
+                  onDelete={editMode ? () => handleRemoveTag(tag) : undefined}
+                  sx={{
+                    borderRadius: 1.5,
+                    bgcolor: 'var(--surface-2)',
+                    fontWeight: 500,
+                  }}
+                />
+              ))
+            ) : (
+              !editMode && (
+                <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic' }}>
+                  No tags added yet
+                </Typography>
+              )
+            )}
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {ticket?.tags?.length ? ticket.tags?.map((tag) => (
-              <Chip
-                key={tag}
-                label={tag}
-                size="small"
-                onDelete={editMode ? () => handleRemoveTag(tag) : undefined}
-              />
-            )) : <i className='font-xxs'>{!editMode && "No tags added yet"}</i>}
             {editMode && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, ml: 0.25 }}>
                 <TextField
                   size="small"
                   placeholder="New tag"
@@ -196,280 +409,208 @@ export function TicketDetailPane({
                   onChange={(e) => setNewTag(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleAddTag();
+                      e.preventDefault()
+                      handleAddTag()
                     }
                   }}
+                  sx={{
+                    width: { xs: 120, sm: 150 },
+                    '& .MuiOutlinedInput-root': { borderRadius: 1.75 },
+                  }}
                 />
-                <IconButton size="small" onClick={handleAddTag} disabled={!newTag.trim()}>
-                  <AddIcon fontSize="small" />
+                <IconButton
+                  size="small"
+                  onClick={handleAddTag}
+                  disabled={!newTag.trim()}
+                  sx={{
+                    bgcolor: 'action.hover',
+                    '&:hover': { bgcolor: 'action.selected' },
+                  }}
+                >
+                  <Plus fontSize="small" />
                 </IconButton>
               </Box>
             )}
           </Box>
         </Stack>
 
-        <Stack direction="row" spacing={3} flexWrap="wrap" mb={2}>
-          {isEventOrMeeting && <FormControl sx={{ minWidth: 220 }}>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom> Start Time </Typography>
-            {editMode ? (
-              <DateTimePicker
-                value={ticket.startTime ? new Date(ticket.startTime) : null}
-                onChange={(date: Date | null) => updateField('startTime', date ? date.toISOString() : null)}
-                slotProps={{ textField: { size: 'small', fullWidth: true } }}
-              />
-            ) : (
-              <Typography variant="body2">
-                {ticket.startTime ? new Date(ticket.startTime).toLocaleString('en-US', { 
-                  dateStyle: 'full', 
-                  timeStyle: 'short' 
-                }) : '—'}
+        {isEventOrMeeting && (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
+              gap: 1.5,
+              mb: 4,
+            }}
+          >
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2.5,
+                border: '1px solid',
+                borderColor: 'rgba(99, 102, 241, 0.16)',
+                bgcolor: 'rgba(99, 102, 241, 0.045)',
+              }}
+            >
+              <Typography variant="caption" color="text.secondary" fontWeight={600}>
+                Starts
               </Typography>
-            )}
-          </FormControl>}
-
-          {isEventOrMeeting && <FormControl sx={{ minWidth: 220 }}>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom> End Time </Typography>
-            {editMode ? (
-              <DateTimePicker
-                value={ticket.endTime ? new Date(ticket.endTime) : null}
-                onChange={(date: Date | null) => updateField('endTime', date ? date.toISOString() : null)}
-                slotProps={{ textField: { size: 'small', fullWidth: true } }}
-              />
-            ) : (
-              <Typography variant="body2">
-                {ticket.endTime ? new Date(ticket.endTime).toLocaleString('en-US', { 
-                  dateStyle: 'full', 
-                  timeStyle: 'short' 
-                }) : '—'}
-              </Typography>
-            )}
-          </FormControl>}
-        </Stack>
-
-        <Stack spacing={3} mb={3}>
-          {'steps' in fields && (
-            <Box>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                Steps to reproduce
-              </Typography>
-
-              <LightweightRichEditor
-                value={ticket.data.steps ?? ''}
-                onChange={(value) => updateField('data',  {
-                  ...ticket.data,
-                  steps: value,
-                })}
-                placeholder="Write your Steps here..."
-              />
+              {editMode ? (
+                <DateTimePicker
+                  value={ticket.startTime ? new Date(ticket.startTime) : null}
+                  onChange={(date: Date | null) =>
+                    updateField('startTime', date ? date.toISOString() : null)
+                  }
+                  slotProps={{
+                    textField: { size: 'small', fullWidth: true, sx: { mt: 1 } },
+                  }}
+                />
+              ) : (
+                <Typography variant="body2" fontWeight={600} sx={{ mt: 0.75 }}>
+                  {ticket.startTime
+                    ? new Date(ticket.startTime).toLocaleString('en-US', {
+                        dateStyle: 'medium',
+                        timeStyle: 'short',
+                      })
+                    : 'Not scheduled'}
+                </Typography>
+              )}
             </Box>
-          )}
-          {'severity' in fields && (
-            <TextField
-              label="Severity"
-              size="small"
-              value={fields.severity}
-              onChange={(e) => {
-                updateField('data', {
-                  ...ticket.data,
-                  severity: e.target.value as TicketSeverity,
-                });
-              }}
-              disabled={!editMode}
-              sx={{ maxWidth: 123}}
-            />
-          )}
-          {'impact' in fields && (
-            <TextField
-              label="Impact"
-              size="small"
-              value={fields.impact ?? ''}
-              onChange={(e) => {
-                updateField('data', {
-                  ...ticket.data,
-                  impact: e.target.value as TicketImpact,
-                });
-              }}
-              disabled={!editMode}
-              sx={{ maxWidth: 123}}
-            />
-          )}
-          {ticket.type === "INVOICE" && 'amount' in fields && (
-            <Stack direction="row" spacing={2}>
-              <TextField
-                label="Amount"
-                type="number"
-                size="small"
-                value={fields.amount ?? ''}
-                onChange={() => {}}
-                disabled={!editMode}
-                sx={{ flex: 1 }}
-              />
-              <FormControl sx={{ minWidth: 100 }}>
-                <InputLabel>Currency</InputLabel>
-                <Select
-                  size="small"
-                  value={fields.currency || 'USD'}
-                  label="Currency"
-                  disabled={!editMode}
-                >
-                  <MenuItem value="USD">USD</MenuItem>
-                  <MenuItem value="NGN">NGN</MenuItem>
-                  <MenuItem value="EUR">EUR</MenuItem>
-                </Select>
-              </FormControl>
-            </Stack>
-          )}
-          {ticket.type==="INVOICE" && 'extClient' in fields && (
-            <TextField
-              label="Recipient E-mail"
-              size="small"
-              value={fields.extClient ?? ''}
-              onChange={() => {}}
-              disabled={!editMode}
-            />
-          )}
-          {ticket.type==="INVOICE" || ticket.type==="TASK" && 'recurrence' in fields && (
-            <TextField
-              label="Recurrence"
-              size="small"
-              value={fields.recurrence ?? ''}
-              onChange={() => {}}
-              disabled={!editMode}
-            />
-          )}
-          {ticket.type === "TASK" && 'estimatedTimeHours' in fields && (
-            <EstimatedTimeField
-              estimatedHours={fields.estimatedTimeHours as number ?? null}
-              editMode={editMode}
-              onChange={(newHours: number | undefined) => {
-                updateField('data', {
-                  ...ticket.data,
-                  estimatedTimeHours: newHours,
-                });
-              }}
-            />
-          )}
-          {ticket.type === 'TASK' && 'checklist' in fields && (
-            <Stack gap={1}>
-              <Typography>Checklist</Typography>
-              {fields.checklist?.map((item, idx) => (
-                <Stack key={idx} direction="row" alignItems="center">
-                  <Switch disabled={!editMode} />
-                  <Typography>{item}</Typography>
-                </Stack>
-              ))}
-              {editMode && <TextField placeholder="Add checklist item" />}
-            </Stack>
-          )}
-          {isEventOrMeeting &&'location' in fields && (
-            <TextField
-              label="Location"
-              size="small"
-              value={fields.location ?? ''}
-              onChange={() => {}}
-              disabled={!editMode}
-              fullWidth
-            />
-          )}
-          {ticket.type === 'TASK' || ticket.type=== "NOTE" && 'attachments' in fields && (
-            <Stack gap={1}>
-              <Typography>Attachments</Typography>
-              {fields.attachments?.map((url, idx) => <Chip key={idx} label={url} />)}
-              {editMode && <Button>Upload Attachment</Button>}
-            </Stack>
-          )}
-          {ticket.type === 'TASK' && 'subtasks' in fields && (
-            <Stack gap={1}>
-              <Typography>Subtasks</Typography>
-              <List>
-                {fields.subtasks?.map((sub, idx) => (
-                  <ListItem key={idx}>
-                    <ListItemText primary={sub.title} secondary={sub.done ? 'Done' : 'Pending'} />
-                  </ListItem>
-                ))}
-              </List>
-              {editMode && <TextField placeholder="Add subtask" />}
-            </Stack>
-          )}
-          {['EVENT', 'MEETING'].includes(ticket.type) && 'startTime' in fields && (
-            <DatePicker 
-              name="startTime" 
-              defaultValue={new Date(fields.startTime!) ?? undefined} 
-              disabled={!editMode}
-              label="Start Time"
-            />
-          )}
-          {['EVENT', 'MEETING'].includes(ticket.type) && 'endTime' in fields && (
-            <DatePicker
-              name="endTime"
-              defaultValue={new Date(fields.endTime!) ?? ""}
-              disabled={!editMode}
-              label="End Time"
-            />
-          )}
-          {['EVENT', 'MEETING'].includes(ticket.type) && 'attendees' in fields && (
-            <Stack gap={1} p={1}>
-              <Typography><strong>Attendees</strong></Typography>
-              {!fields.attendees || fields.attendees.length < 1 && 
-                <Typography variant='body2' sx={{ opacity: 0.75}}>No attendees for this event</Typography>
-              }
-              {fields.attendees &&
-                <Stack direction={'row'} flexWrap={'wrap'} gap={1}>
-                  {fields.attendees?.map((attendee, idx) => 
-                    <Chip key={idx} label={attendee} sx={{ maxWidth: 'fit-content'}}/>
-                  )}
-                </Stack>
-              }
-              {editMode && <TextField placeholder="Add attendee" />}
-            </Stack>
-          )}
-        </Stack>
 
-        <FormControl sx={{ minWidth: 180, maxWidth: 250, mb: 2 }}>
-          <Typography variant="subtitle2" color="text.secondary" gutterBottom> Due Date </Typography>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2.5,
+                border: '1px solid',
+                borderColor: 'rgba(14, 165, 233, 0.16)',
+                bgcolor: 'rgba(14, 165, 233, 0.045)',
+              }}
+            >
+              <Typography variant="caption" color="text.secondary" fontWeight={600}>
+                Ends
+              </Typography>
+              {editMode ? (
+                <DateTimePicker
+                  value={ticket.endTime ? new Date(ticket.endTime) : null}
+                  onChange={(date: Date | null) =>
+                    updateField('endTime', date ? date.toISOString() : null)
+                  }
+                  slotProps={{
+                    textField: { size: 'small', fullWidth: true, sx: { mt: 1 } },
+                  }}
+                />
+              ) : (
+                <Typography variant="body2" fontWeight={600} sx={{ mt: 0.75 }}>
+                  {ticket.endTime
+                    ? new Date(ticket.endTime).toLocaleString('en-US', {
+                        dateStyle: 'medium',
+                        timeStyle: 'short',
+                      })
+                    : 'Not scheduled'}
+                </Typography>
+              )}
+            </Box>
+          </Box>
+        )}
+
+        <TicketTypeSpecificFields
+          ticket={ticket}
+          fields={fields}
+          editMode={editMode}
+          updateField={updateField}
+          setTicket={setTicket}
+        />
+
+        <FormControl
+          sx={{
+            display: 'flex',
+            justifySelf: 'right',
+            width: '100%',
+            maxWidth: { xs: '100%', sm: 280 },
+            mb: 2,
+          }}
+        >
           {editMode ? (
-            <DatePicker
+            <DateTimePicker
               value={ticket.dueDate ? new Date(ticket.dueDate) : null}
-              onChange={(date: Date | null | null) => updateField('dueDate', date ? date.toISOString() : null)}
-              slotProps={{ textField: { size: 'small', fullWidth: true } }}
+              onChange={(date) => updateField('dueDate', date ? date.toISOString() : null)}
+              slotProps={{ textField: { size: 'small', fullWidth: true },}}
             />
           ) : (
-            <Chip 
-              label={ticket.dueDate ? new Date(ticket.dueDate).toDateString() : '—'} 
-              size="medium" 
-              sx={{ 
-                color: 'black',
-                bgcolor: ticket.dueDate ? 'wheat' : 'rgba(0,0,0,0.25)'}} 
-            />
+            <Box
+              sx={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1.5,
+                minHeight: 68,
+                px: 2,
+                py: 1.25,
+                borderRadius: 2.5,
+                border: '1px solid',
+                borderColor: ticket.dueDate ? 'rgba(99, 102, 241, 0.18)' : 'divider',
+                bgcolor: ticket.dueDate ? 'rgba(99, 102, 241, 0.045)' : 'var(--surface-1)',
+                overflow: 'hidden',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 3,
+                  bgcolor: ticket.dueDate ? 'rgb(99, 102, 241)' : 'text.disabled',
+                }}
+              />
+              <Box
+                sx={{
+                  display: 'grid',
+                  placeItems: 'center',
+                  width: 34,
+                  height: 34,
+                  borderRadius: 1.5,
+                  bgcolor: ticket.dueDate ? 'rgba(99, 102, 241, 0.10)' : 'action.hover',
+                  color: ticket.dueDate ? 'rgb(99, 102, 241)' : 'text.secondary',
+                  flexShrink: 0,
+                  fontSize: 18,
+                }}
+              >
+                📅
+              </Box>
+              {ticket.dueDate ? (
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" fontWeight={600} noWrap>
+                    {new Date(ticket.dueDate).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" noWrap>
+                    {new Date(ticket.dueDate).toLocaleTimeString('en-US', {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                    })}
+                  </Typography>
+                </Box>
+              ) : (
+                <Box>
+                  <Typography variant="body2" fontWeight={500} color="text.secondary">
+                    No due date
+                  </Typography>
+                  <Typography variant="caption" color="text.disabled">
+                    Not scheduled
+                  </Typography>
+                </Box>
+              )}
+            </Box>
           )}
         </FormControl>
 
-        <Stack 
-          spacing={1} 
-          sx={{ 
-            py: 2, 
-            px: 3, 
-            borderRadius: 3, 
-            color: 'var(--background)',
-            bgcolor: 'var(--foregound)', 
-          }}
-        >
-          <Typography variant="subtitle2" gutterBottom>
-            Created by {ticket.createdById === userId ? <strong>you</strong> : ticket.createdBy?.name || ticket.createdById}{' '}
-            on {ticket.createdAt ? new Date(ticket.createdAt).toLocaleString('en-US', { 
-                  dateStyle: 'full', 
-                  timeStyle: 'short' 
-                }) : 'unknown'}
-          </Typography>
-
-          {ticket.assignedToId && (
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              Assigned to {ticket.assignedToId === userId ? <strong>you</strong> : ticket.assignedTo?.name || ticket.assignedToId}.
-            </Typography>
-          )}
-        </Stack>
+        <TicketActivityTimeline ticket={ticket} userId={userId} />
       </Card>
     </LocalizationProvider>
-  );
+  )
 }

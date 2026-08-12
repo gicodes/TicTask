@@ -90,7 +90,7 @@ const VerifyPage = () => {
 
       { status==="error" && !user && 
         <Box p={4}> 
-          <Typography>Please <AuthRedirectBtn />  to access profile </Typography>
+          <Typography>Please <AuthRedirectBtn />  to access invites </Typography>
         </Box>
       }
       { status==="error" &&

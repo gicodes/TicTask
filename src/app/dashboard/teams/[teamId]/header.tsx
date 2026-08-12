@@ -4,7 +4,6 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { Box, Stack, Typography, Tabs, Tab, Chip } from "@mui/material";
 import { useTeam } from "@/hooks/useTeam";
 import { useAuth } from "@/providers/auth";
-import AuthRedirectBtn from "@/assets/authRedirectBtn";
 
 export default function WorkspaceHeader() {
   const { teamId } = useParams<{ teamId: string }>();
@@ -15,11 +14,6 @@ export default function WorkspaceHeader() {
   const { team, loading } = useTeam();
 
   if (loading || !team) return null;
-  if (!isAuthenticated) return (
-    <Box textAlign={'center'} p={4}> 
-      <Typography>Please <AuthRedirectBtn />  to access Teams </Typography>
-    </Box>
-  );
 
   const currentTab = () => {
     if (pathname.includes("/tickets")) return 1;

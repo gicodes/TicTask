@@ -38,7 +38,8 @@ export type User = {
   subscription?: Subscription;
   pushSubscriptions?: PushSubscriptions[];
 
-  teamMemberships: TeamMember[];
+  teamMemberships?: TeamMember[];
+  teamMembership?: boolean | null; // client-side only, init at provider level
   createdTeams: Team[];
   adminProfile?: Admin;
 

@@ -5,7 +5,7 @@ import { HistoryPane } from './tHistory';
 import { Button } from '@/assets/buttons';
 import { useTeam } from '@/hooks/useTeam';
 import { useAuth } from '@/providers/auth';
-import { QA_Btn } from '@/assets/QA_button';
+import { QA_TeamBtn } from '@/assets/QA_button';
 import { TicketDetailPane } from './tViewEdit';
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -27,9 +27,8 @@ import {
   MenuItem,
   Tooltip,
   Fade,
-  Fab,
 } from '@mui/material';
-import { CloseSharp, ArrowBack } from '@mui/icons-material';
+import { CloseSharp, ArrowBack, Cancel } from '@mui/icons-material';
 import { EllipsisVertical, Share2, Edit, Save, Download } from 'lucide-react';
 
 export default function TeamTicketWorkspace() {
@@ -79,7 +78,6 @@ export default function TeamTicketWorkspace() {
         setTicketHistory(historyData ?? []);
         setTicketComments(commentsData ?? []);
       } catch (err) {
-        console.error('Failed to load ticket:', err);
         setError('Failed to load ticket. Check your connection or re-login.');
       } finally {
         setLoading(false);
@@ -93,7 +91,7 @@ export default function TeamTicketWorkspace() {
   if (error || !localTicket) return (
     <Box p={4} mx={'auto'} textAlign={'center'} display={'grid'} gap={2}>
       <Typography color="error">{error || 'Ticket not found'}</Typography>
-      <Button sx={{ maxWidth: 200}} onClick={() => router.back()}> Go Back </Button>
+      <Button sx={{ maxWidth: 200, margin: '0 auto' }} onClick={() => router.back()}> Go Back </Button>
     </Box>
   );
 
@@ -118,7 +116,6 @@ export default function TeamTicketWorkspace() {
 
   const handleShare = async () => {
     const url = `${window.location.origin}/tickets/${localTicket.id}`;
-    
     try {
       if (navigator.share) await navigator.share({ title: localTicket.title, text: 'Check this ticket', url });
       else {
@@ -144,25 +141,27 @@ export default function TeamTicketWorkspace() {
         dueDate: localTicket.dueDate ? new Date(localTicket.dueDate).toISOString() : undefined,
         startTime: localTicket.startTime ? new Date(localTicket.startTime).toISOString() : undefined,
         endTime: localTicket.endTime ? new Date(localTicket.endTime).toISOString() : undefined,
-        tags: localTicket.tags?.length ? localTicket.tags : undefined,
+        tags: localTicket.tags ? localTicket.tags : undefined,
         amount: localTicket.amount || undefined,
         currency: localTicket.currency || undefined,
+        extClient: localTicket.data.extClient?.trim() || undefined,
+        recurrence: localTicket.data.recurrence || undefined,
         severity: localTicket.data.severity || undefined,
         impact: localTicket.data.impact || undefined,
         steps: localTicket.data.steps?.trim() || undefined,
         location: localTicket.data.location?.trim() || undefined,
-        extClient: localTicket.data.extClient?.trim() || undefined,
+        attendees: localTicket.data.attendees ? localTicket.data.attendees : undefined,
         checklist: localTicket.data.checklist || undefined,
-        recurrenceRule: localTicket.data.recurrence || undefined,
         attachments: localTicket.data.attachments || undefined,
         subtasks: localTicket.data.subtasks || undefined,
         estimatedTimeHours: localTicket.data.estimatedTimeHours || undefined,
         assignTo: localTicket.assignedTo?.email || undefined,
-        assignees: localTicket.assignees?.length ? localTicket.assignees.map(u => u.id) : undefined,
+        assignees: localTicket.assignees ? localTicket.assignees.map(u => u.id) : undefined,
       };
 
       Object.keys(safeUpdate).forEach(key => safeUpdate[key] === undefined && delete safeUpdate[key]);
       await updateTicket(localTicket.id, safeUpdate);
+      
       const refreshed = await getTicket(localTicket.id);
       if (refreshed) setLocalTicket(refreshed);
 
@@ -177,32 +176,22 @@ export default function TeamTicketWorkspace() {
   return (
     <Fade in timeout={400}>
       <Box sx={{ position: 'relative', minHeight: '100vh' }}>
-        {editMode && (
-          <Fab
-            aria-label="save"
-            sx={{ position: 'fixed', bottom: 32, right: 32, zIndex: 1000 }}
-            onClick={handleUpdate}
-            disabled={isSubmitting}
-          >
-            <Save />
-          </Fab>
-        )}
-        <Stack direction="row" p={2} justifyContent="flex-end" spacing={2}>
-          <Button
+
+        <Stack direction="row" p={2} justifyContent="flex-end" spacing={2} bgcolor={'var(--surface-2)'}>
+          {isActive && <Button
             variant={editMode ? 'contained' : 'outlined'}
             onClick={editMode ? handleUpdate : () => setEditMode(true)}
             disabled={isSubmitting}
             startIcon={editMode ? <Save size={16} /> : <Edit size={16} />}
           >
-            {editMode ? (isSubmitting ? 'Saving...' : 'Save') : 'Update'}
-          </Button>
+            {editMode ? (isSubmitting ? 'Saving...' : 'Save') : 'Modify Ticket'}
+          </Button>}
           {editMode && (
-            <Button tone="warm" onClick={() => setEditMode(false)} startIcon={<ArrowBack />}>
-              Back
+            <Button tone="warm" onClick={() => setEditMode(false)} endIcon={<Cancel />}>
+              Cancel
             </Button>
           )}
         </Stack>
-
         <AppBar position="static" color="default" elevation={0}>
           <Toolbar>
             <IconButton edge="start" onClick={() => router.back()}>
@@ -277,44 +266,55 @@ export default function TeamTicketWorkspace() {
           </Toolbar>
         </AppBar>
 
-        {isAssigned && !editMode && 
-          <Card
-            sx={{
-              py: { xs: 1, sm: 2 },
-              px: 1,
-              mt: 5,
-              mx: 'auto',
-              boxShadow: 3,
-              borderRadius: 999,
-              maxWidth: 'fit-content',
-              background: 'transparent',
+        {isAssigned && !editMode && (
+          <Box
+            sx={{              
+              py: 1,
+              position: 'fixed',
+              top: {xs: 234, sm: 250},                    
+              zIndex: 1100,               
+              display: 'flex',
+              justifyContent: 'center',
+              pointerEvents: 'none',     
             }}
           >
-            <Stack
-              direction="row"
-              justifyContent="center"
-              gap={{ xs: 1, sm: 2, lg: 3 }}
-              flexWrap="wrap"
+            <Card
+              sx={{
+                py: { xs: 1, sm: 1.5 },
+                px: 1.5, mx: 'auto',
+                boxShadow: 4,
+                borderRadius: 999,
+                maxWidth: 'fit-content',
+                bgcolor: (theme) => 
+                  theme.palette.mode === 'dark' ? 'rgba(30, 30, 30, 0.85)'
+                    : 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid',
+                borderColor: 'divider',
+                pointerEvents: 'auto',
+              }}
             >
-              {TICTASK_QUICK_ACTIONS.map((qa, i) => (
-                <QA_Btn
-                  key={i}
-                  color={qa.color}
-                  title={qa.title}
-                  ticketID={localTicket.id}
-                  status={qa.status}
-                  disabled={!isActive}
-                  onClose={() => router.back()}
-                  team
-                  onUpdate={() => {
-                    setLocalTicket((prev) => (prev ? { ...prev, status: qa.status } : null));
-                    updateTicket(localTicket.id, { status: qa.status });
-                  }}
-                />
-              ))}
-            </Stack>
-          </Card>
-        }
+              <Stack
+                direction="row"
+                justifyContent="center"
+                gap={{ xs: 1, sm: 2, lg: 3 }}
+                flexWrap="wrap"
+              >
+                {TICTASK_QUICK_ACTIONS.map((qa, i) => (
+                  <QA_TeamBtn
+                    key={i}
+                    ticketID={localTicket.id}
+                    localTicket={localTicket}
+                    color={qa.color}
+                    title={qa.title}
+                    status={qa.status}
+                    disabled={!isActive}
+                  />
+                ))}
+              </Stack>
+            </Card>
+          </Box>
+        )}
 
         <Box p={{ xs: 1, md: 4 }} maxWidth="xl" mx="auto">
           <Stack direction={{ md: 'row' }} spacing={4}>

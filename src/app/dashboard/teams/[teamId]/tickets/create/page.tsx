@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link';
 import { useTeam } from '@/hooks/useTeam';
 import { Button } from '@/assets/buttons';
 import { useAuth } from '@/providers/auth';
@@ -174,8 +173,11 @@ export default function TeamTicketCreatePage() {
     <>
       <AppBar position="static" color="default" elevation={0}>
         <Toolbar>
-          <IconButton edge="start">
-            <Link href={`/dashboard/teams/{team?.id}/tickets`}><ArrowBackIcon /></Link>
+          <IconButton 
+            edge="start" 
+            onClick={() => router.replace(`/dashboard/teams/${team?.id}/tickets`)}
+          >
+            <ArrowBackIcon />
           </IconButton>
           <Typography variant="h6" fontWeight={600} sx={{ ml: 2, flex: 1 }}>
             Create Team Ticket
@@ -236,18 +238,28 @@ export default function TeamTicketCreatePage() {
                     render={({ field }) => (
                       <Select
                         multiple
-                        label="Assign To"
+                        displayEmpty
                         {...field}
                         value={field.value ?? []}
                         onChange={(event) => field.onChange(event.target.value)}
-                        renderValue={(selected: number[]) => (
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected.map((value) => {
-                              const member = teamMembers.find((m) => m.id === value)
-                              return <Chip key={value} label={member?.name ?? value} />
-                            })}
-                          </Box>
-                        )}
+                        renderValue={(selected: number[]) => {
+                          if (selected.length === 0) {
+                            return (
+                              <Typography color="text.secondary" fontSize={12.5}>
+                                Click the dropdown to see teammates
+                              </Typography>
+                            )
+                          }
+
+                          return (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                              {selected.map((value) => {
+                                const member = teamMembers.find((m) => m.id === value)
+                                return <Chip key={value} label={member?.name ?? value} />
+                              })}
+                            </Box>
+                          )
+                        }}
                       >
                         {teamMembers.map((m) => (
                           <MenuItem key={m.id} value={m.id}>
@@ -259,9 +271,7 @@ export default function TeamTicketCreatePage() {
                   />
 
                   <Stack
-                    bgcolor="var(--surface-1)"
                     direction="row"
-                    borderRadius={5}
                     gap={0.75}
                     mb={1.75}
                     p={1}

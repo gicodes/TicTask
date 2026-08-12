@@ -48,8 +48,8 @@ export function extractTicketData(ticket: Ticket): TicketFormValuesUnion {
         type: 'INVOICE', 
         amount: ticket.amount!,
         currency: ticket.currency!,
-        extClient: data.extClient,
-        recurrence: data.recurrence ?? '',
+        extClient: ticket.data.extClient,
+        recurrence: ticket.data.recurrence ?? '',
       };
     case 'TASK':
       return {

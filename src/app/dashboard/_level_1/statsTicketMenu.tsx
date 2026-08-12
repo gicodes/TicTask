@@ -37,6 +37,7 @@ export default function StatsTicketsMenu({
             }}
             primary={t.title}
             secondary={t.status}
+            secondaryTypographyProps={{ fontSize: '0.75rem' }}
           />
         </MenuItem>
       ))}

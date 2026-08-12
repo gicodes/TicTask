@@ -203,7 +203,9 @@ export default function TeamTicketsWorkspace() {
 
   if (!isAuthenticated) return (
     <WorkspaceShell>
-      <Typography textAlign={'center'} p={4}>Please <AuthRedirectBtn />  to access profile </Typography>
+      <Typography textAlign={'center'} p={4}>
+        Please <AuthRedirectBtn />  to access team tickets 
+      </Typography>
     </WorkspaceShell>
   );
 

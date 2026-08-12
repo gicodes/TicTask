@@ -142,7 +142,7 @@ export default function SettingsPage() {
 
   if (!isAuthenticated) return (
      <Box textAlign={'center'} p={4}> 
-      <Typography>Please <AuthRedirectBtn />  to access profile </Typography>
+      <Typography>Please <AuthRedirectBtn />  to access settings </Typography>
     </Box>
   );
 

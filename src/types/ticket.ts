@@ -29,7 +29,9 @@ export interface Ticket {
   startedAt: string | null;
   closedAt: string | null;
   startedBy: User;
+  startedById: number;
   closedBy: User;
+  closedById: number;
 
   startTime: string | null;
   endTime: string | null;

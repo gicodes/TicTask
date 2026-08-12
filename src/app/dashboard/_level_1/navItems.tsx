@@ -68,7 +68,7 @@ export const MORE_NAV_ITEMS = [
 ]
 
 export const getFilteredNav = (user: AuthUser | null) => {
-  if (!user) {
+  if (!user) { // completely offline or logged out
     const allowed = [
       'Tickets Hub', 'Task Manager', 'Products', 'Invite', 'Legal', 'Settings'
     ];
@@ -81,7 +81,7 @@ export const getFilteredNav = (user: AuthUser | null) => {
 
   if (user?.role==="USER") allowed.push('More')
   if (user?.partner && user?.data?.approved) allowed.push('Marketing', 'More');
-  if (user?.userType==="BUSINESS" || user?.data?.approved) allowed.push('Teams', 'Metrics'); 
+  if (user?.userType==="BUSINESS" || user?.teamMembership || user?.data?.approved) allowed.push('Teams'); 
   
   if (user?.role === 'ADMIN') {
     return NAV_ITEMS.filter(

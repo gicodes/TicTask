@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { SignInResponse } from 'next-auth/react';
 import { Role, UserType, UserPreferences } from '@/types/users';
 import { Subscription, PushSubscriptions } from '@/types/subscription';
+import { TeamMember } from "./team";
 
 export interface LoginTemplateProps {
   email: string;
@@ -36,6 +37,8 @@ export interface AuthUser {
   accessToken: string;
   subscription?: Subscription;
   data?: UserPreferences;
+  teamMemberships?: TeamMember;
+  teamMembership?: boolean | null;
   pushSubscriptions?: PushSubscriptions[];
 }
 
