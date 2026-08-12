@@ -116,6 +116,7 @@ export default function TeamTicketWorkspace() {
 
   const handleShare = async () => {
     const url = `${window.location.origin}/tickets/${localTicket.id}`;
+    
     try {
       if (navigator.share) await navigator.share({ title: localTicket.title, text: 'Check this ticket', url });
       else {
@@ -182,7 +183,7 @@ export default function TeamTicketWorkspace() {
           justifyContent="flex-end" 
           spacing={2} 
           bgcolor={'rgba(0,0,0,1)'} 
-          sx={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
+          sx={{ borderTopLeftRadius: 99, borderTopRightRadius: 99 }}
         >
           {isActive && <Button
             variant={editMode ? 'contained' : 'outlined'}
