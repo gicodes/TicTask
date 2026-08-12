@@ -241,7 +241,7 @@ export function TicketDetailPane({
                       borderRadius: 2.5,
                       border: '1px dashed',
                       borderColor: 'divider',
-                      bgcolor: 'var(--surface-1)',
+                      bgcolor: 'rgba(0,0,0,0.05)',
                     }}
                   >
                     <Box
@@ -360,7 +360,7 @@ export function TicketDetailPane({
               borderRadius: 2.5,
               border: '1px solid',
               borderColor: editMode ? 'divider' : 'transparent',
-              bgcolor: editMode ? 'var(--surface-1)' : 'transparent',
+              bgcolor: editMode ? 'rgba(0,0,0,0.5)' : 'transparent',
             }}
           >
             {ticket?.tags?.length ? (
@@ -372,7 +372,7 @@ export function TicketDetailPane({
                   onDelete={editMode ? () => handleRemoveTag(tag) : undefined}
                   sx={{
                     borderRadius: 1.5,
-                    bgcolor: 'var(--surface-2)',
+                    bgcolor: 'rgba(0,0,0,0.09)',
                     fontWeight: 500,
                   }}
                 />
@@ -534,7 +534,7 @@ export function TicketDetailPane({
                 borderRadius: 2.5,
                 border: '1px solid',
                 borderColor: ticket.dueDate ? 'rgba(99, 102, 241, 0.18)' : 'divider',
-                bgcolor: ticket.dueDate ? 'rgba(99, 102, 241, 0.045)' : 'var(--surface-1)',
+                bgcolor: ticket.dueDate ? 'rgba(99, 102, 241, 0.045)' : 'rgba(0,0,0,0.09)',
                 overflow: 'hidden',
                 transition: 'all 0.2s ease',
               }}
