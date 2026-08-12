@@ -55,7 +55,6 @@ export function TicketTypeSpecificFields({
               borderRadius: 2.5,
               overflow: 'hidden',
               border: '1px solid',
-              borderColor: editMode ? 'divider' : 'transparent',
               bgcolor: 'rgba(0,0,0,0.05)',
             }}
           >

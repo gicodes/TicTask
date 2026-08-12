@@ -360,7 +360,7 @@ export function TicketDetailPane({
               borderRadius: 2.5,
               border: '1px solid',
               borderColor: editMode ? 'divider' : 'transparent',
-              bgcolor: editMode ? 'rgba(0,0,0,0.5)' : 'transparent',
+              bgcolor: editMode ? 'rgba(0,0,0,0.05)' : 'transparent',
             }}
           >
             {ticket?.tags?.length ? (
@@ -372,7 +372,7 @@ export function TicketDetailPane({
                   onDelete={editMode ? () => handleRemoveTag(tag) : undefined}
                   sx={{
                     borderRadius: 1.5,
-                    bgcolor: 'rgba(0,0,0,0.09)',
+                    bgcolor: 'rgba(0,0,0,0.05)',
                     fontWeight: 500,
                   }}
                 />

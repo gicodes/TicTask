@@ -176,7 +176,14 @@ export default function TeamTicketWorkspace() {
   return (
     <Fade in timeout={400}>
       <Box sx={{ position: 'relative', minHeight: '100vh' }}>
-        <Stack direction="row" p={2} justifyContent="flex-end" spacing={2} bgcolor={'rgba(0,0,0,1)'}>
+        <Stack 
+          p={2} 
+          direction="row" 
+          justifyContent="flex-end" 
+          spacing={2} 
+          bgcolor={'rgba(0,0,0,1)'} 
+          sx={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
+        >
           {isActive && <Button
             variant={editMode ? 'contained' : 'outlined'}
             onClick={editMode ? handleUpdate : () => setEditMode(true)}
@@ -295,9 +302,9 @@ export default function TeamTicketWorkspace() {
             >
               <Stack
                 direction="row"
+                flexWrap="wrap"
                 justifyContent="center"
                 gap={{ xs: 1, sm: 2, lg: 3 }}
-                flexWrap="wrap"
               >
                 {TICTASK_QUICK_ACTIONS.map((qa, i) => (
                   <QA_TeamBtn
@@ -326,7 +333,6 @@ export default function TeamTicketWorkspace() {
                 userId={user?.id as number}
               />
             </Box>
-
             <Box flex={2}>
               <Tabs
                 value={tab}
