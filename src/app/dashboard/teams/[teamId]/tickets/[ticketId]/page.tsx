@@ -183,7 +183,7 @@ export default function TeamTicketWorkspace() {
           justifyContent="flex-end" 
           spacing={2} 
           bgcolor={'rgba(0,0,0,1)'} 
-          sx={{ borderTopLeftRadius: 99, borderTopRightRadius: 99 }}
+          sx={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
         >
           {isActive && <Button
             variant={editMode ? 'contained' : 'outlined'}
