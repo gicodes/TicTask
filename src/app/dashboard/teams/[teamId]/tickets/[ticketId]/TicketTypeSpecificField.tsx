@@ -37,8 +37,7 @@ export function TicketTypeSpecificFields({
   const [newChecklistItem, setNewChecklistItem] = useState('')
   const [newSubtask, setNewSubtask] = useState('');
   const [newAttendee, setNewAttendee] = useState('');
-  const [amountInput, setAmountInput] = useState( 
-    ticket.amount != null ? String(ticket.amount) : '' )
+  const [amountInput, setAmountInput] = useState(ticket.amount != null ? String(ticket.amount) : '' )
 
   const updateData = (partial: Record<string, any>) => {
     updateField('data', { ...ticket.data, ...partial })
@@ -202,12 +201,12 @@ export function TicketTypeSpecificFields({
                     const raw = e.target.value;
                     setAmountInput(raw);
                     if (raw === '') { 
-                      updateData({ amount: null }) 
+                      updateField('amount', null ) 
                       return 
                     } 
                     const parsed = Number(raw);
                     if (!Number.isNaN(parsed)) { 
-                      updateData({ amount: parsed }) 
+                      updateField('amount', parsed) 
                     }
                   }} 
                   onBlur={() => { 
@@ -218,7 +217,7 @@ export function TicketTypeSpecificFields({
                     const parsed = Number(amountInput) 
                     if (!Number.isNaN(parsed)) { 
                       setAmountInput(String(parsed)) 
-                      updateData({ amount: parsed }) 
+                      updateField('amount', parsed) 
                     } 
                   }} 
                   disabled={!editMode} 
@@ -242,7 +241,7 @@ export function TicketTypeSpecificFields({
                     label="Currency" 
                     disabled={!editMode} 
                     onChange={(e) => { 
-                      updateData({ currency: e.target.value, }) 
+                      updateField('currency', e.target.value) 
                     }} 
                   >
                     <MenuItem value="USD">USD — US Dollar</MenuItem>
