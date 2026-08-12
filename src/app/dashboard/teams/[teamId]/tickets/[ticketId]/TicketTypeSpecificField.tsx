@@ -56,7 +56,7 @@ export function TicketTypeSpecificFields({
               overflow: 'hidden',
               border: '1px solid',
               borderColor: editMode ? 'divider' : 'transparent',
-              bgcolor: 'var(--surface-1)',
+              bgcolor: 'rgba(0,0,0,0.05)',
             }}
           >
             {editMode ? (
@@ -75,9 +75,9 @@ export function TicketTypeSpecificFields({
       {('severity' in fields || 'impact' in fields) && (
         <Box
           sx={{
+            gap: 1.5,
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
-            gap: 1.5,
           }}
         >
           {'severity' in fields && (
@@ -172,7 +172,7 @@ export function TicketTypeSpecificFields({
               borderRadius: 2.5,
               border: '1px solid',
               borderColor: 'divider',
-              bgcolor: 'var(--surface-1)',
+              bgcolor: 'rgba(0,0,0,0.05)',
             }}
           >
             <Typography
@@ -235,7 +235,6 @@ export function TicketTypeSpecificFields({
                   }}
                 >
                   <InputLabel>Currency</InputLabel>
-
                   <Select
                     value={fields.currency ?? 'USD'} 
                     label="Currency" 
@@ -274,7 +273,7 @@ export function TicketTypeSpecificFields({
               borderRadius: 2.5,
               border: '1px solid',
               borderColor: 'divider',
-              bgcolor: 'var(--surface-1)',
+              bgcolor: 'rgba(0,0,0,0.05)',
             }}
           >
             <Typography variant="caption" color="text.secondary" fontWeight={600}>
@@ -328,7 +327,7 @@ export function TicketTypeSpecificFields({
             borderRadius: 2.5,
             border: '1px solid',
             borderColor: 'divider',
-            bgcolor: 'var(--surface-1)',
+            bgcolor: 'rgba(0,0,0,0.05)',
           }}
         >
           <Typography variant="subtitle2" fontWeight={600} mb={1}>
@@ -447,7 +446,7 @@ export function TicketTypeSpecificFields({
               borderRadius: 2.5,
               border: '1px solid',
               borderColor: 'divider',
-              bgcolor: 'var(--surface-1)',
+              bgcolor: 'rgba(0,0,0,0.05)',
             }}
           >
             <Typography variant="caption" color="text.secondary" fontWeight={600}>
@@ -465,7 +464,6 @@ export function TicketTypeSpecificFields({
           </Box>
         )}
 
-      {/* Attachments */}
       {(ticket.type === 'TASK' || ticket.type === 'NOTE') &&
         'attachments' in fields && (
           <Box
@@ -474,7 +472,7 @@ export function TicketTypeSpecificFields({
               borderRadius: 2.5,
               border: '1px solid',
               borderColor: 'divider',
-              bgcolor: 'var(--surface-1)',
+              bgcolor: 'rgba(0,0,0,0.05)',
             }}
           >
             <Box
@@ -552,7 +550,7 @@ export function TicketTypeSpecificFields({
             borderRadius: 2.5,
             border: '1px solid',
             borderColor: 'divider',
-            bgcolor: 'var(--surface-1)',
+            bgcolor: 'rgba(0,0,0,0.05)',
           }}
         >
           <Typography variant="subtitle2" fontWeight={600} mb={1}>
@@ -600,9 +598,7 @@ export function TicketTypeSpecificFields({
                     secondary={sub.done ? 'Completed' : 'Pending'}
                     slotProps={{
                       secondary: {
-                        sx: {
-                          color: sub.done ? 'success.main' : 'text.secondary',
-                        },
+                        sx: { color: sub.done ? 'success.main' : 'text.secondary'},
                       },
                     }}
                   />
@@ -661,15 +657,15 @@ export function TicketTypeSpecificFields({
             borderRadius: 2.5,
             border: '1px solid',
             borderColor: 'divider',
-            bgcolor: 'var(--surface-1)',
+            bgcolor: 'rgba(0,0,0,0.05)',
           }}
         >
           <Box
             sx={{
+              mb: 1,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              mb: 1,
             }}
           >
             <Typography variant="subtitle2" fontWeight={600}>
@@ -679,7 +675,7 @@ export function TicketTypeSpecificFields({
               <Typography variant="caption" color="text.secondary">
                 {fields.attendees.length}
               </Typography>
-            ) : null}
+            ) : null }
           </Box>
 
           {!fields.attendees?.length ? (
@@ -693,15 +689,14 @@ export function TicketTypeSpecificFields({
                   key={idx}
                   label={attendee}
                   size="small"
-                  onDelete={
-                    editMode
-                      ? () => {
-                          const next = (fields.attendees as string[]).filter(
-                            (_: string, i: number) => i !== idx
-                          )
-                          updateData({ attendees: next })
-                        }
-                      : undefined
+                  onDelete={ editMode
+                    ? () => {
+                        const next = (fields.attendees as string[]).filter(
+                          (_: string, i: number) => i !== idx
+                        )
+                        updateData({ attendees: next })
+                      }
+                    : undefined
                   }
                   sx={{
                     maxWidth: '100%',
@@ -712,7 +707,6 @@ export function TicketTypeSpecificFields({
               ))}
             </Box>
           )}
-
           {editMode && (
             <Box sx={{ display: 'flex', gap: 1, mt: 1.25 }}>
               <TextField

@@ -2,6 +2,7 @@
 
 import type { User } from '@/types/users';
 import { useAuth } from '@/providers/auth';
+import { useAlert } from '@/providers/alert';
 import { apiGet, apiPatch } from '@/lib/axios';
 import { UserProfileRes } from '@/types/axios';
 import React, { useEffect, useState } from 'react';
@@ -36,6 +37,7 @@ import { FaLocationDot, FaPhone, FaEllipsisVertical } from 'react-icons/fa6';
 
 export default function ProfileDetailDrawer() {
   const { user } = useAuth();
+  const { showAlert } = useAlert();
   const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -108,7 +110,7 @@ export default function ProfileDetailDrawer() {
         });
       } else {
         await navigator.clipboard.writeText(shareUrl);
-        alert('Profile link copied to clipboard!');
+        showAlert('Profile link copied to clipboard!');
       }
     } catch (err) {
       console.error('Error sharing profile:', err);
@@ -198,6 +200,7 @@ export default function ProfileDetailDrawer() {
                     </>
                   }
                 </Stack>
+                
                 {moreOptions && (
                   <Fade in>
                     <Stack direction="row">

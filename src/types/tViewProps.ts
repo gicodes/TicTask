@@ -15,3 +15,8 @@ export interface TeamTicketSpecificTypeProps {
   updateField: <K extends keyof Ticket>(field: K, value: Ticket[K]) => void
   setTicket: React.Dispatch<React.SetStateAction<Ticket | null>>
 }
+
+export interface TicketActivityTimelineProps {
+  ticket: Ticket
+  userId: number | string
+}

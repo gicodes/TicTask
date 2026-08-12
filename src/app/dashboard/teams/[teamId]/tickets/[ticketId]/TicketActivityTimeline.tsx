@@ -1,14 +1,12 @@
 'use client'
 
+import { TicketActivityTimelineProps } from '@/types/tViewProps'
 import { Box, Stack, Typography } from '@mui/material'
-import { Ticket } from '@/types/ticket'
 
-interface Props {
-  ticket: Ticket
-  userId: number | string
-}
-
-export function TicketActivityTimeline({ ticket, userId }: Props) {
+export function TicketActivityTimeline({ 
+  ticket, 
+  userId 
+}: TicketActivityTimelineProps ) {
   return (
     <Stack
       spacing={0}
@@ -17,17 +15,17 @@ export function TicketActivityTimeline({ ticket, userId }: Props) {
         px: 1,
         borderRadius: 3,
         overflow: 'hidden',
-        bgcolor: 'var(--surface-1)',
+        bgcolor: 'rgba(0,0,0,0.1))',
       }}
     >
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1.5,
           px: 2,
           py: 1.25,
+          gap: 1.5,
           borderRadius: 2,
+          display: 'flex',
+          alignItems: 'center',
           bgcolor: 'rgba(99, 102, 241, 0.06)',
         }}
       >

@@ -76,12 +76,10 @@ export default function TeamTicketCreatePage() {
       console.warn(`Missing schema for type: ${itemType}`)
       return null
     }
-
     if (typeof getDefaults !== 'function') {
       console.warn(`Missing defaults function for type: ${itemType}`)
       return null
     }
-
     if (!FormComp) {
       console.warn(`Missing form component for type: ${itemType}`)
       return null
@@ -139,18 +137,15 @@ export default function TeamTicketCreatePage() {
       ...data,
       teamId: Number(teamId),
       createdById: user?.id!,
-      dueDate:
-        typeof data.dueDate === 'string' && data.dueDate
-          ? new Date(data.dueDate)
-          : undefined,
-      startTime:
-        typeof data.startTime === 'string' && data.startTime
-          ? new Date(data.startTime)
-          : undefined,
-      endTime:
-        typeof data.endTime === 'string' && data.endTime
-          ? new Date(data.endTime)
-          : undefined,
+      dueDate: typeof data.dueDate === 'string' && data.dueDate
+        ? new Date(data.dueDate)
+        : undefined,
+      startTime: typeof data.startTime === 'string' && data.startTime
+        ? new Date(data.startTime)
+        : undefined,
+      endTime: typeof data.endTime === 'string' && data.endTime
+        ? new Date(data.endTime)
+        : undefined,
       assignees: data.assignees,
       assignTo: data.assignTo,
     } as unknown as Create_Ticket
@@ -243,14 +238,11 @@ export default function TeamTicketCreatePage() {
                         value={field.value ?? []}
                         onChange={(event) => field.onChange(event.target.value)}
                         renderValue={(selected: number[]) => {
-                          if (selected.length === 0) {
-                            return (
-                              <Typography color="text.secondary" fontSize={12.5}>
-                                Click the dropdown to see teammates
-                              </Typography>
-                            )
-                          }
-
+                          if (selected.length === 0) return (
+                            <Typography color="text.secondary" fontSize={12.5}>
+                              Click the dropdown to see teammates
+                            </Typography>
+                          )
                           return (
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                               {selected.map((value) => {
@@ -296,10 +288,8 @@ export default function TeamTicketCreatePage() {
               mt={5}
               spacing={2}
             >
-              <Button tone="retreat" onClick={() => router.back()}>
-                Cancel
-              </Button>
-              <Button type='submit'>Create Ticket</Button>
+              <Button tone='warm' onClick={() => router.back()}>Cancel</Button>
+              <Button tone='action' type='submit'>Create Ticket</Button>
             </Stack>
           </Box>
         </form>

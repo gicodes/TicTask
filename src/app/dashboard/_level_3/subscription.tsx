@@ -31,7 +31,7 @@ import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 
 export default function SubscriptionPage() {
-  const { showAlert } = useAlert();
+  const { showAlert, confirm } = useAlert();
   const { user } = useAuth();
   
   const {
@@ -85,11 +85,23 @@ export default function SubscriptionPage() {
         setUpgrading(false);
       }
     } catch (e) {
-      console.error(e);
       showAlert('Failed to start checkout session', 'error');
       setUpgrading(false);
     }
   };
+
+  const handleCancelSubscription = async () => {
+    const plan = subscription?.plan ?? 'FREE';
+    const formattedPlan = plan.charAt(0) + plan.slice(1).toLowerCase();
+    const ok = await confirm(
+      `Are you sure you want to cancel your ${formattedPlan} Subscription?`,
+      "Cancel Subscription Plan?",
+      'Yes, Cancel'
+    )
+    if (!ok) return;
+    cancel();
+    showAlert("Subscription Cancelled!")
+  }
 
   const plan = subscription?.plan ?? 'FREE';
   const formattedPlan = plan.charAt(0) + plan.slice(1).toLowerCase();
@@ -148,7 +160,7 @@ export default function SubscriptionPage() {
                     >
                       Manage Billing
                     </Button>
-                    <Button variant="text" tone="error" onClick={cancel}>
+                    <Button variant="text" tone="error" onClick={handleCancelSubscription}>
                       Cancel
                     </Button>
                   </Stack>

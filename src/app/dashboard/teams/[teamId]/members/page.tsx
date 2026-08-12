@@ -3,6 +3,7 @@
 import { Button } from "@/assets/buttons";
 import { useTeam } from "@/hooks/useTeam";
 import { useAuth } from "@/providers/auth";
+import { useAlert } from "@/providers/alert";
 import { Add, DeleteOutline } from "@mui/icons-material";
 import { 
   Box, 
@@ -12,27 +13,43 @@ import {
   Grid, 
   IconButton, 
   Stack, 
-  Alert
 } from "@mui/material";
 import { NavbarAvatar } from "@/app/dashboard/_level_1/navItems";
 
 export default function MembersPage() {
   const { isAuthenticated, user } = useAuth();
+  const { showAlert, confirm, prompt } = useAlert();
   const { team, inviteMember, removeMember, isOwner, loading } = useTeam();
 
   const handleInvite = async () => {
     if (!user) return;
-    const email = prompt("Enter email to invite:");
+    const email = await prompt(
+      "Enter email to invite:",
+      'Invite User',          
+      '',                     
+      'Send Invite'
+    );
     
     if (!email) return;
     await inviteMember(email, user?.id);
   };
 
   const handleRemoveMember = async (id: number) => {
+
     if (id && id === user?.id) {
       return (
-      alert("Owner Cannot Remove Self. If you want to continue with this action, go to [Team > Settings > Leave Team] to remove yourself")
-    )} else removeMember(id);
+      showAlert("Owner cannot remove self. To continue with this action, go to team settings and hit 'Leave Team'")
+    )} else {
+      const ok = await confirm(
+        `Are you sure you want to kick user ${id} out from this team?`,
+        "Confirm remove user",
+        'Remove User'
+      )
+      if(!ok) return;
+
+      removeMember(id);
+      showAlert("User removed!")
+    }
   }
 
   const members = team?.members ?? [];
@@ -51,7 +68,7 @@ export default function MembersPage() {
             </Button>
           </Stack>
 
-          <Grid container spacing={2}>
+          <Grid container spacing={2} pt={2}>
             {members.map(m => (
               <Grid key={m.id}>
                 <Stack
@@ -63,8 +80,9 @@ export default function MembersPage() {
                   justifyContent="space-between"
                   sx={{ 
                     cursor: 'pointer',
-                    bgcolor: "rgba(0,0,0,0.02)",
-                    ":hover": { bgcolor: "rgba(0,0,0, 0.06)"} 
+                    borderRadius: 3,
+                    bgcolor: "rgba(0,0,0,0.09)",
+                    ":hover": { bgcolor: "rgba(0,0,0, 0.2)"} 
                   }}
                 >
                   <Stack direction="row" spacing={2} alignItems="center">

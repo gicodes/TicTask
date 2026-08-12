@@ -23,8 +23,8 @@ export function RichTextViewer({ html }: Props) {
         borderRadius: 2.5,
         border: "1px solid",
         borderColor: "divider",
-        bgcolor: "var(--surface-1)",
-        color: "text.primary",
+        bgcolor: "white",
+        color: "black",
 
         fontSize: { xs: "0.875rem", sm: "0.925rem" },
         lineHeight: 1.75,

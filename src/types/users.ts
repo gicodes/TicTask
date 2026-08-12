@@ -112,6 +112,7 @@ export enum UserStatus {
 
 export interface AvatarProps {
   size?: number;
+  showStatus?: boolean;
   user: {
     name: string;
     photo?: string;

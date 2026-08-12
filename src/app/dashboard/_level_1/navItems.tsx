@@ -108,7 +108,9 @@ export const AUTH_ITEMS: LinkItem[] = [
 
 export const NavbarAvatar = ({ 
   user, 
-  size = 36}: AvatarProps
+  size = 36,
+  showStatus = true
+}: AvatarProps
 ) => { 
   const getInitials = (text: string) => {
     const parts = text.split(' ').filter(Boolean);
@@ -141,7 +143,7 @@ export const NavbarAvatar = ({
           {avatarName()}
         </Typography>
       </Avatar>
-      <Box position={'absolute'} bottom={-5} right={-1} maxHeight={1}>
+      {showStatus && <Box position={'absolute'} bottom={-5} right={-1} maxHeight={1}>
         <FaCircle 
           size={size ? size / 4 : 9} 
           color={
@@ -151,7 +153,7 @@ export const NavbarAvatar = ({
             : user?.data?.status==="BUSY" ? 'tomato' : 'gray'
           }
         />
-      </Box>
+      </Box>}
     </Box>
   )
 };

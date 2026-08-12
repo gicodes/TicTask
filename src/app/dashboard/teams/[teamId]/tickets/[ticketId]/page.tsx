@@ -176,8 +176,7 @@ export default function TeamTicketWorkspace() {
   return (
     <Fade in timeout={400}>
       <Box sx={{ position: 'relative', minHeight: '100vh' }}>
-
-        <Stack direction="row" p={2} justifyContent="flex-end" spacing={2} bgcolor={'var(--surface-2)'}>
+        <Stack direction="row" p={2} justifyContent="flex-end" spacing={2} bgcolor={'rgba(0,0,0,1)'}>
           {isActive && <Button
             variant={editMode ? 'contained' : 'outlined'}
             onClick={editMode ? handleUpdate : () => setEditMode(true)}

@@ -190,13 +190,9 @@ export function TicketDetailPane({
               }
               onChange={(e) => {
                 const ids = e.target.value as number[]
-                setTicket((prev) =>
-                  prev
-                    ? {
-                        ...prev,
-                        assignees: teamMembers.filter((m) => ids.includes(m.id)),
-                      }
-                    : null
+                setTicket((prev) => prev ? { ...prev, assignees: teamMembers.
+                  filter((m) => ids.includes(m.id))}
+                  : null
                 )
               }}
               renderValue={(selected: number[]) => {
@@ -302,7 +298,7 @@ export function TicketDetailPane({
                           borderColor: isCurrentUser ? 'rgba(99, 102, 241, 0.22)' : 'divider',
                           bgcolor: isCurrentUser
                             ? 'rgba(99, 102, 241, 0.055)'
-                            : 'var(--surface-1)',
+                            : 'rgba(0,0,0,0.05)',
                           transition: 'all 0.2s ease',
                         }}
                       >
@@ -314,7 +310,7 @@ export function TicketDetailPane({
                             display: 'grid',
                             placeItems: 'center',
                             flexShrink: 0,
-                            bgcolor: isCurrentUser ? 'primary.main' : 'action.hover',
+                            bgcolor: isCurrentUser ? 'primary.main' : 'divider',
                             color: isCurrentUser ? 'primary.contrastText' : 'text.secondary',
                             fontSize: 14,
                             fontWeight: 700,
@@ -339,17 +335,6 @@ export function TicketDetailPane({
                             {isCurrentUser ? 'You' : 'Assigned teammate'}
                           </Typography>
                         </Box>
-                        {isCurrentUser && (
-                          <Box
-                            sx={{
-                              width: 7,
-                              height: 7,
-                              borderRadius: '50%',
-                              bgcolor: 'primary.main',
-                              flexShrink: 0,
-                            }}
-                          />
-                        )}
                       </Box>
                     )
                   })}

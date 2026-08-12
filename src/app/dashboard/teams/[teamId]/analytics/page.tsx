@@ -30,6 +30,7 @@ import {
   CheckCircleOutline,
   ConfirmationNumberOutlined,
 } from "@mui/icons-material";
+import { NavbarAvatar } from "@/app/dashboard/_level_1/navItems";
 
 const fmt = (n: number) => n.toLocaleString();
 
@@ -177,10 +178,8 @@ export default function AnalyticsPage() {
           <KpiCard
             title="Resolved"
             value={loading ? "—" : fmt(analytics.completedTickets)}
-            subtitle={
-              analytics
-                ? `${Math.round((analytics.completedTickets / Math.max(analytics.totalTickets, 1)) * 100)}% rate`
-                : undefined
+            subtitle={ analytics ? `${Math.round((analytics.completedTickets / Math.max(analytics.totalTickets, 1)) * 100)}% rate`
+              : undefined
             }
             trend={analytics?.resolvedTrend}
             icon={<CheckCircleOutline fontSize="small" />}
@@ -199,7 +198,7 @@ export default function AnalyticsPage() {
         </Grid>
         <Grid size={{ xs: 6, md: 3 }}>
           <KpiCard
-            title="Open backlog"
+            title="Active backlog"
             value={loading ? "—" : fmt(analytics.openTickets)}
             subtitle={analytics?.avgOpenAgeDays != null ? `avg age ${analytics.avgOpenAgeDays}d` : undefined}
             icon={<ConfirmationNumberOutlined fontSize="small" />}
@@ -247,7 +246,7 @@ export default function AnalyticsPage() {
               ) : (
                 <Stack spacing={1.5} mt={1}>
                   {[
-                    { label: "Open", value: analytics.openTickets, color: "warning.main" },
+                    { label: "Active", value: analytics.openTickets, color: "warning.main" },
                     { label: "In progress", value: analytics.inProgressTickets ?? 0, color: "info.main" },
                     { label: "Resolved", value: analytics.completedTickets, color: "success.main" },
                   ].map((s) => {
@@ -280,7 +279,6 @@ export default function AnalyticsPage() {
         </Grid>
       </Grid>
 
-      {/* Workload by member */}
       <Card variant="outlined">
         <CardContent>
           <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
@@ -301,7 +299,7 @@ export default function AnalyticsPage() {
               <TableHead>
                 <TableRow>
                   <TableCell>Member</TableCell>
-                  <TableCell align="right">Open</TableCell>
+                  <TableCell align="right">Opened</TableCell>
                   <TableCell align="right">Resolved</TableCell>
                   <TableCell align="right">Avg. time</TableCell>
                   <TableCell align="right" width={120}>
@@ -314,9 +312,7 @@ export default function AnalyticsPage() {
                   <TableRow key={m.userId} hover>
                     <TableCell>
                       <Stack direction="row" spacing={1.5} alignItems="center">
-                        <Avatar sx={{ width: 28, height: 28, fontSize: 13 }}>
-                          {m.name?.[0] ?? "?"}
-                        </Avatar>
+                        <NavbarAvatar user={m} showStatus={false} />
                         <Typography variant="body2" fontWeight={500}>
                           {m.name}
                         </Typography>
