@@ -114,7 +114,7 @@ const Page = () => {
       style: 'currency',
       currency,
       maximumFractionDigits: 0,
-    }).format(amount / 100); // adjust if you store cents
+    }).format(amount / 100);
 
   const formatDate = (date: string) =>
     new Date(date).toLocaleDateString('en-US', {
@@ -153,7 +153,7 @@ const Page = () => {
                     <strong>Plan:</strong> {sub.plan}
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Amount:</strong> {formatCurrency(sub.amount, '$')}
+                    <strong>Amount:</strong> {formatCurrency(sub.amount, "USD")}
                   </Typography>
                   <Typography variant="body2">
                     <strong>Expires:</strong> {formatDate(sub.expiresAt)}
@@ -210,7 +210,7 @@ const Page = () => {
                     />
                   </TableCell>
                   <TableCell align="right">
-                    {formatCurrency(sub.amount, "S")}
+                    {formatCurrency(sub.amount, "USD")}
                   </TableCell>
                   <TableCell>{formatDate(sub.startedAt)}</TableCell>
                   <TableCell>{formatDate(sub.expiresAt)}</TableCell>
