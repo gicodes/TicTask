@@ -138,362 +138,405 @@ export default function ProfileDetailDrawer() {
   }
 
   return (
-    <> { closeDrawer ? 
-      <Fab
-        aria-label="Open profile"
-        onClick={() => setCloseDrawer(false)}
-        sx={{
-          bgcolor: 'var(--secondary)',
-          position: 'fixed',
-          top: 80,
-          right: 8,
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-        }}
-      >
-        <Tooltip title='open profile'>
-          <UserCog2Icon />
-        </Tooltip>
-      </Fab>
-      :
-      <Drawer
-        anchor="right"
-        open={!closeDrawer}
-        onClose={closeDetail}
-        sx={{
-          '& .MuiDrawer-paper': {
-            width: { xs: '100%', md: 500, xl: 600 },
-            borderTopLeftRadius: 16,
-            boxShadow: '-6px 0px 20px rgba(0,0,0,0.5)',
-          },
-        }}
-      > 
-        <Toolbar />
-        <Fade in>
-          <Box>
-            <Stack  
-              px={1}
-              minHeight={64}
-              direction="row" 
-              alignItems="center" 
-              justifyContent="space-between"
-              bgcolor={'rgba(0,0,0,0.)'}
-            >
-              <Typography pl={2} variant="h6" fontWeight={600} color='textDisabled'>
-                {isEditing ? 'Editing Profile' : isBusiness ? 'Business' : 'User'} Profile
-              </Typography>
-              <Stack direction="row" alignItems="center">
-                <Stack direction={'row'} gap={1}>
-                  { !isEditing ?
-                    <Tooltip title="Edit Profile">
-                      <IconButton onClick={handleEditToggle}>
-                        <EditOutlined />
-                      </IconButton>
-                    </Tooltip>
-                  : <>
-                      <Tooltip title="Cancel Edit">
-                        <IconButton color="inherit" onClick={handleEditToggle}>
-                          <CloseSharp sx={{ fontSize: 20 }} />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Save Changes">
-                        <IconButton color="primary" onClick={handleSave} disabled={saving}>
-                          {saving ? <CircularProgress size={20} /> : <Check color='var(--info)'/>}
-                        </IconButton>
-                      </Tooltip>
-                    </>
-                  }
-                </Stack>
-                
-                { moreOptions && (
-                  <Fade in>
-                    <Stack direction="row">
-                      <Tooltip title="Save as PDF / Print">
-                        <IconButton onClick={handleSavePDF}>
-                          <Download size={18} />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Share Profile">
-                        <IconButton onClick={handleShare}>
-                          <Share2 size={18} />
-                        </IconButton>
-                      </Tooltip>
-                    </Stack>
-                  </Fade>
-                )}
-                <Tooltip title={!moreOptions ? 'More Options' : 'Close'}>
-                  <IconButton onClick={toggleMoreOptions}>
-                    {!moreOptions ? <FaEllipsisVertical size={18} /> : <CloseSharp sx={{ fontSize: 20 }} />}
-                  </IconButton>
-                </Tooltip>
-              </Stack>
-            </Stack>
+    <> 
+      { closeDrawer ? (
+        <Fab
+          aria-label="Open profile"
+          onClick={() => setCloseDrawer(false)}
+          sx={{
+            bgcolor: 'var(--secondary)',
+            position: 'fixed',
+            top: 80,
+            right: 8,
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+          }}
+        >
+          <Tooltip title='open profile'>
+            <UserCog2Icon />
+          </Tooltip>
+        </Fab>
+      ) : (
+        <Drawer
+          anchor="right"
+          open={!closeDrawer}
+          onClose={closeDetail}
+          sx={{
+            '& .MuiDrawer-paper': {
+              width: { xs: '100%', md: 500, xl: 600 },
+              borderTopLeftRadius: 16,
+              boxShadow: '-6px 0px 20px rgba(0,0,0,0.5)',
+              display: 'flex',
+              flexDirection: 'column',
+            },
+          }}
+        >
+          <Toolbar />
+          <Fade in>
+            <Box>
 
-            <Box px={3}>
-              <Stack alignItems="center" spacing={1} textAlign="center" my={3}>
-                <Avatar
-                  src={profile?.photo || '/default-avatar.png'}
-                  alt={profile?.name}
-                  sx={{
-                    width: 96,
-                    height: 96,
-                    fontSize: 32,
-                    mb: 1,
-                    color: 'var(--foreground)',
-                    background: 'var(--background)',
-                    border: `2.5px solid ${
-                      isBusiness ? theme.palette.primary.main
-                      : isModerator ? `var(--special)`
-                      : theme.palette.success.main
-                    }`,
-                  }}
-                />
-
-                {isEditing ? (
-                  <TextField
-                    value={profile?.name || ''}
-                    onChange={(e) => handleChange('name', e.target.value)}
-                    variant="standard"
-                    fullWidth
-                    sx={{ maxWidth: 260, textAlign: 'center', border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
-                  />
-                ) : <Typography variant="h6" fontWeight={600}>{profile?.name}</Typography>}
-                
-                <Typography variant="body2" color="text.secondary">
-                  {profile?.position || (isBusiness ? 'Organization' : 'Member')}
-                </Typography>
-                
-                {isEditing ? (
-                  <TextField
-                    multiline
-                    rows={2}
-                    variant="outlined"
-                    fullWidth
-                    value={profile?.bio || ''}
-                    onChange={(e) => handleChange('bio', e.target.value)}
-                    sx={{ maxWidth: 340, borderRadius: 5, mt: 5 }}
-                    placeholder="Tell us something about yourself..."
-                  />
-                ) : <Typography variant="body2" color="text.secondary" py={1} px={4}>
-                    {profile?.bio || 'No bio added yet.'}
-                  </Typography>
-                }
-              </Stack>
-
-              <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-                <Typography variant="subtitle2" color="text.secondary" mb={1} pb={1} borderBottom={'2px dashed var(--surface-1)'}>
-                  Contact Information
-                </Typography>
-
-                <Stack spacing={1}>
-                  {(['email', 'phone', 'country'] as const).map((field, i, arr) => (
-                    <>
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        spacing={1}
-                        key={field}
-                        py={0.5}
-                      >
-                        <IconButton color='info' sx={{ bgcolor: 'var(--surface-1)'}}>
-                          { field === 'email' ? <MdEmail size={16} />
-                          : field === 'phone' ? <FaPhone size={16} />
-                          : <FaLocationDot size={16} />
-                        }
-                        </IconButton>
-
-                        {isEditing && field !== 'email' ? (
-                          <TextField
-                            size="small"
-                            variant="standard"
-                            value={profile?.[field] || ''}
-                            onChange={(e) => handleChange(field, e.target.value)}
-                            fullWidth
-                            sx={{
-                              border: '1px solid var(--disabled)',
-                              px: 2,
-                              borderRadius: 2,
-                            }}
-                          />
-                        ) : <Typography variant="body2"> {profile?.[field] || 'Not provided'} </Typography>}
-                      </Stack>
-                      {i < arr.length - 1 && <Divider />}
-                    </>
-                  ))}
-                </Stack>
-              </Paper>
-
-              <Paper
-                variant="outlined"
+              <Stack
+                px={1}
+                zIndex={99}
+                position="fixed"
+                right={0}
+                bgcolor="rgba(0,0,0,0.1)"
                 sx={{
-                  p: 2,
-                  mb: 2,
-                  borderRadius: 3,
-                  bgcolor: 'background.paper',
+                  width: {
+                    xs: '100%',
+                    md: 500,
+                    xl: 600,
+                  },
+                  boxSizing: 'border-box',
                 }}
               >
-                <Typography
-                  variant="subtitle2"
-                  color="text.secondary"
-                  mb={2} pb={1}
-                  borderBottom={'2px dashed var(--surface-1)'}
+                <Box 
+                  py={1}
+                  px={2}
+                  gap={3}
+                  height={60} 
+                  width={'100%'}
+                  display={"flex"}
+                  alignItems={"center"}
                 >
-                  Account Information
-                </Typography>
-
-                <Stack spacing={1.75}>
+                  <Typography 
+                    width={250}
+                    variant="h6" 
+                    fontWeight={600} 
+                    color='text.secondary' 
+                  >
+                    {isEditing ? 'Editing Profile' : isBusiness ? 'Business' : 'User'} Profile
+                  </Typography>
+                  
                   <Stack
                     direction="row"
                     alignItems="center"
-                    justifyContent="space-between"
-                    gap={2}
-                  >
-                    <Box>
-                      <Typography variant="body2" fontWeight={500}>
-                        Email verification
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Your email address verification status
-                      </Typography>
-                    </Box>
+                    justifyContent="flex-end"
+                    sx={{
+                      flex: 1,
+                      minWidth: 0,
+                    }}
+                  > 
+                    { !isEditing ?
+                      <Tooltip title="Edit Profile">
+                        <IconButton onClick={handleEditToggle}>
+                          <EditOutlined />
+                        </IconButton>
+                      </Tooltip>
+                    : <>
+                        <Tooltip title="Cancel Edit">
+                          <IconButton color="inherit" onClick={handleEditToggle}>
+                            <CloseSharp sx={{ fontSize: 20 }} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Save Changes">
+                          <IconButton color="primary" onClick={handleSave} disabled={saving}>
+                            {saving ? <CircularProgress size={20} /> : <Check color='var(--info)'/>}
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    }
+                    
+                    { moreOptions && (
+                      <Fade in>
+                        <Stack direction="row">
+                          <Tooltip title="Save as PDF / Print">
+                            <IconButton onClick={handleSavePDF}>
+                              <Download size={18} />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Share Profile">
+                            <IconButton onClick={handleShare}>
+                              <Share2 size={18} />
+                            </IconButton>
+                          </Tooltip>
+                        </Stack>
+                      </Fade>
+                    )}
 
-                    <Typography
-                      variant="body2"
-                      fontWeight={600}
-                      color={profile?.emailVerifiedAt ? 'success.main' : 'warning.main'}
-                    >
-                      {profile?.emailVerifiedAt ? 'Verified' : 'Not verified'}
-                    </Typography>
+                    <Tooltip title={!moreOptions ? 'More Options' : 'Close'}>
+                      <IconButton onClick={toggleMoreOptions}>
+                        { !moreOptions ? (
+                          <FaEllipsisVertical size={18} /> 
+                        ) : (
+                          <CloseSharp sx={{ fontSize: 20 }} />
+                        )}
+                      </IconButton>
+                    </Tooltip>
                   </Stack>
-                  <Divider />
+                </Box>
+              </Stack>
+              <Toolbar/>
 
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    gap={2}
-                  >
-                    <Box>
-                      <Typography variant="body2" fontWeight={500}>
-                        Tictask Credits
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Credits are used for ticket sudo actions and automation runs
-                      </Typography>
-                    </Box>
-                    <Typography variant="body2" color="text.secondary">
-                      {profile?.credits ?? 0}
+              <Box px={3}>
+                <Stack alignItems="center" spacing={1} textAlign="center" my={3}>
+                  <Avatar
+                    src={profile?.photo || '/default-avatar.png'}
+                    alt={profile?.name}
+                    sx={{
+                      width: 96,
+                      height: 96,
+                      fontSize: 32,
+                      mb: 1,
+                      color: 'var(--foreground)',
+                      background: 'var(--background)',
+                      border: `2.5px solid ${
+                        isBusiness ? theme.palette.primary.main
+                        : isModerator ? `var(--special)`
+                        : theme.palette.success.main
+                      }`,
+                    }}
+                  />
+
+                  {isEditing ? (
+                    <TextField
+                      value={profile?.name || ''}
+                      onChange={(e) => handleChange('name', e.target.value)}
+                      variant="standard"
+                      fullWidth
+                      sx={{ maxWidth: 260, textAlign: 'center', border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
+                    />
+                  ) : (
+                    <Typography variant="h6" fontWeight={600}>{profile?.name}</Typography>
+                  )}
+                  
+                  <Typography variant="body2" color="text.secondary">
+                    {profile?.position || (isBusiness ? 'Organization' : 'Member')}
+                  </Typography>
+                  
+                  {isEditing ? (
+                    <TextField
+                      multiline
+                      rows={2}
+                      variant="outlined"
+                      fullWidth
+                      value={profile?.bio || ''}
+                      onChange={(e) => handleChange('bio', e.target.value)}
+                      sx={{ maxWidth: 340, borderRadius: 5, mt: 5 }}
+                      placeholder="Tell us something about yourself..."
+                    />
+                  ) : (
+                    <Typography variant="body2" color="text.secondary" py={1} px={4}>
+                      {profile?.bio || 'No bio added yet.'}
                     </Typography>
-                  </Stack>
-                  <Divider />
-
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    gap={2}
-                  >
-                    <Box>
-                      <Typography variant="body2" fontWeight={500}>
-                        Member since
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        When this account was created
-                      </Typography>
-                    </Box>
-
-                    <Typography variant="body2" color="text.secondary">
-                      {profile?.createdAt
-                        ? new Date(profile.createdAt).toLocaleDateString()
-                        : '—'}
-                    </Typography>
-                  </Stack>
-                  <Divider />
-
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    gap={2}
-                  >
-                    <Box>
-                      <Typography variant="body2" fontWeight={500}>
-                        Last updated
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        When your profile was last changed
-                      </Typography>
-                    </Box>
-
-                    <Typography variant="body2" color="text.secondary">
-                      {profile?.updatedAt ? new Date(profile.updatedAt).toLocaleDateString(): '—'}
-                    </Typography>
-                  </Stack>
-                  <Divider />
-
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    gap={2}
-                  >
-                    <Box>
-                      <Typography variant="body2" fontWeight={500}>
-                        Last login
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Your most recent account activity
-                      </Typography>
-                    </Box>
-
-                    <Typography variant="body2" color="text.secondary">
-                      { user?.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString() : 'No login recorded'}
-                    </Typography>
-                  </Stack>
+                  )}
                 </Stack>
-              </Paper>
 
-              {isBusiness ? (
-                <BusinessSection
-                  profile={profile}
-                  isEditing={isEditing}
-                  handleChange={handleChange}
+                <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
+                  <Typography variant="subtitle2" color="text.secondary" mb={1} pb={1} borderBottom={'2px dashed var(--surface-1)'}>
+                    Contact Information
+                  </Typography>
+
+                  <Stack spacing={1}>
+                    {(['email', 'phone', 'country'] as const).map((field, i, arr) => (
+                      <>
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          spacing={1}
+                          key={field}
+                          py={0.5}
+                        >
+                          <IconButton color='info' sx={{ bgcolor: 'var(--surface-1)'}}>
+                            { field === 'email' ? <MdEmail size={16} />
+                            : field === 'phone' ? <FaPhone size={16} />
+                            : <FaLocationDot size={16} />
+                          }
+                          </IconButton>
+
+                          {isEditing && field !== 'email' ? (
+                            <TextField
+                              size="small"
+                              variant="standard"
+                              value={profile?.[field] || ''}
+                              onChange={(e) => handleChange(field, e.target.value)}
+                              fullWidth
+                              sx={{
+                                border: '1px solid var(--disabled)',
+                                px: 2,
+                                borderRadius: 2,
+                              }}
+                            />
+                          ) : <Typography variant="body2"> {profile?.[field] || 'Not provided'} </Typography>}
+                        </Stack>
+                        {i < arr.length - 1 && <Divider />}
+                      </>
+                    ))}
+                  </Stack>
+                </Paper>
+
+                <Paper
+                  variant="outlined"
+                  sx={{
+                    p: 2,
+                    mb: 2,
+                    borderRadius: 3,
+                    bgcolor: 'background.paper',
+                  }}
+                >
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    mb={2} pb={1}
+                    borderBottom={'2px dashed var(--surface-1)'}
+                  >
+                    Account Information
+                  </Typography>
+
+                  <Stack spacing={1.75}>
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      gap={2}
+                    >
+                      <Box>
+                        <Typography variant="body2" fontWeight={500}>
+                          Email verification
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          Your email address verification status
+                        </Typography>
+                      </Box>
+
+                      <Typography
+                        variant="body2"
+                        fontWeight={600}
+                        color={profile?.emailVerifiedAt ? 'success.main' : 'warning.main'}
+                      >
+                        {profile?.emailVerifiedAt ? 'Verified' : 'Not verified'}
+                      </Typography>
+                    </Stack>
+                    <Divider />
+
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      gap={2}
+                    >
+                      <Box>
+                        <Typography variant="body2" fontWeight={500}>
+                          Tictask Credits
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          Credits are used for ticket sudo actions and automation runs
+                        </Typography>
+                      </Box>
+                      <Typography variant="body2" color="text.secondary">
+                        {profile?.credits ?? 0}
+                      </Typography>
+                    </Stack>
+                    <Divider />
+
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      gap={2}
+                    >
+                      <Box>
+                        <Typography variant="body2" fontWeight={500}>
+                          Member since
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          When this account was created
+                        </Typography>
+                      </Box>
+
+                      <Typography variant="body2" color="text.secondary">
+                        {profile?.createdAt
+                          ? new Date(profile.createdAt).toLocaleDateString()
+                          : '—'}
+                      </Typography>
+                    </Stack>
+                    <Divider />
+
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      gap={2}
+                    >
+                      <Box>
+                        <Typography variant="body2" fontWeight={500}>
+                          Last updated
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          When your profile was last changed
+                        </Typography>
+                      </Box>
+
+                      <Typography variant="body2" color="text.secondary">
+                        {profile?.updatedAt ? new Date(profile.updatedAt).toLocaleDateString(): '—'}
+                      </Typography>
+                    </Stack>
+                    <Divider />
+
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      gap={2}
+                    >
+                      <Box>
+                        <Typography variant="body2" fontWeight={500}>
+                          Last login
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          Your most recent account activity
+                        </Typography>
+                      </Box>
+
+                      <Typography variant="body2" color="text.secondary">
+                        { user?.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString() : 'No login recorded'}
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </Paper>
+
+                {isBusiness ? (
+                  <BusinessSection
+                    profile={profile}
+                    isEditing={isEditing}
+                    handleChange={handleChange}
+                  />
+                ) : (
+                  <PersonalSection 
+                    profile={profile}
+                    isEditing={isEditing}
+                    handleChange={handleChange}
+                  />
+                )}
+
+                <ProfileActivitySection
+                  tickets={profile?.tickets}
+                  closedTickets={profile?.closedTickets}
+                  startedTickets={profile?.startedTickets}
+                  assignedTickets={profile?.assignedTickets}
+                  createdTeams={profile?.createdTeams}
+                  teamMemberships={profile?.teamMemberships}
+                  teamMembership={profile?.teamMembership}
                 />
-              ) : (
-                <PersonalSection 
-                  profile={profile}
-                  isEditing={isEditing}
-                  handleChange={handleChange}
-                />
-              )}
 
-              <ProfileActivitySection
-                tickets={profile?.tickets}
-                closedTickets={profile?.closedTickets}
-                startedTickets={profile?.startedTickets}
-                assignedTickets={profile?.assignedTickets}
-                createdTeams={profile?.createdTeams}
-                teamMemberships={profile?.teamMemberships}
-                teamMembership={profile?.teamMembership}
-              />
+                {isModerator && <ModeratorSection profile={profile} />}
+              </Box>
+            </Box>  
+          </Fade>
 
-              {isModerator && <ModeratorSection profile={profile} />}
-            </Box>
-          </Box>  
-        </Fade>
-
-        <Divider sx={{ width: '100%', border: '5px solid var(--disabled)'}} />
-        <Box p={3}>
-          <Button 
-            onClick={closeDetail} 
-            tone='inverted'
-            component={Link} href="/dashboard" 
-            startIcon={<ArrowBack />}
-            sx={{ maxWidth: 250 }}
-          > 
-            Back 
-          </Button>
-        </Box>
-      </Drawer>
-    }</>
+          <Divider sx={{ width: '100%', border: '5px solid var(--disabled)'}} />
+          <Box p={3}>
+            <Button 
+              onClick={closeDetail} 
+              tone='inverted'
+              component={Link} href="/dashboard" 
+              startIcon={<ArrowBack />}
+              sx={{ maxWidth: 250 }}
+            > 
+              Back 
+            </Button>
+          </Box>
+        </Drawer>
+      )}
+    </>
   );
 }

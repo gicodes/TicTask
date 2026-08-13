@@ -72,7 +72,7 @@ export function PersonalSection({
               fullWidth
             />
           ) : (
-            <Stack direction={'row'} width={'100%'} justifyContent={'space-between'} alignItems={'center'}> 
+            <Stack gap={1} direction={'row'} width={'100%'} justifyContent={'space-between'} alignItems={'center'}> 
               <Stack>
                 <Typography variant='body2'> Position</Typography> 
                 <Typography variant='caption' color="text.secondary">Set your position/ title</Typography>
