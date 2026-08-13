@@ -216,7 +216,7 @@ const Page = () => {
                   <TableCell>{formatDate(sub.expiresAt)}</TableCell>
                   <TableCell>
                     <Chip
-                      label={sub.user.userType}
+                      label={sub.user?.userType ?? sub.user?.role}
                       size="small"
                       variant="outlined"
                     />

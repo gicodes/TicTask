@@ -160,7 +160,7 @@ export default function ProfileDetailDrawer() {
         onClose={closeDetail}
         sx={{
           '& .MuiDrawer-paper': {
-            width: { xs: '100%', md: 600 },
+            width: { xs: '100%', md: 500, xl: 600 },
             borderTopLeftRadius: 16,
             boxShadow: '-6px 0px 20px rgba(0,0,0,0.5)',
           },
