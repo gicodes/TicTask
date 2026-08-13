@@ -79,7 +79,7 @@ const Page = () => {
       if (statusFilter) params.set('status', statusFilter);
       if (searchDebounced) params.set('search', searchDebounced);
 
-      const res = await apiGet<GenericAPIRes>(`/subscriptions/all?${params.toString()}`);
+      const res = await apiGet<GenericAPIRes>(`/subscription/all?${params.toString()}`);
 
       if (!res.ok) {
         throw new Error(res.message || 'Failed to load subscriptions');

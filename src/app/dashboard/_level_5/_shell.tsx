@@ -173,7 +173,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                   <Stack 
                     px={1}
                     py={2}
-                    gap={3}  
+                    gap={2}  
                     width={'100%'}
                     direction={'row'} 
                     sx={{
@@ -205,7 +205,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                       style={{ 
                         gap: 10,
                         padding: 8, 
-                        fontSize: 14, 
+                        fontSize: 15, 
                         margin: '1px 0', 
                         display: 'flex', 
                         alignItems: 'center'

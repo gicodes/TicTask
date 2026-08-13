@@ -41,8 +41,8 @@ export function SetStatusButton (
         }}
         border={'0.5px outset var(--foreground)'}
       >
-        <Stack direction="row" gap={1.3} alignItems="center">
-          <IconButton size="small" sx={{ fontSize: 14}}>{currentStatus?.emoji ?? "🔘"}</IconButton>
+        <Stack direction="row" gap={1.5} px={0.5} alignItems="center">
+          <IconButton size="small" sx={{ fontSize: 11}}>{currentStatus?.emoji ?? "🔘"}</IconButton>
           <Typography fontSize={15}>Set Status</Typography>
         </Stack>
       </Box>
@@ -71,7 +71,8 @@ export function SetStatusButton (
               >
                 <Stack 
                   gap={1.5}
-                  minWidth={100}
+                  minWidth={80}
+                  maxWidth={120}
                   direction={'row'} 
                   alignItems={'center'}
                 >

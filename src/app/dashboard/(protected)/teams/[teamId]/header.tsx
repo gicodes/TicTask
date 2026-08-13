@@ -3,16 +3,13 @@
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Box, Stack, Typography, Tabs, Tab, Chip } from "@mui/material";
 import { useTeam } from "@/hooks/useTeam";
-import { useAuth } from "@/providers/auth";
 
 export default function WorkspaceHeader() {
   const { teamId } = useParams<{ teamId: string }>();
   const pathname = usePathname();
   const router = useRouter();
 
-  const { isAuthenticated } = useAuth();
   const { team, loading } = useTeam();
-
   if (loading || !team) return null;
 
   const currentTab = () => {
@@ -20,6 +17,7 @@ export default function WorkspaceHeader() {
     if (pathname.includes("/members")) return 2;
     if (pathname.includes("/analytics")) return 3;
     if (pathname.includes("/settings")) return 4;
+    
     return 0;
   };
 
@@ -31,7 +29,6 @@ export default function WorkspaceHeader() {
       `/dashboard/teams/${teamId}/analytics`,
       `/dashboard/teams/${teamId}/settings`,
     ];
-
     router.push(routes[newValue]);
   };
 
@@ -54,26 +51,49 @@ export default function WorkspaceHeader() {
             size="small"
           />
         </Stack>
-
         <Typography variant="body2" sx={{ opacity: 0.7 }}>
           {team.description}
         </Typography>
       </Stack>
-
-      <Tabs
-        value={currentTab()}
-        onChange={handleChange}
-        variant="scrollable"
-        scrollButtons="auto"
-        allowScrollButtonsMobile
-        sx={{ maxWidth: '93vw'}}
-      >
-        <Tab label="Overview" />
-        <Tab label="Tickets" />
-        <Tab label="Members" />
-        <Tab label="Analytics" />
-        <Tab label="Settings" />
-      </Tabs>
+      <Box sx={{ position: "relative" }}>
+        <Tabs
+          value={currentTab()}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          allowScrollButtonsMobile
+          sx={{
+            pr: 2,
+            margin: 0,
+            maxWidth: "98vw",
+            "& .MuiTabs-scrollButtons.Mui-disabled": {
+              opacity: 0,
+              width: 0,
+            },
+          }}
+        >
+          <Tab label="Overview" />
+          <Tab label="Tickets" />
+          <Tab label="Members" />
+          <Tab label="Analytics" />
+          <Tab label="Settings" />
+        </Tabs>
+        <Box
+          sx={{
+            display: { sm: 'none'},
+            position: "absolute",
+            left: 2,
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: 4,
+            height: 4,
+            borderRadius: "50%",
+            bgcolor: "text.secondary",
+            opacity: 0.5,
+            pointerEvents: "none",
+          }}
+        />
+      </Box>
     </Box>
   );
 }

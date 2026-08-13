@@ -13,7 +13,7 @@ export default function OverviewPage() {
   const { team, loading, isOwner } = useTeam();
 
   if (loading) return <Typography py={6} textAlign={'center'}>Loading...</Typography>;
-  if (!team) return <Alert severity="warning" sx={{ mx: 'auto', maxWidth: 500}}>Team not found</Alert>
+  if (!team) return <Alert severity="warning" sx={{ mx: 'auto', maxWidth: 250}}>Team not found</Alert>
 
   if (!isAuthenticated) return;
 
