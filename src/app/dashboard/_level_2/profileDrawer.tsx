@@ -56,7 +56,6 @@ export default function ProfileDetailDrawer() {
         const res: UserProfileRes = await apiGet(`/user/${user.id}`);
         setProfile(res.data);
       } catch (err) {
-        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -92,7 +91,6 @@ export default function ProfileDetailDrawer() {
       await apiPatch(`/user/${profile.id}`, profile);
       setIsEditing(false);
     } catch (err) {
-      console.error('Save failed', err);
     } finally {
       setSaving(false);
     }
@@ -162,7 +160,7 @@ export default function ProfileDetailDrawer() {
         onClose={closeDetail}
         sx={{
           '& .MuiDrawer-paper': {
-            width: { xs: '100%', md: 500 },
+            width: { xs: '100%', md: 600 },
             borderTopLeftRadius: 16,
             boxShadow: '-6px 0px 20px rgba(0,0,0,0.5)',
           },
