@@ -34,6 +34,7 @@ import { MdEmail, } from 'react-icons/md';
 import { Check, Download, Share2, UserCog2Icon,} from 'lucide-react';
 import { CloseSharp, EditOutlined, ArrowBack } from '@mui/icons-material';
 import { FaLocationDot, FaPhone, FaEllipsisVertical } from 'react-icons/fa6';
+import { ProfileActivitySection } from './profileSections/profileActivity';
 
 export default function ProfileDetailDrawer() {
   const { user } = useAuth();
@@ -163,17 +164,20 @@ export default function ProfileDetailDrawer() {
           '& .MuiDrawer-paper': {
             width: { xs: '100%', md: 500 },
             borderTopLeftRadius: 16,
-            boxShadow: '-6px 0px 20px rgba(0,0,0,0.1)',
+            boxShadow: '-6px 0px 20px rgba(0,0,0,0.5)',
           },
         }}
-      >
+      > 
         <Toolbar />
         <Fade in>
-          <Box px={3}>
-            <Stack 
+          <Box>
+            <Stack  
+              px={2}
+              minHeight={64}
               direction="row" 
               alignItems="center" 
-              justifyContent="space-between" minHeight={64}
+              justifyContent="space-between"
+              bgcolor={'rgba(0,0,0,0.)'}
             >
               <Typography variant="h6" fontWeight={600} color='textDisabled'>
                 {isEditing ? 'Editing Profile' : isBusiness ? 'Business Profile' : 'User Profile'}
@@ -225,123 +229,263 @@ export default function ProfileDetailDrawer() {
               </Stack>
             </Stack>
 
-            <Stack alignItems="center" spacing={1.5} textAlign="center" my={3}>
-              <Avatar
-                src={profile?.photo || '/default-avatar.png'}
-                alt={profile?.name}
-                sx={{
-                  width: 96,
-                  height: 96,
-                  fontSize: 32,
-                  mb: 1,
-                  color: 'var(--foreground)',
-                  background: 'var(--background)',
-                  border: `2.5px solid ${
-                    isBusiness ? theme.palette.primary.main
-                    : isModerator ? `var(--special)`
-                    : theme.palette.success.main
-                  }`,
-                }}
-              />
-
-              {isEditing ? (
-                <TextField
-                  value={profile?.name || ''}
-                  onChange={(e) => handleChange('name', e.target.value)}
-                  variant="standard"
-                  fullWidth
-                  sx={{ maxWidth: 260, textAlign: 'center', border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
-                />
-              ) : <Typography variant="h6" fontWeight={600}>{profile?.name}</Typography>}
-
-              <Stack direction="row" spacing={1} display={'flex'} alignItems={'center'}>
-                <Chip 
-                  label={profile?.role==='USER' ? "Tier 𝟚" : profile?.role}
-                  sx={{
-                    bgcolor: isModerator ? 'var(--special)' : 'default',
-                    color: isModerator ? 'var(--bw-inverse)' : 'var(--bw)',
-                    fontWeight: 600,
-                    fontStyle: profile?.role==='USER' ? 'italic' : 'inherit',
-                  }}
-                />
+            <Box px={3}>
+              <Stack mx={'auto'} maxWidth={'fit-content'}>
                 <Chip
-                  label={profile?.userType==="BUSINESS" ? "ORGANIZATION" : "PERSONAL"}
-                  color={isBusiness ? 'primary' : 'default'}
+                  label={`✦  ${profile?.userType==="BUSINESS" ? "ORGANIZATION" : "PERSONAL"}`}
+                  color={isBusiness ? 'secondary' : 'success'}
                   size="small"
                   variant={isBusiness ? 'filled' : "outlined"}
-                  sx={{ p: 1.8}}
+                  sx={{ p: 1, fontWeight: 600, boxShadow: 2}}
                 />
               </Stack>
-
-              {isEditing ? (
-                <TextField
-                  multiline
-                  rows={2}
-                  variant="outlined"
-                  fullWidth
-                  value={profile?.bio || ''}
-                  onChange={(e) => handleChange('bio', e.target.value)}
-                  sx={{ maxWidth: 340, borderRadius: 5, mt: 5 }}
-                  placeholder="Tell us something about yourself..."
+              <Stack alignItems="center" spacing={1} textAlign="center" my={3}>
+                <Avatar
+                  src={profile?.photo || '/default-avatar.png'}
+                  alt={profile?.name}
+                  sx={{
+                    width: 96,
+                    height: 96,
+                    fontSize: 32,
+                    mb: 1,
+                    color: 'var(--foreground)',
+                    background: 'var(--background)',
+                    border: `2.5px solid ${
+                      isBusiness ? theme.palette.primary.main
+                      : isModerator ? `var(--special)`
+                      : theme.palette.success.main
+                    }`,
+                  }}
                 />
-              ) : <Typography variant="body2" color="text.secondary" pt={1} px={4}>
-                  {profile?.bio || 'No bio added yet.'}
+
+                {isEditing ? (
+                  <TextField
+                    value={profile?.name || ''}
+                    onChange={(e) => handleChange('name', e.target.value)}
+                    variant="standard"
+                    fullWidth
+                    sx={{ maxWidth: 260, textAlign: 'center', border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
+                  />
+                ) : <Typography variant="h6" fontWeight={600}>{profile?.name}</Typography>}
+                
+                <Typography variant="body2" color="text.secondary">
+                  {profile?.position || (isBusiness ? 'Organization' : 'Member')}
                 </Typography>
-              }
-            </Stack>
+                
+                {isEditing ? (
+                  <TextField
+                    multiline
+                    rows={2}
+                    variant="outlined"
+                    fullWidth
+                    value={profile?.bio || ''}
+                    onChange={(e) => handleChange('bio', e.target.value)}
+                    sx={{ maxWidth: 340, borderRadius: 5, mt: 5 }}
+                    placeholder="Tell us something about yourself..."
+                  />
+                ) : <Typography variant="body2" color="text.secondary" py={1} px={4}>
+                    {profile?.bio || 'No bio added yet.'}
+                  </Typography>
+                }
+              </Stack>
 
-            <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-              <Typography variant="subtitle2" color="text.secondary" mb={2}>
-                Contact Information
-              </Typography>
+              <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
+                <Typography variant="subtitle2" color="text.secondary" mb={2}>
+                  Contact Information
+                </Typography>
 
-              <Stack spacing={1.5}>
-                {(['email', 'phone', 'country'] as const).map((field) => (
+                <Stack spacing={1.5}>
+                  {(['email', 'phone', 'country'] as const).map((field) => (
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      spacing={1.5}
+                      key={field}
+                    >
+                      {field === 'email' ? <MdEmail size={16} />
+                      : field === 'phone' ? <FaPhone size={16} />
+                      : <FaLocationDot size={16} />}
+
+                      {isEditing && field !== 'email' ? (
+                        <TextField
+                          size="small"
+                          variant="standard"
+                          value={profile?.[field] || ''}
+                          onChange={(e) => handleChange(field, e.target.value)}
+                          fullWidth
+                          sx={{
+                            border: '1px solid var(--disabled)',
+                            px: 2,
+                            borderRadius: 2,
+                          }}
+                        />
+                      ) : <Typography variant="body2"> {profile?.[field] || 'Not provided'} </Typography>}
+                    </Stack>
+                  ))}
+                </Stack>
+              </Paper>
+
+              <Paper
+                variant="outlined"
+                sx={{
+                  p: 2,
+                  mb: 2,
+                  borderRadius: 3,
+                  bgcolor: 'background.paper',
+                }}
+              >
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  mb={2}
+                >
+                  Account Information
+                </Typography>
+
+                <Stack spacing={1.75}>
                   <Stack
                     direction="row"
                     alignItems="center"
-                    spacing={1.5}
-                    key={field}
+                    justifyContent="space-between"
+                    gap={2}
                   >
-                    {field === 'email' ? <MdEmail size={16} />
-                    : field === 'phone' ? <FaPhone size={16} />
-                    : <FaLocationDot size={16} />}
+                    <Box>
+                      <Typography variant="body2" fontWeight={500}>
+                        Email verification
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Your email address verification status
+                      </Typography>
+                    </Box>
 
-                    {isEditing && field !== 'email' ? (
-                      <TextField
-                        size="small"
-                        variant="standard"
-                        value={profile?.[field] || ''}
-                        onChange={(e) => handleChange(field, e.target.value)}
-                        fullWidth
-                        sx={{
-                          border: '1px solid var(--disabled)',
-                          px: 2,
-                          borderRadius: 2,
-                        }}
-                      />
-                    ) : <Typography variant="body2"> {profile?.[field] || 'Not provided'} </Typography>}
+                    <Typography
+                      variant="body2"
+                      fontWeight={600}
+                      color={profile?.emailVerifiedAt ? 'success.main' : 'warning.main'}
+                    >
+                      {profile?.emailVerifiedAt ? 'Verified' : 'Not verified'}
+                    </Typography>
                   </Stack>
-                ))}
-              </Stack>
-            </Paper>
+                  <Divider />
 
-            {isBusiness ? (
-              <BusinessSection
-                profile={profile}
-                isEditing={isEditing}
-                handleChange={handleChange}
-              />
-            ) : (
-              <PersonalSection 
-                profile={profile}
-                isEditing={isEditing}
-                handleChange={handleChange}
-              />
-            )}
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap={2}
+                  >
+                    <Box>
+                      <Typography variant="body2" fontWeight={500}>
+                        Tictask Credits
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Credits are used for ticket sudo actions and automation runs
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary">
+                      {profile?.credits ?? 0}
+                    </Typography>
+                  </Stack>
+                  <Divider />
 
-            {isModerator && <ModeratorSection profile={profile} />}
-          </Box>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap={2}
+                  >
+                    <Box>
+                      <Typography variant="body2" fontWeight={500}>
+                        Member since
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        When this account was created
+                      </Typography>
+                    </Box>
+
+                    <Typography variant="body2" color="text.secondary">
+                      {profile?.createdAt
+                        ? new Date(profile.createdAt).toLocaleDateString()
+                        : '—'}
+                    </Typography>
+                  </Stack>
+                  <Divider />
+
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap={2}
+                  >
+                    <Box>
+                      <Typography variant="body2" fontWeight={500}>
+                        Last updated
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        When your profile was last changed
+                      </Typography>
+                    </Box>
+
+                    <Typography variant="body2" color="text.secondary">
+                      {profile?.updatedAt
+                        ? new Date(profile.updatedAt).toLocaleDateString()
+                        : '—'}
+                    </Typography>
+                  </Stack>
+                  <Divider />
+
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap={2}
+                  >
+                    <Box>
+                      <Typography variant="body2" fontWeight={500}>
+                        Last login
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Your most recent account activity
+                      </Typography>
+                    </Box>
+
+                    <Typography variant="body2" color="text.secondary">
+                      {profile?.lastLoginAt
+                        ? new Date(profile.lastLoginAt).toLocaleString()
+                        : 'No login recorded'}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </Paper>
+
+              {isBusiness ? (
+                <BusinessSection
+                  profile={profile}
+                  isEditing={isEditing}
+                  handleChange={handleChange}
+                />
+              ) : (
+                <PersonalSection 
+                  profile={profile}
+                  isEditing={isEditing}
+                  handleChange={handleChange}
+                />
+              )}
+
+              <ProfileActivitySection
+                tickets={profile?.tickets}
+                closedTickets={profile?.closedTickets}
+                startedTickets={profile?.startedTickets}
+                assignedTickets={profile?.assignedTickets}
+                referralCode={profile?.referralCode}
+                createdTeams={profile?.createdTeams}
+                teamMemberships={profile?.teamMemberships}
+                teamMembership={profile?.teamMembership}
+              />
+
+              {isModerator && <ModeratorSection profile={profile} />}
+            </Box>
+          </Box>  
         </Fade>
 
         <Divider sx={{ width: '100%', border: '5px solid var(--disabled)'}} />

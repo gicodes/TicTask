@@ -1,0 +1,301 @@
+'use client';
+
+import { 
+  useEffect, 
+  useMemo, 
+  useState 
+} from 'react';
+import Link from 'next/link';
+import WorkspaceTabs from './wsTabs';
+import WorkspaceShell from './wsShell';
+import { Button } from '@/assets/buttons';
+import WorkspaceWidgets from './wsWidgets';
+import { useAuth } from '@/providers/auth';
+import { useRouter } from 'next/navigation';
+import { Add, Search } from '@mui/icons-material';
+import AuthRedirectBtn from '@/assets/authRedirectBtn';
+import TicketsList from '../../../../_level_2/list/_list';
+import { useTeamTicket } from '@/providers/teamTickets';
+import TicketBoard from '../../../../_level_2/board/_board';
+import PlannerPage from '@/app/dashboard/_level_3/planner';
+import { StatData, StatKey, TeamWidgets } from '@/types/team';
+import { Ticket, TicketStatus, Ticket_Status } from '@/types/ticket';
+import StatsTicketsMenu from '@/app/dashboard/_level_1/statsTicketMenu';
+import { Stack, TextField, InputAdornment, Typography } from '@mui/material';
+import { TICKET_STATUSES, TICKET_LIST_HEADERS,} from '../../../../_level_0/constants';
+
+export function useDebounce<T>(value: T, delay = 300): T {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
+
+  return debounced;
+}
+
+const TERMINAL_STATUSES: TicketStatus[] = [
+  Ticket_Status.RESOLVED,
+  Ticket_Status.CLOSED,
+  Ticket_Status.CANCELLED,
+];
+
+export default function TeamTicketsWorkspace() {
+  const router = useRouter();
+  const { isAuthenticated, user } = useAuth();
+  const { tickets, updateTicket, fetchTickets } = useTeamTicket();
+  
+  const [view, setView] = useState<'board' | 'list' | 'calendar' | 'timeline' | 'gantt'>('board');
+  const [statAnchor, setStatAnchor] = useState<HTMLElement | null>(null);
+  const [activeStat, setActiveStat] = useState<StatKey | null>(null);
+  const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
+  const [selected, setSelected] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const debouncedQuery = useDebounce(searchQuery);
+  
+  const filteredTickets = useMemo(() => {
+    if (!debouncedQuery.trim()) return tickets;
+    const q = debouncedQuery.toLowerCase();
+
+    return tickets.filter(t =>
+      [
+        t.title,
+        t.description,
+        t.status,
+        t.assignedTo?.name,
+        t.tags?.join(' ')
+      ]
+        .filter(Boolean)
+        .some(field => field!.toLowerCase().includes(q))
+    );
+  }, [tickets, debouncedQuery]);
+
+  useEffect(() => {
+    const map: Record<string, Ticket[]> = {};
+    TICKET_STATUSES.forEach(s => (map[s] = []));
+
+    filteredTickets.forEach(t => {
+      const status = t.status || 'OPEN';
+      if (map[status]) map[status].push(t);
+      else map['OPEN'].push(t);
+    });
+
+    setGrouped(map);
+  }, [filteredTickets]);
+
+  const now = new Date();
+
+  const isOverdue = (due: string | Date | null | undefined) =>
+    due ? new Date(due) < now : false;
+
+  const isDueToday = (due: string | Date | null | undefined) => {
+    if (!due) return false;
+    const d = new Date(due);
+    return (
+      d.getDate() === now.getDate() &&
+      d.getMonth() === now.getMonth() &&
+      d.getFullYear() === now.getFullYear()
+    );
+  };
+
+  const isCreatedThisWeek = (createdAt: string | Date | null | undefined) => {
+    if (!createdAt) return false;
+
+    const created = new Date(createdAt);
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    return created >= startOfWeek;
+  };
+
+  const statData: StatData = useMemo(() => {
+    const pinnedNotes = filteredTickets.filter(
+      (t) => t.type === "NOTE" && t.data?.isPinned
+    );
+
+    const assignedToMe = filteredTickets.filter(
+      (t) =>
+        t.assignedToId === user?.id ||
+        t.assignees?.some((a) => a.id === user?.id)
+    );
+
+    const overdue = filteredTickets.filter(
+      (t) =>
+        isOverdue(t.dueDate) &&
+        !TERMINAL_STATUSES.includes(t.status)
+    );
+
+    const dueToday = filteredTickets.filter((t) =>
+      isDueToday(t.dueDate)
+    );
+
+    const inProgress = filteredTickets.filter(
+      (t) => t.status === "IN_PROGRESS"
+    );
+
+    const completed = filteredTickets.filter(
+      (t) =>
+        t.status === "RESOLVED" ||
+        t.status === "CLOSED"
+    );
+
+    const createdThisWeek = filteredTickets.filter((t) =>
+      isCreatedThisWeek(t.createdAt)
+    );
+
+    const abandoned = filteredTickets.filter(
+      (t) => t.status === "CANCELLED"
+    );
+
+    const highPriority = filteredTickets.filter(
+      (t) => t.priority === "HIGH"
+    );
+
+    return {
+      total: filteredTickets,
+      pinnedNotes,
+      assignedToMe,
+      overdue,
+      dueToday,
+      inProgress,
+      completed,
+      createdThisWeek,
+      abandoned,
+      highPriority,
+    };
+  }, [filteredTickets, user?.id]);
+
+  const stats: TeamWidgets = {
+    total: statData.total.length,
+    pinnedNotes: statData.pinnedNotes.length,
+    assignedToMe: statData.assignedToMe.length,
+    overdue: statData.overdue.length,
+    dueToday: statData.dueToday.length,
+    inProgress: statData.inProgress.length,
+    completed: statData.completed.length,
+    createdThisWeek: statData.createdThisWeek.length,
+    abandoned: statData.abandoned.length,
+    highPriority: statData.highPriority.length,
+  };
+
+  const openStat = (key: StatKey) => (e: React.MouseEvent<HTMLElement>) => {
+    setActiveStat(key);
+    setStatAnchor(e.currentTarget);
+  };
+
+  const closeStat = () => {
+    setActiveStat(null);
+    setStatAnchor(null);
+  };
+
+  const openDetail = (id: number) => {
+    setSelected(id);
+    router.push(`tickets/${id}`);
+  }
+
+  const DateToday = () => (
+    <Typography noWrap textAlign={{ xs: 'center', sm: 'left'}} width={{ xs: 99, sm: 200}}>
+      <strong>{now.toDateString()}</strong>
+    </Typography>
+  )
+
+  if (!isAuthenticated) return (
+    <WorkspaceShell>
+      <Typography textAlign={'center'} p={4}>
+        Please <AuthRedirectBtn />  to access team tickets 
+      </Typography>
+    </WorkspaceShell>
+  );
+
+  return (
+    <WorkspaceShell>
+      <Stack 
+        justifyContent={'space-between'} 
+        direction={'row'} 
+        gap={1}
+        mb={2.5} 
+      >
+        <DateToday />
+        <Button 
+          tone='action' 
+          component={Link} 
+          href={'tickets/create'}
+          startIcon={<Add />}
+        > 
+          New Ticket
+        </Button>
+      </Stack>
+      <Stack
+        direction={{ xs: 'column', lg: 'row' }}
+        spacing={3}
+        justifyContent="space-between"
+        alignItems={{ xs: 'stretch', lg: 'flex-start' }}
+        mb={3}
+      >
+        <WorkspaceWidgets
+          {...stats}
+          onStatClick={openStat}
+        />
+        <StatsTicketsMenu
+          anchor={statAnchor}
+          close={closeStat}
+          tickets={activeStat ? statData[activeStat] : []}
+          openDetail={openDetail}
+        />
+        <TextField
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search tickets..."
+          size="small"
+          sx={{
+            width: { xs: '100%', sm: 300 },
+            alignSelf: { xs: 'stretch', lg: 'flex-start' },
+          }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search fontSize="small" />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Stack>
+
+      {view === 'board' && (
+        <TicketBoard
+          grouped={grouped}
+          setGrouped={setGrouped}
+          openDetail={openDetail}
+          isSearching={!!debouncedQuery}
+          updateTicket={updateTicket}
+        />
+      )}
+      {view === 'list' && (
+        <TicketsList
+          columns={TICKET_LIST_HEADERS}
+          tickets={filteredTickets}
+          onOpen={openDetail}
+        />
+      )}
+      {view === 'calendar' && (
+        <PlannerPage 
+          team={true} 
+          teamTickets={tickets}
+          fetchTeamTickets={fetchTickets}
+        />
+      )}
+
+      <WorkspaceTabs
+        view={view}
+        setView={setView}
+        isEnterprise={false}
+      />
+
+      {selected && (
+        <Link href={`tickets/${selected}`} style={{ display: 'none' }} id="ticket-detail-link" />
+      )}
+    </WorkspaceShell>
+  );
+}

@@ -38,7 +38,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/types/**/*.d.ts",
-    "src/app/dashboard/admin/_level_2",
+    "src/app/dashboard/(protected)/admin/_level_2",
     ".next/dev/types/**/*.ts"
 , "public/sw.js"  ],
   "exclude": [

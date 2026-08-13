@@ -33,3 +33,13 @@ export const sections = {
   COMPANY: ["About", "Careers", "Become a Partner", "Find a Partner", "Contact Us"],
   LEGAL: ["Terms of Service", "Privacy Policy", "Cookie Policy", "Data Protection"],
 };
+
+export const PUBLIC_ENDPOINTS = [
+  "/auth/verify-email",
+  "/auth/resend-verification",
+  "/auth/confirm-verification",
+  "/auth/login",
+  "/auth/onboarding",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+];

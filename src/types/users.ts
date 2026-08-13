@@ -13,9 +13,19 @@ export type User = {
   role: Role;
 
   emailVerifiedAt?: string;
-
-  failedLogins: number;
+  failedLogins?: number;
   lockedUntil?: string;
+
+  tickets: Ticket[];
+  closedTickets?: Ticket[];
+  startedTickets?: Ticket[];
+  assignedTickets?: Ticket[];
+
+  referralCode: string;
+  
+  createdTeams: Team[];
+  teamMemberships?: TeamMember[];
+  teamMembership?: boolean | null; // client-side only, init at provider level
 
   userType:     UserType;   
   country:      string;
@@ -25,33 +35,31 @@ export type User = {
   company?: string;
   roles?: string[];
   position?: string; 
-
   organization?: string;
   industry?:    string;
   teamSize?:    string;
   website?:      string;
   logo?:       string; 
   bio?:          string;
+  credits: number;
 
   data?:    UserPreferences;
-
-  subscription?: Subscription;
-  pushSubscriptions?: PushSubscriptions[];
-
-  teamMemberships?: TeamMember[];
-  teamMembership?: boolean | null; // client-side only, init at provider level
-  createdTeams: Team[];
-  adminProfile?: Admin;
 
   partner?: boolean;
   collab?: boolean;
   partnerRole: string;
 
-  accessToken: string;
-  refreshToken: string;
+  subscription?: Subscription;
+  pushSubscriptions?: PushSubscriptions[];
+
+  adminProfile?: Admin;
 
   createdAt: string;
   updatedAt: string;
+  lastLoginAt?: string | Date;
+
+  accessToken: string;
+  refreshToken: string;
 };
 
 export type Admin = {
@@ -120,3 +128,22 @@ export interface AvatarProps {
     data?: { status: UserStatus }
   } | null;
 }
+
+export interface StatusProfileProps { 
+  id: number,
+  data: {
+    status?: UserStatus
+  }
+} 
+
+export type ProfileActivityProps = {
+  tickets?: Ticket[];
+  closedTickets?: Ticket[];
+  startedTickets?: Ticket[];
+  assignedTickets?: Ticket[];
+
+  referralCode?: string;
+  createdTeams?: Team[];
+  teamMemberships?: TeamMember[];
+  teamMembership?: boolean | null;
+};

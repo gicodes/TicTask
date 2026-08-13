@@ -91,15 +91,24 @@ export default function ReferPage() {
     }
   };
 
-  const  handleInviteEmail = () => {
+  const handleInviteEmail = () => {
     if (!user) return;
 
     const subject = encodeURIComponent('Join me on TicTask 🚀');
-    const body = encodeURIComponent(`
-      Hey!\n\nI’m inviting you to join me on TicTask — 
-      A powerful ticket & task management platform.\n\n
-      Use my referral link to sign up:\n${inviteLink}\n\nSee you inside!\n\n${user.name || ''}
-    `);
+
+    const body = encodeURIComponent(
+      `Hey!
+
+      I’m inviting you to join me on TicTask —
+      A powerful ticket & task management platform.
+
+      Use my referral link to sign up:
+      ${inviteLink}
+
+      See you inside!
+
+      ${user.name || ''}`
+    );
 
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };

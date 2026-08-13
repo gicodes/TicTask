@@ -37,9 +37,11 @@ export interface AuthUser {
   accessToken: string;
   subscription?: Subscription;
   data?: UserPreferences;
+  credits: number;
   teamMemberships?: TeamMember;
   teamMembership?: boolean | null;
   pushSubscriptions?: PushSubscriptions[];
+  lastLoginAt?: string | Date;
 }
 
 export interface LoginProps {

@@ -34,6 +34,8 @@ import {
   Card,
   IconButton,
   Tooltip,
+  Chip,
+  Badge,
 } from '@mui/material';
 import { Info } from '@mui/icons-material';
 
@@ -291,7 +293,13 @@ export default function TicketTaskCreateFormsDrawer({
           </Card>
 
           <Alert 
-            sx={{ mx: 'auto', maxWidth: 360 }} 
+            sx={{ 
+              mx: 'auto',
+              minWidth: 250, 
+              maxWidth: 360, 
+              alignItems: 'center' 
+            }} 
+            icon={limits ? undefined : false}
             severity={
               limitsLoading ? "info" : 
               limits && limits.remaining <= 0 ? "error" :
@@ -305,8 +313,24 @@ export default function TicketTaskCreateFormsDrawer({
                   <strong>
                     {limits.remaining}
                     {limits.remaining === 0 && " (limit reached!)"}
-                  </strong>/ {limits.limit}
-                  {limits.isTeamActive && " (via team)"}
+                  </strong>/{limits.limit}{" "}
+                  <IconButton sx={{ marginLeft: 1, p:0}}>
+                    {user?.subscription?.active && 
+                      <Chip 
+                        label={`${user?.subscription.plan[0].toUpperCase()}`} 
+                        color={
+                          user?.subscription.plan==="STANDARD" ? 'info' :
+                          user?.subscription.plan==="PRO" ? 'primary' : 
+                          user?.subscription.plan==="ENTERPRISE" ? 'secondary' 
+                          : 'default'
+                        }
+                        size='small'
+                        sx={{ fontWeight: 600}}
+                      />
+                    }
+                    {limits.isTeamActive && !user?.subscription?.active && 
+                      <Chip label={"TEAM"} color='primary' size='small' />}
+                  </IconButton>
                 </Typography>
                 {limits.remaining <= 3 && limits.remaining > 0 && (
                   <Typography variant="caption" color="warning.main">

@@ -123,10 +123,7 @@ export const QA_TeamBtn = ({
       (key) => payload[key] === undefined && delete payload[key]
     );
 
-    console.log('QA button payload', payload);
-
     await updateTeamTicket(localTicket.id, payload);
-
     onUpdate?.();
     onClose?.();
   };

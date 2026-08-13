@@ -25,6 +25,7 @@ import {
   ToggleButtonGroup,
 } from '@mui/material';
 import { useAuth } from '@/providers/auth';
+import { useSession } from 'next-auth/react';
 import { VscLinkExternal } from 'react-icons/vsc';
 import { UpgradeButtons } from '../_level_1/upgradeButtons';
 import GenericGridPageLayout from '../_level_1/genGridPageLayout';
@@ -32,6 +33,7 @@ import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 
 export default function SubscriptionPage() {
   const { showAlert, confirm } = useAlert();
+  const { update } = useSession();
   const { user } = useAuth();
   
   const {
@@ -52,13 +54,12 @@ export default function SubscriptionPage() {
 
   const isBusiness = user?.userType === 'BUSINESS';
   const isPersonal = user?.userType === 'PERSONAL';
-  
   const isStandard = user?.subscription?.plan==="STANDARD"
 
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', minHeight: 400 }}>
-        <Typography variant="body1" sx={{ opacity: 0.7 }}>
+        <Typography variant="body1" sx={{ opacity: 0.7, py: 3 }}>
           Loading your subscription...
         </Typography>
       </Box>
@@ -79,7 +80,9 @@ export default function SubscriptionPage() {
       const url = await upgradeToCheckout(selectedPlan, cycle);
 
       if (url) {
+        await update();
         window.location.href = url;
+        window.location.href = url ?? "/dashboard/subscription";
       } else {
         showAlert('Failed to start checkout session', 'error');
         setUpgrading(false);
@@ -108,9 +111,7 @@ export default function SubscriptionPage() {
   const expiresAt = subscription?.expiresAt
     ? new Date(subscription.expiresAt).toLocaleDateString()
     : '—';
-
-  const aiCredits = isEnterprise ? 1000 : isPro ? 500 : isStandard ? 50 : 10;
-  const usedCredits = 0; // subject to fetch live data when ai/v2 ready
+  const credits = user?.credits; // subject to fetch live data when ai/v2 ready
   const automationRuns = isEnterprise ? 500 : isPro ? 200 : isStandard ? 50 : 0;
   const usedAutomationRuns = 0; 
 
@@ -196,10 +197,10 @@ export default function SubscriptionPage() {
                   <Typography variant="body2">AI Credits</Typography>
                   <LinearProgress
                     variant="determinate"
-                    value={aiCredits > 0 ? (usedCredits / aiCredits) * 100 : 0}
+                    value={credits ?? 0}
                   />
                   <Typography variant="caption" sx={{ opacity: 0.7 }}>
-                    {usedCredits} / {aiCredits}
+                    {credits ?? 0}
                   </Typography>
                 </Grid>
 

@@ -83,18 +83,16 @@ export const authOptions: NextAuthOptions = {
         };
       }
 
-      if (trigger === "update" && session) {
-        return {
-          ...token,
-          accessToken: session.accessToken ?? token.accessToken,
-          refreshToken: session.refreshToken ?? token.refreshToken,
-          accessTokenExpires:
-            session.accessTokenExpires ??
-            (session.accessToken
-              ? getTokenExpiry(session.accessToken)
-              : token.accessTokenExpires),
-          error: undefined,
-        };
+      if (trigger === "update") {
+        if (session?.user) {
+          token.user = { ...token.user, ...session.user };
+        } else if (token.accessToken) {
+          try {
+            const fresh = await getCurrentUser(token.accessToken as string);
+            token.user = fresh;
+          } catch {}
+        }
+        token.shouldHydrate = true;
       }
 
       if (
@@ -114,6 +112,7 @@ export const authOptions: NextAuthOptions = {
         const res = await fetch(`${apiBase}/auth/refresh`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: 'include',
           body: JSON.stringify({ refreshToken: token.refreshToken }),
         });
 
@@ -122,14 +121,12 @@ export const authOptions: NextAuthOptions = {
         }
 
         const data = await res.json();
-        const newAccessToken = data.accessToken ?? data.access_token;
-        if (!newAccessToken) throw new Error("No accessToken in response");
 
         return {
           ...token,
-          accessToken: newAccessToken,
-          refreshToken: data.refreshToken ?? data.refresh_token ?? token.refreshToken,
-          accessTokenExpires: getTokenExpiry(newAccessToken),
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken ?? token.refreshToken,
+          accessTokenExpires: getTokenExpiry(data.accessToken),
           error: undefined,
         };
       } catch (err) {

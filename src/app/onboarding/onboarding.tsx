@@ -12,9 +12,9 @@ import { useState } from 'react';
 import OnboardingUI from './ui';
 
 export default function Onboarding() {
-  const { data: session, status, update } = useSession(); 
   const router = useRouter();
   const { login } = useAuth(); 
+  const { update } = useSession();
   const { showAlert } = useAlert();
   const params = useSearchParams();
   const token = params.get('token');
@@ -40,16 +40,12 @@ export default function Onboarding() {
 
   const stepsTotal = 3;
 
-  const saveStep = async (
-    step: number, 
-    data: unknown
-  ): Promise<GenericAPIRes> => {
+  const saveStep = async (step: number, data: unknown): Promise<GenericAPIRes> => {
     setLoading(true);
     setError(null);
 
     try {
-      const res: GenericAPIRes = await apiPost(
-        '/auth/onboarding',
+      const res: GenericAPIRes = await apiPost('/auth/onboarding',
         { step, data },
         { Authorization: `Bearer ${token}` }
       );
@@ -73,13 +69,15 @@ export default function Onboarding() {
       if (userType === 'BUSINESS' && !orgName) return setError('Please enter your organization name');
     }
 
-    const data = 
-      step === 1 ? { password } : step === 2 ? userType === 'PERSONAL'
-        ? { userType, name, country, phone } : { userType, orgName, industry, teamSize, hqCountry, website, bio }
+    const data =  
+          step === 1 ? { password } 
+        : step === 2 ? userType === 'PERSONAL' ? { userType, name, country, phone } 
+        : { userType, orgName, industry, teamSize, hqCountry, website, bio }
       : {};
 
     const res = await saveStep(step, data);
     if (res.ok) setStep(prev => prev + 1);
+
     else setError(res.message);
   };
 
@@ -95,9 +93,20 @@ export default function Onboarding() {
       setLoading(true);
       setError(null);
 
-      const finalData = { /* ... your data ... */ };
-      const res = await saveStep(3, finalData);
+      const finalData = {
+        userType,
+        name,
+        orgName,
+        country,
+        phone,
+        industry,
+        teamSize,
+        hqCountry,
+        website,
+        bio,
+      };
 
+      const res = await saveStep(3, finalData);
       if (!res.ok) {
         setError(res.message || "Failed to save final step.");
         return;
@@ -107,15 +116,14 @@ export default function Onboarding() {
       showAlert("Onboarding complete. Signing you in…", "success");
 
       const r = await login({ email: email!, password });
-
       if (r?.error) {
         setError(r.error || "Invalid credentials");
         return;
       }
-
-      // Hard redirect – cookie is guaranteed to be present
+ 
+      await update();
+      setAuthenticated(true);
       window.location.href = "/dashboard";
-      // or: window.location.assign("/dashboard");
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {

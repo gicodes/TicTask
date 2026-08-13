@@ -20,12 +20,14 @@ declare module "next-auth" {
     data?: UserPreferences
     accessToken: string;
     refreshToken: string;
+    credits: number;
     error?: "RefreshAccessTokenError";
 
     pushSubscriptions?: PushSubscriptions[];
     teamMemberships?: TeamMember[];
     status?: UserStatus;
     statusUntil?: string | null;
+    lastLoginAt?: string | Date;
   }
 
   interface Session extends DefaultSession {

@@ -90,10 +90,10 @@ export const USER_STATUS_OPTIONS: {
   label: string; 
   emoji: string;
 }[] = [
-  { value: UserStatus.ACTIVE, label: "Active", emoji: "🟢" },
-  { value: UserStatus.BUSY, label: "Busy", emoji: "⛔️" },
-  { value: UserStatus.AWAY, label: "Away", emoji: "🔸" },
-  { value: UserStatus.OFFLINE, label: "Offline", emoji: "📵" },
+  { value: UserStatus.ACTIVE,  label: "Active",  emoji: "🟢" },
+  { value: UserStatus.BUSY,    label: "Busy",    emoji: "🔴" },
+  { value: UserStatus.AWAY,    label: "Away",    emoji: "🟡" },
+  { value: UserStatus.OFFLINE, label: "Offline", emoji: "⚫" },
 ];
 
 export const colorTooltipMap: Record<TicketColor, string> = {

@@ -46,6 +46,8 @@ export interface LoginResponse {
     email: string;
     accessToken: string;
     refreshToken: string;
+    credits: number;
+    lastLoginAt: Date | string | undefined;
   }
   error?: string
 }

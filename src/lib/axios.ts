@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { getSession, signOut } from "next-auth/react";
+import { PUBLIC_ENDPOINTS } from "@/constants/footerLinks";
+import { getSession } from "next-auth/react";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 const NEXTAUTH_API_BASE_URL = process.env.API_URL || "http://localhost:4000/api";
@@ -47,10 +48,25 @@ async function getCachedSession() {
 }
 
 api.interceptors.request.use(async (config) => {
+  const url = config.url ?? "";
+
+  const isPublicEndpoint = PUBLIC_ENDPOINTS.some((endpoint) =>
+    url.includes(endpoint)
+  );
+  
+  if (isPublicEndpoint) {
+    return config;
+  }
+
   const session = await getCachedSession();
 
   if (session?.error === "RefreshAccessTokenError") {
-    return Promise.reject(new Error("Session expired – please log in again"));
+    cachedSession = null;
+    cacheExpiry = 0;
+
+    return Promise.reject(
+      new Error("Session expired – please log in again")
+    );
   }
 
   if (session?.accessToken) {
@@ -70,6 +86,11 @@ api.interceptors.response.use(
     const original = error.config;
 
     if (error.response?.status !== 401 || original._retry) {
+      return Promise.reject(error);
+    }
+
+    const url = original.url ?? "";
+    if (PUBLIC_ENDPOINTS.some(ep => url.includes(ep))) {
       return Promise.reject(error);
     }
 
@@ -100,11 +121,20 @@ api.interceptors.response.use(
       processQueue(new Error("Unable to refresh session"), null);
 
       const { signOut } = await import("next-auth/react");
-      await signOut({ callbackUrl: "/auth/login" });
+      await signOut({ 
+        callbackUrl: "/auth/login",
+        redirect: true
+      });
 
       return Promise.reject(new Error("Session expired – please log in again"));
     } catch (refreshError) {
       processQueue(refreshError, null);
+
+      if (axios.isAxiosError(refreshError) && refreshError.response?.status === 401) {
+        const { signOut } = await import("next-auth/react");
+        await signOut({ callbackUrl: "/auth/login" });
+      }
+
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;

@@ -70,26 +70,28 @@ export default function OnboardingUI(props: OnboardingProps) {
 
   const ActionGroup = () => 
     <>
-      {!authenticated ? <Stack className={styles.actions}>
-        <Button
-          tone='warm'
-          type="button"
-          onClick={handleBack}
-          disabled={loading}
-        >
-          Back
-        </Button>
-        <Button
-          type="button"
-          onClick={step===3 ? handleSubmit : handleNext}
-          disabled={loading}
-        >
-          {loading ?  'Saving...' : step===3 ? "Finish" : "Continue"}
-        </Button>
-      </Stack> 
-      : 
-      <Typography>Building your profile...</Typography>
-    }
+      {!authenticated ? (
+        <Stack className={styles.actions}>
+          <Button
+            type="button"
+            onClick={step===3 ? handleSubmit : handleNext}
+            disabled={loading}
+          >
+            {loading ?  'Saving...' : step===3 ? "Finish" : "Continue"}
+          </Button>
+          <Button
+            tone='warm'
+            type="button"
+            onClick={handleBack}
+            disabled={loading}
+            sx={{ minWidth: 200, margin: '0 auto' }}
+          >
+            Back
+          </Button>
+        </Stack> 
+      ) : (
+        <Typography>Building your profile...</Typography>
+    )}
   </>
 
   const CountrySelect = ({ accountType }: { accountType: UserType}) =>
@@ -116,7 +118,7 @@ export default function OnboardingUI(props: OnboardingProps) {
           },
         }}
       >
-        <InputLabel>{accountType==="BUSINESS" ? "Country, (HQ) Location" : "Country of Residence"}</InputLabel>
+        <InputLabel>{accountType==="BUSINESS" ? "Country/ (HQ) Location" : "Country of Residence"}</InputLabel>
         <Select
           MenuProps={{PaperProps: { sx: { maxHeight: 300, borderRadius: 2,}}}}
           value={accountType==="BUSINESS" ? hqCountry : country} 
@@ -143,6 +145,7 @@ export default function OnboardingUI(props: OnboardingProps) {
             {error}
           </Alert>
         )}
+
         {step === 1 && (
           <Fade in timeout={500}>
             <Box className={styles.mid}>
@@ -184,6 +187,7 @@ export default function OnboardingUI(props: OnboardingProps) {
             </Box>
           </Fade>
         )}
+
         {step === 2 && (
           <Fade in timeout={500}>
             <Box className={styles.mid}>
@@ -233,7 +237,6 @@ export default function OnboardingUI(props: OnboardingProps) {
               <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}> 
                 {userType === 'BUSINESS' ? 'Organizations can manage multiple users and projects' : 'Individual accounts are for personal use'} 
               </Typography> 
-              
               <Card 
                 sx={{
                   px: 1, py: 0.5,
@@ -316,6 +319,7 @@ export default function OnboardingUI(props: OnboardingProps) {
             </Box>
           </Fade>
         )}
+
         {step === 3 && (
           <Fade in timeout={500}>
             <Box className={styles.mid}>
@@ -344,6 +348,7 @@ export default function OnboardingUI(props: OnboardingProps) {
               <Typography variant="body2" mb={4}>
                 Satisfied with the information provided? Click finish to continue to Dashboard.
               </Typography>
+              
               <ActionGroup />
             </Box>
           </Fade>

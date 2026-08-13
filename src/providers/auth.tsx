@@ -42,12 +42,14 @@ const AuthInnerProvider = (
       position: session.user?.position,
       collab: session.user?.collab,
       partner: session.user?.partner,
-      teamMembership: session.user.teamMemberships ? true : null,
+      credits: session.user?.credits,
+      teamMembership: session?.user.teamMemberships?.[0] ? true : null,
       organization: session.user?.organization,
       subscription: session.user?.subscription,
       data: session.user.data,
       accessToken: session.accessToken as string,
       pushSubscriptions: session.user?.pushSubscriptions,
+      lastLoginAt: session.user?.lastLoginAt
     } 
   : null;
 

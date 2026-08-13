@@ -2,14 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { apiPost } from "@/lib/axios";
 import { Role } from '@/types/users';
+import { apiPost } from "@/lib/axios";
 import { Button } from '@/assets/buttons';
 import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
 import { useAlert } from '@/providers/alert';
-import SignInOptions from '../_level_1/signInOptions';
-import { AuthDivider } from '../_level_1/orAuthDivider';
+import { useSearchParams } from 'next/navigation';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { VerifyEmailResponse, VerifyEmailRequest } from '@/types/axios';
 import { 

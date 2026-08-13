@@ -95,16 +95,15 @@ export const getFilteredNav = (user: AuthUser | null) => {
 };
 
 export const AUTH_ITEMS: LinkItem[] = [
-  { label: <div className='flex gap-2 items-center'> <GiThreeFriends/> Become a partner</div>, href: "/company/partner/register"},
-  { label: <div className='flex gap-2 items-center'> <GrUpdate/> Latest updates</div>, href: "/resources/changelog"},
-  { label: <div className='flex gap-2 items-center'> <FaVideo/>  Watch videos</div>, href: "#", cta: true},
-  { label: <div className='flex gap-2 items-center'> <MdPaid/>  See pricing</div>, href: "/product/pricing"},
-  { label: <div className='flex gap-2 items-center'> <GiHelp/>  Get support</div>, href: "/company/#contact-us"},
-  { label: <div className='flex gap-2 items-center'> <FaDonate/>  Donations</div>, href: "#", cta: true},
-  { label: <div className='flex gap-2 items-center'> <FaHome/> Go to main page </div>, href: "/" },
-  { label: <div className='flex gap-2 items-center'> <MdLogout fontSize='inherit'/>Logout</div>, href: "#", cta: true },
+  { label: <div className='flex gap-3 items-center'> <GiThreeFriends/> Become a partner</div>, href: "/company/partner/register"},
+  { label: <div className='flex gap-3 items-center'> <GrUpdate/> Latest updates</div>, href: "/resources/changelog"},
+  { label: <div className='flex gap-3 items-center'> <FaVideo/>  Watch videos</div>, href: "#", cta: true},
+  { label: <div className='flex gap-3 items-center'> <MdPaid/>  See pricing</div>, href: "/product/pricing"},
+  { label: <div className='flex gap-3 items-center'> <GiHelp/>  Get support</div>, href: "/company/#contact-us"},
+  { label: <div className='flex gap-3 items-center'> <FaDonate/>  Donations</div>, href: "#", cta: true},
+  { label: <div className='flex gap-3 items-center'> <FaHome/> Go to main page </div>, href: "/" },
+  { label: <div className='flex gap-3 items-center'> <MdLogout fontSize='inherit'/> Logout</div>, href: "#", cta: true },
 ]
-
 
 export const NavbarAvatar = ({ 
   user, 
@@ -121,11 +120,11 @@ export const NavbarAvatar = ({
   };
 
   const avatarName = () => {
-    if (!user) return '...';
+    if (!user) return '◾️';
     if (user.name) return getInitials(user.name);
     if (!user.name && user.organization) return getInitials(user.organization);
     
-    return '...';
+    return '◾️';
   };
   
   return (
@@ -143,7 +142,7 @@ export const NavbarAvatar = ({
           {avatarName()}
         </Typography>
       </Avatar>
-      {showStatus && <Box position={'absolute'} bottom={-5} right={-1} maxHeight={1}>
+      {showStatus && user?.name && <Box position={'absolute'} bottom={-5} right={-1} maxHeight={1}>
         <FaCircle 
           size={size ? size / 4 : 9} 
           color={
