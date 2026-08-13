@@ -450,8 +450,8 @@ export default function ProfileDetailDrawer() {
                     </Box>
 
                     <Typography variant="body2" color="text.secondary">
-                      {profile?.lastLoginAt
-                        ? new Date(profile.lastLoginAt).toLocaleString()
+                      {user?.lastLoginAt
+                        ? new Date(user.lastLoginAt).toLocaleString()
                         : 'No login recorded'}
                     </Typography>
                   </Stack>

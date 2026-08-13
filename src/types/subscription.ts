@@ -13,6 +13,7 @@ export type PaymentProvider = "paystack" | "flutterwave" | "stripe";
 export type Subscription = {
   id: number;
   plan: Plan;
+  amount: number;
   active: boolean;
   duration: number;
   trial: boolean;
@@ -32,6 +33,8 @@ export type Subscription = {
 
   teamId: number;
   userId: number;
+
+  user: User;
 
   daysRemaining?: number;
   expired?: string | Date;
@@ -82,3 +85,14 @@ export interface TeamSubscriptionProviderProps {
   teamId: number;
   children: React.ReactNode;
 }
+
+export 
+
+type Meta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+};

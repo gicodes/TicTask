@@ -1,6 +1,6 @@
 import { BlogCardProps, ChangeLogProps, FAQProps } from "./resources";
 import { Ticket, TicketHistory, TicketNote } from "./ticket";
-import { Subscription } from "./subscription";
+import { Meta, Subscription } from "./subscription";
 import { Role, User } from "./users";
 
 export interface VerifyEmailRequest {
@@ -141,7 +141,8 @@ export interface GenericAPIRes {
   error?: {
     message: string;
   }
-  reply?: string
+  reply?: string;
+  meta?: Meta;
 }
 
 export interface GenericResponse {
