@@ -14,7 +14,6 @@ import {
   Box,
   Typography,
   Stack,
-  Chip,
   Toolbar,
   IconButton,
   Tooltip,
@@ -33,8 +32,8 @@ import { Button } from '@/assets/buttons';
 import { MdEmail, } from 'react-icons/md';
 import { Check, Download, Share2, UserCog2Icon,} from 'lucide-react';
 import { CloseSharp, EditOutlined, ArrowBack } from '@mui/icons-material';
-import { FaLocationDot, FaPhone, FaEllipsisVertical } from 'react-icons/fa6';
 import { ProfileActivitySection } from './profileSections/profileActivity';
+import { FaLocationDot, FaPhone, FaEllipsisVertical } from 'react-icons/fa6';
 
 export default function ProfileDetailDrawer() {
   const { user } = useAuth();
@@ -125,7 +124,7 @@ export default function ProfileDetailDrawer() {
         anchor="right"
         open={!closeDrawer}
         onClose={closeDetail}
-        sx={{ '& .MuiDrawer-paper': { width: { xs: '100%', md: 440 }, px: 3 } }}
+        sx={{ '& .MuiDrawer-paper': { width: { xs: '100%', md: 500 }, px: 3 } }}
       >
         <Toolbar />
         <Stack p={3} spacing={2}>
@@ -151,7 +150,9 @@ export default function ProfileDetailDrawer() {
           zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
-        <Tooltip title='open profile'><UserCog2Icon /></Tooltip>
+        <Tooltip title='open profile'>
+          <UserCog2Icon />
+        </Tooltip>
       </Fab>
       :
       <Drawer
@@ -170,15 +171,15 @@ export default function ProfileDetailDrawer() {
         <Fade in>
           <Box>
             <Stack  
-              px={2}
+              px={1}
               minHeight={64}
               direction="row" 
               alignItems="center" 
               justifyContent="space-between"
               bgcolor={'rgba(0,0,0,0.)'}
             >
-              <Typography variant="h6" fontWeight={600} color='textDisabled'>
-                {isEditing ? 'Editing Profile' : isBusiness ? 'Business Profile' : 'User Profile'}
+              <Typography pl={2} variant="h6" fontWeight={600} color='textDisabled'>
+                {isEditing ? 'Editing Profile' : isBusiness ? 'Business' : 'User'} Profile
               </Typography>
               <Stack direction="row" alignItems="center">
                 <Stack direction={'row'} gap={1}>
@@ -203,7 +204,7 @@ export default function ProfileDetailDrawer() {
                   }
                 </Stack>
                 
-                {moreOptions && (
+                { moreOptions && (
                   <Fade in>
                     <Stack direction="row">
                       <Tooltip title="Save as PDF / Print">
@@ -228,15 +229,6 @@ export default function ProfileDetailDrawer() {
             </Stack>
 
             <Box px={3}>
-              <Stack mx={'auto'} maxWidth={'fit-content'}>
-                <Chip
-                  label={`✦  ${profile?.userType==="BUSINESS" ? "ORGANIZATION" : "PERSONAL"}`}
-                  color={isBusiness ? 'secondary' : 'success'}
-                  size="small"
-                  variant={isBusiness ? 'filled' : "outlined"}
-                  sx={{ p: 1, fontWeight: 600, boxShadow: 2}}
-                />
-              </Stack>
               <Stack alignItems="center" spacing={1} textAlign="center" my={3}>
                 <Avatar
                   src={profile?.photo || '/default-avatar.png'}
@@ -288,37 +280,44 @@ export default function ProfileDetailDrawer() {
               </Stack>
 
               <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-                <Typography variant="subtitle2" color="text.secondary" mb={2}>
+                <Typography variant="subtitle2" color="text.secondary" mb={1} pb={1} borderBottom={'2px dashed var(--surface-1)'}>
                   Contact Information
                 </Typography>
 
-                <Stack spacing={1.5}>
-                  {(['email', 'phone', 'country'] as const).map((field) => (
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={1.5}
-                      key={field}
-                    >
-                      {field === 'email' ? <MdEmail size={16} />
-                      : field === 'phone' ? <FaPhone size={16} />
-                      : <FaLocationDot size={16} />}
+                <Stack spacing={1}>
+                  {(['email', 'phone', 'country'] as const).map((field, i, arr) => (
+                    <>
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={1}
+                        key={field}
+                        py={0.5}
+                      >
+                        <IconButton color='info' sx={{ bgcolor: 'var(--surface-1)'}}>
+                          { field === 'email' ? <MdEmail size={16} />
+                          : field === 'phone' ? <FaPhone size={16} />
+                          : <FaLocationDot size={16} />
+                        }
+                        </IconButton>
 
-                      {isEditing && field !== 'email' ? (
-                        <TextField
-                          size="small"
-                          variant="standard"
-                          value={profile?.[field] || ''}
-                          onChange={(e) => handleChange(field, e.target.value)}
-                          fullWidth
-                          sx={{
-                            border: '1px solid var(--disabled)',
-                            px: 2,
-                            borderRadius: 2,
-                          }}
-                        />
-                      ) : <Typography variant="body2"> {profile?.[field] || 'Not provided'} </Typography>}
-                    </Stack>
+                        {isEditing && field !== 'email' ? (
+                          <TextField
+                            size="small"
+                            variant="standard"
+                            value={profile?.[field] || ''}
+                            onChange={(e) => handleChange(field, e.target.value)}
+                            fullWidth
+                            sx={{
+                              border: '1px solid var(--disabled)',
+                              px: 2,
+                              borderRadius: 2,
+                            }}
+                          />
+                        ) : <Typography variant="body2"> {profile?.[field] || 'Not provided'} </Typography>}
+                      </Stack>
+                      {i < arr.length - 1 && <Divider />}
+                    </>
                   ))}
                 </Stack>
               </Paper>
@@ -335,7 +334,8 @@ export default function ProfileDetailDrawer() {
                 <Typography
                   variant="subtitle2"
                   color="text.secondary"
-                  mb={2}
+                  mb={2} pb={1}
+                  borderBottom={'2px dashed var(--surface-1)'}
                 >
                   Account Information
                 </Typography>
@@ -425,9 +425,7 @@ export default function ProfileDetailDrawer() {
                     </Box>
 
                     <Typography variant="body2" color="text.secondary">
-                      {profile?.updatedAt
-                        ? new Date(profile.updatedAt).toLocaleDateString()
-                        : '—'}
+                      {profile?.updatedAt ? new Date(profile.updatedAt).toLocaleDateString(): '—'}
                     </Typography>
                   </Stack>
                   <Divider />
@@ -448,9 +446,7 @@ export default function ProfileDetailDrawer() {
                     </Box>
 
                     <Typography variant="body2" color="text.secondary">
-                      {user?.lastLoginAt
-                        ? new Date(user.lastLoginAt).toLocaleString()
-                        : 'No login recorded'}
+                      { user?.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString() : 'No login recorded'}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -475,7 +471,6 @@ export default function ProfileDetailDrawer() {
                 closedTickets={profile?.closedTickets}
                 startedTickets={profile?.startedTickets}
                 assignedTickets={profile?.assignedTickets}
-                referralCode={profile?.referralCode}
                 createdTeams={profile?.createdTeams}
                 teamMemberships={profile?.teamMemberships}
                 teamMembership={profile?.teamMembership}

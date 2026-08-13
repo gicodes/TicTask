@@ -1,33 +1,56 @@
 'use client';
 
+import { useState } from 'react';
 import { ProfileProps } from './perFields';
 import {
   Paper,
   Stack,
   Typography,
   TextField,
+  Divider,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
+import { Copy, Check } from 'lucide-react';
 import { FaBriefcase } from 'react-icons/fa6';
 import { BsPersonWorkspace } from 'react-icons/bs';
 import { MdWorkspacesFilled } from 'react-icons/md';
 import { Groups3, Language } from '@mui/icons-material';
-import { FcOrganization } from 'react-icons/fc';
+import { FcInvite, FcOrganization } from 'react-icons/fc';
 
 export function BusinessSection({
   profile,
   isEditing,
   handleChange,
 }: ProfileProps) {
+  const [copied, setCopied] = useState(false);
+  
+  const copyReferralCode = async () => {
+    if (!profile?.referralCode) return;
+
+    try {
+      await navigator.clipboard.writeText(profile?.referralCode);
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Failed to copy referral code:', error);
+    }
+  };
+
   return (
     <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-      <Typography variant="subtitle2" color="text.secondary" mb={2}>
+      <Typography variant="subtitle2" color="text.secondary" mb={3} pb={1} borderBottom={'2px dashed var(--surface-1)'}>
         Organization Details
       </Typography>
 
-      <Stack spacing={1.5}>
-
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <FcOrganization />
+      <Stack spacing={2}>
+        <Stack gap={1} direction="row" alignItems="center" spacing={1}>
+          <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+            <FcOrganization size={16} />
+          </IconButton>
           {isEditing && profile?.userType === "BUSINESS" ? (
             <TextField
               size="small"
@@ -37,12 +60,27 @@ export function BusinessSection({
               sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               fullWidth
             />
-          ) : <Typography variant="body2">{profile?.organization}</Typography>
-          } 
+          ) : (
+            <Stack 
+              width={'100%'}
+              direction={'row'} 
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            > 
+              <Stack>
+                <Typography variant="body2"> Organization Name </Typography>
+                <Typography variant='caption' color='text.secondary'> Set your organization/ business name</Typography>
+              </Stack>
+              <Typography variant="body2">{profile?.organization}</Typography>
+            </Stack>
+          )} 
         </Stack>
+        <Divider />
       
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <MdWorkspacesFilled />
+        <Stack gap={1} direction="row" alignItems="center" spacing={1}>
+          <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+            <MdWorkspacesFilled size={16}/>
+          </IconButton>
           {isEditing && profile?.industry ? (
             <TextField
               size="small"
@@ -52,12 +90,27 @@ export function BusinessSection({
               sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               fullWidth
             />
-          ) : <Typography variant="body2">{profile?.industry || <i>&nbsp;Industry not specified</i>}</Typography>
-          }
+          ) : (
+            <Stack 
+              width={'100%'}
+              direction={'row'} 
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            > 
+              <Stack>
+                <Typography variant="body2"> Industry </Typography>
+                <Typography variant='caption' color='text.secondary'> Set your organization niche/ industry</Typography>
+              </Stack>
+              <Typography variant="body2">{profile?.industry || <i>&nbsp;Industry not specified</i>}</Typography>
+            </Stack>
+          )}
         </Stack>
+        <Divider />
 
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <FaBriefcase size={16} />
+        <Stack gap={1} direction="row" alignItems="center" spacing={1}>
+          <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+            <FaBriefcase size={16} />
+          </IconButton>
           {isEditing ? (
             <TextField
               size="small"
@@ -68,13 +121,28 @@ export function BusinessSection({
               sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               fullWidth
             />
-          ) : <Typography variant="body2"> {profile?.position || <i>&nbsp;Role not specified</i>} </Typography>
-          }
+          ) : (
+            <Stack 
+              width={'100%'}
+              direction={'row'} 
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            > 
+              <Stack>
+                <Typography variant="body2"> Position </Typography>
+                <Typography variant='caption' color='text.secondary'> Set your position/ role/ title</Typography>
+              </Stack>
+              <Typography variant="body2">{profile?.position || <i>&nbsp;Role not specified</i>}</Typography>
+            </Stack>
+          )}
         </Stack>
+        <Divider />
 
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Groups3 fontSize="small" />
-          {isEditing && profile?.teamSize ? (
+        <Stack gap={1} direction="row" alignItems="center" spacing={1}>
+          <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+            <Groups3 fontSize="small" />
+          </IconButton>
+          { isEditing && profile?.teamSize ? (
             <TextField
               size="small"
               variant="standard"
@@ -83,13 +151,28 @@ export function BusinessSection({
               sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               fullWidth
             />
-            ) : <Typography variant="body2">Team Size: {profile?.teamSize}</Typography>
-          }
+          ) : (
+            <Stack 
+              width={'100%'}
+              direction={'row'} 
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            > 
+              <Stack>
+                <Typography variant="body2"> Team Strength </Typography>
+                <Typography variant='caption' color='text.secondary'> Set your organization size/ number of staff</Typography>
+              </Stack>
+              <Typography variant="body2">{profile?.teamSize}</Typography>
+            </Stack>
+          )}
         </Stack>
+        <Divider />
 
         {isEditing && profile?.website && (
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Language fontSize="small" />
+          <Stack gap={1} direction="row" alignItems="center" spacing={1}>
+            <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+              <Language fontSize="small" />
+            </IconButton>
             <TextField
               size="small"
               variant="standard"
@@ -99,23 +182,40 @@ export function BusinessSection({
               fullWidth
             />
           </Stack>
-        )} 
+        )}
         {(!isEditing && profile?.website) && (
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Language fontSize="small" />
-            <Typography variant="body2" color="primary">
-              <a 
-                href={(!profile.website.includes("http")) ? `https://${profile.website}` 
-                : profile.website} target="_blank" rel="noopener noreferrer"
-              >
-                {profile.website}
-              </a>
-            </Typography>
+          <Stack gap={1} direction="row" alignItems="center" spacing={1}>
+            <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+              <Language fontSize="small" />
+            </IconButton>
+
+            <Stack 
+              width={'100%'}
+              direction={'row'} 
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            > 
+              <Stack>
+                <Typography variant="body2"> Website </Typography>
+                <Typography variant='caption' color='text.secondary'> Set your website link/ url</Typography>
+              </Stack>
+              <Typography variant="body2" color="primary">
+                <a 
+                  href={(!profile.website.includes("http")) ? `https://${profile.website}` 
+                  : profile.website} target="_blank" rel="noopener noreferrer"
+                >
+                  {profile.website}
+                </a>
+              </Typography>
+            </Stack>
           </Stack>
         )}
+        <Divider />
 
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <BsPersonWorkspace size={16} />
+        <Stack gap={1} direction="row" alignItems="center" spacing={1}>
+          <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+            <BsPersonWorkspace size={16} />
+          </IconButton>
           {isEditing ? (
             <TextField
               size="small"
@@ -126,9 +226,75 @@ export function BusinessSection({
               sx={{ border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
               fullWidth
             />
-          ) : <Typography variant="body2"> {profile?.data?.workSpaceName  || <i>&nbsp;Workspace name not set</i>}</Typography>
-          }
+          ) : (
+            <Stack 
+              width={'100%'}
+              direction={'row'} 
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            > 
+              <Stack>
+                <Typography variant="body2"> Workspace Name </Typography>
+                <Typography variant='caption' color='text.secondary'> Set your workspace name</Typography>
+              </Stack>
+              <Typography variant="body2"> {profile?.data?.workSpaceName  || <i>&nbsp;Workspace name not set</i>}</Typography>
+            </Stack>
+          )}
         </Stack>
+        <Divider />
+
+        {profile?.referralCode && (
+          <Stack direction={'row'} gap={1.7}>
+            <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+              <FcInvite size={16} />
+            </IconButton>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              gap={2}
+              width={'100%'}
+            >
+              <Stack>
+                <Typography variant="body2" fontWeight={500}>
+                  Referral code
+                </Typography>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                >
+                  Share this code to earn referrals
+                </Typography>
+              </Stack>
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={0.5}
+              >
+                <Typography
+                  variant="body2"
+                  fontWeight={600}
+                  sx={{
+                    fontFamily: 'monospace',
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  {profile?.referralCode}
+                </Typography>
+
+                <Tooltip title={copied ? 'Copied!' : 'Copy referral code'}>
+                  <IconButton
+                    size="small"
+                    onClick={copyReferralCode}
+                    color={copied ? 'success' : 'default'}
+                  >
+                    { copied ? <Check size={16} /> : <Copy size={16} />}
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+            </Stack>
+          </Stack>
+        )}
       </Stack>
     </Paper>
   );

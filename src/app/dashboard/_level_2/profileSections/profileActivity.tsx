@@ -5,8 +5,6 @@ import {
   Paper,
   Stack,
   Typography,
-  Tooltip,
-  IconButton,
 } from '@mui/material';
 import {
   TicketCheck,
@@ -14,11 +12,8 @@ import {
   CircleDot,
   Users,
   UserRoundCheck,
-  Copy,
-  Check,
   UsersRound,
 } from 'lucide-react';
-import { useState } from 'react';
 import { ProfileActivityProps } from '@/types/users';
 
 export function ProfileActivitySection({
@@ -26,28 +21,10 @@ export function ProfileActivitySection({
   closedTickets = [],
   startedTickets = [],
   assignedTickets = [],
-  referralCode,
   createdTeams = [],
   teamMemberships = [],
   teamMembership,
 }: ProfileActivityProps) {
-  const [copied, setCopied] = useState(false);
-
-  const copyReferralCode = async () => {
-    if (!referralCode) return;
-
-    try {
-      await navigator.clipboard.writeText(referralCode);
-      setCopied(true);
-
-      setTimeout(() => {
-        setCopied(false);
-      }, 2000);
-    } catch (error) {
-      console.error('Failed to copy referral code:', error);
-    }
-  };
-
   const stats = [
     {
       label: 'Tickets created',
@@ -94,8 +71,9 @@ export function ProfileActivitySection({
         variant="subtitle2"
         color="text.secondary"
         mb={2}
+        pb={1} borderBottom={'2px dashed var(--surface-1)'}
       >
-        Activity & Participation
+        Workflow & Collaboration
       </Typography>
 
       <Stack spacing={1.5}>
@@ -144,98 +122,36 @@ export function ProfileActivitySection({
         ))}
       </Stack>
 
-      {(teamMembership !== null || referralCode) && (
-        <>
-          <Divider sx={{ my: 2 }} />
-
-          <Stack spacing={1.5}>
-            {teamMembership !== null && teamMembership !== undefined && (
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Stack>
-                  <Typography variant="body2" fontWeight={500}>
-                    Team membership
-                  </Typography>
-
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                  >
-                    Your current participation status
-                  </Typography>
-                </Stack>
-
+      {(teamMembership !== null) && (
+        <Stack spacing={1.5}>
+          {teamMembership !== null && teamMembership !== undefined && (
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Stack>
+                <Typography variant="body2" fontWeight={500}>
+                  Team membership
+                </Typography>
                 <Typography
-                  variant="body2"
-                  fontWeight={600}
-                  color={
-                    teamMembership
-                      ? 'success.main'
-                      : 'text.secondary'
-                  }
+                  variant="caption"
+                  color="text.secondary"
                 >
-                  {teamMembership ? 'Member' : 'No team'}
+                  Your current participation status
                 </Typography>
               </Stack>
-            )}
 
-            {referralCode && (
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                gap={2}
+              <Typography
+                variant="body2"
+                fontWeight={600}
+                color={ teamMembership ? 'success.main': 'text.secondary'}
               >
-                <Stack>
-                  <Typography variant="body2" fontWeight={500}>
-                    Referral code
-                  </Typography>
-
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                  >
-                    Share this code to earn referrals
-                  </Typography>
-                </Stack>
-
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  spacing={0.5}
-                >
-                  <Typography
-                    variant="body2"
-                    fontWeight={600}
-                    sx={{
-                      fontFamily: 'monospace',
-                      letterSpacing: 0.5,
-                    }}
-                  >
-                    {referralCode}
-                  </Typography>
-
-                  <Tooltip title={copied ? 'Copied!' : 'Copy referral code'}>
-                    <IconButton
-                      size="small"
-                      onClick={copyReferralCode}
-                      color={copied ? 'success' : 'default'}
-                    >
-                      {copied ? (
-                        <Check size={16} />
-                      ) : (
-                        <Copy size={16} />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-                </Stack>
-              </Stack>
-            )}
-          </Stack>
-        </>
+                {teamMembership ? 'Member' : 'No team'}
+              </Typography>
+            </Stack>
+          )}
+        </Stack>
       )}
     </Paper>
   );

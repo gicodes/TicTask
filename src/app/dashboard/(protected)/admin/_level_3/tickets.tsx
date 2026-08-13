@@ -268,10 +268,7 @@ export default function AdminTicketsPage() {
                               <Typography noWrap>{node.title}</Typography>
                             </TableCell>
                             <TableCell>
-                              <Chip
-                                label={node.type}
-                                size="small"
-                              />
+                              {node.type}
                             </TableCell>
                             <TableCell>
                               <Chip

@@ -203,15 +203,14 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                     <Link 
                       href={'#'} // Feature releases will implement this
                       style={{ 
-                        gap: 10,
-                        padding: 8, 
+                        gap: 12,
+                        padding: "10px 15px", 
                         fontSize: 15, 
-                        margin: '1px 0', 
                         display: 'flex', 
                         alignItems: 'center'
                       }}
                     >
-                      <NotificationsOff /> 
+                      <NotificationsOff fontSize={'small'} /> 
                       <span>Mute Notifications</span>
                     </Link>
 
