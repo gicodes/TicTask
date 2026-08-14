@@ -15,6 +15,7 @@ import {
   Tooltip 
 } from '@mui/material';
 import { FcInvite } from 'react-icons/fc';
+import { EllipsisTypography } from '../../_level_1/elipsisTypography';
 
 export interface ProfileProps {
   profile: User | null;
@@ -77,7 +78,7 @@ export function PersonalSection({
                 <Typography variant='body2'> Position</Typography> 
                 <Typography variant='caption' color="text.secondary">Set your position/ title</Typography>
               </Stack>
-              <Typography variant="body2"> {profile?.position || <i>&nbsp;Position not specified</i>}</Typography>
+              <EllipsisTypography> {profile?.position || <i>Not set</i>}</EllipsisTypography>
             </Stack>
           )}
         </Stack>
@@ -114,15 +115,15 @@ export function PersonalSection({
                 <Typography variant='body2'> Workspace Name</Typography> 
                 <Typography variant='caption' color="text.secondary">Set your workspace name</Typography>
               </Stack>
-              <Typography variant='body2'>
-                {(profile?.data?.workSpaceName) || <i>{" "}Workspace name not set</i>}
-              </Typography>
+              <EllipsisTypography>
+                {(profile?.data?.workSpaceName) || <i>Not set</i>}
+              </EllipsisTypography>
             </Stack>
           )}
         </Stack>
         <Divider />
 
-        {profile?.referralCode && (
+       {profile?.referralCode && (
           <Stack direction={'row'} gap={1.5}>
             <IconButton sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
               <FcInvite size={16} />
@@ -142,7 +143,7 @@ export function PersonalSection({
                   variant="caption"
                   color="text.secondary"
                 >
-                  Share this code to earn referrals
+                  Share this link to earn referrals
                 </Typography>
               </Stack>
               <Stack
@@ -150,16 +151,14 @@ export function PersonalSection({
                 alignItems="center"
                 spacing={0.5}
               >
-                <Typography
-                  variant="body2"
-                  fontWeight={600}
+                <EllipsisTypography
                   sx={{
                     fontFamily: 'monospace',
                     letterSpacing: 0.5,
                   }}
                 >
-                  {profile?.referralCode}
-                </Typography>
+                  {`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/auth/join/${profile?.referralCode}`}
+                </EllipsisTypography>
 
                 <Tooltip title={copied ? 'Copied!' : 'Copy referral code'}>
                   <IconButton

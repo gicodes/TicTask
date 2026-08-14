@@ -17,6 +17,7 @@ import { BsPersonWorkspace } from 'react-icons/bs';
 import { MdWorkspacesFilled } from 'react-icons/md';
 import { Groups3, Language } from '@mui/icons-material';
 import { FcInvite, FcOrganization } from 'react-icons/fc';
+import { EllipsisTypography } from '../../_level_1/elipsisTypography';
 
 export function BusinessSection({
   profile,
@@ -71,7 +72,7 @@ export function BusinessSection({
                 <Typography variant="body2"> Organization Name </Typography>
                 <Typography variant='caption' color='text.secondary'> Set your organization/ business name</Typography>
               </Stack>
-              <Typography variant="body2">{profile?.organization}</Typography>
+              <EllipsisTypography>{profile?.organization}</EllipsisTypography>
             </Stack>
           )} 
         </Stack>
@@ -101,7 +102,7 @@ export function BusinessSection({
                 <Typography variant="body2"> Industry </Typography>
                 <Typography variant='caption' color='text.secondary'> Set your organization niche/ industry</Typography>
               </Stack>
-              <Typography variant="body2">{profile?.industry || <i>&nbsp;Industry not specified</i>}</Typography>
+              <EllipsisTypography>{profile?.industry || <i>Industry not specified</i>}</EllipsisTypography>
             </Stack>
           )}
         </Stack>
@@ -132,7 +133,7 @@ export function BusinessSection({
                 <Typography variant="body2"> Position </Typography>
                 <Typography variant='caption' color='text.secondary'> Set your position/ role/ title</Typography>
               </Stack>
-              <Typography variant="body2">{profile?.position || <i>&nbsp;Role not specified</i>}</Typography>
+              <EllipsisTypography>{profile?.position || <i>Not set</i>}</EllipsisTypography>
             </Stack>
           )}
         </Stack>
@@ -160,9 +161,9 @@ export function BusinessSection({
             > 
               <Stack>
                 <Typography variant="body2"> Team Strength </Typography>
-                <Typography variant='caption' color='text.secondary'> Set your organization size/ number of staff</Typography>
+                <Typography variant='caption' color='text.secondary'> Set your organization size</Typography>
               </Stack>
-              <Typography variant="body2">{profile?.teamSize}</Typography>
+              <Typography variant="body2">{profile?.teamSize|| <i>Not set</i>}</Typography>
             </Stack>
           )}
         </Stack>
@@ -197,16 +198,16 @@ export function BusinessSection({
             > 
               <Stack>
                 <Typography variant="body2"> Website </Typography>
-                <Typography variant='caption' color='text.secondary'> Set your website link/ url</Typography>
+                <Typography variant='caption' color='text.secondary'> Set your website url</Typography>
               </Stack>
-              <Typography variant="body2" color="primary">
+              <EllipsisTypography color="primary">
                 <a 
                   href={(!profile.website.includes("http")) ? `https://${profile.website}` 
                   : profile.website} target="_blank" rel="noopener noreferrer"
                 >
                   {profile.website}
                 </a>
-              </Typography>
+              </EllipsisTypography>
             </Stack>
           </Stack>
         )}
@@ -237,7 +238,7 @@ export function BusinessSection({
                 <Typography variant="body2"> Workspace Name </Typography>
                 <Typography variant='caption' color='text.secondary'> Set your workspace name</Typography>
               </Stack>
-              <Typography variant="body2"> {profile?.data?.workSpaceName  || <i>&nbsp;Workspace name not set</i>}</Typography>
+              <EllipsisTypography> {profile?.data?.workSpaceName  || <i>Not set</i>}</EllipsisTypography>
             </Stack>
           )}
         </Stack>
@@ -263,7 +264,7 @@ export function BusinessSection({
                   variant="caption"
                   color="text.secondary"
                 >
-                  Share this code to earn referrals
+                  Share this link to earn referrals
                 </Typography>
               </Stack>
               <Stack
@@ -271,16 +272,14 @@ export function BusinessSection({
                 alignItems="center"
                 spacing={0.5}
               >
-                <Typography
-                  variant="body2"
-                  fontWeight={600}
+                <EllipsisTypography
                   sx={{
                     fontFamily: 'monospace',
                     letterSpacing: 0.5,
                   }}
                 >
-                  {profile?.referralCode}
-                </Typography>
+                  {`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/auth/join/${profile?.referralCode}`}
+                </EllipsisTypography>
 
                 <Tooltip title={copied ? 'Copied!' : 'Copy referral code'}>
                   <IconButton

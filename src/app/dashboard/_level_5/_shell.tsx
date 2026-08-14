@@ -10,7 +10,6 @@ import { SetStatusButton } from '../_level_2/statusBar';
 import { useAuthRedirect } from '@/hooks/useAuthRedirect';
 import NotificationDrop from '../_level_2/notificationDrop';
 import { useNotifications } from '@/providers/notifications';
-import { FaExternalLinkAlt } from 'react-icons/fa';
 import { 
   AUTH_ITEMS, 
   getFilteredNav, 
@@ -18,6 +17,7 @@ import {
   NavbarAvatar, 
   NewFeatureBadge 
 } from '../_level_1/navItems';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import { 
   AppBar,
   Toolbar, 
@@ -191,7 +191,13 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                         style={{ display: 'grid', width: '100%'}} 
                         onClick={handleCloseUserMenu}
                       >
-                        <Typography variant='body2' fontWeight={600}>{user?.name || user?.organization || 'Not Available'}</Typography>
+                        <Typography variant='body2' fontWeight={600} noWrap
+                          sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        > {user?.name || user?.organization || 'Not Available'}</Typography>
                         <Typography variant='caption'> {user?.email || 'please sign in'}</Typography>
                       </Link>
                     </Tooltip>
@@ -228,7 +234,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                     <MenuItem 
                       disabled={item.disabled} 
                       style={{ 
-                        margin: 7,
+                        margin: '5px 7px',
                         height: 36,
                         fontSize: 15, 
                         display: 'flex', 
@@ -246,8 +252,8 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                     <MenuItem 
                       disabled={item.disabled} 
                       style={{ 
-                        margin: 7,
-                        height: 36,
+                        margin: '3px 7px',
+                        height: 30,
                         fontSize: 15, 
                       }} 
                       onClick={item.cta && isLoggedIn ? logout : handleCloseUserMenu}

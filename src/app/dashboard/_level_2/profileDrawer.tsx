@@ -180,6 +180,7 @@ export default function ProfileDetailDrawer() {
                 position="fixed"
                 right={0}
                 bgcolor="rgba(0,0,0,0.1)"
+                borderBottom={'0.5px solid var(--disabled)'}
                 sx={{
                   width: {
                     xs: '100%',
@@ -328,12 +329,12 @@ export default function ProfileDetailDrawer() {
 
                   <Stack spacing={1}>
                     {(['email', 'phone', 'country'] as const).map((field, i, arr) => (
-                      <>
+                      <Box key={i}>
                         <Stack
                           direction="row"
                           alignItems="center"
                           spacing={1}
-                          key={field}
+                          
                           py={0.5}
                         >
                           <IconButton color='info' sx={{ bgcolor: 'var(--surface-1)'}}>
@@ -359,7 +360,7 @@ export default function ProfileDetailDrawer() {
                           ) : <Typography variant="body2"> {profile?.[field] || 'Not provided'} </Typography>}
                         </Stack>
                         {i < arr.length - 1 && <Divider />}
-                      </>
+                      </Box>
                     ))}
                   </Stack>
                 </Paper>
@@ -419,7 +420,7 @@ export default function ProfileDetailDrawer() {
                           Tictask Credits
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          Credits are used for ticket sudo actions and automation runs
+                          Credits are used for  automation runs
                         </Typography>
                       </Box>
                       <Typography variant="body2" color="text.secondary">
@@ -462,7 +463,7 @@ export default function ProfileDetailDrawer() {
                           Last updated
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          When your profile was last changed
+                          Most recent profile update
                         </Typography>
                       </Box>
 
@@ -483,7 +484,7 @@ export default function ProfileDetailDrawer() {
                           Last login
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          Your most recent account activity
+                          Most recent sign in
                         </Typography>
                       </Box>
 
