@@ -47,7 +47,7 @@ export function PersonalSection({
 
   return (
     <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-      <Typography variant="subtitle2" color="text.secondary" mb={2} pb={1} borderBottom={'2px dashed var(--surface-1)'}>
+      <Typography variant="subtitle2" color="text.secondary" mb={2} pb={1} borderBottom={'1px dashed var(--divider)'}>
         Professional Details
       </Typography>
       
@@ -59,7 +59,7 @@ export function PersonalSection({
           alignItems={'center'}
           justifyContent={'space-between'}
         >           
-          <IconButton color='success' sx={{ bgcolor: 'var(--surface-1)'}}>
+          <IconButton color='success' sx={{ bgcolor: 'var(--divider)'}}>
             <FaBriefcase size={16} />
           </IconButton>
           {isEditing ? (
@@ -91,7 +91,7 @@ export function PersonalSection({
           alignItems={'center'}
           justifyContent={'space-between'}
         >           
-          <IconButton color='success' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}}>
+          <IconButton color='success' sx={{ bgcolor: 'var(--divider)', height: 'max-content'}}>
             <BsPersonWorkspace size={16} />
           </IconButton>
           {isEditing ? (
@@ -125,7 +125,7 @@ export function PersonalSection({
 
        {profile?.referralCode && (
           <Stack direction={'row'} gap={1.5}>
-            <IconButton sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+            <IconButton sx={{ bgcolor: 'var(--divider)', height: 'max-content'}} >
               <FcInvite size={16} />
             </IconButton>
             <Stack

@@ -43,13 +43,13 @@ export function BusinessSection({
 
   return (
     <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-      <Typography variant="subtitle2" color="text.secondary" mb={3} pb={1} borderBottom={'2px dashed var(--surface-1)'}>
+      <Typography variant="subtitle2" color="text.secondary" mb={3} pb={1} borderBottom={'1px dashed var(--divider)'}>
         Organization Details
       </Typography>
 
       <Stack spacing={2}>
         <Stack gap={1} direction="row" alignItems="center" spacing={1}>
-          <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+          <IconButton color='primary' sx={{ bgcolor: 'var(--divider)', height: 'max-content'}} >
             <FcOrganization size={16} />
           </IconButton>
           {isEditing && profile?.userType === "BUSINESS" ? (
@@ -79,7 +79,7 @@ export function BusinessSection({
         <Divider />
       
         <Stack gap={1} direction="row" alignItems="center" spacing={1}>
-          <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+          <IconButton color='primary' sx={{ bgcolor: 'var(--divider)', height: 'max-content'}} >
             <MdWorkspacesFilled size={16}/>
           </IconButton>
           {isEditing && profile?.industry ? (
@@ -109,7 +109,7 @@ export function BusinessSection({
         <Divider />
 
         <Stack gap={1} direction="row" alignItems="center" spacing={1}>
-          <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+          <IconButton color='primary' sx={{ bgcolor: 'var(--divider)', height: 'max-content'}} >
             <FaBriefcase size={16} />
           </IconButton>
           {isEditing ? (
@@ -140,7 +140,7 @@ export function BusinessSection({
         <Divider />
 
         <Stack gap={1} direction="row" alignItems="center" spacing={1}>
-          <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+          <IconButton color='primary' sx={{ bgcolor: 'var(--divider)', height: 'max-content'}} >
             <Groups3 fontSize="small" />
           </IconButton>
           { isEditing && profile?.teamSize ? (
@@ -171,7 +171,7 @@ export function BusinessSection({
 
         {isEditing && profile?.website && (
           <Stack gap={1} direction="row" alignItems="center" spacing={1}>
-            <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+            <IconButton color='primary' sx={{ bgcolor: 'var(--divider)', height: 'max-content'}} >
               <Language fontSize="small" />
             </IconButton>
             <TextField
@@ -186,7 +186,7 @@ export function BusinessSection({
         )}
         {(!isEditing && profile?.website) && (
           <Stack gap={1} direction="row" alignItems="center" spacing={1}>
-            <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+            <IconButton color='primary' sx={{ bgcolor: 'var(--divider)', height: 'max-content'}} >
               <Language fontSize="small" />
             </IconButton>
 
@@ -214,7 +214,7 @@ export function BusinessSection({
         <Divider />
 
         <Stack gap={1} direction="row" alignItems="center" spacing={1}>
-          <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+          <IconButton color='primary' sx={{ bgcolor: 'var(--divider)', height: 'max-content'}} >
             <BsPersonWorkspace size={16} />
           </IconButton>
           {isEditing ? (
@@ -246,7 +246,7 @@ export function BusinessSection({
 
         {profile?.referralCode && (
           <Stack direction={'row'} gap={1.7}>
-            <IconButton color='primary' sx={{ bgcolor: 'var(--surface-1)', height: 'max-content'}} >
+            <IconButton color='primary' sx={{ bgcolor: 'var(--divider)', height: 'max-content'}} >
               <FcInvite size={16} />
             </IconButton>
             <Stack

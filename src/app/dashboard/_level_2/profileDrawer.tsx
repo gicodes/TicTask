@@ -334,10 +334,9 @@ export default function ProfileDetailDrawer() {
                           direction="row"
                           alignItems="center"
                           spacing={1}
-                          
                           py={0.5}
                         >
-                          <IconButton color='info' sx={{ bgcolor: 'var(--surface-1)'}}>
+                          <IconButton color='info' sx={{ bgcolor: 'var(--divider)'}}>
                             { field === 'email' ? <MdEmail size={16} />
                             : field === 'phone' ? <FaPhone size={16} />
                             : <FaLocationDot size={16} />
