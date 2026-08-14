@@ -28,7 +28,7 @@ export function CommentsPane({
   setNewComment: (v: string) => void;
   onAddComment: () => Promise<void>;
 }) {
-  const [page, setPage] = useState(1);
+  const [ page, setPage] = useState(1);
   const paginated = useMemo(() => {
     const start = (page - 1) * PAGE_SIZE;
     return comments.slice(start, start + PAGE_SIZE);
@@ -91,7 +91,7 @@ export function CommentsPane({
             onClick={onAddComment}
             disabled={!newComment.trim() || isSubmitting}
           >
-            Post
+            {isSubmitting ? "Posting..." : "Post"}
           </Button>
         </Stack>
       )}

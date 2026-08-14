@@ -52,7 +52,8 @@ export default function TeamTicketCreatePage() {
   const { user } = useAuth()
   const { team } = useTeam()
   const { createTicket } = useTeamTicket()
-  const [itemType, setItemType] = useState<AllTicketTypes>('GENERAL')
+  const [ itemType, setItemType] = useState<AllTicketTypes>('GENERAL');
+  const [ isSubmitting, setIsSubmitting ] = useState(false);
 
   const formConfig = useMemo(() => {
     let schema
@@ -119,18 +120,15 @@ export default function TeamTicketCreatePage() {
   }, [formConfig, reset])
 
   const FormComponent = formConfig?.FormComponent
+  const teamMembers = team?.members ?? [];
 
-  if (!formConfig || !FormComponent) {
-    return (
-      <Box p={4}>
-        <Typography color="error">
-          Cannot load form — invalid or unsupported type "{itemType}"
-        </Typography>
-      </Box>
-    )
-  }
-
-  const teamMembers = team?.members ?? []
+  if (!formConfig || !FormComponent) return (
+    <Box p={4}>
+      <Typography color="error">
+        Cannot load form — invalid or unsupported type "{itemType}"
+      </Typography>
+    </Box>
+  )
 
   const onSubmit = async (data: FieldValues) => {
     const payload = {
@@ -150,17 +148,22 @@ export default function TeamTicketCreatePage() {
       assignTo: data.assignTo,
     } as unknown as Create_Ticket
 
+    setIsSubmitting(true);
+
     try {
       const result = await createTicket(payload)
       
       if (result) {
         router.push(`/teams/${teamId}/tickets`)
-        router.back()
+        router.back();
       } else {
+        setIsSubmitting(false);
         console.error('Failed to create ticket')
-      }
+      } 
     } catch (err) {
       console.error('Error creating ticket:', err)
+    } finally { 
+      setIsSubmitting(false)
     }
   }
 
@@ -209,7 +212,6 @@ export default function TeamTicketCreatePage() {
                 </TextField>
 
                 <Typography fontWeight={600} mt={2}> Team Space</Typography>
-
                 <Stack gap={0.75}>
                   {teamMembers.length === 0 ? (
                     <Typography variant="caption" color="textSecondary">
@@ -289,7 +291,9 @@ export default function TeamTicketCreatePage() {
               spacing={2}
             >
               <Button tone='warm' onClick={() => router.back()}>Cancel</Button>
-              <Button tone='action' type='submit'>Create Ticket</Button>
+              <Button tone='action' type='submit' disabled={isSubmitting}>
+                {isSubmitting ? "Creating Ticket..." : "Create Ticket"}
+              </Button>
             </Stack>
           </Box>
         </form>

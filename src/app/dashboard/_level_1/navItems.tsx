@@ -96,7 +96,7 @@ export const getFilteredNav = (user: AuthUser | null) => {
 
 export const AUTH_ITEMS: LinkItem[] = [
   { label: <div className='flex gap-3 items-center'> <GiThreeFriends/> Become a partner</div>, href: "/company/partner/register"},
-  { label: <div className='flex gap-3 items-center'> <GrUpdate/> Latest updates</div>, href: "/resources/changelog"},
+  // { label: <div className='flex gap-3 items-center'> <GrUpdate/> Latest updates</div>, href: "/resources/changelog"},
   { label: <div className='flex gap-3 items-center'> <FaVideo/>  Watch videos</div>, href: "#", cta: true},
   { label: <div className='flex gap-3 items-center'> <MdPaid/>  See pricing</div>, href: "/product/pricing"},
   { label: <div className='flex gap-3 items-center'> <GiHelp/>  Get support</div>, href: "/company/#contact-us"},

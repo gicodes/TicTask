@@ -253,7 +253,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                       disabled={item.disabled} 
                       style={{ 
                         margin: '3px 7px',
-                        height: 30,
+                        height: 36,
                         fontSize: 15, 
                       }} 
                       onClick={item.cta && isLoggedIn ? logout : handleCloseUserMenu}

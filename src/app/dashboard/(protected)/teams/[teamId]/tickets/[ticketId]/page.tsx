@@ -101,6 +101,7 @@ export default function TeamTicketWorkspace() {
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
+    setIsSubmitting(true);
 
     try {
       await addComment(localTicket.id, newComment.trim());
@@ -109,6 +110,8 @@ export default function TeamTicketWorkspace() {
       setTicketComments(updated ?? []);
     } catch (err) {
       console.error('Add comment failed:', err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
