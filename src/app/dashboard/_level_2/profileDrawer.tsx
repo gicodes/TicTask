@@ -323,7 +323,7 @@ export default function ProfileDetailDrawer() {
                 </Stack>
 
                 <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-                  <Typography variant="subtitle2" color="text.secondary" mb={1} pb={1} borderBottom={'2px dashed var(--surface-1)'}>
+                  <Typography variant="subtitle2" color="text.secondary" mb={1} pb={1} borderBottom={'1px dashed var(--disabled)'}>
                     Contact Information
                   </Typography>
 
@@ -378,7 +378,7 @@ export default function ProfileDetailDrawer() {
                     variant="subtitle2"
                     color="text.secondary"
                     mb={2} pb={1}
-                    borderBottom={'2px dashed var(--surface-1)'}
+                    borderBottom={'1px dashed var(--disabled)'}
                   >
                     Account Information
                   </Typography>
