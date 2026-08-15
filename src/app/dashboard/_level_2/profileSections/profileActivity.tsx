@@ -71,7 +71,8 @@ export function ProfileActivitySection({
         variant="subtitle2"
         color="text.secondary"
         mb={2}
-        pb={1} borderBottom={'1px dashed var(--divider)'}
+        pb={1}                     
+        borderBottom={'1px dashed var(--disabled)'}
       >
         Workflow & Collaboration
       </Typography>

@@ -42,7 +42,13 @@ export function ModeratorSection({ profile }: { profile: User }) {
         bgcolor: theme.palette.warning.light + '15',
       }}
     >
-      <Typography variant="subtitle2" color="text.secondary" mb={1.5}>
+      <Typography 
+        variant="subtitle2" 
+        color="text.secondary" 
+        mb={1}      
+        pb={0.5}               
+        borderBottom={'1px dashed var(--disabled)'}
+      >
         <strong>{accountLabel} Information</strong>
       </Typography>
 
