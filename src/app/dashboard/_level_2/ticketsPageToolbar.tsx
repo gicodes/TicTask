@@ -44,7 +44,7 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
     >
       <section id='tickets'>
         <GenericDashboardPagesHeader
-          title='Tickets Hub'
+          title='Ticket Hub'
           description='Create and manage tickets in easy mode.'
         />
       </section>

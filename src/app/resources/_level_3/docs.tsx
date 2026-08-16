@@ -97,7 +97,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     { type: 'inline', content: "(1) "}, { type: 'link', content: 'Sign up', href: '/auth/join/user' },{ type: 'inline', content: " ::: Enter your personal or business email and submit. You will receive a verification link shortly, valid for 15 minutes. Click on the link to confirm your email and continue."}, '',
     { type: 'inline', content: "2) Onboard ::: You have been re-directed to Tictask's"}, { type: 'outline', content: "Onboarding Page"}, { type: 'inline', content: "You are to setup your account how you'd like it to run."}, 
     "Create password → Choose account type: Individual or Business → Save to complete onboarding and continue to Dashboard.", 
-    { type: 'inline', content: "3) Dashboard ::: Once onboarding is complete, you will be re-directed to your dashboard (Tickets Hub). Start using TicTask by creating your first ticket(s) or learn more. You can also visit dashboard from the link in the welcome mail sent to you post-signup."}, '',
+    { type: 'inline', content: "3) Dashboard ::: Once onboarding is complete, you will be re-directed to your dashboard (Ticket Hub). Start using TicTask by creating your first ticket(s) or learn more. You can also visit dashboard from the link in the welcome mail sent to you post-signup."}, '',
     { type: 'callout', title: 'Safety tip', content: 'TicTask will never request your password in email. Keep your password private and mind the time constraints' }
   ],
 
@@ -118,7 +118,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
   ],
 
   "Quick Tour — Dashboard": [
-    "The dashboard structures your workspace into a simple and user-friendly layout, comprising of dashboard header, menu pages and an overview page i.e. Tickets Hub, Task Manager, Settings, etc.", 
+    "The dashboard structures your workspace into a simple and user-friendly layout, comprising of dashboard header, menu pages and an overview page i.e. Ticket Hub, Task Manager, Settings, etc.", 
     "Tickets offer two (2) standard workspace views: Board and List.", 
     { type: "outline", content: "BOARD"}, { type: 'inline', content: ' organizes your tickets in rows of ticket status. Each status column showing tickets in detailed card'}, '',
     { type: "badge", content: "Upcoming"}, 

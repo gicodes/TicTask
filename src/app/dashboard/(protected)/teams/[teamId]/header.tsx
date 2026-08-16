@@ -63,9 +63,8 @@ export default function WorkspaceHeader() {
           scrollButtons="auto"
           allowScrollButtonsMobile
           sx={{
-            pr: 2,
             margin: 0,
-            maxWidth: "98vw",
+            maxWidth: "93vw",
             "& .MuiTabs-scrollButtons.Mui-disabled": {
               opacity: 0,
               width: 0,
@@ -78,7 +77,7 @@ export default function WorkspaceHeader() {
           <Tab label="Analytics" />
           <Tab label="Settings" />
         </Tabs>
-        <Box
+        {/* <Box // hide for now
           sx={{
             display: { sm: 'none'},
             position: "absolute",
@@ -92,7 +91,7 @@ export default function WorkspaceHeader() {
             opacity: 0.5,
             pointerEvents: "none",
           }}
-        />
+        /> */}
       </Box>
     </Box>
   );

@@ -36,7 +36,7 @@ import {
 
 export const NAV_ITEMS = [
   { label: 'Console', path: '/dashboard/admin', icon: <GrTasks/>},
-  { label: 'Tickets Hub', path: '/dashboard/tickets', icon: <FcSerialTasks/> },
+  { label: 'Ticket Hub', path: '/dashboard/tickets', icon: <FcSerialTasks/> },
   { label: 'Task Manager', path: '/dashboard/tasks', icon: <BsCalendar2Date/>},
   { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
   { label: 'Subscription', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
@@ -70,13 +70,13 @@ export const MORE_NAV_ITEMS = [
 export const getFilteredNav = (user: AuthUser | null) => {
   if (!user) { // completely offline or logged out
     const allowed = [
-      'Tickets Hub', 'Task Manager', 'Products', 'Invite', 'Legal', 'Settings'
+      'Ticket Hub', 'Task Manager', 'Products', 'Invite', 'Legal', 'Settings'
     ];
     return NAV_ITEMS.filter(item => allowed.includes(item.label));
   }
 
   const allowed = [
-    'Tickets Hub', 'Task Manager', 'Products', 'Invite', 'Legal', 'Subscription', 'Settings',
+    'Ticket Hub', 'Task Manager', 'Products', 'Invite', 'Legal', 'Subscription', 'Settings',
   ];
 
   if (user?.role==="USER") allowed.push('More')
@@ -142,9 +142,15 @@ export const NavbarAvatar = ({
           {avatarName()}
         </Typography>
       </Avatar>
-      {showStatus && user?.name && <Box position={'absolute'} bottom={-5} right={-1} maxHeight={1}>
+      {showStatus && user?.name && 
+        <Box 
+          position={'absolute'} 
+          bottom={15.4545 - (0.56818 * size)}
+          right={size/ size} 
+          maxHeight={size/ size}
+        >
         <FaCircle 
-          size={size ? size / 4 : 9} 
+          size={size / 4} 
           color={
             user?.data?.status===undefined ? 'var(--disabled)' 
             : user?.data?.status==="ACTIVE" ? 'limegreen' 

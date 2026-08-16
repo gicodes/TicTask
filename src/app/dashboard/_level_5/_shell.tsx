@@ -390,7 +390,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
             <strong><i>Unlock the power of workflow— one task at a time</i></strong>
           </Typography>
         </Box>
-        <AiAssistantDrawer />
+        {/* <AiAssistantDrawer /> */}
       </Box>
 
       {isRouteChanging && (

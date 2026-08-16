@@ -182,11 +182,7 @@ export default function ProfileDetailDrawer() {
                 bgcolor="rgba(0,0,0,0.1)"
                 borderBottom={'0.5px solid var(--disabled)'}
                 sx={{
-                  width: {
-                    xs: '100%',
-                    md: 500,
-                    xl: 600,
-                  },
+                  width: { xs: '100%', md: 500, xl: 600 },
                   boxSizing: 'border-box',
                 }}
               >
@@ -212,10 +208,7 @@ export default function ProfileDetailDrawer() {
                     direction="row"
                     alignItems="center"
                     justifyContent="flex-end"
-                    sx={{
-                      flex: 1,
-                      minWidth: 0,
-                    }}
+                    sx={{ flex: 1, minWidth: 0 }}
                   > 
                     { !isEditing ?
                       <Tooltip title="Edit Profile">
@@ -236,7 +229,6 @@ export default function ProfileDetailDrawer() {
                         </Tooltip>
                       </>
                     }
-                    
                     { moreOptions && (
                       <Fade in>
                         <Stack direction="row">
@@ -256,11 +248,9 @@ export default function ProfileDetailDrawer() {
 
                     <Tooltip title={!moreOptions ? 'More Options' : 'Close'}>
                       <IconButton onClick={toggleMoreOptions}>
-                        { !moreOptions ? (
-                          <FaEllipsisVertical size={18} /> 
-                        ) : (
-                          <CloseSharp sx={{ fontSize: 20 }} />
-                        )}
+                        { !moreOptions ? (<FaEllipsisVertical size={18} />) 
+                          : (<CloseSharp sx={{ fontSize: 20 }} />)
+                        }
                       </IconButton>
                     </Tooltip>
                   </Stack>
@@ -268,16 +258,16 @@ export default function ProfileDetailDrawer() {
               </Stack>
               <Toolbar/>
 
-              <Box px={3}>
+              <Box display={'grid'} px={3} gap={3} pb={3}>
                 <Stack alignItems="center" spacing={1} textAlign="center" my={3}>
                   <Avatar
                     src={profile?.photo || '/default-avatar.png'}
                     alt={profile?.name}
                     sx={{
+                      mb: 1,
                       width: 96,
                       height: 96,
                       fontSize: 32,
-                      mb: 1,
                       color: 'var(--foreground)',
                       background: 'var(--background)',
                       border: `2.5px solid ${
@@ -300,8 +290,13 @@ export default function ProfileDetailDrawer() {
                     <Typography variant="h6" fontWeight={600}>{profile?.name}</Typography>
                   )}
                   
-                  <Typography variant="body2" color="text.secondary">
-                    {profile?.position || (isBusiness ? 'Organization' : 'Member')}
+                  {profile?.position && 
+                    <Typography variant="body2" color="text.secondary" fontFamily={'monospace'}>
+                        {profile?.position}
+                    </Typography>
+                  }
+                  <Typography px={2.5} py={0.5} borderRadius={3} bgcolor={'rgba(0,0,0,0.1)'} variant="caption" fontSize={10} sx={{ opacity: 0.7}}>
+                    {isBusiness ? 'Organization' : 'Personal'} Account
                   </Typography>
                   
                   {isEditing ? (
@@ -316,25 +311,26 @@ export default function ProfileDetailDrawer() {
                       placeholder="Tell us something about yourself..."
                     />
                   ) : (
-                    <Typography variant="body2" color="text.secondary" py={1} px={4}>
+                    <Typography variant="body2" color="text.secondary" pt={1} px={4}>
                       {profile?.bio || 'No bio added yet.'}
                     </Typography>
                   )}
                 </Stack>
 
-                <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-                  <Typography variant="subtitle2" color="text.secondary" mb={1} pb={1} borderBottom={'1px dashed var(--disabled)'}>
-                    Contact Information
-                  </Typography>
+                <Paper variant="outlined" sx={{ borderRadius: 3}}>
+                  <Box sx={{ bgcolor: 'rgba(0,0,0,0.09)'}} p={2}>
+                    <Typography variant="subtitle2" color="text.secondary">
+                      Contact Information
+                    </Typography>
+                  </Box>
 
-                  <Stack spacing={1}>
+                  <Stack spacing={1} sx={{ p: 1.5, borderRadius: 3 }}>
                     {(['email', 'phone', 'country'] as const).map((field, i, arr) => (
                       <Box key={i}>
                         <Stack
                           direction="row"
                           alignItems="center"
                           spacing={1}
-                          py={0.5}
                         >
                           <IconButton color='info' sx={{ bgcolor: 'var(--divider)'}}>
                             { field === 'email' ? <MdEmail size={16} />
@@ -364,25 +360,14 @@ export default function ProfileDetailDrawer() {
                   </Stack>
                 </Paper>
 
-                <Paper
-                  variant="outlined"
-                  sx={{
-                    p: 2,
-                    mb: 2,
-                    borderRadius: 3,
-                    bgcolor: 'background.paper',
-                  }}
-                >
-                  <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    mb={2} pb={1}
-                    borderBottom={'1px dashed var(--disabled)'}
-                  >
-                    Account Information
-                  </Typography>
+                <Paper variant="outlined" sx={{ borderRadius: 3}}>
+                  <Box sx={{ bgcolor: 'rgba(0,0,0,0.09)'}} p={2}>
+                    <Typography variant="subtitle2" color="text.secondary">
+                      Account Information
+                    </Typography>
+                  </Box>
 
-                  <Stack spacing={1.75}>
+                  <Stack spacing={1.5} px={1.5} py={2}>
                     <Stack
                       direction="row"
                       alignItems="center"

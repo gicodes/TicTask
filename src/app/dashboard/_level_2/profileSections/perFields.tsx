@@ -46,12 +46,14 @@ export function PersonalSection({
   };
 
   return (
-    <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-      <Typography variant="subtitle2" color="text.secondary" mb={2} pb={1} borderBottom={'1px dashed var(--divider)'}>
-        Professional Details
-      </Typography>
-      
-      <Stack spacing={1.5}>
+    <Paper variant="outlined" sx={{ borderRadius: 3 }}>
+      <Stack sx={{ bgcolor: 'rgba(0,0,0,0.09)'}} p={2}>
+        <Typography variant="subtitle2" color="text.secondary">
+          Professional Details
+        </Typography>
+      </Stack>
+
+      <Stack spacing={1.5} px={1.5} py={2}>
         <Stack 
           width={'100%'}
           gap={1.5}
@@ -151,11 +153,8 @@ export function PersonalSection({
                 alignItems="center"
                 spacing={0.5}
               >
-                <EllipsisTypography
-                  sx={{
-                    fontFamily: 'monospace',
-                    letterSpacing: 0.5,
-                  }}
+                <EllipsisTypography 
+                  sx={{ fontFamily: 'monospace', letterSpacing: 0.5 }}
                 >
                   {`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/auth/join/${profile?.referralCode}`}
                 </EllipsisTypography>

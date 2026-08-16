@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/assets/buttons";
 import { useTeam } from "@/hooks/useTeam";
 import { useAuth } from "@/providers/auth";
+import { TeamAnalKPICardProps } from "@/types/teamViewProps";
 import {
   Box,
   Typography,
@@ -21,7 +22,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Avatar,
 } from "@mui/material";
 import {
   TrendingUp,
@@ -37,6 +37,7 @@ const fmt = (n: number) => n.toLocaleString();
 function Trend({ value }: { value: number }) {
   if (value === 0) return null;
   const up = value > 0;
+  
   return (
     <Stack direction="row" alignItems="center" spacing={0.5} sx={{ color: up ? "success.main" : "error.main" }}>
       {up ? <TrendingUp fontSize="small" /> : <TrendingDown fontSize="small" />}
@@ -55,14 +56,7 @@ function KpiCard({
   trend,
   icon,
   loading,
-}: {
-  title: string;
-  value: string | number;
-  subtitle?: string;
-  trend?: number;
-  icon: React.ReactNode;
-  loading?: boolean;
-}) {
+}: TeamAnalKPICardProps) {
   return (
     <Card variant="outlined" sx={{ height: "100%" }}>
       <CardContent>
@@ -94,7 +88,7 @@ function KpiCard({
 
 export default function AnalyticsPage() {
   const { isAuthenticated } = useAuth();
-  const { team, analytics, fetchAnalytics } = useTeam();
+  const { team, analytics, fetchAnalytics, loading } = useTeam();
   const [range, setRange] = useState<"7d" | "30d" | "90d">("30d");
 
   useEffect(() => {
@@ -106,35 +100,65 @@ export default function AnalyticsPage() {
   const isPro = team?.subscription?.plan?.includes("PRO");
   const isEnt = team?.subscription?.plan?.includes("ENTERPRISE");
 
-  if (!isPro && !isEnt) {
-    return (
-      <Box maxWidth={720} py={6} px={2}>
-        <Card variant="outlined" sx={{ borderRadius: 3, overflow: "hidden" }}>
-          <CardContent sx={{ p: 4 }}>
-            <Stack spacing={3} alignItems="flex-start">
-              <Box gap={2}>
-                <Typography variant="h5" fontWeight={700} gutterBottom>
-                  Unlock team analytics
-                </Typography>
-                <Typography color="text.secondary" maxWidth={480}>
-                  See resolution times, workload balance, trends, and member performance.
-                  Available on Pro and Enterprise.
-                </Typography>
-              </Box>
-              <Button variant="contained" size="large">
-                Upgrade to Pro
-              </Button>
-            </Stack>
-          </CardContent>
-        </Card>
-      </Box>
-    );
-  }
+  if (!analytics || loading && team===null) return (
+    <Box maxWidth={800} py={6} px={2}>
+      <Card variant="outlined" sx={{ borderRadius: 3, overflow: "hidden" }}>
+        <CardContent sx={{ p: 4 }}>
+          <Typography variant="h6"> Loading... </Typography>
+        </CardContent>
+      </Card>
+    </Box>
+  );
 
-  const loading = !analytics;
+  if (!loading && !isPro && !isEnt) return (
+    <Box maxWidth={800} py={6} px={2}>
+      <Card variant="outlined" sx={{ borderRadius: 3 }}>
+        <CardContent sx={{ p: 4 }}>
+          <Stack spacing={3} alignItems="flex-start">
+            <Box gap={2}>
+              <Typography variant="h5" fontWeight={700} gutterBottom>
+                Unlock team analytics
+              </Typography>
+              <Typography color="text.secondary" maxWidth={480}>
+                See resolution times, workload balance, trends, and member performance.
+                Available on Pro and Enterprise.
+              </Typography>
+            </Box>
+            <Button variant="contained" size="large">
+              Upgrade to Pro
+            </Button>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Box>
+  );
 
   return (
-    <Box mx="auto" py={3} px={{ xs: 2, md: 3 }}>
+    <Box
+      mx="auto"
+      py={3}
+      px={{ xs: 2, md: 3 }}
+      sx={{
+        overflowX: { xs: "auto", md: "visible" },
+        WebkitOverflowScrolling: "touch",
+        scrollBehavior: "smooth",
+        scrollbarWidth: "thin",
+        scrollbarColor: "rgba(0,0,0,0.2) transparent",
+        "&::-webkit-scrollbar": {
+          height: 6,
+        },
+        "&::-webkit-scrollbar-track": {
+          background: "transparent",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: "rgba(0,0,0,0.2)",
+          borderRadius: 3,
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+          backgroundColor: "rgba(0,0,0,0.35)",
+        },
+      }}
+    >
       <Stack
         direction={{ xs: "column", sm: "row" }}
         justifyContent="space-between"
@@ -142,14 +166,14 @@ export default function AnalyticsPage() {
         spacing={2}
         mb={4}
       >
-        <Box>
+        <Stack gap={1} pb={1}>
           <Typography variant="h5" fontWeight={700}>
             Analytics
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {team?.name} · performance & workload
           </Typography>
-        </Box>
+        </Stack>
 
         <ToggleButtonGroup
           value={range}
@@ -177,8 +201,12 @@ export default function AnalyticsPage() {
         <Grid size={{ xs: 6, md: 3 }}>
           <KpiCard
             title="Resolved"
-            value={loading ? "—" : fmt(analytics.completedTickets)}
-            subtitle={ analytics ? `${Math.round((analytics.completedTickets / Math.max(analytics.totalTickets, 1)) * 100)}% rate`
+            value={loading ? "—" : fmt(analytics!.completedTickets)}
+            subtitle={ analytics ? `${Math.round((
+              analytics.completedTickets / Math.max(
+                analytics.totalTickets, 1)
+              ) * 100)}% rate
+            `
               : undefined
             }
             trend={analytics?.resolvedTrend}

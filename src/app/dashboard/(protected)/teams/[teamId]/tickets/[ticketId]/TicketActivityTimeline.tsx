@@ -1,6 +1,6 @@
 'use client'
 
-import { TicketActivityTimelineProps } from '@/types/tViewProps'
+import { TicketActivityTimelineProps } from '@/types/teamViewProps'
 import { Box, Stack, Typography } from '@mui/material'
 
 export function TicketActivityTimeline({ 

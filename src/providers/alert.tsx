@@ -156,7 +156,7 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
               Cancel
             </Button>
 
-            <Button tone="danger" variant="contained" onClick={handleConfirm}>
+            <Button tone="danger" onClick={handleConfirm}>
               {deleteText}
             </Button>
           </Box>

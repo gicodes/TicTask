@@ -33,7 +33,7 @@ export function useTeam() {
         members: membersRes.members,
       });
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       setTeam(null);
     } finally {
       setLoading(false);

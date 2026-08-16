@@ -20,3 +20,12 @@ export interface TicketActivityTimelineProps {
   ticket: Ticket
   userId: number | string
 }
+
+export interface TeamAnalKPICardProps {
+  title: string;
+  value: string | number;
+  subtitle?: string;
+  trend?: number;
+  icon: React.ReactNode;
+  loading?: boolean;
+}

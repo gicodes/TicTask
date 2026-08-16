@@ -20,7 +20,7 @@ import {
 import { Add as AddIcon } from '@mui/icons-material';
 import { Button as AppButton } from '@/assets/buttons';
 import { TicketImpact, TicketSeverity } from '@/types/ticket';
-import { TeamTicketSpecificTypeProps } from '@/types/tViewProps';
+import { TeamTicketSpecificTypeProps } from '@/types/teamViewProps';
 import { RichTextViewer } from '@/app/dashboard/_level_1/richTextViewer';
 import { EstimatedTimeField } from '@/app/dashboard/_level_1/estTimeHours';
 import { LightweightRichEditor } from '@/app/dashboard/_level_1/richTextEditior';

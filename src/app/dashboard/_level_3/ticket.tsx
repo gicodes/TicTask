@@ -11,7 +11,8 @@ import Toolbar from '../_level_2/ticketsPageToolbar';
 import { Box, Divider, Drawer, Typography } from '@mui/material';
 import TicketDetailDrawer from '../_level_2/viewTicket/TWSMiniDrawer';
 import TicketFormDrawer from '../_level_2/createTicket/CNTFormsDrawer';
-import { TICKET_LIST_HEADERS, TICKET_STATUSES, TICKET_TYPES } from '../_level_0/constants';
+import { PLANNER_TASK_TYPES, TICKET_LIST_HEADERS, TICKET_STATUSES, TICKET_TYPES } from '../_level_0/constants';
+import Link from 'next/link';
 
 export function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
@@ -124,7 +125,7 @@ const TicketsPage: React.FC = () => {
         open={readAboutTickets}
         onClose={() => setReadAboutTickets(false)}
       >
-        <Box sx={{ width: 360, py: 4, px: 3, mt: 5 }}>
+        <Box sx={{ width: { xs: 360, sm: 400, lg: 500 }, py: 4, px: 3, mt: 5 }}>
           <Box display={'flex'} justifyContent={'end'} onClick={() => setReadAboutTickets(false)}> 
             <CloseSharp color="error" sx={{ boxShadow: 2, borderRadius: '50%', p: 1}} fontSize="large" /> 
           </Box>
@@ -142,26 +143,56 @@ const TicketsPage: React.FC = () => {
           <Typography variant="h6" fontWeight={700} mb={2}>
             Creating tickets?
           </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
-            Starts with identifying what kind of ticket you want to create.{" "}<br/><br/>
-            <strong>Tickets Hub</strong> lets you create any of the following ticket types: <br/>
+          <Typography variant="body1" sx={{ opacity: 0.8 }}>
+            Starts with identifying what kind of ticket you want to create.{" "}<br/>
+            There are up to 12 different ticket types. Some have unique fields, features and use cases. 
+            As you advance, you will find more ways to create, view and manage more complex tickets.
+          </Typography>
+          <br/>
+          <Link href={'#'}>Ticket Hub</Link> lets you create <br/>
+          <ul style={{ padding: 10}}>
+            {TICKET_TYPES.map((type) => (
+              <li key={type}>
+                {type.slice(0,1).toUpperCase() + type.slice(1).toLowerCase().replace(/_/g, ' ')}</li>
+            ))}
+          </ul>
+          <Typography variant="body1" sx={{ opacity: 0.8 }}>
+            You can manage more tickets via Board and List view. <br/> <br/> 
+            <Link href={'/dashboard/tasks'}>Task Manager</Link> is an event-based ticket hub for<br/>
             <ul style={{ padding: 10}}>
-              {TICKET_TYPES.map((type) => (
-                <li key={type}>{type.slice(0,1).toUpperCase() + type.slice(1).toLowerCase()}</li>
+              {PLANNER_TASK_TYPES.map((type) => (
+                <li key={type}>
+                  {type.slice(0,1).toUpperCase() + type.slice(1).toLowerCase().replace(/_/g, ' ')}
+                </li>
               ))}
             </ul>
-            While it also allows you to view, modify and manage more (event-based) tickets with. <br/> You can also create task/ event-based tickets with <strong>Task Manager</strong>.
-            <br/> <br/>To manually create a ticket, find and click <button className='btn items-center flex gap-1'><FaPlusCircle/> NEW TICKET</button> 
-            ✦ On a mobile device? Expand toolbar (top-left corner) to see action buttons ✦<br/>
-          </Typography>
+
+            Similarly, you can manage more (event-based or timeline) tickets via Calendar and List view.
+            <br/>
+            To manually create a ticket, find and click<button className='btn'><span className='flex items-center gap-1'>
+              <FaPlusCircle/> NEW TICKET</span>
+            </button>
+          </Typography> 
+          
+          <Box 
+            p={1} 
+            my={1}  
+            gap={1}
+            display={'grid'} 
+            borderRadius={2} 
+            bgcolor={'rgba(0,0,0,0.07)'}
+          >
+            <Typography variant='caption' color='info'>Can&apos;t find it on your a mobile device?</Typography>
+            <Typography fontSize={14} color='text.secondary'>✦ Expand toolbar (top-left corner) to see action buttons ✦<br/></Typography>
+          </Box>
 
           <Divider sx={{ my: 5 }} />
 
           <Typography variant="h6" fontWeight={600} mb={2}>
-            Tickets Hub vs Task Manager?
+            Ticket Hub vs Task Manager?
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
-            While both tools are similar and help you manage tickets, <strong>Tickets Hub</strong> offer range and simplicity.{" "}
+            While both tools are similar and help you manage tickets, <strong>Ticket Hub</strong> offer range and simplicity.{" "}
             <strong>Task manager</strong> handle specific tickets with timeline & built-in calendar to track tickets.{" "}
           </Typography>
 

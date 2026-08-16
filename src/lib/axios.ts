@@ -54,9 +54,7 @@ api.interceptors.request.use(async (config) => {
     url.includes(endpoint)
   );
   
-  if (isPublicEndpoint) {
-    return config;
-  }
+  if (isPublicEndpoint) return config;
 
   const session = await getCachedSession();
 
@@ -119,21 +117,15 @@ api.interceptors.response.use(
       }
 
       processQueue(new Error("Unable to refresh session"), null);
-
       const { signOut } = await import("next-auth/react");
-      await signOut({ 
-        callbackUrl: "/auth/login",
-        redirect: true
-      });
+      await signOut({ callbackUrl: "/auth/login", redirect: true});
 
       return Promise.reject(new Error("Session expired – please log in again"));
     } catch (refreshError) {
       processQueue(refreshError, null);
 
-      if (axios.isAxiosError(refreshError) && refreshError.response?.status === 401) {
-        const { signOut } = await import("next-auth/react");
-        await signOut({ callbackUrl: "/auth/login" });
-      }
+      const { signOut } = await import("next-auth/react");
+      await signOut({ callbackUrl: "/auth/login" });
 
       return Promise.reject(refreshError);
     } finally {

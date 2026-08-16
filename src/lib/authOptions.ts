@@ -40,13 +40,11 @@ export const authOptions: NextAuthOptions = {
             credentials!
           );
 
-          if (res.ok && res.user) {
-            return res.user;
-          }
+          if (res.ok && res.user) return res.user;
 
           return null;
         } catch (err) {
-          console.error("Authorize error:", err);
+          // console.error("Authorize error:", err);
           return null;
         }
       },
@@ -104,11 +102,17 @@ export const authOptions: NextAuthOptions = {
       }
 
       if (!token.refreshToken) {
-        return { ...token, error: "RefreshAccessTokenError" };
+        return { 
+          ...token, 
+          accessToken: undefined,
+          accessTokenExpires: 0,
+          error: "RefreshAccessTokenError",
+        };
       }
 
       try {
         const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+        console.log("AuthOptions jwt callback token.refreshToken", token.refreshToken)
         const res = await fetch(`${apiBase}/auth/refresh`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -116,9 +120,7 @@ export const authOptions: NextAuthOptions = {
           body: JSON.stringify({ refreshToken: token.refreshToken }),
         });
 
-        if (!res.ok) {
-          throw new Error(`Refresh failed (${res.status})`);
-        }
+        if (!res.ok) throw new Error(`Refresh failed (${res.status})`);
 
         const data = await res.json();
 
@@ -130,7 +132,7 @@ export const authOptions: NextAuthOptions = {
           error: undefined,
         };
       } catch (err) {
-        console.error("Token refresh error:", err);
+        // console.error("Token refresh error:", err);
         return {
           ...token,
           accessToken: undefined,
@@ -152,8 +154,7 @@ export const authOptions: NextAuthOptions = {
       if (token.accessToken && !token.error && token.shouldHydrate) {
         try {
           session.user = await getCurrentUser(token.accessToken as string);
-        } catch {
-          // fall back to token.user
+        } catch { // fall back to token.user
         }
       }
 

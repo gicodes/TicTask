@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { TicketCheck, Plus } from 'lucide-react';
 import { DateTimePicker } from '@mui/x-date-pickers';
-import { TeamTicketViewProps } from '@/types/tViewProps';
+import { TeamTicketViewProps } from '@/types/teamViewProps';
 import { TicketActivityTimeline } from './TicketActivityTimeline';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TicketTypeSpecificFields } from './TicketTypeSpecificField';

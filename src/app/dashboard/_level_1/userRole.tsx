@@ -8,7 +8,7 @@ export const UserRole = ({ userRole }: { userRole: UserRoleFn }) => {
   const role = (raw ?? "").toString();
 
   return (
-    <Tooltip title={role.toLocaleLowerCase()}>
+    <Tooltip title={role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()}>
       <IconButton>
         {role === "USER" && <FaUserShield />}
         {role === "ORGANIZATION" && <FaUsers />}

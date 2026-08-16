@@ -59,25 +59,14 @@ export function ProfileActivitySection({
   ];
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        p: 2,
-        mb: 2,
-        borderRadius: 3,
-      }}
-    >
-      <Typography
-        variant="subtitle2"
-        color="text.secondary"
-        mb={2}
-        pb={1}                     
-        borderBottom={'1px dashed var(--disabled)'}
-      >
-        Workflow & Collaboration
-      </Typography>
+    <Paper variant="outlined" sx={{ borderRadius: 3 }}>
+      <Box sx={{ bgcolor: 'rgba(0,0,0,0.09)'}} p={2}>
+        <Typography variant="subtitle2" color="text.secondary">
+          Workflow & Collaboration
+        </Typography>
+      </Box>
 
-      <Stack spacing={1.5}>
+      <Stack spacing={1.5} p={2}>
         {stats.map((stat, index) => (
           <React.Fragment key={stat.label}>
             <Stack

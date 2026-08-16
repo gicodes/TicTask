@@ -31,10 +31,10 @@ import {
   Divider,
 } from '@mui/material';
 import { apiGet } from '@/lib/axios';
-import { Meta, Subscription } from '@/types/subscription';
 import { GenericAPIRes } from '@/types/axios';
 import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { Meta, Subscription } from '@/types/subscription';
 import GenericGridPageLayout from '../../../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../../../_level_1/genDashPagesHeader';
 
@@ -173,7 +173,7 @@ const Page = () => {
       <Table size="medium">
         <TableHead>
           <TableRow sx={{ bgcolor: 'action.hover' }}>
-            <TableCell>user</TableCell>
+            <TableCell>User</TableCell>
             <TableCell>Plan</TableCell>
             <TableCell>Status</TableCell>
             <TableCell align="right">Amount</TableCell>
@@ -216,7 +216,7 @@ const Page = () => {
                   <TableCell>{formatDate(sub.expiresAt)}</TableCell>
                   <TableCell>
                     <Chip
-                      label={sub.user?.userType ?? sub.user?.role}
+                      label={sub.user?.userType}
                       size="small"
                       variant="outlined"
                     />
@@ -235,8 +235,30 @@ const Page = () => {
         description="All subscribed users and teams are curated here with special options for revenue sorting"
       />
 
-      <Box mt={3}>
-        {/* Toolbar */}
+      <Box
+        mt={3}
+        sx={{
+          overflowX: { xs: "auto", md: "visible" },
+          WebkitOverflowScrolling: "touch",
+          scrollBehavior: "smooth",
+          // Modern thin scrollbar (mobile-friendly)
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,0.2) transparent",
+          "&::-webkit-scrollbar": {
+            height: 6,
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "transparent",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,0.2)",
+            borderRadius: 3,
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "rgba(0,0,0,0.35)",
+          },
+        }}
+      >        
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={2}

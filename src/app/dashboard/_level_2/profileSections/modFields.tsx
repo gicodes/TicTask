@@ -33,26 +33,14 @@ export function ModeratorSection({ profile }: { profile: User }) {
       : "Contributor";
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        p: 2,
-        mb: 2,
-        borderRadius: 3,
-        bgcolor: theme.palette.warning.light + '15',
-      }}
-    >
-      <Typography 
-        variant="subtitle2" 
-        color="text.secondary" 
-        mb={1}      
-        pb={0.5}               
-        borderBottom={'1px dashed var(--disabled)'}
-      >
-        <strong>{accountLabel} Information</strong>
-      </Typography>
+    <Paper variant="outlined" sx={{ borderRadius: 3 }}>
+      <Stack sx={{ bgcolor: 'rgba(0,0,0,0.09)'}} p={2}>
+        <Typography variant="subtitle2" color="text.secondary">
+          <strong>{accountLabel} Information</strong>
+        </Typography>
+      </Stack>
 
-      <Stack p={1} spacing={1}>
+      <Stack spacing={1.5} px={1.5} py={2}>
         <Typography variant="body2">
           <strong>Access Level:</strong>&nbsp; <i>{accessLevel}</i>
         </Typography>

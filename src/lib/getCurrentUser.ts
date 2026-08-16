@@ -1,5 +1,5 @@
 import { User } from "@/types/users";
-import { apiGet, nextAuthApiGet } from "./axios";
+import { nextAuthApiGet } from "./axios";
 import { GenericAPIRes } from "@/types/axios";
 
 export async function getCurrentUser(accessToken: string) {

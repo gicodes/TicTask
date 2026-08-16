@@ -42,12 +42,14 @@ export function BusinessSection({
   };
 
   return (
-    <Paper variant="outlined" sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-      <Typography variant="subtitle2" color="text.secondary" mb={3} pb={1} borderBottom={'1px dashed var(--divider)'}>
-        Organization Details
-      </Typography>
+    <Paper variant="outlined" sx={{ borderRadius: 3 }}>
+      <Stack sx={{ bgcolor: 'rgba(0,0,0,0.09)'}} p={2}>
+        <Typography variant="subtitle2" color="text.secondary">
+          Organization Details
+        </Typography>
+      </Stack>
 
-      <Stack spacing={2}>
+      <Stack spacing={1.5} px={1.5} py={2}>
         <Stack gap={1} direction="row" alignItems="center" spacing={1}>
           <IconButton color='primary' sx={{ bgcolor: 'var(--divider)', height: 'max-content'}} >
             <FcOrganization size={16} />
@@ -272,12 +274,7 @@ export function BusinessSection({
                 alignItems="center"
                 spacing={0.5}
               >
-                <EllipsisTypography
-                  sx={{
-                    fontFamily: 'monospace',
-                    letterSpacing: 0.5,
-                  }}
-                >
+                <EllipsisTypography sx={{ fontFamily: 'monospace', letterSpacing: 0.5,}}>
                   {`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/auth/join/${profile?.referralCode}`}
                 </EllipsisTypography>
 

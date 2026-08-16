@@ -33,9 +33,18 @@ export type TeamMember = {
   userId: number;
   teamId: number;
   role: TeamRole;
+  email: string;
 
+  bio?: string;
   name: string;
+  position?: string;
+  country?: string;
   data: UserPreferences;
+
+  teamMemberships: {
+    role: string;
+    createdAt: string
+  }[]
 
   invitedBy?: number;
   createdAt: string;

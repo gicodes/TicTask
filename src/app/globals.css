@@ -174,7 +174,9 @@ h6 { font-size: 1.5rem; }
 .my-5 { margin: 2.5rem 0; }
 
 .py-1 { padding: 5px 0; }
-.py-3 { padding: 15px 0;}
+.py-3 { padding: 15px 0; }
+
+.pb-1 { padding-bottom: 15px; }
 
 .px-1 { padding: 0 1rem; }
 .px-3 { padding: 0 1.75rem; }

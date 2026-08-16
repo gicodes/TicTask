@@ -104,7 +104,7 @@ export default function TeamsPage() {
 
               {teams.length > 0 && (
                 <>
-                  <Stack py={1}>
+                  <Stack>
                     <Typography variant="h6" fontWeight={700}>
                       Your {teams.length > 1 ? "Teams" : "Team"}
                     </Typography>
@@ -112,28 +112,45 @@ export default function TeamsPage() {
                       Select one to manage
                     </Typography>
                   </Stack>
+                  <Divider/>
 
                   {sortedTeams.map(team => (
                     <Link key={team.id} href={`/dashboard/teams/${team.id}`}>
                       <Box
                         sx={{
-                          p: 2,
+                          py: 1,
+                          px: 1, 
                           borderRadius: 2,
                           display: 'flex',
                           justifyContent: 'space-between',
-                          bgcolor: "rgba(0,0,0,0.03)",
                           cursor: "pointer",
                           "&:hover": { bgcolor: "rgba(0,0,0,0.06)" }
                         }}
                       >
                         <Stack gap={1}>
                           <Typography>{team.name}</Typography>
-                          <Typography variant="caption" sx={{ opacity: 0.7 }}>{team.description}</Typography>
+                          <Typography 
+                            variant="caption" 
+                            noWrap
+                            sx={{
+                              opacity: 0.7,
+                              minWidth: 0,
+                              maxWidth: { xs: 150, sm: 150, md: 'none' },
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {team.description}
+                          </Typography>
                         </Stack>
-                        <Stack display={'flex'} alignItems={'flex-end'} gap={0.5}>
-                          <Typography variant="body2"><Group/> {team.members.length}</Typography>
-                          <Typography variant="caption" sx={{ opacity: 0.7 }} maxWidth={{ xs: 100, sm: 250, md: 'none'}}>
-                            <i><strong>Updated:</strong> {new Date(team.updatedAt).toDateString()}</i>
+                        <Stack display={'flex'} alignItems={'end'} gap={0.5}>
+                          <Typography variant="caption"><Group/> {team.members.length}</Typography>
+                          <Typography 
+                            variant="caption" 
+                            sx={{ opacity: 0.7 }}
+                          >
+                            Updated {new Date(team.updatedAt).toLocaleDateString()}
                           </Typography>
                         </Stack>
                       </Box>
@@ -186,7 +203,13 @@ export default function TeamsPage() {
           onClose={() => setReadAboutTeam(false)}
           sx={{ width: { xs: '100%', sm: 360 }}}
         >
-          <Box sx={{ width: { xs: '100%', sm: 360 }, pt: 4, px: 2, mt: 5 }}>
+          <Box 
+            sx={{ 
+              width: { xs: '100%', sm: 400, lg: 500 }, 
+              pt: 3, 
+              px: { xs: 2, md: 3}, mt: 5 
+            }}
+          >
             <Box display={'flex'} justifyContent={'end'} onClick={() => setReadAboutTeam(false)}> 
               <CloseSharp color="error" sx={{ boxShadow: 2, borderRadius: '50%', p: 1}} fontSize="large" /> 
             </Box>
