@@ -112,7 +112,6 @@ export const authOptions: NextAuthOptions = {
 
       try {
         const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
-        console.log("AuthOptions jwt callback token.refreshToken", token.refreshToken)
         const res = await fetch(`${apiBase}/auth/refresh`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
