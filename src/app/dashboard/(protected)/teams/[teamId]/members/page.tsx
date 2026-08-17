@@ -24,6 +24,7 @@ import {
 import { Crown } from "lucide-react";
 import { Add, DeleteOutline, Close } from "@mui/icons-material";
 import { NavbarAvatar } from "@/app/dashboard/_level_1/navItems";
+import { TeamPageSkeleton } from "@/app/dashboard/_level_2/team/teamPageSkeleton";
 
 export default function MembersPage() {
   const { isAuthenticated, user } = useAuth();
@@ -79,19 +80,7 @@ export default function MembersPage() {
 
   if (!isAuthenticated) return null;
 
-  if (loading) {
-    return (
-      <Box maxWidth={800} py={6} px={2}>
-        <Card variant="outlined" sx={{ borderRadius: 3, overflow: "hidden" }}>
-          <CardContent sx={{ p: 4 }}>
-            <Typography py={2} textAlign="center">
-              Loading...
-            </Typography>
-          </CardContent>
-        </Card>
-      </Box>
-    );
-  }
+  if (loading) return <TeamPageSkeleton />
 
   return (
     <Box>
@@ -288,7 +277,6 @@ export default function MembersPage() {
           {isOwner && selectedMember && selectedMember.id !== user?.id && (
             <Button
               tone="danger"
-              variant="outlined"
               startIcon={<DeleteOutline />}
               onClick={() => handleRemoveMember(selectedMember.id)}
             >

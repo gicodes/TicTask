@@ -138,11 +138,7 @@ const NotificationsDrawer: React.FC = () => {
         </Stack>
       </Box>
 
-      <Link href="/dashboard" onClick={closeDetail} style={{ padding: 20}}>
-        <Button fullWidth color="inherit" variant="contained"> ← &nbsp; Back </Button>
-      </Link>
-
-      <Box sx={{ px: 3, py: 2 }} minHeight={'60vh'}>
+      <Box sx={{ px: 3, py: 2 }}>
         {filtered.length === 0 && (
           <Typography mt={4} textAlign="center" color="text.secondary">
             No notifications found
@@ -216,7 +212,36 @@ const NotificationsDrawer: React.FC = () => {
               })}
             </Stack>
           </Box>
-        ))}
+        ))
+      }
+      </Box>
+
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          p: 2,
+          zIndex: 30,
+        }}
+      >
+        <Link
+          href="/dashboard"
+          onClick={closeDetail}
+          style={{
+            display: "block",
+            width: "100%",
+          }}
+        >
+          <Button
+            fullWidth
+            color="inherit"
+            variant="contained"
+          >
+            ← &nbsp; Back
+          </Button>
+        </Link>
       </Box>
     </Drawer>
   );

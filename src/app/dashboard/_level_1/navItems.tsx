@@ -120,11 +120,10 @@ export const NavbarAvatar = ({
   };
 
   const avatarName = () => {
-    if (!user) return '◾️';
+    if (!user) return '?';
     if (user.name) return getInitials(user.name);
     if (!user.name && user.organization) return getInitials(user.organization);
-    
-    return '◾️';
+    return '?';
   };
   
   return (
@@ -145,7 +144,7 @@ export const NavbarAvatar = ({
       {showStatus && user?.name && 
         <Box 
           position={'absolute'} 
-          bottom={15.4545 - (0.56818 * size)}
+          bottom={size < 32 ? -8 : 15.4545 - (0.56818 * size)}
           right={size/ size} 
           maxHeight={size/ size}
         >

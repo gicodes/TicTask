@@ -31,6 +31,7 @@ import {
   ConfirmationNumberOutlined,
 } from "@mui/icons-material";
 import { NavbarAvatar } from "@/app/dashboard/_level_1/navItems";
+import { TeamPageSkeleton } from "@/app/dashboard/_level_2/team/teamPageSkeleton";
 
 const fmt = (n: number) => n.toLocaleString();
 
@@ -100,15 +101,7 @@ export default function AnalyticsPage() {
   const isPro = team?.subscription?.plan?.includes("PRO");
   const isEnt = team?.subscription?.plan?.includes("ENTERPRISE");
 
-  if (!analytics || loading && team===null) return (
-    <Box maxWidth={800} py={6} px={2}>
-      <Card variant="outlined" sx={{ borderRadius: 3, overflow: "hidden" }}>
-        <CardContent sx={{ p: 4 }}>
-          <Typography variant="h6"> Loading... </Typography>
-        </CardContent>
-      </Card>
-    </Box>
-  );
+  if (!analytics || (loading && team===null)) return <TeamPageSkeleton />
 
   if (!loading && !isPro && !isEnt) return (
     <Box maxWidth={800} py={6} px={2}>
@@ -307,68 +300,116 @@ export default function AnalyticsPage() {
         </Grid>
       </Grid>
 
-      <Card variant="outlined">
-        <CardContent>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
-            <Typography variant="subtitle2" fontWeight={600}>
-              Workload by member
-            </Typography>
-            <Chip size="small" label={`${analytics?.membersCount ?? 0} members`} variant="outlined" />
-          </Stack>
+    <Card variant="outlined">
+      <CardContent>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
+          <Typography variant="subtitle2" fontWeight={600}>
+            Workload by member
+          </Typography>
+          <Chip size="small" label={`${analytics?.membersCount ?? 0} members`} variant="outlined" />
+        </Stack>
 
-          {loading ? (
-            <Stack spacing={1}>
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} height={48} />
-              ))}
-            </Stack>
-          ) : analytics.memberStats?.length ? (
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Member</TableCell>
-                  <TableCell align="right">Opened</TableCell>
-                  <TableCell align="right">Resolved</TableCell>
-                  <TableCell align="right">Avg. time</TableCell>
-                  <TableCell align="right" width={120}>
-                    Share
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
+        {loading ? (
+          <Stack spacing={1}>
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} height={48} />
+            ))}
+          </Stack>
+        ) : analytics.memberStats?.length ? (
+          <>
+            {/* Mobile: cards */}
+            <Box sx={{ display: { xs: "block", md: "none" } }}>
+              <Stack spacing={1.5}>
                 {analytics.memberStats.map((m: any) => (
-                  <TableRow key={m.userId} hover>
-                    <TableCell>
-                      <Stack direction="row" spacing={1.5} alignItems="center">
-                        <NavbarAvatar user={m} showStatus={false} />
-                        <Typography variant="body2" fontWeight={500}>
-                          {m.name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="right">{m.open}</TableCell>
-                    <TableCell align="right">{m.resolved}</TableCell>
-                    <TableCell align="right">
-                      {m.avgHours != null ? `${m.avgHours}h` : "—"}
-                    </TableCell>
-                    <TableCell align="right">
+                  <Box
+                    key={m.userId}
+                    sx={{
+                      p: 1.5,
+                      borderRadius: 1.5,
+                      border: "1px solid",
+                      borderColor: "divider",
+                    }}
+                  >
+                    <Stack direction="row" spacing={1.5} alignItems="center" mb={1}>
+                      <NavbarAvatar user={m} showStatus={false} />
+                      <Typography variant="body2" fontWeight={600}>
+                        {m.name}
+                      </Typography>
+                    </Stack>
+
+                    <Stack direction="row" justifyContent="space-between" flexWrap="wrap" gap={1}>
+                      <Typography variant="caption" color="text.secondary">
+                        Opened: <strong>{m.open}</strong>
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Resolved: <strong>{m.resolved}</strong>
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Avg: <strong>{m.avgHours != null ? `${m.avgHours}h` : "—"}</strong>
+                      </Typography>
+                    </Stack>
+
+                    <Box mt={1}>
                       <LinearProgress
                         variant="determinate"
                         value={m.sharePct}
                         sx={{ height: 6, borderRadius: 3 }}
                       />
+                    </Box>
+                  </Box>
+                ))}
+              </Stack>
+            </Box>
+
+            {/* Desktop: table */}
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Member</TableCell>
+                    <TableCell align="right">Opened</TableCell>
+                    <TableCell align="right">Resolved</TableCell>
+                    <TableCell align="right">Avg. time</TableCell>
+                    <TableCell align="right" width={120}>
+                      Share
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          ) : (
-            <Typography color="text.secondary" variant="body2" py={4} textAlign="center">
-              No member activity in this period
-            </Typography>
-          )}
-        </CardContent>
-      </Card>
-    </Box>
-  );
-}
+                </TableHead>
+                <TableBody>
+                  {analytics.memberStats.map((m: any) => (
+                    <TableRow key={m.userId} hover>
+                      <TableCell>
+                        <Stack direction="row" spacing={1.5} alignItems="center">
+                          <NavbarAvatar user={m} showStatus={false} />
+                          <Typography variant="body2" fontWeight={500}>
+                            {m.name}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell align="right">{m.open}</TableCell>
+                      <TableCell align="right">{m.resolved}</TableCell>
+                      <TableCell align="right">
+                        {m.avgHours != null ? `${m.avgHours}h` : "—"}
+                      </TableCell>
+                      <TableCell align="right">
+                        <LinearProgress
+                          variant="determinate"
+                          value={m.sharePct}
+                          sx={{ height: 6, borderRadius: 3 }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
+          </>
+        ) : (
+          <Typography color="text.secondary" variant="body2" py={4} textAlign="center">
+            No member activity in this period
+          </Typography>
+        )}
+      </CardContent>
+    </Card>
+  </Box>
+)}

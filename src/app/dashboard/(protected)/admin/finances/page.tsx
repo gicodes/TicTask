@@ -258,7 +258,7 @@ const Page = () => {
             backgroundColor: "rgba(0,0,0,0.35)",
           },
         }}
-      >        
+      >
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={2}

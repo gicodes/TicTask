@@ -6,6 +6,7 @@
   --accent: #f38600;
   --success: forestgreen;
   --flair: rgb(100, 150, 180);
+  --link: royalblue;
   --secondary: #999;
   --disabled: #cccccc;
   --accent-contrast: #ffffff;
@@ -35,6 +36,7 @@
     --danger: #e53935;
     --success: #64b566; 
     --info: skyblue;    
+    --link: royalblue;
     --flair: rgb(69, 107, 139);     
     --secondary: #777;
     --disabled: #555;
@@ -91,7 +93,7 @@ a {
 .custom-sharp { color: var(--success); }
 .custom-dull { color: var(--secondary); }
 .custom-link { 
-  color: var(--info);
+  color: var(--link);
   cursor: pointer;
 }
 

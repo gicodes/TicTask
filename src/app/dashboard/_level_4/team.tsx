@@ -66,7 +66,7 @@ export default function TeamsPage() {
   return (
     <GenericGridPageLayout> 
       <GenericDashboardPagesHeader 
-        title="Team(s) Manager"
+        title="Team Manager"
         description="Add, remove, or manage members of your organization "
       />
 
@@ -109,7 +109,7 @@ export default function TeamsPage() {
                       Your {teams.length > 1 ? "Teams" : "Team"}
                     </Typography>
                     <Typography variant="body1" sx={{ opacity: 0.7 }}>
-                      Select one to manage
+                      Click to go into team workspace
                     </Typography>
                   </Stack>
                   <Divider/>
@@ -227,25 +227,27 @@ export default function TeamsPage() {
               A <strong>Team</strong> is the smallest collaborative unit, or
               group of individuals working together toward shared goals, task
               or project.
-              <br /><br />
+              <br />
               A team may represent a department in an organization, a business unit, a
               startup crew, a project squad, or even a circle of friends cordinating
               activities together.
               <br /><br />
               Every team has an owner, several members and a workflow. 
-              Team members are granted basic permissions (i.e. create ticket, manage/ close projects, get alerts on changes), while 
-              owners and administrators can customize workflows, manage members and set these permissions and roles. 
+              Team members are granted basic permissions i.e. create ticket, manage and close tickets.
+              <br/> 
+              Owners and administrators can manage members and set these permissions and roles. 
             </Typography>
 
             <Divider sx={{ my: 5 }} />
             <Typography variant="h6" fontWeight={700} mb={2}>
-              Teams Manager
+              Team Manager
             </Typography>
             <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
-              <strong>Team Manager</strong> show team(s) you currently manage, are part of, or created in the past.
+              Show teams you created, currently manage or are an active member. Clicking on a team takes you into it&apos;s workspace.
               <br /><br/>
-              Team Managers are team owners by default, and can create or manage multiple teams simulteanously.
-              <br/><strong> Organization</strong> account + <strong>active</strong> subscription is required to fully access teams manager.
+              Team Manager allow organizations create teams based on work or colloborative needs, use clear descriptions and tags and invite users with a TicTask account to join the team(s).
+              <br/>
+              <br/><strong> Organization</strong> account + <strong>active</strong> subscription is required to fully access Team Manager. However, every user can be invited to teams, and allowed access via Team Manager.
               <br/><br/>
               To create a Team, click<span className="btn">✛ Create Team</span>
               <br/><br/>
@@ -264,7 +266,7 @@ export default function TeamsPage() {
             <Divider sx={{ my: 5 }} />
 
             <Typography variant="h6" fontWeight={700}>
-              Best Use Cases
+              Example Use Cases
             </Typography>
             <ul style={{ padding: 10}}>
               <li>Internal company departments</li>

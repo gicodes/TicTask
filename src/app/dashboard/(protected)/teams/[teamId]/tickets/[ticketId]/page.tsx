@@ -30,6 +30,8 @@ import {
 } from '@mui/material';
 import { CloseSharp, ArrowBack, Cancel } from '@mui/icons-material';
 import { EllipsisVertical, Share2, Edit, Save, Download } from 'lucide-react';
+import { TeamPageSkeleton } from '@/app/dashboard/_level_2/team/teamPageSkeleton';
+import AuthRedirectBtn from '@/assets/authRedirectBtn';
 
 export default function TeamTicketWorkspace() {
   const router = useRouter();
@@ -177,6 +179,11 @@ export default function TeamTicketWorkspace() {
     }
   };
 
+  if (!user) return 
+    <TeamPageSkeleton>
+      <Typography py={2} textAlign={'center'}> Please <AuthRedirectBtn /> to view tickets</Typography>
+    </TeamPageSkeleton>
+
   return (
     <Fade in timeout={400}>
       <Box sx={{ position: 'relative', minHeight: '100vh' }}>
@@ -281,7 +288,7 @@ export default function TeamTicketWorkspace() {
             sx={{              
               py: 1,
               position: 'fixed',
-              top: {xs: 234, sm: 250},                    
+              top: {xs: 234, sm: 242, md: 256, lg: 260},                    
               zIndex: 1100,               
               display: 'flex',
               justifyContent: 'center',
