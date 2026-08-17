@@ -7,7 +7,6 @@ export function SessionErrorWatcher() {
 
   useEffect(() => {
     if (session?.error === "RefreshAccessTokenError") {
-      console.log("[NEW] session watcher: signing out...")
       signOut({ callbackUrl: "/auth/login" });
     }
   }, [session?.error]);
