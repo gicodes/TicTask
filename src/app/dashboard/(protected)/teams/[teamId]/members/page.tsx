@@ -274,18 +274,20 @@ export default function MembersPage() {
         </DialogContent>
 
         <DialogActions sx={{ px: 3, py: 2 }}>
-          {isOwner && selectedMember && selectedMember.id !== user?.id && (
-            <Button
-              tone="danger"
-              startIcon={<DeleteOutline />}
-              onClick={() => handleRemoveMember(selectedMember.id)}
-            >
-              Remove from team
+          <Stack direction={{ xs: 'column', sm: 'row'}} gap={2}>
+            {isOwner && selectedMember && selectedMember.id !== user?.id && (
+              <Button
+                tone="danger"
+                startIcon={<DeleteOutline />}
+                onClick={() => handleRemoveMember(selectedMember.id)}
+              >
+                Remove from team
+              </Button>
+            )}
+            <Button tone="retreat" variant="filled" onClick={closeProfile}>
+              Close
             </Button>
-          )}
-          <Button tone="retreat" variant="filled" onClick={closeProfile}>
-            Close
-          </Button>
+          </Stack>
         </DialogActions>
       </Dialog>
     </Box>
