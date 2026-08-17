@@ -23,6 +23,7 @@ import { Ticket, TicketStatus, Ticket_Status } from '@/types/ticket';
 import StatsTicketsMenu from '@/app/dashboard/_level_1/statsTicketMenu';
 import { Stack, TextField, InputAdornment, Typography } from '@mui/material';
 import { TICKET_STATUSES, TICKET_LIST_HEADERS,} from '../../../../_level_0/constants';
+import { DateToday } from '@/app/dashboard/_level_1/dateToday';
 
 export function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
@@ -194,12 +195,6 @@ export default function TeamTicketsWorkspace() {
     setSelected(id);
     router.push(`tickets/${id}`);
   }
-
-  const DateToday = () => (
-    <Typography noWrap textAlign={{ xs: 'center', sm: 'left'}} width={{ xs: 99, sm: 200}}>
-      <strong>{now.toDateString()}</strong>
-    </Typography>
-  )
 
   if (!isAuthenticated) return (
     <WorkspaceShell>
