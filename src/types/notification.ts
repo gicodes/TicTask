@@ -1,4 +1,5 @@
 export type NotificationType = 
+  "TICKET_DUE_SOON" |
   "TICKET_CREATED" |
   "TICKET_ASSIGNED" |
   "TICKET_UPDATED" |

@@ -43,7 +43,7 @@ export default function OverviewPage() {
   if (!team)
     return (
       <Alert severity="warning" sx={{ mx: "auto", maxWidth: 250 }}>
-        Team not found
+        Team not found. You may be signed out.
       </Alert>
     );
 
@@ -71,7 +71,17 @@ export default function OverviewPage() {
               <Typography variant="caption" color="text.secondary">
                 Created
               </Typography>
-              <Typography fontWeight={600}>{formatCreatedAt(team.createdAt)}</Typography>
+              <Typography 
+                fontWeight={600}
+                noWrap
+                sx={{
+                  minWidth: 0,
+                  maxWidth: { xs: 90, sm: 'none' },
+                  overflow: "hidden",
+                }}
+              >
+                {formatCreatedAt(team.createdAt)}
+              </Typography>
             </Box>
 
             <Box display="grid" gap={1}>
