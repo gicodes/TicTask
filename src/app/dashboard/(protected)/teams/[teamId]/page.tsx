@@ -63,7 +63,7 @@ export default function OverviewPage() {
         <CardContent>
           <Stack
             direction="row"
-            spacing={{ xs: 2, sm: 4, md: 6, lg: 7 }}
+            spacing={{ xs: 1, sm: 3, md: 5, lg: 7 }}
             flexWrap="wrap"
             useFlexGap
           >

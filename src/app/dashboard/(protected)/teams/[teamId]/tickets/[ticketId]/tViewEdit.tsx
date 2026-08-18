@@ -60,7 +60,7 @@ export function TicketDetailPane({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Card sx={{ p: 3, mb: 4, borderRadius: 2 }}>
+      <Card sx={{ py: { xs: 2, sm: 3}, px: { xs: 2, sm: 3}, mb: 4, borderRadius: 2 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
           <Typography
             variant="subtitle1"

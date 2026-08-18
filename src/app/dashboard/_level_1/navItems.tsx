@@ -144,12 +144,12 @@ export const NavbarAvatar = ({
       {showStatus && user?.name && 
         <Box 
           position={'absolute'} 
-          bottom={size < 32 ? -8 : 15.4545 - (0.56818 * size)}
-          right={size/ size} 
+          bottom={size < 32 ? -8 : 12 - (0.5 * size)}
+          right={size < 32 ? size/ size : 2.5} 
           maxHeight={size/ size}
         >
         <FaCircle 
-          size={size / 4} 
+          size={size > 50 ? size / 6 : size / 4} 
           color={
             user?.data?.status===undefined ? 'var(--disabled)' 
             : user?.data?.status==="ACTIVE" ? 'limegreen' 

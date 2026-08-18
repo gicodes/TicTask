@@ -153,7 +153,7 @@ export default function SubscriptionPage() {
 
               <Stack direction="row" spacing={2}>
                 {isPro || isEnterprise ? (
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2 }}>
+                  <Stack pt={{ xs: 1, sm: 0}} direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                     <Button
                       variant="outlined"
                       startIcon={<CreditCard />}
@@ -161,7 +161,7 @@ export default function SubscriptionPage() {
                     >
                       Manage Billing
                     </Button>
-                    <Button variant="text" tone="error" onClick={handleCancelSubscription}>
+                    <Button tone="danger" onClick={handleCancelSubscription}>
                       Cancel
                     </Button>
                   </Stack>

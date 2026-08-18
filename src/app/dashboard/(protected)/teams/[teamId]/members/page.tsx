@@ -273,11 +273,12 @@ export default function MembersPage() {
           )}
         </DialogContent>
 
-        <DialogActions sx={{ p: 2 }}>
+        <DialogActions>
           <Stack 
+            p={1}
+            gap={2}
+            width={'100%'}
             direction={{ xs: 'column', sm: 'row'}} 
-            gap={2} 
-            justifyContent={'space-between'}
           >
             {isOwner && selectedMember && selectedMember.id !== user?.id && (
               <Button

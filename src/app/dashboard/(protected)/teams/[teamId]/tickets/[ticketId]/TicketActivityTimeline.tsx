@@ -12,7 +12,8 @@ export function TicketActivityTimeline({
       spacing={0}
       sx={{
         py: 1,
-        px: 1,
+        px: 0.5,
+        gap: 0.5,
         borderRadius: 3,
         overflow: 'hidden',
         bgcolor: 'rgba(0,0,0,0.1))',
@@ -39,7 +40,7 @@ export function TicketActivityTimeline({
           }}
         />
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography variant="body2">
+          <Typography variant="body2" fontSize={{ xs: 12, sm: 14 }}>
             <strong>Created</strong> by{' '}
             {ticket.createdById === userId ? (
               <strong>you</strong>
@@ -48,7 +49,7 @@ export function TicketActivityTimeline({
             )}
           </Typography>
         </Box>
-        <Typography variant="caption" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
+        <Typography variant="caption" fontSize={{ xs: 12, sm: 14 }} color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
           {ticket.createdAt
             ? new Date(ticket.createdAt).toLocaleString('en-US', {
                 dateStyle: 'medium',
@@ -80,7 +81,7 @@ export function TicketActivityTimeline({
             }}
           />
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography variant="body2">
+            <Typography variant="body2" fontSize={{ xs: 12, sm: 14 }}>
               <strong>Assigned</strong> to{' '}
               {ticket.assignedToId === userId ? (
                 <strong>you</strong>
@@ -89,7 +90,7 @@ export function TicketActivityTimeline({
               )}
             </Typography>
           </Box>
-          <Typography variant="caption" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
+          <Typography variant="caption" fontSize={{ xs: 12, sm: 14 }} color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
             {ticket.createdAt
               ? new Date(ticket.createdAt).toLocaleString('en-US', {
                   dateStyle: 'medium',
@@ -122,7 +123,7 @@ export function TicketActivityTimeline({
             }}
           />
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography variant="body2">
+            <Typography variant="body2" fontSize={{ xs: 12, sm: 14 }}>
               <strong>Started</strong> by{' '}
               {ticket.startedById === userId ? (
                 <strong>you</strong>
@@ -131,7 +132,7 @@ export function TicketActivityTimeline({
               )}
             </Typography>
           </Box>
-          <Typography variant="caption" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
+          <Typography variant="caption" fontSize={{ xs: 12, sm: 14 }} color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
             {new Date(ticket.startedAt).toLocaleString('en-US', {
               dateStyle: 'medium',
               timeStyle: 'short',
@@ -162,7 +163,7 @@ export function TicketActivityTimeline({
             }}
           />
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography variant="body2">
+            <Typography variant="body2" fontSize={{ xs: 12, sm: 14 }}>
               <strong>Closed</strong> by{' '}
               {ticket.closedById === userId ? (
                 <strong>you</strong>
@@ -171,7 +172,7 @@ export function TicketActivityTimeline({
               )}
             </Typography>
           </Box>
-          <Typography variant="caption" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
+          <Typography variant="caption" fontSize={{ xs: 12, sm: 14 }} color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
             {new Date(ticket.closedAt).toLocaleString('en-US', {
               dateStyle: 'medium',
               timeStyle: 'short',

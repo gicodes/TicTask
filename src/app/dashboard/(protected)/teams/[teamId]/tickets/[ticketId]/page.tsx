@@ -5,9 +5,10 @@ import { HistoryPane } from './tHistory';
 import { Button } from '@/assets/buttons';
 import { useTeam } from '@/hooks/useTeam';
 import { useAuth } from '@/providers/auth';
-import { QA_TeamBtn } from '@/assets/QA_button';
+import QATeamActions from '@/assets/QA_button';
 import { TicketDetailPane } from './tViewEdit';
 import React, { useEffect, useState } from 'react';
+import AuthRedirectBtn from '@/assets/authRedirectBtn';
 import { useParams, useRouter } from 'next/navigation';
 import { useTeamTicket } from '@/providers/teamTickets';
 import { Ticket, TicketHistory, TicketNote } from '@/types/ticket';
@@ -31,7 +32,6 @@ import {
 import { CloseSharp, ArrowBack, Cancel } from '@mui/icons-material';
 import { EllipsisVertical, Share2, Edit, Save, Download } from 'lucide-react';
 import { TeamPageSkeleton } from '@/app/dashboard/_level_2/team/teamPageSkeleton';
-import AuthRedirectBtn from '@/assets/authRedirectBtn';
 
 export default function TeamTicketWorkspace() {
   const router = useRouter();
@@ -192,7 +192,7 @@ export default function TeamTicketWorkspace() {
           direction="row" 
           justifyContent="flex-end" 
           spacing={2} 
-          bgcolor={'rgba(0,0,0,1)'} 
+          bgcolor={'rgba(0,0,0,0.09)'} 
           sx={{ borderTopLeftRadius: 24, borderTopRightRadius: 24 }}
         >
           {isActive && <Button
@@ -284,56 +284,13 @@ export default function TeamTicketWorkspace() {
         </AppBar>
 
         {isAssigned && !editMode && (
-          <Box
-            sx={{              
-              py: 1,
-              position: 'fixed',
-              top: {xs: 234, sm: 242, md: 256, lg: 260},                    
-              zIndex: 1100,               
-              display: 'flex',
-              justifyContent: 'center',
-              pointerEvents: 'none',     
-            }}
-          >
-            <Card
-              sx={{
-                py: { xs: 1, sm: 1.5 },
-                px: 1.5, mx: 'auto',
-                boxShadow: 4,
-                borderRadius: 999,
-                maxWidth: 'fit-content',
-                bgcolor: (theme) => 
-                  theme.palette.mode === 'dark' ? 'rgba(30, 30, 30, 0.85)'
-                    : 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid',
-                borderColor: 'divider',
-                pointerEvents: 'auto',
-              }}
-            >
-              <Stack
-                direction="row"
-                flexWrap="wrap"
-                justifyContent="center"
-                gap={{ xs: 1, sm: 2, lg: 3 }}
-              >
-                {TICTASK_QUICK_ACTIONS.map((qa, i) => (
-                  <QA_TeamBtn
-                    key={i}
-                    ticketID={localTicket.id}
-                    localTicket={localTicket}
-                    color={qa.color}
-                    title={qa.title}
-                    status={qa.status}
-                    disabled={!isActive}
-                  />
-                ))}
-              </Stack>
-            </Card>
-          </Box>
+          <QATeamActions
+            localTicket={localTicket}
+            disabled={!isActive}
+          />
         )}
 
-        <Box p={{ xs: 1, md: 4 }} maxWidth="xl" mx="auto">
+        <Box p={{ xs: 0, md: 4 }} maxWidth="xl" mx="auto">
           <Stack direction={{ md: 'row' }} spacing={4}>
             <Box flex={3}>
               <TicketDetailPane
