@@ -136,9 +136,7 @@ export function TicketsProvider({ children }: { children: React.ReactNode }) {
       return { success: true, ticket };
     } catch (err) {
       const message = (err as ErrorResponse).response.data.message || "Unexpected error occurred";
-
-      console.error("Ticket creation failed:", message, err);
-
+      
       return {
         success: false,
         error: message,

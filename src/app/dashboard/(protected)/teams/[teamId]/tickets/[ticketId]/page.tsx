@@ -12,7 +12,6 @@ import AuthRedirectBtn from '@/assets/authRedirectBtn';
 import { useParams, useRouter } from 'next/navigation';
 import { useTeamTicket } from '@/providers/teamTickets';
 import { Ticket, TicketHistory, TicketNote } from '@/types/ticket';
-import { TICTASK_QUICK_ACTIONS } from '@/app/dashboard/_level_0/constants';
 import {
   Box,
   Stack,
@@ -185,148 +184,156 @@ export default function TeamTicketWorkspace() {
     </TeamPageSkeleton>
 
   return (
-    <Fade in timeout={400}>
-      <Box sx={{ position: 'relative', minHeight: '100vh' }}>
-        <Stack 
-          p={2} 
-          direction="row" 
-          justifyContent="flex-end" 
-          spacing={2} 
-          bgcolor={'rgba(0,0,0,0.09)'} 
-          sx={{ borderTopLeftRadius: 24, borderTopRightRadius: 24 }}
-        >
-          {isActive && <Button
-            variant={editMode ? 'contained' : 'outlined'}
-            onClick={editMode ? handleUpdate : () => setEditMode(true)}
-            disabled={isSubmitting}
-            startIcon={editMode ? <Save size={16} /> : <Edit size={16} />}
-          >
-            {editMode ? (isSubmitting ? 'Saving...' : 'Save') : 'Modify Ticket'}
-          </Button>}
-          {editMode && (
-            <Button tone="warm" onClick={() => setEditMode(false)} endIcon={<Cancel />}>
-              Cancel
-            </Button>
-          )}
-        </Stack>
-        <AppBar position="static" color="default" elevation={0}>
-          <Toolbar>
-            <IconButton edge="start" onClick={() => router.back()}>
-              <ArrowBack />
-            </IconButton>
-
-            {editMode ? (
-              <TextField
-                value={localTicket.title}
-                onChange={(e) => setLocalTicket({ ...localTicket, title: e.target.value })}
-                variant="standard"
-                fullWidth
-                autoFocus
-                sx={{ ml: 1, fontSize: '1.5rem' }}
-              />
-            ) : (
-              <Typography 
-                noWrap 
-                variant="h6" 
-                title={localTicket.title}
-                sx={{ ml: 1, flex: 1, width: { xs: 90, sm: 'none' }}} 
-              >
-                {localTicket.title}
-              </Typography>
-            )}
-
-            <Select
-              value={localTicket.status}
-              onChange={(e) => setLocalTicket({ ...localTicket, status: e.target.value as any })}
-              disabled={!editMode}
-              size="small"
-              sx={{ minWidth: 80, mx: 2, maxWidth: { xs: 90, sm: 160 } }}
-            >
-              {['UPCOMING', 'OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'CANCELLED'].map((s) => (
-                <MenuItem key={s} value={s}> {s.replace('_', ' ')} </MenuItem>
-              ))}
-            </Select>
-
-            <Tooltip title="More options">
-              <IconButton onClick={toggleMoreOptions}>
-                {moreOptions ? <CloseSharp /> : <EllipsisVertical size={20} />}
+    <>
+      <Fade in timeout={400}>
+        <Box sx={{ position: 'relative', minHeight: '100vh' }}>
+          <AppBar position="static" color="default" elevation={0}>
+            <Toolbar>
+              <IconButton edge="start" onClick={() => router.back()}>
+                <ArrowBack />
               </IconButton>
-            </Tooltip>
 
-            {moreOptions && (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: 64,
-                  right: 16,
-                  zIndex: 1300,
-                  bgcolor: 'background.paper',
-                  borderRadius: 2,
-                  boxShadow: 4,
-                  p: 1.5,
-                }}
-              >
-                <Stack direction="row" spacing={1}>
-                  <Tooltip title="Print / Save PDF">
-                    <IconButton onClick={handleSavePDF}>
-                      <Download />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Share">
-                    <IconButton onClick={handleShare}>
-                      <Share2 size={20} />
-                    </IconButton>
-                  </Tooltip>
-                </Stack>
-              </Box>
-            )}
-          </Toolbar>
-        </AppBar>
-
-        {isAssigned && !editMode && (
-          <QATeamActions
-            localTicket={localTicket}
-            disabled={!isActive}
-          />
-        )}
-
-        <Box p={{ xs: 0, md: 4 }} maxWidth="xl" mx="auto">
-          <Stack direction={{ md: 'row' }} spacing={4}>
-            <Box flex={3}>
-              <TicketDetailPane
-                ticket={localTicket}
-                setTicket={setLocalTicket}
-                editMode={editMode}
-                teamMembers={teamMembers}
-                userId={user?.id as number}
-              />
-            </Box>
-            <Box flex={2}>
-              <Tabs
-                value={tab}
-                onChange={(_, v) => setTab(v)}
-                variant="fullWidth"
-                sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}
-              >
-                <Tab label="Comments" />
-                <Tab label="Activity" />
-              </Tabs>
-
-              {tab === 0 && (
-                <CommentsPane 
-                  comments={ticketComments}
-                  newComment={newComment}
-                  onAddComment={handleAddComment}
-                  isActive={isActive}
-                  setNewComment={setNewComment}
-                  isSubmitting={isSubmitting}
+              {editMode ? (
+                <TextField
+                  value={localTicket.title}
+                  onChange={(e) => setLocalTicket({ ...localTicket, title: e.target.value })}
+                  variant="standard"
+                  fullWidth
+                  autoFocus
+                  sx={{ ml: 1, fontSize: '1.5rem' }}
                 />
+              ) : (
+                <Typography 
+                  noWrap 
+                  variant="h6" 
+                  title={localTicket.title}
+                  sx={{ ml: 1, flex: 1, width: { xs: 90, sm: 'none' }}} 
+                >
+                  {localTicket.title}
+                </Typography>
               )}
-              {tab === 1 && <HistoryPane history={ticketHistory} />}
-            </Box>
-          </Stack>
+
+              <Select
+                value={localTicket.status}
+                onChange={(e) => setLocalTicket({ ...localTicket, status: e.target.value as any })}
+                disabled={!editMode}
+                size="small"
+                sx={{ minWidth: 80, mx: 2, maxWidth: { xs: 90, sm: 160 } }}
+              >
+                {['UPCOMING', 'OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'CANCELLED'].map((s) => (
+                  <MenuItem key={s} value={s}> {s.replace('_', ' ')} </MenuItem>
+                ))}
+              </Select>
+
+              <Tooltip title="More options">
+                <IconButton onClick={toggleMoreOptions}>
+                  {moreOptions ? <CloseSharp /> : <EllipsisVertical size={20} />}
+                </IconButton>
+              </Tooltip>
+
+              {moreOptions && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 64,
+                    right: 16,
+                    zIndex: 1300,
+                    bgcolor: 'background.paper',
+                    borderRadius: 2,
+                    boxShadow: 4,
+                    p: 1.5,
+                  }}
+                >
+                  <Stack direction="row" spacing={1}>
+                    <Tooltip title="Print / Save PDF">
+                      <IconButton onClick={handleSavePDF}>
+                        <Download />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Share">
+                      <IconButton onClick={handleShare}>
+                        <Share2 size={20} />
+                      </IconButton>
+                    </Tooltip>
+                  </Stack>
+                </Box>
+              )}
+            </Toolbar>
+          </AppBar>
+
+          <Box p={{ xs: 0, md: 4 }} maxWidth="xl" mx="auto">
+            <Stack direction={{ md: 'row' }} spacing={4}>
+              <Box flex={3}>
+                <TicketDetailPane
+                  ticket={localTicket}
+                  setTicket={setLocalTicket}
+                  editMode={editMode}
+                  teamMembers={teamMembers}
+                  userId={user?.id as number}
+                />
+              </Box>
+              <Box flex={2}>
+                <Tabs
+                  value={tab}
+                  onChange={(_, v) => setTab(v)}
+                  variant="fullWidth"
+                  sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}
+                >
+                  <Tab label="Comments" />
+                  <Tab label="Activity" />
+                </Tabs>
+
+                {tab === 0 && (
+                  <CommentsPane 
+                    comments={ticketComments}
+                    newComment={newComment}
+                    onAddComment={handleAddComment}
+                    isActive={isActive}
+                    setNewComment={setNewComment}
+                    isSubmitting={isSubmitting}
+                  />
+                )}
+                {tab === 1 && <HistoryPane history={ticketHistory} />}
+              </Box>
+            </Stack>
+          </Box>
         </Box>
-      </Box>
-    </Fade>
+      </Fade>
+
+      {isAssigned && !editMode && (
+        <QATeamActions
+          localTicket={localTicket}
+          disabled={!isActive}
+        />
+      )}
+
+      <Stack 
+        p={2} 
+        direction="row" 
+        justifyContent="flex-end" 
+        spacing={2} 
+        bottom={0}
+        left={0}
+        right={0}
+        height={72}
+        width={'100%'}
+        position={'fixed'}
+        bgcolor={'rgba(0,0,0,0.09)'} 
+      >
+        {isActive && <Button
+          variant={editMode ? 'contained' : 'outlined'}
+          onClick={editMode ? handleUpdate : () => setEditMode(true)}
+          disabled={isSubmitting}
+          startIcon={editMode ? <Save size={16} /> : <Edit size={16} />}
+        >
+          {editMode ? (isSubmitting ? 'Saving...' : 'Save') : 'Modify Ticket'}
+        </Button>}
+        {editMode && (
+          <Button tone="warm" onClick={() => setEditMode(false)} endIcon={<Cancel />}>
+            Cancel
+          </Button>
+        )}
+      </Stack>
+    </>
   );
 }

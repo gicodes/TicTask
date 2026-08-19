@@ -31,7 +31,7 @@ const NotificationDropDown = ({
         <Stack direction="row" justifyContent="space-between" px={2} my={1}>
           <Typography variant='body2' fontWeight={600} pb={1} borderBottom={'1px solid var(--secondary)'}>Notifications</Typography>
           { notifications.length >= 1 &&
-            <>{notifications.some(n => n.read === false) ? 
+            <>{notifications.some(n => n?.read === false) ? 
               <Typography
                 variant="caption"
                 sx={{ 
@@ -57,22 +57,24 @@ const NotificationDropDown = ({
         </Stack>
         { notifications.length > 0 ? 
           <Stack>
-            { notifications.slice(0, 5).map((n) => (
+            { notifications.slice(0, 5).map((n, i) => (
               <Box
-                key={n.id}
+                key={i}
                 px={2}
                 py={1}
                 sx={{
-                  borderBottom: n.id !== notifications[notifications.length -1].id ? "1px solid var(--disabled)" : "none",
-                  background: n.read ? "transparent" : "rgba(25,118,210,0.08)",
+                  borderBottom: n?.id !== notifications[notifications.length -1]?.id ? "1px solid var(--disabled)" : "none",
+                  background: n?.read ? "transparent" : "rgba(25,118,210,0.08)",
                   cursor: "pointer",
                   display: 'grid',
                 }}
                 onClick={() => handleClose()}
               >
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography fontSize={{ xs: 14, md: 14.5}} fontWeight={501} sx={{ opacity: 0.75}}>{n.title}</Typography>
-                  { n.read === false && 
+                  <Typography fontSize={{ xs: 14, md: 14.5}} fontWeight={501} sx={{ opacity: 0.75}}>
+                    {n?.title}
+                  </Typography>
+                  { n?.read === false && 
                     <Tooltip title='Mark as read'>
                       <IconButton
                         sx={{"&:hover": { borderBottom: '1px solid var(--info)' } }}
@@ -95,7 +97,7 @@ const NotificationDropDown = ({
                       lg: 13.5
                     }}
                   >
-                    {n.message}
+                    {n?.message}
                   </Typography>
                   <Box 
                     display="flex" 
@@ -110,7 +112,7 @@ const NotificationDropDown = ({
                       }} 
                       color="text.secondary"
                     >
-                      {new Date(n.createdAt).toLocaleString()}
+                      {new Date(n?.createdAt).toLocaleString()}
                     </Typography>
                     <Tooltip title='Remove notification'>
                       <IconButton onClick={() => removeNotification(n.id)}>

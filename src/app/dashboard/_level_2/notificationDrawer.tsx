@@ -9,7 +9,6 @@ import {
   IconButton,
   TextField,
   MenuItem,
-  Button,
 } from "@mui/material";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
@@ -25,6 +24,7 @@ import {
   NotificationsNone,
 } from "@mui/icons-material";
 import type { AppNotification, NotificationType } from "@/types/notification";
+import { Button } from "@/assets/buttons";
 
 const ICONS = {
   info: <Info color="info" fontSize="small" />,
@@ -216,12 +216,11 @@ const NotificationsDrawer: React.FC = () => {
       }
       </Box>
 
+      <Toolbar />
       <Box
         sx={{
-          position: "absolute",
+          position: "fixed",
           bottom: 0,
-          left: 0,
-          width: "100%",
           p: 2,
           zIndex: 30,
         }}
@@ -236,8 +235,8 @@ const NotificationsDrawer: React.FC = () => {
         >
           <Button
             fullWidth
-            color="inherit"
-            variant="contained"
+            tone='inverted'
+            variant="outlined"
           >
             ← &nbsp; Back
           </Button>

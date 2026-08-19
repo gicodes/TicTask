@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { JWT as DefaultJWT } from "next-auth/jwt";
 import { PushSubscriptions } from "./subscription";
 import { TeamMember } from "./team";
+import { UserPreferences } from "./users";
 
 declare module "next-auth" {
   interface User extends DefaultUser {

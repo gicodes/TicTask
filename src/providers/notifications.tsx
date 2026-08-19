@@ -17,8 +17,16 @@ import {
   NewNotification, 
   NotificationsContextProps 
 } from "@/types/notification";
+import { GenericAPIRes } from "@/types/axios";
+import { apiGet, apiPatch, apiPost } from "@/lib/axios";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_API_URL;
+
+{/*
+  This provider handles 2 different kind of notification system.
+  1. Push notifications - Register worker, getVAPID and subscribe to push
+  2. In-App notifications - Register event with AppEvents and fire on trigger
+*/}
 
 const NotificationsContext = createContext<NotificationsContextProps | undefined>(undefined);
 
@@ -30,10 +38,29 @@ export const NotificationsProvider = ({
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
 
+  const shouldShowInAppNotifications =
+    !user?.data?.muteNotifications &&
+    (user?.data?.getInAppNotifs ?? true);
+
+  const initInAppNotifications = useCallback(async () => {
+    if (!user || !shouldShowInAppNotifications) return;
+    
+    try {
+      const res: GenericAPIRes = await apiGet("/notifications");
+
+      const data = await res.data;
+      if (res?.ok) {
+        setNotifications(data as AppNotification[]);
+      }
+    } catch (err) {
+      console.error("[IN APP] ⛔️ Restore failed:", err);
+    }
+  }, [user]);
+
   const initPushNotifications = useCallback(async () => {
     if (!user) return;
 
-    if (!user.subscription?.active && !user.data?.approved) return;
+    if (!user.subscription?.active && user.role!=="ADMIN") return;
 
     const isSecure = location.protocol === "https:" || location.hostname === "localhost";
 
@@ -60,17 +87,16 @@ export const NotificationsProvider = ({
       let subscription = await registration.pushManager.getSubscription();
 
       if (!subscription) {
-        const res = await fetch(`${SERVER_URL}/notifications/push/public-key`, {
-          credentials: "include",
-          headers: user?.accessToken ? { Authorization: `Bearer ${user.accessToken}` } : {},
-        });
+        const res: GenericAPIRes = await apiGet(`${SERVER_URL}/notifications/push/public-key`);
 
         if (!res.ok) {
-          const text = await res.text().catch(() => "No body");
+          const text = typeof res.data === "string"
+            ? res.data
+            : JSON.stringify(res.data ?? "No body");
           throw new Error(`VAPID fetch failed: ${res.status} – ${text.slice(0, 150)}`);
         }
 
-        const { publicKey } = await res.json();
+        const { publicKey } = (await res.data) as { publicKey?: string };
         if (!publicKey) throw new Error("No VAPID public key");
 
         const applicationServerKey = urlBase64ToUint8Array(publicKey);
@@ -109,6 +135,7 @@ export const NotificationsProvider = ({
     if (!user) return;
 
     initPushNotifications();
+    initInAppNotifications();
 
     const onVisibilityChange = () => {
       if (document.visibilityState === "visible") {
@@ -199,36 +226,29 @@ export const NotificationsProvider = ({
   };
 
   const addNotification = useCallback(async (n: NewNotification) => {
-    const res = await fetch(`${SERVER_URL}/notifications/${user?.id}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(n),
-    });
+    const res: GenericAPIRes = await apiPost(`/notifications`, n);
 
-    const data = await res.json();
-    if (data?.ok) {
-      setNotifications(prev => [data.notification, ...prev]);
+    const data = await res.data;
+
+    if (res?.ok) {
+      if (!shouldShowInAppNotifications) return;
+
+      setNotifications(prev => [data as AppNotification, ...prev]);
     }
-  }, []);
+  }, [shouldShowInAppNotifications]);
 
   const markAsRead = useCallback(async (id: number) => {
     setNotifications(prev =>
       prev.map(n => (n.id === id ? { ...n, read: true } : n))
     );
 
-    fetch(`${SERVER_URL}/notifications/${id}/read`, { 
-      method: "PATCH",
-    });
+    apiPatch(`/notifications/${id}/read`);
   }, []);
 
   const markAllAsRead = useCallback(async () => {
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
     
-    fetch(`${SERVER_URL}/notifications/read-all`, { 
-      method: "PATCH",
-      credentials: "include",
-      headers: { Authorization: `Bearer ${user?.accessToken}` }
-    });
+    apiPatch('/notifications/read-all');
   }, []);
 
   const removeNotification = useCallback((id: number) => {
@@ -265,6 +285,15 @@ export const NotificationsProvider = ({
           severity: 'info'
         }),
 
+      "ticket:due_soon": p => 
+        push({
+          title: "Ticket reminder",
+          message: `Ticket ${p.ticketId} is due on ${new Date(p.dueDate).toLocaleTimeString()}`,
+          type: "TICKET_DUE_SOON",
+          meta: { channel: "ticket", event: "due_soon", ...p },
+          severity: 'warning'
+        }),
+
       "ticket:assigned": p =>
         push({
           title: "Ticket assigned",
@@ -277,9 +306,63 @@ export const NotificationsProvider = ({
       "ticket:comment": p =>
         push({
           title: "New comment",
-          message: `Comment on ticket ${p.ticketId}`,
+          message: `You made a comment on ticket ${p.ticketId}`,
           type: "COMMENT_ADDED",
           meta: { channel: "ticket", event: "comment", ...p },
+          severity: 'info'
+        }),
+
+      "team:ticket:created": p =>
+        push({
+          title: "New Team Project",
+          message: `Team ${p.teamId} ${p.title} — created by ${p.createdBy}`,
+          type: "TICKET_CREATED",
+          meta: { channel: "ticket", event: "created", ...p },
+          severity: 'success'
+        }),
+
+      "team:ticket:assigned": p =>
+        push({
+          title: "Team Ticket assigned",
+          message: `Team ${p.teamId} - Assigned to ${p.assignee ?? "a user"}`,
+          type: "TICKET_ASSIGNED",
+          meta: { channel: "ticket", event: "assigned", ...p },
+          severity: 'info'
+        }),
+
+      "team:ticket:updated": p =>
+        push({
+          title: "Team Ticket update",
+          message: `Team ${p.teamId} - Ticket ${p.ticketId} was updated by ${p.updatedBy}`,
+          type: "TICKET_UPDATED",
+          meta: { channel: "ticket", event: "updated", ...p },
+          severity: 'info'
+        }),
+
+      "team:ticket:due_soon": p => 
+        push({
+          title: "Team Ticket reminder",
+          message: `Team ${p.teamId} - Ticket ${p.ticketId} is due on ${new Date(p.dueDate).toLocaleTimeString()}`,
+          type: "TICKET_DUE_SOON",
+          meta: { channel: "ticket", event: "due_soon", ...p },
+          severity: 'warning'
+        }),
+
+      "team:ticket:comment": p =>
+        push({
+          title: "New comment in Team",
+          message: `Team ${p.teamId} - Comment on ticket ${p.ticketId} by ${p.author}`,
+          type: "COMMENT_ADDED",
+          meta: { channel: "ticket", event: "comment", ...p },
+          severity: 'info'
+        }),
+
+      "team:ticket:closed": p =>
+        push({
+          title: "Ticket update",
+          message: `Ticket ${p.ticketId} closed by {p.closedBy}`,
+          type: "TICKET_CLOSED",
+          meta: { channel: "ticket", event: "closed", ...p },
           severity: 'info'
         }),
 
@@ -318,7 +401,7 @@ export const NotificationsProvider = ({
     return () => unsubscribers.forEach(off => off());
   }, [addNotification, user]);
 
-  const unreadCount = useMemo(() => notifications.filter(n => !n.read).length,
+  const unreadCount = useMemo(() => notifications.filter(n => !n?.read).length,
     [notifications]
   );
 

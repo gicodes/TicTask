@@ -98,8 +98,17 @@ export enum User_Type {
   PERSONAL = 'PERSONAL'
 }
 
+export type NotificationPreferences = {
+  email: boolean;
+  push: boolean;
+  inApp: boolean;
+};
+
 export interface UserPreferences {
   status: UserStatus;
+
+  muteNotifications?: boolean;
+  getInAppNotifs?: boolean;
   getTNotifsViaEmail?: boolean;
   workSpaceName?: string;
 

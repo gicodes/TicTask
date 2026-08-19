@@ -154,8 +154,7 @@ export default function TeamTicketCreatePage() {
       const result = await createTicket(payload)
       
       if (result) {
-        router.push(`/teams/${teamId}/tickets`)
-        router.back();
+        router.push(`/dashboard/teams/${teamId}/tickets/${result.id}`)
       } else {
         setIsSubmitting(false);
         console.error('Failed to create ticket')

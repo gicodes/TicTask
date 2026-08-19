@@ -16,10 +16,6 @@ const Page = () => {
       <Typography>Please <AuthRedirectBtn />  to access Teams </Typography>
     </Box>
   );
-
-  if (isAuthenticated && (user?.role==="USER" && user.data?.approved===false)) return (
-    <Box textAlign={'center'} p={4}> Teams unavailable right now!</Box>
-  )
   
   return (
     <TeamPage />

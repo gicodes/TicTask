@@ -82,11 +82,12 @@ export function TicketTypeSpecificFields({
           {'severity' in fields && (
             <Box
               sx={{
-                p: 1.5,
-                borderRadius: 2.5,
-                bgcolor: 'rgba(245, 158, 11, 0.045)',
-                border: '1px solid',
-                borderColor: 'rgba(245, 158, 11, 0.14)',
+                borderRadius: '50%',
+                bgcolor: 'rgba(239, 68, 68, 0.045)',
+                width: 100,
+                height: 100,
+                textAlign: 'center',
+                alignContent: 'center',
               }}
             >
               <Typography variant="caption" color="text.secondary" fontWeight={600}>
@@ -123,11 +124,12 @@ export function TicketTypeSpecificFields({
           {'impact' in fields && (
             <Box
               sx={{
-                p: 1.5,
-                borderRadius: 2.5,
+                borderRadius: '50%',
                 bgcolor: 'rgba(239, 68, 68, 0.045)',
-                border: '1px solid',
-                borderColor: 'rgba(239, 68, 68, 0.14)',
+                width: 100,
+                height: 100,
+                textAlign: 'center',
+                alignContent: 'center',
               }}
             >
               <Typography variant="caption" color="text.secondary" fontWeight={600}>

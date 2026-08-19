@@ -2,48 +2,59 @@ import { apiPatch } from "@/lib/axios";
 import { useAuth } from "@/providers/auth";
 import { useState, useCallback } from "react";
 import { GenericAPIRes } from "@/types/axios";
+import { useSession } from "next-auth/react";
 
-export const useUpdateEmailNotifSetting = (params?: number) => {
+export const useUpdateEmailNotifSetting = () => {
   const { user } = useAuth();
+  const { update } = useSession();
+
   const [tNotifsLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  let userId: number | undefined;
-
-  if (!params) userId = user?.id
-  else userId = params;
-
   const updateEmailNotifications = useCallback(
-    async (enabled: boolean) => {
+    async (next: boolean) => {
+      if (!user?.id) {
+        const message = "User not signed in";
+        setError(message);
+        throw new Error(message);
+      }
+
       try {
         setLoading(true);
         setError(null);
-          
-        const payload = { 
-          user: { 
-            data: { 
-              getTNotifsViaEmail: enabled 
-            }
-          }
+
+        const payload = {
+          data: {
+            getTNotifsViaEmail: next,
+          },
         };
 
         const res: GenericAPIRes = await apiPatch(
-          `/user/${userId}`, 
+          `/user/${user.id}`,
           payload
         );
+
+        await update();
+
         return res.data;
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to update email notifications");
-        return null;
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to update email notifications";
+
+        setError(message);
+        throw err;
       } finally {
         setLoading(false);
       }
-    }, [userId]
+    },
+    [user?.id]
   );
 
-  return { 
-    updateEmailNotifications, 
-    tNotifsLoading, 
-    error 
+  return {
+    updateEmailNotifications,
+    tNotifsLoading,
+    error,
   };
 };

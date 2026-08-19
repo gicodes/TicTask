@@ -10,6 +10,7 @@ import { SetStatusButton } from '../_level_2/statusBar';
 import { useAuthRedirect } from '@/hooks/useAuthRedirect';
 import NotificationDrop from '../_level_2/notificationDrop';
 import { useNotifications } from '@/providers/notifications';
+import { useMuteNotifications } from '@/hooks/useMuteNotifications';
 import { 
   AUTH_ITEMS, 
   getFilteredNav, 
@@ -35,7 +36,8 @@ import {
   Tooltip, 
   Stack, 
   Typography,
-  LinearProgress
+  LinearProgress,
+  Button
 } from '@mui/material';
 import { UserRole } from '../_level_1/userRole';
 import { Login, Menu as MenuIcon, Notifications, NotificationsOff } from '@mui/icons-material';
@@ -61,6 +63,13 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
       return () => clearTimeout(timer);
     }
   }, [pathname, isRouteChanging]);
+
+  const {
+    mute,
+    muteNotifications,
+    unmuteNotifications,
+    muteLoading,
+  } = useMuteNotifications();
 
   if (!isMounted) return <Box height="100vh" />
 
@@ -129,7 +138,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
           <Box gap={2} display={'flex'}>
             <Tooltip title={'Notifications'}>
               <Badge 
-                badgeContent={notifications.filter(n => !n.read).length} color="info"
+                badgeContent={notifications.filter(n => !n?.read).length} color="info"
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}} 
                 sx={{
                   "& .MuiBadge-badge": {
@@ -206,19 +215,32 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                   <Divider />
 
                   <Stack py={1} gap={1}>
-                    <Link 
-                      href={'#'} // Feature releases will implement this
-                      style={{ 
-                        gap: 12,
-                        padding: "10px 15px", 
-                        fontSize: 15, 
-                        display: 'flex', 
-                        alignItems: 'center'
+                    <Button 
+                      onClick={mute ? unmuteNotifications : muteNotifications} 
+                      disabled={muteLoading}
+                      sx={{
+                        gap: 1.5,
+                        width: '100%',
+                        padding: "10px 14px",
+                        fontSize: 15,
+                        justifyContent: 'flex-start',
+                        display: "flex",
+                        alignItems: "center",
+                        cursor: "pointer",
+                        opacity: muteLoading ? 0.6 : 1,
+                        textTransform: 'none',
                       }}
+                      color={mute ? 'inherit' : 'warning'}
                     >
-                      <NotificationsOff fontSize={'small'} /> 
-                      <span>Mute Notifications</span>
-                    </Link>
+                      <NotificationsOff fontSize="small" />
+                      <span>
+                        {muteLoading
+                          ? "Updating..."
+                          : mute
+                            ? "Unmute Notifications"
+                            : "Mute Notifications"}
+                      </span>
+                    </Button>
 
                     <SetStatusButton 
                       id={user?.id!} 

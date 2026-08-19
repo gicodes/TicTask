@@ -3,6 +3,7 @@ import { AllTicketTypes } from "@/types/ticket";
 export type TicketPayloads = {
   created: { ticketId: number; type: string; title: string; createdBy: string | number; assignee?: string | number };
   updated: { ticketId: number; type: string | AllTicketTypes; changes: Record<string, unknown>; status: string; updatedBy?: string | number }
+  due_soon: { ticketId: number; dueDate: Date | string };
   assigned: { ticketId: number; assignee?: string | number; assignedBy?: string | number };
   resolved: { ticketId: number; resolvedBy?: string | number };
   closed: { ticketId: number, closedBy?: string | number};
@@ -31,14 +32,35 @@ export type TeamTicketPayloads = {
   created: {
     teamId: number;
     ticketId: number;
-    createdBy?: string | number;
+    createdBy?: string;
   };
 
   updated: {
     teamId: number;
     ticketId: number;
+    updatedBy: string;
     updates: Record<string, unknown>;
   };
+
+  assigned: {
+    teamId: number;
+    ticketId: number,
+    assignedTo: string,
+    assignees?: string[],
+    assigneeIds?: number[]
+  }
+  
+  resolved: {
+    teamId: number,
+    ticketId: number,
+    resolvedBy: string,
+  }
+
+  due_soon: {
+    teamId: number;
+    ticketId: number;
+    dueDate: Date | string;
+  }
 
   deleted: {
     teamId: number;
@@ -49,24 +71,36 @@ export type TeamTicketPayloads = {
   comment: {
     teamId: number;
     ticketId: number;
-    author?: string | number;
+    author?: string;
   };
+
+  closed: {
+    teamId: number;
+    ticketId: number,
+    closedBy: string;
+  }
 };
 
 
 export type AppEvents = {
   "ticket:created": TicketPayloads["created"];
   "ticket:updated": TicketPayloads["updated"];
+  "ticket:due_soon": TicketPayloads["due_soon"];
   "ticket:assigned": TicketPayloads["assigned"];
   "ticket:resolved": TicketPayloads["resolved"];
   "ticket:closed": TicketPayloads["closed"];
   "ticket:comment": TicketPayloads["comment"];
   "ticket:status-changed": TicketPayloads["statusChanged"];
-
+  
+  "team:ticket:due_soon": TeamTicketPayloads["due_soon"];
   "team:ticket:created": TeamTicketPayloads["created"];
   "team:ticket:updated": TeamTicketPayloads["updated"];
   "team:ticket:deleted": TeamTicketPayloads["deleted"];
   "team:ticket:comment": TeamTicketPayloads["comment"];
+  "team:ticket:closed": TeamTicketPayloads["closed"];
+  "team:ticket:assigned": TeamTicketPayloads["assigned"];
+  "team:ticket:resolved": TeamTicketPayloads["resolved"];
+  "team:ticket:status-changed": TicketPayloads["statusChanged"];
 
   "subscription:started": SubscriptionPayloads["started"];
   "subscription:upgraded": SubscriptionPayloads["upgraded"];
@@ -80,8 +114,6 @@ export type AppEvents = {
   "auth:role-changed": AuthPayloads["roleChanged"];
   "auth:invited": AuthPayloads["invited"];
   "auth:removed": AuthPayloads["removed"];
-
-  
 };
 
 type Handler<T> = (payload: T) => void;

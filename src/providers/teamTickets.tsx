@@ -96,7 +96,7 @@ export function TeamTicketProvider({
       AppEvents.emit("team:ticket:created", {
         teamId,
         ticketId: ticket.id,
-        createdBy: user?.id,
+        createdBy: user!.name[0] ,
       });
 
       return ticket;
@@ -127,7 +127,16 @@ export function TeamTicketProvider({
         teamId,
         ticketId,
         updates,
+        updatedBy: user!.name[0] 
       });
+
+      if (updates.status === "CLOSED") {
+        AppEvents.emit("team:ticket:closed", { 
+          teamId,
+          ticketId,  
+          closedBy: user!.name[0] 
+        });
+      }
 
       return updated;
     } catch (err) {
@@ -166,7 +175,7 @@ export function TeamTicketProvider({
     AppEvents.emit("team:ticket:comment", {
       teamId,
       ticketId,
-      author: user?.id,
+      author: user!.name[0] ,
     });
   };
 

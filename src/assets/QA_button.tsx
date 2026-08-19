@@ -268,9 +268,9 @@ export default function QATeamActions({ localTicket, disabled = false }: Props) 
         <Box
           sx={{
             position: "fixed",
-            top: { xs: 240, sm: 242, md: 256, lg: 260 },
             left: 0,
             right: 0,
+            bottom: {xs: 60, md: 40},
             zIndex: 1100,
             display: "flex",
             justifyContent: "center",
@@ -330,8 +330,8 @@ export default function QATeamActions({ localTicket, disabled = false }: Props) 
         <Box
           sx={{
             position: "fixed",
-            top: { xs: 240, sm: 242, md: 256, lg: 260 },
-            left: "50%",
+            left: {xs: '20%', md: "50%"},
+            bottom: 10,
             transform: "translateX(-50%)",
             zIndex: 1100,
           }}
@@ -343,10 +343,15 @@ export default function QATeamActions({ localTicket, disabled = false }: Props) 
               sx={{
                 borderRadius: 999,
                 px: 2,
-                bgcolor: "background.paper",
+                border: 1,
+                borderColor: "transparent",
                 boxShadow: 2,
                 textTransform: "none",
                 fontWeight: 500,
+                "&:hover": {
+                  bgcolor: "background.paper",
+                  borderColor: "divider",
+                },
               }}
             >
               <GiAbstract050 />

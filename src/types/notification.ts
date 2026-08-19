@@ -13,16 +13,23 @@ export type NotificationSeverity = "info" | "warning" | "success" | "error"
 
 export interface AppNotification {
   id: number;
+  teamId?: number | null;
+  ticketId?: number | null;
+
   title: string;
   message?: string;
   type: NotificationType;
+  severity: NotificationSeverity
   read: boolean;
+
   createdAt: string;
   readAt?: string | null;
-  ticketId?: number | null;
-  teamId?: number | null;
+
   meta?: Record<string, unknown>;
-  severity: NotificationSeverity
+
+  closedBy?: string;
+  createdBy?: string;
+  author?: string;
 }
 
 export type NewNotification = Omit<
@@ -32,9 +39,18 @@ export type NewNotification = Omit<
 
 export interface AppEventMap {
   "ticket:created": { title: string; createdBy: string | number };
+  "ticket:due_soon": { ticketId: number, dueDate: Date | string };
   "ticket:updated": { ticketId: number };
   "ticket:assigned": { ticketId: number; assignee?: string | number };
   "ticket:comment": { ticketId: number; author?: string | number };
+  
+  "team:ticket:created": { teamId: number, title: string; createdBy: string };
+  "team:ticket:closed": { teamId: number, ticketId: number, closedBy: string };
+  "team:ticket:due_soon": { teamId: number, ticketId: number, dueDate: Date | string };
+  "team:ticket:updated": { teamId: number, ticketId: number, updatedBy: string };
+  "team:ticket:assigned": { teamId: number, ticketId: number; assignee?: string };
+  "team:ticket:comment": { teamId: number, ticketId: number; author?: string | number };
+
   "subscription:payment-failed": { userId: string; reason?: string };
   "subscription:renewal-upcoming": { plan: string; renewDate: string };
   "auth:new-device": { device: string; ip?: string };

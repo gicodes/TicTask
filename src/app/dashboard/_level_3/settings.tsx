@@ -25,12 +25,23 @@ import {
   Tooltip,
   CircularProgress,
 } from '@mui/material';
+import { 
+  Sun, 
+  Moon, 
+  Laptop, 
+  Bell, 
+  Shield, 
+  User2, 
+  Globe, 
+  PlugZap, 
+  CreditCard, 
+  Check 
+} from 'lucide-react';
 import { useNotifications } from '@/providers/notifications';
 import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
-import { Sun, Moon, Laptop, Bell, Shield, User2, Globe, PlugZap, CreditCard, Check } from 'lucide-react';
 import DevicesAndSessions from '../_level_2/accountSettings/loggedInDevices';
-
+import { useUpdateInAppNotifSetting } from '@/hooks/useInAppNotifs';
 
 const isIOS = () => {
   const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -43,12 +54,16 @@ export default function SettingsPage() {
   const { user } = useAuth();
   const { showAlert, confirm } = useAlert();
   const { mode, setThemeMode } = useThemeMode();
+  const {
+    inAppNotifications,
+    updateInAppNotifications,
+    inAppNotifsLoading,
+  } = useUpdateInAppNotifSetting();
   const { loading: authLoading, isAuthenticated } = useAuth();
   const { requestPushPermission, unsubscribePush } = useNotifications();
   const { updateWorkspaceName } = useUpdateWorkspaceName(user?.id);
-  const { updateEmailNotifications, tNotifsLoading } = useUpdateEmailNotifSetting(user?.id);
+  const { updateEmailNotifications, tNotifsLoading } = useUpdateEmailNotifSetting();
   const [autoSave, setAutoSave] = useState(true);
-  const [inAppNotfis, setInAppNotfis] = useState(true);
   const [emailNotif, setEmailNotif] = useState((user as User)?.data?.getTNotifsViaEmail ?? false);
   const [pushNotif, setPushNotif] = useState<boolean>(
     user?.pushSubscriptions?.[0]?.enabled ?? false
@@ -106,11 +121,19 @@ export default function SettingsPage() {
     const next = !emailNotif;
     setEmailNotif(next);
 
-    await updateEmailNotifications(next)
-      .then( () => showAlert("Ticket notification settings changes detected", 'success'))
-      .catch(() => showAlert('Something went wrong!', 'error'));
-  }
+    if (!updateEmailNotifications) {
+      showAlert('Notification settings are unavailable right now.', 'error');
+      return;
+    }
 
+    try {
+      await updateEmailNotifications(next);
+      showAlert("Ticket notification settings changes detected", 'success');
+    } catch {
+      showAlert('Something went wrong!', 'error');
+    }
+  };
+  
   const handleSetWorkSpaceName = async () => {
     if (!isEditingWSN) return;
 
@@ -208,15 +231,38 @@ export default function SettingsPage() {
       >
         <Stack spacing={1}>
           <FormControlLabel
-            control={<Switch checked={inAppNotfis} onChange={() => setInAppNotfis(!inAppNotfis)} />}
-            label="In-App Notifications"
+            control={
+              <Switch
+                checked={inAppNotifications}
+                onChange={async () => {
+                  try {
+                    await updateInAppNotifications(!inAppNotifications);
+
+                    showAlert(
+                      `In-App notifications ${
+                        !inAppNotifications ? "turned on" : "turned off"
+                      }!`,
+                      "success"
+                    );
+                  } catch {
+                    showAlert("Something went wrong!", "error");
+                  }
+                }}
+                disabled={inAppNotifsLoading}
+              />
+            }
+            label={
+              inAppNotifsLoading
+                ? "Saving..."
+                : "In-App Notifications"
+            }
           />
           <FormControlLabel
             control={<Switch checked={emailNotif} onChange={handleEmailNotifChange} />}
             label={tNotifsLoading ? "Saving..." : "Email Notifications"}
             disabled={tNotifsLoading}
           />
-          {(user?.subscription?.active || user?.data?.approved) && (
+          {(user?.subscription?.active) && (
             <>
               <FormControlLabel
                 control={<Switch checked={pushNotif as boolean} onChange={handlePushNotifChange} />}

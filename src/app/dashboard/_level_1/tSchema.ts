@@ -131,8 +131,8 @@ export const bugSchema = z.object({
   description: z.string().optional(),
   severity: z.enum(['LOW','MEDIUM','HIGH','CRITICAL']).default('HIGH'),
   steps: z.string().optional(),
-
   priority: z.enum(['LOW','MEDIUM','HIGH','URGENT']).optional(),
+  assignees: z.array(z.number()).optional(),
   assigneesIds: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
   dueDate: z.string().optional(),
@@ -144,7 +144,7 @@ export const featureSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
   impact: z.enum(['LOW','MEDIUM','HIGH']).default('MEDIUM'),
-
+  assignees: z.array(z.number()).optional(),
   priority: z.enum(['LOW','MEDIUM','HIGH','URGENT']).optional(),
   assigneesIds: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
@@ -161,6 +161,7 @@ export const invoiceSchema = z.object({
   description: z.string().optional(),
   dueDate: z.string().optional(),
   recurrence: z.string().optional(),
+  assignees: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional().default([]),
 });
 export type InvoiceFormValues = z.infer<typeof invoiceSchema>;
@@ -193,6 +194,7 @@ export const eventMeetingSchema = z.object({
   startTime: z.string().optional(),
   endTime: z.string().optional(),
   location: z.string().optional(),
+  assignees: z.array(z.number()).optional(),
   attendees: z.array(z.string()).optional(),
   tags: z.array(z.string()).optional(),
 });
