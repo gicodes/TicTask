@@ -30,8 +30,8 @@ const NotificationDropDown = ({
       <Box minWidth={{ xs: 260, sm: 280, md: 300 }}>
         <Stack direction="row" justifyContent="space-between" px={2} my={1}>
           <Typography variant='body2' fontWeight={600} pb={1} borderBottom={'1px solid var(--secondary)'}>Notifications</Typography>
-          { notifications.length >= 1 &&
-            <>{notifications.some(n => n?.read === false) ? 
+          { notifications?.length >= 1 &&
+            <>{notifications?.some(n => n?.read === false) ? 
               <Typography
                 variant="caption"
                 sx={{ 
@@ -55,9 +55,9 @@ const NotificationDropDown = ({
             }</>
           }
         </Stack>
-        { notifications.length > 0 ? 
+        { notifications?.length > 0 ? 
           <Stack>
-            { notifications.slice(0, 5).map((n, i) => (
+            { notifications?.slice(0, 5).map((n, i) => (
               <Box
                 key={i}
                 px={2}
@@ -79,7 +79,7 @@ const NotificationDropDown = ({
                       <IconButton
                         sx={{"&:hover": { borderBottom: '1px solid var(--info)' } }}
                         onClick={() => {
-                          markAsRead(n.id);
+                          markAsRead(n?.id);
                           handleClose();
                         }}
                       >
