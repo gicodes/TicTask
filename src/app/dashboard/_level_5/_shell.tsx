@@ -138,7 +138,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
           <Box gap={2} display={'flex'}>
             <Tooltip title={'Notifications'}>
               <Badge 
-                badgeContent={notifications.filter(n => !n?.read).length} color="info"
+                badgeContent={notifications?.filter(n => !n?.read).length} color="info"
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}} 
                 sx={{
                   "& .MuiBadge-badge": {
