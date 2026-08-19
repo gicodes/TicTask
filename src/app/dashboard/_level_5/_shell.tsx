@@ -40,7 +40,7 @@ import {
   Button
 } from '@mui/material';
 import { UserRole } from '../_level_1/userRole';
-import { Login, Menu as MenuIcon, Notifications, NotificationsOff } from '@mui/icons-material';
+import { Login, Menu as MenuIcon, Notifications, NotificationsOff, NotificationsTwoTone } from '@mui/icons-material';
 
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -232,7 +232,10 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                       }}
                       color={mute ? 'inherit' : 'warning'}
                     >
-                      <NotificationsOff fontSize="small" />
+                      {mute
+                          ? <NotificationsTwoTone fontSize='small' />
+                          : <NotificationsOff fontSize="small" />
+                      }
                       <span>
                         {muteLoading
                           ? "Updating..."

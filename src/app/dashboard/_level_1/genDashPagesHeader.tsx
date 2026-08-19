@@ -13,7 +13,7 @@ const GenericDashboardPagesHeader = ({
 }: GDPHProps) => {
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}> 
-      <Stack spacing={1} textAlign={{xs: 'center', sm: 'inherit'}}> 
+      <Stack spacing={1} textAlign={{xs: 'center', sm: 'inherit'}} px={2}> 
         <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.75rem', sm: '2rem' } }}> 
           {title}
         </Typography> 
