@@ -16,14 +16,17 @@ import {
   ListItemText,
   Chip,
   IconButton,
+  ToggleButton,
 } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
+import { Add as AddIcon, PushPin, PushPinOutlined } from '@mui/icons-material';
 import { Button as AppButton } from '@/assets/buttons';
 import { TicketImpact, TicketSeverity } from '@/types/ticket';
 import { TeamTicketSpecificTypeProps } from '@/types/teamViewProps';
 import { RichTextViewer } from '@/app/dashboard/_level_1/richTextViewer';
 import { EstimatedTimeField } from '@/app/dashboard/_level_1/estTimeHours';
 import { LightweightRichEditor } from '@/app/dashboard/_level_1/richTextEditior';
+import { NotesFormValues } from '@/app/dashboard/_level_1/tSchema';
+import { useFormContext } from 'react-hook-form';
 
 const SEVERITY_OPTIONS = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'] as const
 const IMPACT_OPTIONS = ['HIGH', 'MEDIUM', 'LOW'] as const
@@ -34,6 +37,9 @@ export function TicketTypeSpecificFields({
   editMode,
   updateField,
 }: TeamTicketSpecificTypeProps) {
+  const { setValue, watch } = useFormContext<NotesFormValues>();
+  
+  const isPinned = ticket.data.isPinned ?? watch('isPinned');
   const [newChecklistItem, setNewChecklistItem] = useState('')
   const [newSubtask, setNewSubtask] = useState('');
   const [newAttendee, setNewAttendee] = useState('');
@@ -45,6 +51,39 @@ export function TicketTypeSpecificFields({
 
   return (
     <Stack spacing={2.5} mb={3}>
+      {'isPinned' in fields && 
+      <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <ToggleButton
+            value="pin"
+            selected={isPinned}
+            onChange={() =>
+              setValue('isPinned', !isPinned, {
+                shouldDirty: true,
+              })
+            }
+            sx={{
+              borderRadius: 2,
+              textTransform: 'none',
+              gap: 1,
+              px: 2,
+            }}
+          >
+            {isPinned ? (
+              <PushPin fontSize="small" />
+            ) : (
+              <PushPinOutlined fontSize="small" />
+            )}
+
+            {isPinned ? 'Pinned' : 'Pin note'}
+          </ToggleButton>
+        </Box>
+      }
+      
       {'steps' in fields && (
         <Box>
           <Typography variant="subtitle2" color="text.secondary" fontWeight={600} gutterBottom>
@@ -532,7 +571,7 @@ export function TicketTypeSpecificFields({
               </Stack>
             ) : (
               <Typography variant="caption" color="text.disabled" fontStyle="italic">
-                No attachments
+                No attachments &nbsp;
               </Typography>
             )}
 

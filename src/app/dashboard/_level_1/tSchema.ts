@@ -104,14 +104,15 @@ export const generalSchema = z.object({
     z.literal(""),                    
     z.string().email("Invalid email address")
   ])).optional().optional(),
-  assignees: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
   dueDate: z.string().optional(),
+  assignees: z.array(z.number()).optional(),
 });
 export type GeneralFormValues = z.infer<typeof generalSchema>;
 
 export const noteSchema = z.object({
   type: z.string().optional(),
+  isPinned: z.boolean().optional(),
   title: z.string().min(1, 'Title is required'),
   assignTo: z.string().trim().pipe(z.union([
     z.literal(""),                    
@@ -121,7 +122,7 @@ export const noteSchema = z.object({
   tags: z.array(z.string()).optional().default([]),
   attachments: z.array(z.string()).optional(),
   color: z.enum(['INFO', 'SUCCESS', 'DANGER', 'WARNING', 'SPECIAL', 'DEFAULT']).optional().default('INFO'),
-  isPinned: z.boolean().optional(),
+  assignees: z.array(z.number()).optional(),
 });
 export type NotesFormValues = z.infer<typeof noteSchema>;
 
@@ -132,9 +133,9 @@ export const bugSchema = z.object({
   severity: z.enum(['LOW','MEDIUM','HIGH','CRITICAL']).default('HIGH'),
   steps: z.string().optional(),
   priority: z.enum(['LOW','MEDIUM','HIGH','URGENT']).optional(),
-  assignees: z.array(z.number()).optional(),
   assigneesIds: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
+  assignees: z.array(z.number()).optional(),
   dueDate: z.string().optional(),
 });
 export type BugFormValues = z.infer<typeof bugSchema>;
@@ -144,11 +145,11 @@ export const featureSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
   impact: z.enum(['LOW','MEDIUM','HIGH']).default('MEDIUM'),
-  assignees: z.array(z.number()).optional(),
   priority: z.enum(['LOW','MEDIUM','HIGH','URGENT']).optional(),
   assigneesIds: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional(),
   dueDate: z.string().optional(),
+  assignees: z.array(z.number()).optional(),
 });
 export type FeatureFormValues = z.infer<typeof featureSchema>;
 
@@ -159,10 +160,10 @@ export const invoiceSchema = z.object({
   currency: z.string().default("USD"),
   extClient: z.email().optional(),
   description: z.string().optional(),
-  dueDate: z.string().optional(),
   recurrence: z.string().optional(),
-  assignees: z.array(z.number()).optional(),
   tags: z.array(z.string()).optional().default([]),
+  assignees: z.array(z.number()).optional(),
+  dueDate: z.string().optional(),
 });
 export type InvoiceFormValues = z.infer<typeof invoiceSchema>;
  
@@ -175,15 +176,15 @@ export const taskSchema = z.object({
     z.literal(""),                    
     z.string().email("Invalid email address")
   ])).optional(),
-  assignees: z.array(z.number()).optional(),
   checklist: z.array(z.string()).optional(),
   recurrence: z.string().optional(),
   estimatedTimeHours: z.number().nonnegative().optional(),
   attachments: z.array(z.string()).optional(), // store urls & ids
   subtasks: z.array(z.object({ title: z.string(), done: z.boolean().optional() })).optional(),
-  dueDate: z.string().optional(),
   tags: z.array(z.string()).optional(),
   startTime: z.string().optional(),
+  assignees: z.array(z.number()).optional(),
+  dueDate: z.string().optional(),
 });
 export type TaskFormValues = z.infer<typeof taskSchema>;
 
@@ -194,9 +195,9 @@ export const eventMeetingSchema = z.object({
   startTime: z.string().optional(),
   endTime: z.string().optional(),
   location: z.string().optional(),
-  assignees: z.array(z.number()).optional(),
   attendees: z.array(z.string()).optional(),
   tags: z.array(z.string()).optional(),
+  assignees: z.array(z.number()).optional(),
 });
 export type EventMeetingFormValues = z.infer<typeof eventMeetingSchema>;
 
@@ -222,22 +223,59 @@ export const TICKET_SCHEMAS: Record<TicketTypeUnion, ZodTypeAny> = {
 
 export const TICKET_DEFAULTS: Record<TicketTypeUnion, (defaultDueDate?: Date) => Record<string, unknown>> = {
   GENERAL: () => ({ 
-    type: 'GENERAL', title: '', description: '', priority: 'MEDIUM', tags: [], assignees: [], }),
+    type: 'GENERAL', 
+    title: '', 
+    description: '', 
+    priority: 'MEDIUM', 
+    tags: [], 
+    assignees: [], 
+  }),
   BUG: () => ({ 
-    type: 'BUG', title: '', severity: 'HIGH', steps: '', priority: 'HIGH', tags: [], assignees: [], }),
+    type: 'BUG', 
+    title: '', 
+    severity: 'HIGH', 
+    steps: '', 
+    priority: 'HIGH', 
+    tags: [], 
+    assignees: [], 
+  }),
   FEATURE_REQUEST: () => ({ 
-    type: 'FEATURE_REQUEST', title: '', impact: 'MEDIUM', description: '', assignees: [], }),
+    type: 'FEATURE_REQUEST', 
+    title: '', 
+    impact: 'MEDIUM', 
+    description: '', 
+    assignees: [], 
+  }),
   INVOICE: () => ({ 
-    type: 'INVOICE', title: '', amount: 0, currency: 'USD', description: '', assignTo: '', }),
+    type: 'INVOICE', 
+    title: '', 
+    amount: 0, 
+    currency: 'USD', 
+    description: '', 
+    assignTo: '', 
+    assignees: [], 
+  }),
   SUPPORT: () => ({ 
-    type: 'SUPPORT', title: '', description: '', assignees: [], }),
+    type: 'SUPPORT', 
+    title: '', 
+    description: '', 
+    assignees: [], 
+  }),
   SECURITY: () => ({ 
-    type: 'SECURITY', title: '', description: '', assignees: [], }),
+    type: 'SECURITY', 
+    title: '', 
+    description: '', 
+    assignees: [], 
+  }),
   NOTE: () => ({ 
-    type: 'NOTE', title: '', description: '', assignees: [], isPinned: false}),
+    type: 'NOTE', 
+    title: '', 
+    description: '',
+    isPinned: false}), 
 };
 
-export const TASK_FORMS: Record<PlannerTaskTypeUnion, FormComponentType> = {
+export const TASK_FORMS: Record<PlannerTaskTypeUnion, 
+FormComponentType> = {
   TASK: TaskForm,
   MEETING: EventForm,
   EVENT: EventForm,
@@ -271,6 +309,8 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     location: '',
     attendees: [],
     tags: [],
+    assignees: [],
+    dueDate: defaultDueDate ? format(defaultDueDate, "yyyy-MM-dd'T'HH:mm") : undefined,
   }),
   EVENT: (defaultDueDate?: Date) => ({
     type: 'EVENT',
@@ -281,6 +321,8 @@ export const TASK_DEFAULTS: Record<PlannerTaskTypeUnion, (defaultDueDate?: Date)
     location: '',
     attendees: [],
     tags: [],
+    assignees: [],   
+    dueDate: defaultDueDate ? format(defaultDueDate, "yyyy-MM-dd'T'HH:mm") : undefined,
   }),
 };
 
