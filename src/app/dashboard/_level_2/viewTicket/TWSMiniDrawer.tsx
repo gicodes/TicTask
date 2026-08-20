@@ -339,7 +339,7 @@ export default function TicketDetailDrawer({
           )}
           <Button 
             onClick={onClose} 
-            tone="inverted" 
+            tone="retreat" 
             sx={{ width: 125 }} 
             startIcon={<ArrowBack />}
           >

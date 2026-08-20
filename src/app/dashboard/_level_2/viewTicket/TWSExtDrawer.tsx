@@ -63,7 +63,6 @@ export default function TWSExtDrawer({
   }, [ticket, setTicketNotes])
 
   const isActive = !['CANCELLED', 'RESOLVED', 'CLOSED'].includes(ticket!.status);
-  const isTeamAdmin = !!(user as User).teamMemberships && !!(user as User).createdTeams;
 
   const onSubmit = async (data: FieldValues) => {
     try {
