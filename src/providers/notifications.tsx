@@ -157,6 +157,11 @@ export const NotificationsProvider = ({
 
     if (permission === "granted") {
       console.log("[PUSH] 📣 Permission granted → attempting subscription now");
+
+      await apiPatch(`/user/${user!.id}`, {
+        data: { getPushNotifs: true }
+      }) 
+
       await initPushNotifications();
     } else {
       console.log("[PUSH] 🚫 Permission denied/dismissed");
