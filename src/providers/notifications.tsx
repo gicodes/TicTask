@@ -81,7 +81,7 @@ export const NotificationsProvider = ({
         setNotifications(data as AppNotification[]);
       }
     } catch (err) {
-      console.error("[IN APP] ⛔️ Restore failed:", err);
+      if (process.env.NODE_ENV !== "production") console.error("[IN APP] ⛔️ Restore failed:", err);
     }
   }, [user]);
 
@@ -93,22 +93,22 @@ export const NotificationsProvider = ({
     const isSecure = location.protocol === "https:" || location.hostname === "localhost";
 
     if (!isSecure) {
-      console.warn("[PUSH] ⚠️ Notifications require HTTPS (localhost allowed for dev)");
+      if (process.env.NODE_ENV !== "production") console.warn("[PUSH] ⚠️ Notifications require HTTPS (localhost allowed for dev)");
       return;
     }
 
     if (!("serviceWorker" in navigator) || !("PushManager" in window) || typeof Notification === "undefined") {
-      console.warn("[PUSH] 📵 Push/Notifications API not supported in this browser");
+      if (process.env.NODE_ENV !== "production") console.warn("[PUSH] 📵 Push/Notifications API not supported in this browser");
       return;
     }
 
     try {
       const registration = await navigator.serviceWorker.register("/sw.js", { scope: "/" });
-      console.log("[PUSH] 📣 Service Worker registered → scope:", registration.scope);
+      if (process.env.NODE_ENV !== "production") console.log("[PUSH] 📣 Service Worker registered → scope:", registration.scope);
 
       let permission = Notification.permission;
       if (permission !== "granted") {
-        console.log("[PUSH] 🚫 Permission not granted yet →", permission);
+        if (process.env.NODE_ENV !== "production") console.log("[PUSH] 🚫 Permission not granted yet →", permission);
         return;
       }
 
@@ -150,12 +150,12 @@ export const NotificationsProvider = ({
       });
 
       if (!saveRes.ok) {
-        console.warn("[PUSH] Server save failed", saveRes.status);
+        if (process.env.NODE_ENV !== "production") console.warn("[PUSH] Server save failed", saveRes.status);
       } else {
-        console.log("[PUSH] 📣 Subscription registered successfully");
+        if (process.env.NODE_ENV !== "production") console.log("[PUSH] 📣 Subscription registered successfully");
       }
     } catch (err) {
-      console.error("[PUSH] ⛔️ Setup failed:", err);
+      if (process.env.NODE_ENV !== "production") console.error("[PUSH] ⛔️ Setup failed:", err);
     }
   }, [user]);
 
@@ -184,7 +184,7 @@ export const NotificationsProvider = ({
     const permission = await Notification.requestPermission();
 
     if (permission === "granted") {
-      console.log("[PUSH] 📣 Permission granted → attempting subscription now");
+      if (process.env.NODE_ENV !== "production") console.log("[PUSH] 📣 Permission granted → attempting subscription now");
 
       await apiPatch(`/user/${user!.id}`, {
         data: { getPushNotifs: true }
@@ -192,7 +192,7 @@ export const NotificationsProvider = ({
 
       await initPushNotifications();
     } else {
-      console.log("[PUSH] 🚫 Permission denied/dismissed");
+      if (process.env.NODE_ENV !== "production") console.log("[PUSH] 🚫 Permission denied/dismissed");
     }
 
     return permission === "granted";
@@ -200,7 +200,7 @@ export const NotificationsProvider = ({
 
   const unsubscribePush = useCallback(async () => {
     if (typeof Notification === "undefined" || !("serviceWorker" in navigator)) {
-      console.warn("[PUSH] 🆘 Cannot unsubscribe: APIs not available");
+      if (process.env.NODE_ENV !== "production") console.warn("[PUSH] 🆘 Cannot unsubscribe: APIs not available");
       return false;
     }
 
@@ -210,16 +210,16 @@ export const NotificationsProvider = ({
       const subscription = await registration.pushManager.getSubscription();
 
       if (!subscription) {
-        console.log("[PUSH] ⚠️ No active subscription to unsubscribe from");
+        if (process.env.NODE_ENV !== "production") console.log("[PUSH] ⚠️ No active subscription to unsubscribe from");
         return true;
       }
 
       const unsubscribed = await subscription.unsubscribe();
 
       if (!unsubscribed) {
-        console.warn("[PUSH] ⚠️ unsubscribe() returned false – may have failed");
+        if (process.env.NODE_ENV !== "production") console.warn("[PUSH] ⚠️ unsubscribe() returned false – may have failed");
       } else {
-        console.log("[PUSH] ✔️ Successfully unsubscribed locally");
+        if (process.env.NODE_ENV !== "production") console.log("[PUSH] ✔️ Successfully unsubscribed locally");
       }
 
       const deleteRes = await fetch(`${SERVER_URL}/notifications/push/unsubscribe`, {
@@ -235,14 +235,14 @@ export const NotificationsProvider = ({
       });
 
       if (!deleteRes.ok) {
-        console.warn("[PUSH] ⛔️ Server unsubscribe failed", deleteRes.status);
+        if (process.env.NODE_ENV !== "production") console.warn("[PUSH] ⛔️ Server unsubscribe failed", deleteRes.status);
       } else {
-        console.log("[PUSH] 📵 Server notified – subscription removed");
+        if (process.env.NODE_ENV !== "production") console.log("[PUSH] 📵 Server notified – subscription removed");
       }
 
       return unsubscribed;
     } catch (err) {
-      console.error("[PUSH] ⛔️ Unsubscribe failed:", err);
+      if (process.env.NODE_ENV !== "production") console.error("[PUSH] ⛔️ Unsubscribe failed:", err);
       return false;
     }
   }, [user]);
