@@ -40,7 +40,11 @@ import {
   Button
 } from '@mui/material';
 import { UserRole } from '../_level_1/userRole';
-import { Login, Menu as MenuIcon, Notifications, NotificationsOff, NotificationsTwoTone } from '@mui/icons-material';
+import { Login, Menu as MenuIcon, 
+  Notifications, 
+  NotificationsActiveSharp, 
+  NotificationsOff
+ } from '@mui/icons-material';
 
 export default function DashboardIndex({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -151,7 +155,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                 }}
               >
                 <IconButton onClick={handleNotificationClick}>
-                  <Notifications />
+                  <Notifications fontSize={'large'} />
                 </IconButton>
               </Badge>
             </Tooltip>
@@ -223,7 +227,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                       sx={{
                         gap: 1.5,
                         width: '100%',
-                        padding: "10px 14px",
+                        padding: "10px 15px",
                         fontSize: 15,
                         justifyContent: 'flex-start',
                         display: "flex",
@@ -231,11 +235,12 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                         cursor: "pointer",
                         opacity: muteLoading ? 0.6 : 1,
                         textTransform: 'none',
+                        fontWeight: 501
                       }}
-                      color={mute ? 'inherit' : 'warning'}
+                      color={mute ? 'primary' : 'inherit'}
                     >
                       {mute
-                          ? <NotificationsTwoTone fontSize='small' />
+                          ? <NotificationsActiveSharp fontSize='small' />
                           : <NotificationsOff fontSize="small" />
                       }
                       <span>
