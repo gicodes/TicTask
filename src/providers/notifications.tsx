@@ -319,8 +319,8 @@ export const NotificationsProvider = ({
 
       "team:ticket:created": p =>
         push({
-          title: "New Team Project",
-          message: `Team ${p.teamId} ${p.title} — created by ${p.createdBy}`,
+          title: "New Team Ticket",
+          message: `Team ${p.teamId} has a new ticket — created by ${p.createdBy}`,
           type: "TICKET_CREATED",
           meta: { channel: "ticket", event: "created", ...p },
           severity: 'success'

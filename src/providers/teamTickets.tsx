@@ -96,7 +96,7 @@ export function TeamTicketProvider({
       AppEvents.emit("team:ticket:created", {
         teamId,
         ticketId: ticket.id,
-        createdBy: user!.name[0] ,
+        createdBy: user!.name?.split(" ")[0] ,
       });
 
       return ticket;
@@ -127,14 +127,14 @@ export function TeamTicketProvider({
         teamId,
         ticketId,
         updates,
-        updatedBy: user!.name[0] 
+        updatedBy: user!.name?.split(" ")[0] 
       });
 
       if (updates.status === "CLOSED") {
         AppEvents.emit("team:ticket:closed", { 
           teamId,
           ticketId,  
-          closedBy: user!.name[0] 
+          closedBy: user!.name?.split(" ")[0] 
         });
       }
 

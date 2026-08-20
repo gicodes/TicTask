@@ -52,13 +52,14 @@ export function TicketTypeSpecificFields({
   return (
     <Stack spacing={2.5} mb={3}>
       {'isPinned' in fields && 
-      <Box
+        <Box
           sx={{
             display: 'flex',
             justifyContent: 'flex-end',
           }}
         >
-          <ToggleButton
+          {isPinned ? 'Pinned' : 'Pin note'}
+          {editMode && <ToggleButton
             value="pin"
             selected={isPinned}
             onChange={() =>
@@ -78,9 +79,7 @@ export function TicketTypeSpecificFields({
             ) : (
               <PushPinOutlined fontSize="small" />
             )}
-
-            {isPinned ? 'Pinned' : 'Pin note'}
-          </ToggleButton>
+          </ToggleButton>}
         </Box>
       }
       

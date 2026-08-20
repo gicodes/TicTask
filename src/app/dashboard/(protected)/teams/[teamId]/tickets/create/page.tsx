@@ -278,7 +278,7 @@ export default function TeamTicketCreatePage() {
                 <DatePicker control={control} name="dueDate" label="Due Date" />
               </Box>
 
-              <Box flex={1}>
+              <Box flex={1} pt={{ xs: 3, md: 0}}>
                 <FormComponent control={control} task={formConfig.isTask} />
               </Box>
             </Stack>
