@@ -42,6 +42,34 @@ export const NotificationsProvider = ({
     !user?.data?.muteNotifications &&
     (user?.data?.getInAppNotifs ?? true);
 
+  const addLocalNotification = useCallback(
+    (n: NewNotification) => {
+      if (!shouldShowInAppNotifications) return;
+
+      const optimistic: AppNotification = {
+        id: Date.now(),
+        read: false,
+        createdAt: new Date().toISOString(),
+        ...n,
+      } as AppNotification;
+
+      setNotifications((prev) => [optimistic, ...prev]);
+    },
+    [shouldShowInAppNotifications]
+  );
+
+  const addNotification = useCallback(
+    async (n: NewNotification) => {
+      const res: GenericAPIRes = await apiPost(`/notifications`, n);
+      const data = await res.data;
+
+      if (res?.ok && shouldShowInAppNotifications) {
+        setNotifications((prev) => [data as AppNotification, ...prev]);
+      }
+    },
+    [shouldShowInAppNotifications]
+  );
+
   const initInAppNotifications = useCallback(async () => {
     if (!user || !shouldShowInAppNotifications) return;
     
@@ -230,18 +258,6 @@ export const NotificationsProvider = ({
     return outputArray;
   };
 
-  const addNotification = useCallback(async (n: NewNotification) => {
-    const res: GenericAPIRes = await apiPost(`/notifications`, n);
-
-    const data = await res.data;
-
-    if (res?.ok) {
-      if (!shouldShowInAppNotifications) return;
-
-      setNotifications(prev => [data as AppNotification, ...prev]);
-    }
-  }, [shouldShowInAppNotifications]);
-
   const markAsRead = useCallback(async (id: number) => {
     setNotifications(prev =>
       prev.map(n => (n.id === id ? { ...n, read: true } : n))
@@ -267,135 +283,142 @@ export const NotificationsProvider = ({
   useEffect(() => {
     if (!user) return;
 
-    const push = (n: NewNotification) => void addNotification(n);
+    const push = (n: NewNotification) => addLocalNotification(n);
 
-    const handlers: {
-      [K in keyof AppEventMap]: EventCallback<K>;
-    } = {
-      "ticket:created": p =>
+    const handlers: { [K in keyof AppEventMap]?: EventCallback<K> } = {
+      "ticket:created": (p) =>
         push({
           title: "New ticket",
           message: `${p.title} — created by ${p.createdBy}`,
           type: "TICKET_CREATED",
           meta: { channel: "ticket", event: "created", ...p },
-          severity: 'success'
+          severity: "success",
         }),
 
-      "ticket:updated": p =>
+      "ticket:updated": (p) =>
         push({
           title: "Ticket update",
-          message: `Ticket ${p.ticketId} was updated`,
+          message: `Ticket #${p.ticketId} was updated`,
           type: "TICKET_UPDATED",
           meta: { channel: "ticket", event: "updated", ...p },
-          severity: 'info'
+          severity: "info",
         }),
 
-      "ticket:due_soon": p => 
+      "ticket:due_soon": (p) =>
         push({
           title: "Ticket reminder",
-          message: `Ticket ${p.ticketId} is due on ${new Date(p.dueDate).toLocaleTimeString()}`,
+          message: `Ticket #${p.ticketId} is due on ${new Date(p.dueDate).toLocaleString()}`,
           type: "TICKET_DUE_SOON",
           meta: { channel: "ticket", event: "due_soon", ...p },
-          severity: 'warning'
+          severity: "warning",
         }),
 
-      "ticket:assigned": p =>
+      "ticket:assigned": (p) =>
         push({
           title: "Ticket assigned",
           message: `Assigned to ${p.assignee ?? "a user"}`,
           type: "TICKET_ASSIGNED",
           meta: { channel: "ticket", event: "assigned", ...p },
-          severity: 'info'
+          severity: "info",
         }),
 
-      "ticket:comment": p =>
+      "ticket:comment": (p) =>
         push({
           title: "New comment",
-          message: `You made a comment on ticket ${p.ticketId}`,
+          message: `Comment on ticket #${p.ticketId}`,
           type: "COMMENT_ADDED",
           meta: { channel: "ticket", event: "comment", ...p },
-          severity: 'info'
+          severity: "info",
         }),
 
-      "team:ticket:created": p =>
+      "ticket:closed": (p) =>
         push({
-          title: "New Team Ticket",
-          message: `Team ${p.teamId} has a new ticket — created by ${p.createdBy}`,
-          type: "TICKET_CREATED",
-          meta: { channel: "ticket", event: "created", ...p },
-          severity: 'success'
-        }),
-
-      "team:ticket:assigned": p =>
-        push({
-          title: "Team Ticket assigned",
-          message: `Team ${p.teamId} - Assigned to ${p.assignee ?? "a user"}`,
-          type: "TICKET_ASSIGNED",
-          meta: { channel: "ticket", event: "assigned", ...p },
-          severity: 'info'
-        }),
-
-      "team:ticket:updated": p =>
-        push({
-          title: "Team Ticket update",
-          message: `Team ${p.teamId} - Ticket ${p.ticketId} was updated by ${p.updatedBy}`,
-          type: "TICKET_UPDATED",
-          meta: { channel: "ticket", event: "updated", ...p },
-          severity: 'info'
-        }),
-
-      "team:ticket:due_soon": p => 
-        push({
-          title: "Team Ticket reminder",
-          message: `Team ${p.teamId} - Ticket ${p.ticketId} is due on ${new Date(p.dueDate).toLocaleTimeString()}`,
-          type: "TICKET_DUE_SOON",
-          meta: { channel: "ticket", event: "due_soon", ...p },
-          severity: 'warning'
-        }),
-
-      "team:ticket:comment": p =>
-        push({
-          title: "New comment in Team",
-          message: `Team ${p.teamId} - Comment on ticket ${p.ticketId} by ${p.author}`,
-          type: "COMMENT_ADDED",
-          meta: { channel: "ticket", event: "comment", ...p },
-          severity: 'info'
-        }),
-
-      "team:ticket:closed": p =>
-        push({
-          title: "Ticket update",
-          message: `Ticket ${p.ticketId} closed by {p.closedBy}`,
+          title: "Ticket closed",
+          message: `Ticket #${p.ticketId} was closed`,
           type: "TICKET_CLOSED",
           meta: { channel: "ticket", event: "closed", ...p },
-          severity: 'info'
+          severity: "info",
         }),
 
-      "subscription:payment-failed": p =>
+      "team:ticket:created": (p) =>
         push({
+          title: "New Team Ticket",
+          message: `Team ticket #${p.ticketId} — created by ${p.createdBy ?? "someone"}`,
+          type: "TICKET_CREATED",
+          meta: { channel: "team-ticket", event: "created", ...p },
+          severity: "success",
+        }),
+
+      "team:ticket:assigned": (p) =>
+        push({
+          title: "Team Ticket assigned",
+          message: `Assigned to ${p.assignedTo ?? p.assignees?.[0] ?? "a user"}`,
+          type: "TICKET_ASSIGNED",
+          meta: { channel: "team-ticket", event: "assigned", ...p },
+          severity: "info",
+        }),
+
+      "team:ticket:updated": (p) =>
+        push({
+          title: "Team Ticket update",
+          message: `Ticket #${p.ticketId} updated by ${p.updatedBy}`,
+          type: "TICKET_UPDATED",
+          meta: { channel: "team-ticket", event: "updated", ...p },
+          severity: "info",
+        }),
+
+      "team:ticket:due_soon": (p) =>
+        push({
+          title: "Team Ticket reminder",
+          message: `Ticket #${p.ticketId} is due on ${new Date(p.dueDate).toLocaleString()}`,
+          type: "TICKET_DUE_SOON",
+          meta: { channel: "team-ticket", event: "due_soon", ...p },
+          severity: "warning",
+        }),
+
+      "team:ticket:comment": (p) =>
+        push({
+          title: "New comment in Team",
+          message: `Comment on ticket #${p.ticketId} by ${p.author ?? "someone"}`,
+          type: "COMMENT_ADDED",
+          meta: { channel: "team-ticket", event: "comment", ...p },
+          severity: "info",
+        }),
+
+      "team:ticket:closed": (p) =>
+        push({
+          title: "Team Ticket closed",
+          message: `Ticket #${p.ticketId} closed by ${p.closedBy}`, // ← fixed template bug
+          type: "TICKET_CLOSED",
+          meta: { channel: "team-ticket", event: "closed", ...p },
+          severity: "info",
+        }),
+
+      "subscription:payment-failed": (p) =>
+        addNotification({
           title: "Payment failed",
           message: p.reason ?? "Unknown failure",
           type: "ALERT",
           meta: { channel: "subscription", event: "payment-failed", ...p },
-          severity: 'error'
+          severity: "error",
         }),
 
-      "subscription:renewal-upcoming": p =>
-        push({
+      "subscription:renewal-upcoming": (p) =>
+        addNotification({
           title: "Renewal upcoming",
           message: `Plan renews on ${p.renewDate}`,
           type: "ALERT",
           meta: { channel: "subscription", event: "renewal-upcoming", ...p },
-          severity: 'warning'
+          severity: "warning",
         }),
 
-      "auth:new-device": p =>
-        push({
+      "auth:new-device": (p) =>
+        addNotification({
           title: "New device login",
           message: p.device,
           type: "SYSTEM",
           meta: { channel: "auth", event: "new-device", ...p },
-          severity: 'warning'
+          severity: "warning",
         }),
     };
 
@@ -403,8 +426,8 @@ export const NotificationsProvider = ({
       AppEvents.on(event as keyof AppEventMap, handler as any)
     );
 
-    return () => unsubscribers.forEach(off => off());
-  }, [addNotification, user]);
+    return () => unsubscribers.forEach((off) => off());
+  }, [addLocalNotification, addNotification, user]);
 
   const unreadCount = useMemo(() => notifications?.filter(n => !n?.read).length,
     [notifications]

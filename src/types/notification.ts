@@ -40,15 +40,16 @@ export type NewNotification = Omit<
 export interface AppEventMap {
   "ticket:created": { title: string; createdBy: string | number };
   "ticket:due_soon": { ticketId: number, dueDate: Date | string };
-  "ticket:updated": { ticketId: number };
+  "ticket:updated": { ticketId: number, updatedBy: string | number };
+  "ticket:closed": { ticketId: number, closedBy: number | string }
   "ticket:assigned": { ticketId: number; assignee?: string | number };
   "ticket:comment": { ticketId: number; author?: string | number };
   
-  "team:ticket:created": { teamId: number, title: string; createdBy: string };
+  "team:ticket:created": { teamId: number, ticketId: number, title: string; createdBy: string };
   "team:ticket:closed": { teamId: number, ticketId: number, closedBy: string };
   "team:ticket:due_soon": { teamId: number, ticketId: number, dueDate: Date | string };
   "team:ticket:updated": { teamId: number, ticketId: number, updatedBy: string };
-  "team:ticket:assigned": { teamId: number, ticketId: number; assignee?: string };
+  "team:ticket:assigned": { teamId: number, ticketId: number; assignedTo: string | number; assignees: number[] };
   "team:ticket:comment": { teamId: number, ticketId: number; author?: string | number };
 
   "subscription:payment-failed": { userId: string; reason?: string };
