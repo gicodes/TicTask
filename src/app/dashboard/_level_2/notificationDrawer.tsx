@@ -173,7 +173,7 @@ const NotificationsDrawer: React.FC = () => {
                       display: "flex",
                       gap: 1.5,
                       cursor: "pointer",
-                      alignItems: "flex-start",
+                      alignItems: "center",
                       backgroundColor: n?.read
                         ? "transparent"
                         : "rgba(25,118,210,0.08)",

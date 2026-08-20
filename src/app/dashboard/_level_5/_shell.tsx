@@ -112,6 +112,8 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
     return { ...item, disabled: isDisabled };
   });
 
+  const notificationsCount = notifications?.filter(n => !n?.read).length;
+
   return (
     <Box
       sx={{
@@ -138,13 +140,13 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
           <Box gap={2} display={'flex'}>
             <Tooltip title={'Notifications'}>
               <Badge 
-                badgeContent={notifications?.filter(n => !n?.read).length} color="info"
+                badgeContent={notificationsCount > 98 ? "99+" : notificationsCount} color="info"
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}} 
                 sx={{
                   "& .MuiBadge-badge": {
                     fontSize: 10,
                     minWidth: 12,
-                    height: 14,
+                    height: notificationsCount > 9 ? 15 : 14,
                   }
                 }}
               >
