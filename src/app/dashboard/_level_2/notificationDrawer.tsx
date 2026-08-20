@@ -38,7 +38,7 @@ type GroupedNotifications = Record<string, AppNotification[]>;
 
 const groupByDay = (items: AppNotification[]): GroupedNotifications => {
   return items.reduce((groups, n) => {
-    const key = new Date(n.createdAt).toDateString();
+    const key = new Date(n?.createdAt).toDateString();
     if (!groups[key]) groups[key] = [];
     groups[key].push(n);
     return groups;
@@ -57,11 +57,11 @@ const NotificationsDrawer: React.FC = () => {
     return notifications.filter((n) => {
       const matchesSearch =
         s.length === 0 ||
-        n.title.toLowerCase().includes(s) ||
-        n.message?.toLowerCase().includes(s) ||
-        JSON.stringify(n.meta ?? "").toLowerCase().includes(s);
+        n?.title.toLowerCase().includes(s) ||
+        n?.message?.toLowerCase().includes(s) ||
+        JSON?.stringify(n?.meta ?? "").toLowerCase().includes(s);
 
-      const matchesType = filterType === "all" || n.type === filterType;
+      const matchesType = filterType === "all" || n?.type === filterType;
 
       return matchesSearch && matchesType;
     });
@@ -158,14 +158,14 @@ const NotificationsDrawer: React.FC = () => {
 
             <Stack spacing={1.5}>
               {items.map((n) => {
-                const icon = ICONS[n.severity ?? "info"] ?? (
+                const icon = ICONS[n?.severity ?? "info"] ?? (
                   <NotificationsNone fontSize="small" />
                 );
 
                 return (
                   <Box
-                    key={n.id}
-                    onClick={() => markAsRead(n.id)}
+                    key={n?.id}
+                    onClick={() => markAsRead(n?.id)}
                     sx={{
                       px: 2,
                       py: 1.5,
@@ -174,29 +174,29 @@ const NotificationsDrawer: React.FC = () => {
                       gap: 1.5,
                       cursor: "pointer",
                       alignItems: "flex-start",
-                      backgroundColor: n.read
+                      backgroundColor: n?.read
                         ? "transparent"
                         : "rgba(25,118,210,0.08)",
                       transition: "0.2s",
-                      "&:hover": { backgroundColor: "action.hover" },
+                      "&:hover": { backgroundColor: "action?.hover" },
                     }}
                   >
                     {icon}
 
                     <Box sx={{ flexGrow: 1 }}>
-                      <Typography fontWeight={600}>{n.title}</Typography>
+                      <Typography fontWeight={600}>{n?.title}</Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {n.message}
+                        {n?.message}
                       </Typography>
                       <Typography variant="caption" color="text.disabled">
-                        { new Date(n.createdAt).toLocaleString('en-US', { 
+                        { new Date(n?.createdAt).toLocaleString('en-US', { 
                           dateStyle: 'full', 
                           timeStyle: 'short' 
                         })}
                       </Typography>
                     </Box>
 
-                    {!n.read && (
+                    {!n?.read && (
                       <Box
                         sx={{
                           width: 8,
