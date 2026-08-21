@@ -125,6 +125,7 @@ export function TicketDetailPane({
                   <Typography
                     variant="subtitle2"
                     fontWeight={700}
+                    marginLeft={2}
                     lineHeight={1.35}
                     noWrap
                     sx={{ color: priorityColor(ticket.priority) }}
