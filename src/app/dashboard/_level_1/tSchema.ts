@@ -271,7 +271,8 @@ export const TICKET_DEFAULTS: Record<TicketTypeUnion, (defaultDueDate?: Date) =>
     type: 'NOTE', 
     title: '', 
     description: '',
-    isPinned: false}), 
+    isPinned: false 
+  }), 
 };
 
 export const TASK_FORMS: Record<PlannerTaskTypeUnion, 

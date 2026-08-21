@@ -114,9 +114,7 @@ export default function TeamTicketCreatePage() {
   const { handleSubmit, control, reset } = methods
 
   useEffect(() => {
-    if (formConfig) {
-      reset(formConfig.defaultValues)
-    }
+    if (formConfig) reset(formConfig.defaultValues)
   }, [formConfig, reset])
 
   const FormComponent = formConfig?.FormComponent
@@ -218,7 +216,7 @@ export default function TeamTicketCreatePage() {
                     </Typography>
                   ) : teamMembers.some((m) => m.id === user?.id) ? (
                     <Typography variant="caption" color="textSecondary">
-                      You can assign this ticket to yourself or other team members.
+                      You can assign this ticket to any team member.
                     </Typography>
                   ) : (
                     <Typography variant="caption" color="textSecondary">
@@ -275,7 +273,7 @@ export default function TeamTicketCreatePage() {
                   </Stack>
                 </Stack>
 
-                <DatePicker control={control} name="dueDate" label="Due Date" />
+                {itemType !== "NOTE" && <DatePicker control={control} name="dueDate" label="Due Date" />}
               </Box>
 
               <Box flex={1} pt={{ xs: 3, md: 0}}>
