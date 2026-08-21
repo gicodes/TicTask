@@ -67,7 +67,7 @@ export function TicketTypeSpecificFields({
           }}
         >
           {!editMode && <Typography variant='caption'>
-            {isPinned ? 'Pinned' : <i>Note not pinned</i>} 
+            {isPinned ? 'Pinned' : <i>Note not pinned</i>} &nbsp;
             <PushPin color={isPinned ? 'warning' : 'disabled'} fontSize='small'/>
           </Typography>}
           {editMode && <>

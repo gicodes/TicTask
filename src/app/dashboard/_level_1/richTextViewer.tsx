@@ -18,28 +18,43 @@ export function RichTextViewer({ html }: Props) {
         position: "relative",
         width: "100%",
         my: 1.5,
+
         px: { xs: 2, sm: 2.5 },
         py: { xs: 1.75, sm: 2.25 },
+
         borderRadius: 2.5,
         border: "1px solid",
         borderColor: "divider",
+
         bgcolor: "white",
         color: "black",
 
-        fontSize: { xs: "0.875rem", sm: "0.925rem" },
+        fontSize: {
+          xs: "0.875rem",
+          sm: "0.925rem",
+        },
+
         lineHeight: 1.75,
         letterSpacing: "0.01em",
 
-        "& p, & > div": {
+        "& p": {
           margin: "0 0 1rem",
+        },
 
-          "&:last-child": {
-            marginBottom: 0,
-          },
+        "& p:last-child": {
+          marginBottom: 0,
         },
 
         "& br": {
           lineHeight: "inherit",
+        },
+
+        "& > div": {
+          margin: "0 0 1rem",
+        },
+
+        "& > div:last-child": {
+          marginBottom: 0,
         },
 
         "& > :first-child": {
@@ -50,10 +65,6 @@ export function RichTextViewer({ html }: Props) {
           mb: 0,
         },
 
-        "& > div:empty": {
-          minHeight: "1.75em",
-        },
-
         "& h1, & h2, & h3, & h4, & h5, & h6": {
           color: "text.primary",
           fontWeight: 700,
@@ -61,21 +72,32 @@ export function RichTextViewer({ html }: Props) {
           letterSpacing: "-0.015em",
           mt: 2,
           mb: 1,
-          "&:first-of-type": {
+        },
+
+        "& h1:first-child, & h2:first-child, & h3:first-child, & h4:first-child, & h5:first-child, & h6:first-child":
+          {
             mt: 0,
+          },
+
+        "& h1": {
+          fontSize: {
+            xs: "1.35rem",
+            sm: "1.5rem",
           },
         },
 
-        "& h1": {
-          fontSize: { xs: "1.35rem", sm: "1.5rem" },
-        },
-
         "& h2": {
-          fontSize: { xs: "1.2rem", sm: "1.3rem" },
+          fontSize: {
+            xs: "1.2rem",
+            sm: "1.3rem",
+          },
         },
 
         "& h3": {
-          fontSize: { xs: "1.05rem", sm: "1.15rem" },
+          fontSize: {
+            xs: "1.05rem",
+            sm: "1.15rem",
+          },
         },
 
         "& h4, & h5, & h6": {
@@ -90,6 +112,7 @@ export function RichTextViewer({ html }: Props) {
         "& li": {
           pl: 0.5,
           mb: 0.5,
+
           "&::marker": {
             color: "text.secondary",
           },
@@ -103,8 +126,10 @@ export function RichTextViewer({ html }: Props) {
           color: "primary.main",
           fontWeight: 500,
           textDecoration: "none",
+
           borderBottom: "1px solid",
           borderColor: "rgba(99, 102, 241, 0.3)",
+
           transition: "all 0.15s ease",
 
           "&:hover": {
@@ -116,28 +141,41 @@ export function RichTextViewer({ html }: Props) {
         "& code": {
           px: 0.6,
           py: 0.2,
+
           borderRadius: 0.75,
+
           bgcolor: "action.hover",
           color: "text.primary",
+
           fontFamily:
             '"SFMono-Regular", Consolas, "Liberation Mono", monospace',
+
           fontSize: "0.85em",
         },
 
         "& pre": {
           position: "relative",
+
           my: 1.5,
           p: 1.75,
+
           borderRadius: 2,
+
           bgcolor: "rgba(0, 0, 0, 0.22)",
           border: "1px solid",
           borderColor: "divider",
+
           overflowX: "auto",
           WebkitOverflowScrolling: "touch",
 
           fontFamily:
             '"SFMono-Regular", Consolas, "Liberation Mono", monospace',
-          fontSize: { xs: "0.75rem", sm: "0.8rem" },
+
+          fontSize: {
+            xs: "0.75rem",
+            sm: "0.8rem",
+          },
+
           lineHeight: 1.65,
 
           "& code": {
@@ -150,12 +188,16 @@ export function RichTextViewer({ html }: Props) {
 
         "& blockquote": {
           position: "relative",
+
           my: 1.5,
           mx: 0,
+
           pl: 2,
           py: 0.5,
+
           borderLeft: "3px solid",
           borderColor: "primary.main",
+
           color: "text.secondary",
           fontStyle: "italic",
 
@@ -166,6 +208,7 @@ export function RichTextViewer({ html }: Props) {
 
         "& hr": {
           my: 2,
+
           border: 0,
           borderTop: "1px solid",
           borderColor: "divider",
@@ -173,9 +216,12 @@ export function RichTextViewer({ html }: Props) {
 
         "& img": {
           display: "block",
+
           maxWidth: "100%",
           height: "auto",
+
           my: 1.5,
+
           borderRadius: 2,
           border: "1px solid",
           borderColor: "divider",
@@ -183,20 +229,27 @@ export function RichTextViewer({ html }: Props) {
 
         "& table": {
           width: "100%",
+
           my: 1.5,
+
           borderCollapse: "separate",
           borderSpacing: 0,
+
           border: "1px solid",
           borderColor: "divider",
+
           borderRadius: 2,
           overflow: "hidden",
+
           fontSize: "0.875rem",
         },
 
         "& th, & td": {
           px: 1.5,
           py: 1,
+
           textAlign: "left",
+
           borderBottom: "1px solid",
           borderColor: "divider",
         },
@@ -227,7 +280,9 @@ export function RichTextViewer({ html }: Props) {
           backgroundColor: "rgba(99, 102, 241, 0.2)",
         },
       }}
-      dangerouslySetInnerHTML={{ __html: clean }}
+      dangerouslySetInnerHTML={{
+        __html: clean,
+      }}
     />
   );
 }
