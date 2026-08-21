@@ -87,12 +87,17 @@ export default function TeamTicketWorkspace() {
     loadData();
   }, [ticketId, getTicket, getHistory, getComments]);
 
-  if (loading) return (<Typography p={4} textAlign={'center'}>Loading ticket...</Typography>);
+  if (loading) return (
+    <Box p={4} minHeight={'60vh'}>
+      <Typography textAlign={'center'}> Loading ticket...</Typography>
+    </Box>);
 
   if (error || !localTicket) return (
-    <Box p={4} mx={'auto'} textAlign={'center'} display={'grid'} gap={2}>
-      <Typography color="error">{error || 'Ticket not found'}</Typography>
-      <Button sx={{ maxWidth: 200, margin: '0 auto' }} onClick={() => router.back()}> Go Back </Button>
+    <Box p={4} mx={'auto'} display={'grid'} gap={4}>
+      <Typography textAlign={'center'} color="error">{error || 'Ticket not found'}</Typography>
+      <Button sx={{ maxWidth: 200, margin: '0 auto' }} onClick={() => router.back()}> 
+        Go Back 
+      </Button>
     </Box>
   );
 
@@ -149,6 +154,7 @@ export default function TeamTicketWorkspace() {
         tags: localTicket.tags ? localTicket.tags : undefined,
         amount: localTicket.amount || undefined,
         currency: localTicket.currency || undefined,
+        isPinned: localTicket.data.isPinned || undefined,
         extClient: localTicket.data.extClient?.trim() || undefined,
         recurrence: localTicket.data.recurrence || undefined,
         severity: localTicket.data.severity || undefined,

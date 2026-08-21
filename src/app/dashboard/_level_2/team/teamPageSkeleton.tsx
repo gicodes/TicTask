@@ -11,11 +11,11 @@ export const TeamPageSkeleton = ({
   loading = true
 }: TeamPageSkeletonProps) => {
   return (
-    <Box maxWidth={800} py={6} px={2} minHeight={'90vh'}>
+    <Box maxWidth={800} p={2} minHeight={'90vh'}>
       <Card 
         variant="outlined" 
         sx={{ 
-          borderRadius: 3, 
+          borderRadius: 8, 
           overflow: "hidden" 
         }}
       >

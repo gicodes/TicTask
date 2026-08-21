@@ -42,8 +42,8 @@ export default function OverviewPage() {
   if (loading) return <TeamPageSkeleton />;
   if (!team)
     return (
-      <Alert severity="warning" sx={{ mx: "auto", maxWidth: 250 }}>
-        Team not found. You may be signed out.
+      <Alert severity="warning" sx={{ mx: "auto", maxWidth: 400 }}>
+        Team not found. Try refreshing your teams.
       </Alert>
     );
 
