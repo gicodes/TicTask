@@ -144,8 +144,8 @@ export const NavbarAvatar = ({
       {showStatus && user?.name && 
         <Box 
           position={'absolute'} 
-          bottom={size < 32 ? -8 : 12 - (0.5 * size)}
-          right={size < 32 ? size/ size : 2.5} 
+          bottom={-8}
+          right={-5} 
           maxHeight={size/ size}
         >
         <FaCircle 
