@@ -29,8 +29,8 @@ export default function WorkspaceShell({
         position: 'relative',
         overflow: 'hidden',
         background: gradient,
-        borderRadius: 4,
         transition: 'background 0.4s ease',
+        borderRadius: { xs: 1, sm: 2, md: 3,lg: 4 },
       }}
       maxWidth={{ xs: '92vw', sm: 'none'}}
     >
