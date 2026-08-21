@@ -66,8 +66,9 @@ export function TicketTypeSpecificFields({
             justifyContent: 'flex-end',
           }}
         >
-          {!editMode && <Typography variant='caption' color={isPinned ? 'warning' : 'textDisabled'}>
-            {isPinned ? 'Pinned' : <i>Note not pinned</i>}
+          {!editMode && <Typography variant='caption'>
+            {isPinned ? 'Pinned' : <i>Note not pinned</i>} 
+            <PushPin color={isPinned ? 'warning' : 'disabled'} fontSize='small'/>
           </Typography>}
           {editMode && <>
             <Typography variant='body2' color={isPinned ? 'warning' : 'info'}>

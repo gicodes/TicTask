@@ -52,8 +52,27 @@ export function LightweightRichEditor({
     }
   }, [value]);
 
+  const normalizeHtml = (html: string) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    doc.body.querySelectorAll(":scope > div").forEach((div) => {
+      const p = doc.createElement("p");
+
+      while (div.firstChild) {
+        p.appendChild(div.firstChild);
+      }
+
+      div.replaceWith(p);
+    });
+
+    return doc.body.innerHTML;
+  };
+
   const handleInput = () => {
-    if (editorRef.current) onChange(editorRef.current.innerHTML);
+    if (!editorRef.current) return;
+
+    const html = normalizeHtml(editorRef.current.innerHTML);
+    onChange(html);
   };
 
   useEffect(() => {

@@ -223,9 +223,9 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
                 color={isOverDue ? 'error' : isDue ? 'warning.main' : 'text.secondary'}
               >
                 {isOverDue ? (
-                  <strong>OVERDUE⚠️</strong>
+                  <strong>OVERDUE ⚠️</strong>
                 ) : isDue ? (
-                  <strong>DUE TODAY⌛️</strong>
+                  <strong>DUE TODAY ⌛️</strong>
                 ) : (
                   <>Due on {dueDateLabel}</>
                 )}

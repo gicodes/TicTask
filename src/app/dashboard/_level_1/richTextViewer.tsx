@@ -30,11 +30,28 @@ export function RichTextViewer({ html }: Props) {
         lineHeight: 1.75,
         letterSpacing: "0.01em",
 
-        "& p": {
+        "& p, & > div": {
           margin: "0 0 1rem",
+
           "&:last-child": {
             marginBottom: 0,
           },
+        },
+
+        "& br": {
+          lineHeight: "inherit",
+        },
+
+        "& > :first-child": {
+          mt: 0,
+        },
+
+        "& > :last-child": {
+          mb: 0,
+        },
+
+        "& > div:empty": {
+          minHeight: "1.75em",
         },
 
         "& h1, & h2, & h3, & h4, & h5, & h6": {
@@ -206,11 +223,6 @@ export function RichTextViewer({ html }: Props) {
           accentColor: "primary.main",
         },
 
-        "& br + br": {
-          display: "none",
-        },
-
-        // Selection
         "& ::selection": {
           backgroundColor: "rgba(99, 102, 241, 0.2)",
         },
