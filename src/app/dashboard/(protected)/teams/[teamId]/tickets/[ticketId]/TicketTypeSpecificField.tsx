@@ -25,8 +25,6 @@ import { TeamTicketSpecificTypeProps } from '@/types/teamViewProps';
 import { RichTextViewer } from '@/app/dashboard/_level_1/richTextViewer';
 import { EstimatedTimeField } from '@/app/dashboard/_level_1/estTimeHours';
 import { LightweightRichEditor } from '@/app/dashboard/_level_1/richTextEditior';
-import { NotesFormValues } from '@/app/dashboard/_level_1/tSchema';
-import { useFormContext } from 'react-hook-form';
 
 const SEVERITY_OPTIONS = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'] as const
 const IMPACT_OPTIONS = ['HIGH', 'MEDIUM', 'LOW'] as const
@@ -37,17 +35,24 @@ export function TicketTypeSpecificFields({
   editMode,
   updateField,
 }: TeamTicketSpecificTypeProps) {
-  const { setValue, watch } = useFormContext<NotesFormValues>();
-  
-  const isPinned = ticket.data.isPinned ?? watch('isPinned');
-  const [newChecklistItem, setNewChecklistItem] = useState('')
+  const [newChecklistItem, setNewChecklistItem] = useState('');
   const [newSubtask, setNewSubtask] = useState('');
   const [newAttendee, setNewAttendee] = useState('');
-  const [amountInput, setAmountInput] = useState(ticket.amount != null ? String(ticket.amount) : '' )
+  const [amountInput, setAmountInput] = useState(
+    ticket.amount != null ? String(ticket.amount) : ''
+  );
 
   const updateData = (partial: Record<string, any>) => {
-    updateField('data', { ...ticket.data, ...partial })
-  }
+    updateField('data', { ...ticket.data, ...partial });
+  };
+
+  const isPinned = ticket.data.isPinned ?? false;
+  const togglePinned = () => {
+    updateField('data', {
+      ...ticket.data,
+      isPinned: !isPinned,
+    });
+  };
 
   return (
     <Stack spacing={2.5} mb={3}>
@@ -59,27 +64,17 @@ export function TicketTypeSpecificFields({
           }}
         >
           {isPinned ? 'Pinned' : 'Pin note'}
-          {editMode && <ToggleButton
-            value="pin"
-            selected={isPinned}
-            onChange={() =>
-              setValue('isPinned', !isPinned, {
-                shouldDirty: true,
-              })
-            }
-            sx={{
-              borderRadius: 2,
-              textTransform: 'none',
-              gap: 1,
-              px: 2,
-            }}
-          >
-            {isPinned ? (
-              <PushPin fontSize="small" />
-            ) : (
-              <PushPinOutlined fontSize="small" />
-            )}
-          </ToggleButton>}
+          {editMode && 
+            <ToggleButton
+              value="pin"
+              selected={isPinned}
+              onChange={togglePinned}
+            >
+              {isPinned ? (<PushPin fontSize="small" />) 
+                : (<PushPinOutlined fontSize="small" />)
+              }
+            </ToggleButton>
+          }
         </Box>
       }
       
