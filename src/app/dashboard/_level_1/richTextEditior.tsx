@@ -76,7 +76,7 @@ export function LightweightRichEditor({
         size="small"
         sx={{
           position: 'absolute',
-          top: { xs: -20, sm: -40 },
+          top: { xs: -18, sm: -40 },
           left: '50%',
           bgcolor: alpha(theme.palette.background.paper, 0.98),
           borderRadius: 2,

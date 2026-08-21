@@ -151,7 +151,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                     fontSize: 10,
                     minWidth: 12,
                     height: notificationsCount > 9 ? 15 : 14,
-                    paddingTop: -1,
+                    paddingTop: -2,
                     paddingLeft: -1
                   }
                 }}

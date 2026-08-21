@@ -59,22 +59,30 @@ export function TicketTypeSpecificFields({
       {'isPinned' in fields && 
         <Box
           sx={{
+            gap: 1.5,
             display: 'flex',
+            alignItems: 'center',
+            alignContent: 'center',
             justifyContent: 'flex-end',
           }}
         >
-          {isPinned ? 'Pinned' : 'Pin note'}
-          {editMode && 
+          {!editMode && <Typography variant='caption' color={isPinned ? 'warning' : 'textDisabled'}>
+            {isPinned ? 'Pinned' : <i>Note not pinned</i>}
+          </Typography>}
+          {editMode && <>
+            <Typography variant='body2' color={isPinned ? 'warning' : 'info'}>
+              {isPinned ? '' : 'Pin note'}
+            </Typography>
             <ToggleButton
               value="pin"
               selected={isPinned}
               onChange={togglePinned}
             >
-              {isPinned ? (<PushPin fontSize="small" />) 
+              {isPinned ? (<PushPin color='warning' fontSize="small" />) 
                 : (<PushPinOutlined fontSize="small" />)
               }
             </ToggleButton>
-          }
+          </>}
         </Box>
       }
       
