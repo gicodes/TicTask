@@ -15,7 +15,7 @@ export const TeamPageSkeleton = ({
       <Card 
         variant="outlined" 
         sx={{ 
-          borderRadius: 8, 
+          borderRadius: 3, 
           overflow: "hidden" 
         }}
       >
