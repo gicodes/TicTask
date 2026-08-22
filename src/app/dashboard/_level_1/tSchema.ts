@@ -19,7 +19,7 @@ import {
   Notebook,  
   TicketCheck 
 } from "lucide-react";
-import { MdSecurityUpdateGood, MdSupport } from "react-icons/md";
+import { MdSecurityUpdateGood, MdSupport} from "react-icons/md";
 import SecurityForm from '../_level_2/ticketFormTypes/security';
 
 export interface TICKET_FORM_PROPS {
@@ -212,13 +212,13 @@ export const TICKET_FORMS: Record<TicketTypeUnion, FormComponentType> = {
 };
 
 export const TICKET_SCHEMAS: Record<TicketTypeUnion, ZodTypeAny> = {
+  BUG: bugSchema,
   NOTE: noteSchema,
   GENERAL: generalSchema,
   INVOICE: invoiceSchema,
-  FEATURE_REQUEST: featureSchema,
-  BUG: bugSchema,
   SUPPORT: generalSchema,
   SECURITY: generalSchema,
+  FEATURE_REQUEST: featureSchema,
 };
 
 export const TICKET_DEFAULTS: Record<TicketTypeUnion, (defaultDueDate?: Date) => Record<string, unknown>> = {
@@ -250,6 +250,7 @@ export const TICKET_DEFAULTS: Record<TicketTypeUnion, (defaultDueDate?: Date) =>
     type: 'INVOICE', 
     title: '', 
     amount: 0, 
+    extClient: '',
     currency: 'USD', 
     description: '', 
     assignTo: '', 

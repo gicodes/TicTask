@@ -30,10 +30,10 @@ import { LightweightRichEditor } from '@/app/dashboard/_level_1/richTextEditior'
 
 export function TicketDetailPane({
   ticket,
-  setTicket,
-  editMode,
-  teamMembers,
   userId,
+  editMode,
+  setTicket,
+  teamMembers,
 }: TeamTicketViewProps) {
   const fields = extractTicketData(ticket)
   const isEventOrMeeting = ticket.type === 'EVENT' || ticket.type === 'MEETING'
