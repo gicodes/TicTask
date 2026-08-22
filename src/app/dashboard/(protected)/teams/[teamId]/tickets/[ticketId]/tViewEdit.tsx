@@ -95,11 +95,11 @@ export function TicketDetailPane({
             ticket.priority && (
               <Box
                 sx={{
-                  width: { xs: 100, sm: 120 },
+                  width: { xs: 110, sm: 125 },
                   minHeight: 40,
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 1.5,
+                  gap: 2,
                   px: 1.5,
                   borderRadius: 2,
                   border: '1px solid',
@@ -125,7 +125,6 @@ export function TicketDetailPane({
                   <Typography
                     variant="subtitle2"
                     fontWeight={700}
-                    marginLeft={1.5}
                     lineHeight={1.5}
                     noWrap
                     sx={{ color: priorityColor(ticket.priority) }}
