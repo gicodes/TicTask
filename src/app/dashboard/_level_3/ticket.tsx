@@ -84,7 +84,7 @@ const TicketsPage: React.FC = () => {
       <Box mb={{ xs: 2 }} display="flex" justifyContent="flex-end">
         <Typography
           sx={{ 
-            fontSize: { xs: 11, sm: 14, md: 15},
+            fontSize: { xs: 13, sm: 14, md: 15, lg: 16},
             opacity: 0.75,
             cursor: 'pointer', 
             height: 'fit-content',
@@ -158,21 +158,24 @@ const TicketsPage: React.FC = () => {
           </ul>
           <Typography variant="body1" sx={{ opacity: 0.8 }}>
             You can manage more tickets via Board and List view. <br/> <br/> 
-            <Link href={'/dashboard/tasks'}>Task Manager</Link> is an event-based ticket hub for<br/>
-            <ul style={{ padding: 10}}>
-              {PLANNER_TASK_TYPES.map((type) => (
-                <li key={type}>
-                  {type.slice(0,1).toUpperCase() + type.slice(1).toLowerCase().replace(/_/g, ' ')}
-                </li>
-              ))}
-            </ul>
+          </Typography> 
 
+          <Link href={'/dashboard/tasks'}>Task Manager</Link> is an event-based ticket hub for<br/>
+          <ul style={{ padding: 10}}>
+            {PLANNER_TASK_TYPES.map((type) => (
+              <li key={type}>
+                {type.slice(0,1).toUpperCase() + type.slice(1).toLowerCase().replace(/_/g, ' ')}
+              </li>
+            ))}
+          </ul>
+
+          <Typography variant="body1">
             Similarly, you can manage more (event-based or timeline) tickets via Calendar and List view.
             <br/>
             To manually create a ticket, find and click<button className='btn'><span className='flex items-center gap-1'>
               <FaPlusCircle/> NEW TICKET</span>
             </button>
-          </Typography> 
+          </Typography>
           
           <Box 
             p={1} 
