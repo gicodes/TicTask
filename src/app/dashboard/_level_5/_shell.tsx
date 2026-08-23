@@ -59,6 +59,11 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [notificationDrop, setNotificationDrop] = useState<null | HTMLElement>(null);
 
+
+  const filteredNav = useMemo(() => {
+    return getFilteredNav(user);
+  }, [user]);  const isLoggedIn = !!user;
+  
   useEffect(() => setIsMounted(true), []);
 
   useEffect(() => {
@@ -91,10 +96,6 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
     e.preventDefault();
     setMoreMenuList(!moreMenuList)
   }
-
-  const filteredNav = useMemo(() => {
-    return getFilteredNav(user);
-  }, [user]);  const isLoggedIn = !!user;
 
   function userRole() {
     let variant = "USER";
