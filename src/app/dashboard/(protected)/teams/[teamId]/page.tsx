@@ -10,30 +10,7 @@ import SomeOnePays from "@/assets/marketingCard";
 import { useTeam } from "@/hooks/useTeam";
 import { useAuth } from "@/providers/auth";
 import { Button } from "@/assets/buttons";
-
-function formatCreatedAt(dateInput: string | Date): string {
-  const date = new Date(dateInput);
-  const now = new Date();
-
-  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const startOfDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-  const diffMs = startOfToday.getTime() - startOfDate.getTime();
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) return "Today";
-  if (diffDays === 1) return "Yesterday";
-  if (diffDays >= 2 && diffDays <= 6) return `${diffDays} days ago`;
-  if (diffDays >= 7 && diffDays < 14) return "1 week ago";
-  if (diffDays >= 14 && diffDays < 21) return "2 weeks ago";
-  if (diffDays >= 21 && diffDays < 28) return "3 weeks ago";
-
-  return date.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
+import { formatCreatedAt } from "@/lib/formatCreatedAt";
 
 export default function OverviewPage() {
   const { teamId } = useParams<{ teamId: string }>();
@@ -42,14 +19,7 @@ export default function OverviewPage() {
   const { team, loading, isOwner } = useTeam();
 
   if (loading) return <TeamPageSkeleton />;
-  if (!team)
-    return (
-      <Alert severity="warning" sx={{ mx: "auto", maxWidth: 400 }}>
-        Team not found. Try refreshing your teams.
-      </Alert>
-    );
-
-  if (!isAuthenticated)
+  if (!team || !isAuthenticated)
     return (
       <TeamPageSkeleton>
         Please <AuthRedirectBtn /> to view your team
@@ -351,9 +321,7 @@ export default function OverviewPage() {
                   <Typography
                     variant="h6"
                     fontWeight={750}
-                    sx={{
-                      letterSpacing: "-0.02em",
-                    }}
+                    sx={{ letterSpacing: "-0.02em", }}
                   >
                     Pinned resources
                   </Typography>
@@ -364,30 +332,6 @@ export default function OverviewPage() {
                     sx={{ mt: 0.5 }}
                   >
                     Important resources for your team.
-                  </Typography>
-                </Box>
-
-                <Box
-                  sx={{
-                    flexShrink: 0,
-                    px: 1,
-                    py: 0.5,
-                    borderRadius: 1.5,
-                    bgcolor: "action.hover",
-                    border: "1px solid",
-                    borderColor: "divider",
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    fontWeight={800}
-                    sx={{
-                      fontSize: 10,
-                      letterSpacing: "0.06em",
-                      color: "text.secondary",
-                    }}
-                  >
-                    ENTERPRISE
                   </Typography>
                 </Box>
               </Stack>
@@ -589,22 +533,15 @@ export default function OverviewPage() {
             <Typography
               variant="body2"
               color="text.secondary"
-              sx={{
-                display: { xs: "none", sm: "block" },
-              }}
+              sx={{ display: { xs: "none", sm: "block" }}}
             >
-              Bring the team. We’ll bring the tickets.
+              Bring the team. We&apos;ll bring the tickets.
             </Typography>
 
             <Button
               tone="action"
-              onClick={() =>
-                router.push(`/dashboard/teams/${teamId}/tickets`)
-              }
-              sx={{
-                borderRadius: 2.5,
-                fontWeight: 700,
-              }}
+              onClick={() => router.push(`/dashboard/teams/${teamId}/tickets`)}
+              sx={{ borderRadius: 2.5, fontWeight: 700 }}
             >
               Open Playground
             </Button>
