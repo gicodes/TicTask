@@ -29,6 +29,7 @@ import {
 } from '@mui/material';
 import { ArrowBack, CloseSharp } from '@mui/icons-material';
 import { Download, Share2, TicketCheck } from 'lucide-react';
+import { TicketActivityTimeline } from '../../(protected)/teams/[teamId]/tickets/[ticketId]/TicketActivityTimeline';
 
 interface FormValues { dueDate: string; }
 
@@ -172,39 +173,7 @@ export default function TicketDetailDrawer({
             <Typography variant="h6">{ticket.title}</Typography>
             <RichTextViewer html={ticket.description} />
 
-            <Stack spacing={1} sx={{ px: 1, pb: 2 }}>
-              <Typography variant="caption" sx={{ opacity: 0.5 }}>
-                <span>Created</span>{' '}
-                {ticket.createdById && (
-                  <>
-                    by{' '}
-                    {ticket.createdById === user?.id ? (
-                      <strong className="custom-sharp">you</strong>
-                    ) : (
-                      <span className="custom-warm">{ticket.createdById}</span>
-                    )}
-                    .
-                  </>
-                )}
-                <br /> On {ticket.createdAt ? new Date(ticket.createdAt).toDateString() + `, 
-                  ${new Date(ticket.createdAt).toLocaleTimeString()}` : ''}
-              </Typography>
-
-              <Typography variant="caption" sx={{ opacity: 0.75 }}>
-                {ticket.assignedToId && (
-                  <span>
-                    <span>Assigned to</span> {ticket.assignedToId === user?.id 
-                    ? <strong className="custom-sharp">you</strong>
-                    : <span className="custom-warm">{ticket.assignedToId}</span>}.
-                  </span>
-                )}
-                {ticket.assignedTo && (
-                  <span>
-                    <br /> <span>&</span> {ticket.assignedToId}.
-                  </span>
-                )}
-              </Typography>
-
+            <Stack spacing={1} pb={2} width={'100%'}>
               <Stack direction="row" alignItems="center" width="100%" justifyContent="space-between">
                 <Box display="flex" gap={1} flexWrap="wrap">
                   {ticket.tags?.map((t) => (
@@ -271,6 +240,78 @@ export default function TicketDetailDrawer({
                 }
               </Stack>
 
+              <Box
+                sx={{
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.5,
+                  minHeight: 68,
+                  px: 2,
+                  py: 1.25,
+                  borderRadius: 2.5,
+                  border: '1px solid',
+                  borderColor: ticket.dueDate ? 'rgba(99, 102, 241, 0.18)' : 'divider',
+                  bgcolor: ticket.dueDate ? 'rgba(99, 102, 241, 0.045)' : 'rgba(0,0,0,0.09)',
+                  overflow: 'hidden',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: 3,
+                    bgcolor: ticket.dueDate ? 'rgb(99, 102, 241)' : 'text.disabled',
+                  }}
+                />
+                <Box
+                  sx={{
+                    display: 'grid',
+                    placeItems: 'center',
+                    width: 34,
+                    height: 34,
+                    borderRadius: 1.5,
+                    bgcolor: ticket.dueDate ? 'rgba(99, 102, 241, 0.10)' : 'action.hover',
+                    color: ticket.dueDate ? 'rgb(99, 102, 241)' : 'text.secondary',
+                    flexShrink: 0,
+                    fontSize: 18,
+                  }}
+                >
+                  📅
+                </Box>
+                {ticket.dueDate ? (
+                  <Box sx={{ minWidth: 0 }}>
+                    <Typography variant="body2" fontWeight={600} noWrap>
+                      {new Date(ticket.dueDate).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" noWrap>
+                      {new Date(ticket.dueDate).toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                      })}
+                    </Typography>
+                  </Box>
+                ) : (
+                  <Box>
+                    <Typography variant="body2" fontWeight={500} color="text.secondary">
+                      No due date
+                    </Typography>
+                    <Typography variant="caption" color="text.disabled">
+                      Not scheduled
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+
+              <TicketActivityTimeline ticket={ticket} userId={user!.id} />
+
               <Button 
                 onClick={() => setExtDrawerOpen(true)} 
                 tone="secondary" 
@@ -279,7 +320,6 @@ export default function TicketDetailDrawer({
                 View Details & Activities
               </Button>
             </Stack>
-
             <Card
               sx={{
                 p: { xs: 1, sm: 1.5 },

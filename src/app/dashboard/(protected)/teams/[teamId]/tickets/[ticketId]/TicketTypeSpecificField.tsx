@@ -693,7 +693,7 @@ export function TicketTypeSpecificFields({
         </Box>
       )}
 
-      {['EVENT', 'MEETING'].includes(ticket.type) && 'attendees' in fields && (
+      {['EVENT', 'MEETING'].includes(ticket.type) && (
         <Box
           sx={{
             p: 2,
@@ -714,27 +714,27 @@ export function TicketTypeSpecificFields({
             <Typography variant="subtitle2" fontWeight={600}>
               Attendees
             </Typography>
-            {fields.attendees?.length ? (
+            {(fields as { attendees: string[]}).attendees?.length ? (
               <Typography variant="caption" color="text.secondary">
-                {fields.attendees.length}
+                {(fields  as { attendees: string[]}).attendees.length}
               </Typography>
             ) : null }
           </Box>
 
-          {!fields.attendees?.length ? (
+          {!(fields as { attendees: string[]}).attendees?.length ? (
             <Typography variant="body2" color="text.secondary" fontStyle="italic">
               No attendees for this event
             </Typography>
           ) : (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
-              {(fields.attendees as string[]).map((attendee, idx) => (
+              {((fields as { attendees: string[]}).attendees as string[]).map((attendee, idx) => (
                 <Chip
                   key={idx}
                   label={attendee}
                   size="small"
                   onDelete={ editMode
                     ? () => {
-                        const next = (fields.attendees as string[]).filter(
+                        const next = ((fields as { attendees: string[]}).attendees as string[]).filter(
                           (_: string, i: number) => i !== idx
                         )
                         updateData({ attendees: next })
@@ -762,7 +762,7 @@ export function TicketTypeSpecificFields({
                   if (e.key === 'Enter' && newAttendee.trim()) {
                     e.preventDefault()
                     const next = [
-                      ...(fields.attendees as string[] || []),
+                      ...((fields as { attendees: string[]}).attendees as string[] || []),
                       newAttendee.trim(),
                     ]
                     updateData({ attendees: next })
@@ -775,7 +775,7 @@ export function TicketTypeSpecificFields({
                 disabled={!newAttendee.trim()}
                 onClick={() => {
                   const next = [
-                    ...(fields.attendees as string[] || []),
+                    ...((fields as { attendees: string[]}).attendees as string[] || []),
                     newAttendee.trim(),
                   ]
                   updateData({ attendees: next })

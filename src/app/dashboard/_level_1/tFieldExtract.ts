@@ -71,6 +71,15 @@ export function extractTicketData(ticket: Ticket): TicketFormValuesUnion {
         endTime: ticket.endTime ?? undefined,
         startTime: ticket.startTime ?? undefined,
       };
+    case 'MEETING':
+      return {
+        ...base,
+        ...base2,
+        location: data?.location ?? '',
+        attendees: data.attendees ?? [],
+        endTime: ticket.endTime ?? undefined,
+        startTime: ticket.startTime ?? undefined,
+      };
     default: return { ...base, ...base2 };
   }
 }
