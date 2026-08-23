@@ -5,11 +5,11 @@ import Logo from '@/assets/txtLogo';
 import { useAuth } from '@/providers/auth';
 import { usePathname } from 'next/navigation';
 import AiAssistantDrawer from '../_level_2/AI/aiDrawer';
-import { ReactNode, useEffect, useState } from 'react';
 import { SetStatusButton } from '../_level_2/statusBar';
 import { useAuthRedirect } from '@/hooks/useAuthRedirect';
 import NotificationDrop from '../_level_2/notificationDrop';
 import { useNotifications } from '@/providers/notifications';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useMuteNotifications } from '@/hooks/useMuteNotifications';
 import { 
   AUTH_ITEMS, 
@@ -92,8 +92,9 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
     setMoreMenuList(!moreMenuList)
   }
 
-  const filteredNav = getFilteredNav(user);
-  const isLoggedIn = !!user;
+  const filteredNav = useMemo(() => {
+    return getFilteredNav(user);
+  }, [user]);  const isLoggedIn = !!user;
 
   function userRole() {
     let variant = "USER";

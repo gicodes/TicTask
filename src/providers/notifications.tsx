@@ -18,7 +18,7 @@ import {
   NotificationsContextProps 
 } from "@/types/notification";
 import { GenericAPIRes } from "@/types/axios";
-import { apiGet, apiPatch, apiPost } from "@/lib/axios";
+import { apiDelete, apiGet, apiPatch, apiPost } from "@/lib/axios";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -276,9 +276,18 @@ export const NotificationsProvider = ({
     setNotifications(prev => prev.filter(n => n.id !== id));
   }, []);
 
-  const clearNotifications = useCallback(() => {
+  const clearNotifications = useCallback(async () => {
+    const previousNotifications = notifications;
+
     setNotifications([]);
-  }, []);
+
+    try {
+      await apiDelete('/notifications/delete-all');
+    } catch (error) {
+      console.error('Failed to clear notifications:', error);
+      setNotifications(previousNotifications);
+    }
+  }, [notifications]);
 
   useEffect(() => {
     if (!user) return;
@@ -342,8 +351,8 @@ export const NotificationsProvider = ({
 
       "team:ticket:created": (p) =>
         push({
-          title: "New Team Ticket",
-          message: `Team ticket #${p.ticketId} — created by ${p.createdBy ?? "someone"}`,
+          title: "Team Ticket (NEW)",
+          message: `Team ${p.teamId}- ticket ${p.ticketId} — created by ${p.createdBy ?? "someone"}`,
           type: "TICKET_CREATED",
           meta: { channel: "team-ticket", event: "created", ...p },
           severity: "success",
@@ -352,7 +361,7 @@ export const NotificationsProvider = ({
       "team:ticket:assigned": (p) =>
         push({
           title: "Team Ticket assigned",
-          message: `Assigned to ${p.assignedTo ?? p.assignees?.[0] ?? "a user"}`,
+          message: `Team ${p.teamId}- Assigned Ticket ${p.ticketId} to ${p.assignedTo ?? p.assignees?.[0] ?? "a user"}`,
           type: "TICKET_ASSIGNED",
           meta: { channel: "team-ticket", event: "assigned", ...p },
           severity: "info",
@@ -361,7 +370,7 @@ export const NotificationsProvider = ({
       "team:ticket:updated": (p) =>
         push({
           title: "Team Ticket update",
-          message: `Ticket #${p.ticketId} updated by ${p.updatedBy}`,
+          message: `${p.teamId}- Ticket ${p.ticketId} updated by ${p.updatedBy}`,
           type: "TICKET_UPDATED",
           meta: { channel: "team-ticket", event: "updated", ...p },
           severity: "info",
@@ -370,7 +379,7 @@ export const NotificationsProvider = ({
       "team:ticket:due_soon": (p) =>
         push({
           title: "Team Ticket reminder",
-          message: `Ticket #${p.ticketId} is due on ${new Date(p.dueDate).toLocaleString()}`,
+          message: `Team ${p.teamId}- Ticket ${p.ticketId} due on ${new Date(p.dueDate).toLocaleString()}`,
           type: "TICKET_DUE_SOON",
           meta: { channel: "team-ticket", event: "due_soon", ...p },
           severity: "warning",
@@ -379,7 +388,7 @@ export const NotificationsProvider = ({
       "team:ticket:comment": (p) =>
         push({
           title: "New comment in Team",
-          message: `Comment on ticket #${p.ticketId} by ${p.author ?? "someone"}`,
+          message: `Team ${p.teamId}- Comment on ticket ${p.ticketId} by ${p.author ?? "someone"}`,
           type: "COMMENT_ADDED",
           meta: { channel: "team-ticket", event: "comment", ...p },
           severity: "info",
@@ -388,7 +397,7 @@ export const NotificationsProvider = ({
       "team:ticket:closed": (p) =>
         push({
           title: "Team Ticket closed",
-          message: `Ticket #${p.ticketId} closed by ${p.closedBy}`, // ← fixed template bug
+          message: `Team ${p.teamId}- Ticket ${p.ticketId} closed by ${p.closedBy}`, // ← fixed template bug
           type: "TICKET_CLOSED",
           meta: { channel: "team-ticket", event: "closed", ...p },
           severity: "info",

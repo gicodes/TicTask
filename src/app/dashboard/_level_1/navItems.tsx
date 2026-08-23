@@ -68,30 +68,52 @@ export const MORE_NAV_ITEMS = [
 ]
 
 export const getFilteredNav = (user: AuthUser | null) => {
-  if (!user) { // completely offline or logged out
+  if (!user) {
     const allowed = [
-      'Ticket Hub', 'Task Manager', 'Products', 'Invite', 'Legal', 'Settings'
+      'Ticket Hub',
+      'Task Manager',
+      'Products',
+      'Invite',
+      'Legal',
+      'Settings',
     ];
+
     return NAV_ITEMS.filter(item => allowed.includes(item.label));
   }
 
   const allowed = [
-    'Ticket Hub', 'Task Manager', 'Products', 'Invite', 'Legal', 'Subscription', 'Settings',
+    'Ticket Hub',
+    'Task Manager',
+    'Products',
+    'Invite',
+    'Legal',
+    'Subscription',
+    'Settings',
   ];
 
-  if (user?.role==="USER") allowed.push('More')
-  if (user?.partner && user?.data?.approved) allowed.push('Marketing', 'More');
-  if (user?.userType==="BUSINESS" || user?.teamMembership || user?.data?.approved) allowed.push('Teams'); 
-  
-  if (user?.role === 'ADMIN') {
+  if (user.role === 'USER') {
+    allowed.push('More');
+  }
+
+  if (user.partner && user.data?.approved) {
+    allowed.push('Marketing', 'More');
+  }
+
+  if (
+    user.userType === 'BUSINESS' ||
+    user.teamMembership ||
+    user.data?.approved
+  ) {
+    allowed.push('Teams');
+  }
+
+  if (user.role === 'ADMIN') {
     return NAV_ITEMS.filter(
-      (item) => !['More', 'Invite', 'Subscription'].includes(item.label)    
+      item => !['More', 'Invite', 'Subscription'].includes(item.label)
     );
   }
 
-  const uniqueAllowed = [...new Set(allowed)];
-
-  return NAV_ITEMS.filter(item => uniqueAllowed.includes(item.label));
+  return NAV_ITEMS.filter(item => allowed.includes(item.label));
 };
 
 export const AUTH_ITEMS: LinkItem[] = [
