@@ -2,28 +2,29 @@
 
 import { Box } from '@mui/material';
 import { Ticket } from '@/types/ticket';
+import { useRouter } from 'next/navigation';
+
 import { useAlert } from '@/providers/alert';
 import { SlotInfo } from 'react-big-calendar';
 import { useTickets } from '@/providers/tickets';
 import PlannerList from '../_level_2/list/_list';
 import PlannerToolbar from '../_level_2/taskPageToolbar';
-import TaskDetailDrawer from '../_level_2/viewTicket/TWSMiniDrawer';
 import { TASK_LIST_HEADERS } from '../_level_0/constants';
 import React, { useEffect, useMemo, useState } from 'react';
 import PlannerCalendar from '../_level_2/calendar/_calendar';
+import TaskDetailDrawer from '../_level_2/viewTicket/TWSMiniDrawer';
 import TaskFormDrawer from '../_level_2/createTicket/CNTFormsDrawer';
 import { DateSelectDialog } from '../_level_2/createTicket/CNTonClickDialog';
+import { PlannerCalendarProps } from '@/types/planner';
 
-const PlannerPage = ({
+const Calendar = ({
   team = false,
-  teamTickets,
-  fetchTeamTickets
-}: { 
-  team: boolean 
-  teamTickets?: Ticket[]
-  fetchTeamTickets?: () => void;
-}) => {
-  const { showAlert } = useAlert()
+  teamId,
+  localTickets,
+  fetchLocalTickets
+}: PlannerCalendarProps) => { 
+  const router = useRouter();
+  const { showAlert, confirm } = useAlert()
   const { tickets, fetchTickets } = useTickets();
   const [view, setView] = useState<'calendar' | 'list'>('calendar')
 
@@ -45,10 +46,10 @@ const PlannerPage = ({
   }, [view]);
 
   const filteredTickets = useMemo(() => {
-    if (!search) return team ? teamTickets : tickets;
+    if (!search) return team ? localTickets : tickets;
     const q = search.toLowerCase();
 
-    if (team) return teamTickets?.filter((t) =>
+    if (team) return localTickets?.filter((t) =>
       [t.title, t.description, t.status, t.assignedTo?.name]
         .filter(Boolean)
         .some((f) => f?.toLowerCase().includes(q))
@@ -58,7 +59,7 @@ const PlannerPage = ({
         .filter(Boolean)
         .some((f) => f?.toLowerCase().includes(q))
     );
-  }, [tickets, teamTickets, search]);
+  }, [tickets, localTickets, search]);
 
   const onTaskCreated = () => {
     setFormOpen(false);
@@ -79,6 +80,19 @@ const PlannerPage = ({
     setFormOpen(true);
   };
 
+  const handleSelectTeamEvent = async (ticketId: number) => {    
+    if (!teamId) return
+
+    const selectEvent = await confirm(
+      "Do you want to open this ticket playground?",
+      "Go to ticket?",
+      "Open Ticket"
+    )
+    if (!selectEvent) return 
+
+    router.push(`/dashboard/teams/${teamId}/tickets/${ticketId}`);
+  }
+
   return (
     <Box 
       sx={{ 
@@ -97,7 +111,7 @@ const PlannerPage = ({
       {team || view === 'calendar' ? (
         <PlannerCalendar
           tasks={filteredTickets!!}
-          onSelectTask={(id) => setSelected(id)}
+          onSelectTask={team ? handleSelectTeamEvent : (ticketId: number) => setSelected(ticketId)}
           onSelectSlot={handleSlotSelect} 
         />
       ) : (
@@ -113,7 +127,7 @@ const PlannerPage = ({
           open={!!selected}
           onClose={() => setSelected(null)}
           ticketId={selected ? String(selected) : undefined}
-          onUpdate={team ? fetchTeamTickets : fetchTickets}
+          onUpdate={team ? fetchLocalTickets : fetchTickets}
         />
 
         <TaskFormDrawer
@@ -139,4 +153,4 @@ const PlannerPage = ({
   );
 };
 
-export default PlannerPage;
+export default Calendar;

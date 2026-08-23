@@ -124,7 +124,7 @@ export default function TeamTicketWorkspace() {
   const handleSavePDF = () => window.print();
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/teams/${team?.id}/tickets/${localTicket.id}`;
+    const url = `${window.location.origin}/dashboard/teams/${team?.id}/tickets/${localTicket.id}`;
     
     try {
       if (navigator.share) await navigator.share({ title: localTicket.title, text: 'Check this ticket', url });

@@ -17,13 +17,14 @@ import AuthRedirectBtn from '@/assets/authRedirectBtn';
 import TicketsList from '../../../../_level_2/list/_list';
 import { useTeamTicket } from '@/providers/teamTickets';
 import TicketBoard from '../../../../_level_2/board/_board';
-import PlannerPage from '@/app/dashboard/_level_3/planner';
+import Calendar from '@/app/dashboard/_level_3/planner';
 import { StatData, StatKey, TeamWidgets } from '@/types/team';
 import { Ticket, TicketStatus, Ticket_Status } from '@/types/ticket';
 import StatsTicketsMenu from '@/app/dashboard/_level_1/statsTicketMenu';
 import { Stack, TextField, InputAdornment, Typography } from '@mui/material';
 import { TICKET_STATUSES, TICKET_LIST_HEADERS,} from '../../../../_level_0/constants';
 import { DateToday } from '@/app/dashboard/_level_1/dateToday';
+import { useTeam } from '@/hooks/useTeam';
 
 export function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
@@ -44,6 +45,7 @@ const TERMINAL_STATUSES: TicketStatus[] = [
 
 export default function TeamTicketsWorkspace() {
   const router = useRouter();
+  const { team } = useTeam();
   const { isAuthenticated, user } = useAuth();
   const { tickets, updateTicket, fetchTickets } = useTeamTicket();
   
@@ -275,10 +277,11 @@ export default function TeamTicketsWorkspace() {
         />
       )}
       {view === 'calendar' && (
-        <PlannerPage 
+        <Calendar 
           team={true} 
-          teamTickets={tickets}
-          fetchTeamTickets={fetchTickets}
+          teamId={team?.id}
+          localTickets={tickets}
+          fetchLocalTickets={fetchTickets}
         />
       )}
 

@@ -11,7 +11,7 @@ import React, {
 import CalendarTimeline from './calTimeline';
 import EventRenderer from './calEventRenderer';
 import ViewSelect, { InternalView} from './calViewSelect';
-import { PlannerCalendarProps, PlannerEvent } from '@/types/planner';
+import { CalendarProps, PlannerEvent } from '@/types/planner';
 import { getStatusColor, priorityColor, getTypeColor } from '../../_level_1/tColorVariants';
 
 import moment from 'moment';
@@ -29,7 +29,7 @@ const LOCAL_VIEW_KEY = 'plannerView';
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop<PlannerEvent, object>(BigCalendar);
 
-const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
+const PlannerCalendar: React.FC<CalendarProps> = ({
   tasks,
   onSelectTask,
   onDateChange,
@@ -97,13 +97,14 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
       id: t.id,
       type: t.type,
       title: t.title,
-      startTime: new Date(t.dueDate!),
-      endTime: new Date(new Date(t.dueDate!).getTime() + 60 * 60 * 1000),
+      start: t.dueDate ? new Date(t.dueDate) : new Date(t.startTime!),
+      dueDate: t.dueDate ? new Date(t.dueDate) : new Date(t.endTime!) ? new Date(t.endTime!) : new Date(t.startTime!),
+      startTime: t.startTime ? new Date(t.startTime) : null,
+      endTime: t.endTime ? new Date(t.endTime) : null,
       status: t.status!,
       priority: t.priority!,
-      end: new Date(t.dueDate!)
     }));
-
+    
     setEventsState(mapped);
   }, [tasks]);
 
@@ -212,8 +213,8 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
 
     const dueDate = 
       new Date(event.dueDate!).toLocaleDateString() ??
-      new Date(event.startTime!).toLocaleDateString() ?? 
-      new Date(event.endTime!).toLocaleDateString();
+      new Date(event.startTime!).toLocaleDateString() ??
+      new Date(event.endTime!).toLocaleDateString()
 
     const bg = 
       ( event.status==="CANCELLED" || event.status === "RESOLVED" || event.status=== "CLOSED") ? getStatusColor("CLOSED").bg 
@@ -297,20 +298,20 @@ const PlannerCalendar: React.FC<PlannerCalendarProps> = ({
             events={eventsState}
             date={currentDate}
             view={bigCalendarView}
-            startAccessor="startTime"
-            endAccessor="endTime"
+            startAccessor="start"
+            endAccessor="dueDate"
             onView={(v) => {
               setInternalView(v as InternalView);
               try {
                 localStorage.setItem(LOCAL_VIEW_KEY, v as string);
-              } catch {
-                // do nothing for now
-              }
+              } catch { // do nothing for now 
+                }
             }}
             onNavigate={(d) => setCurrentDate(d)}
             selectable
+            // onDateChange missing
             onSelectSlot={(slot) => onSelectSlot?.(slot)}
-            onSelectEvent={(ev) => onSelectTask(String((ev as PlannerEvent).id))}
+            onSelectEvent={(ev) => onSelectTask(Number((ev as PlannerEvent).id))}
             onRangeChange={(range) => {
               if (!Array.isArray(range) && range && range.start && range.end) {
                 onDateChange?.(range.start, range.end);

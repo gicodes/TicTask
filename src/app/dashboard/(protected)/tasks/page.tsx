@@ -2,7 +2,7 @@
 
 import AuthRedirectBtn from '@/assets/authRedirectBtn';
 import { Box, Typography } from '@mui/material';
-import PlannerPage from '../../_level_3/planner'
+import Calendar from '../../_level_3/planner'
 import { useAuth } from '@/providers/auth';
 
 const Page = () => {
@@ -17,7 +17,7 @@ const Page = () => {
     </Box>
   );
   
-  return (<PlannerPage team={false} />); // could extend to team owners, subscribers, partners.TierX
+  return (<Calendar team={false} />); // could extend to team owners, subscribers, partners.TierX
 }
 
 export default Page
