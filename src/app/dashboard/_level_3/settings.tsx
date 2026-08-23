@@ -270,28 +270,30 @@ export default function SettingsPage() {
                 disabled={tNotifsLoading}
               />
               {showIOSGuidance && (
-                <Box mt={2} p={2} bgcolor="warning.light" borderRadius={2}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-                    iPhone/ iPad users – important step!
-                  </Typography>
-                  <Typography variant="body2" sx={{ mt: 1 }}>
-                    To receive push notifications on iOS, you must first add this app to your Home Screen:
-                  </Typography>
-                  <Stack pl={2} my={1} fontSize={12}>
-                    <ol className="mt-2 list-decimal space-y-1 pl-5">
-                      <li>Open this site in Safari</li>
-                      <li>Tap the Share button (square with arrow up)</li>
-                      <li>Scroll down and select "Add to Home Screen"</li>
-                      <li>Name it (e.g. "TicTask") and tap "Add"</li>
-                      <li>Open the new icon from your Home Screen</li>
-                      <li>Come back here and enable notifications</li>
-                    </ol>
-                  </Stack>
-                  
-                  <Typography variant="caption">
-                    This is required by Apple for web push on iOS (works on iOS 16.4+). 
-                    Once added, the prompt will appear properly.
-                  </Typography>
+                <Box py={2}>
+                  <Box p={2} bgcolor="disabled.light" borderRadius={2}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                      iPhone/ iPad users – important step!
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      To receive push notifications on iOS, you must first add this app to your Home Screen:
+                    </Typography>
+                    <Stack pl={2} my={1} fontSize={12}>
+                      <ol className="mt-2 list-decimal space-y-1 pl-5">
+                        <li>Open this site in Safari</li>
+                        <li>Tap the Share button (square with arrow up)</li>
+                        <li>Scroll down and select "Add to Home Screen"</li>
+                        <li>Name it (e.g. "TicTask") and tap "Add"</li>
+                        <li>Open the new icon from your Home Screen</li>
+                        <li>Come back here and enable notifications</li>
+                      </ol>
+                    </Stack>
+                    
+                    <Typography variant="caption">
+                      This is required by Apple for web push on iOS (works on iOS 16.4+). 
+                      Once added, the prompt will appear properly.
+                    </Typography>
+                  </Box>
                 </Box>
               )}
 

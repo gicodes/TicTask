@@ -370,7 +370,7 @@ export const NotificationsProvider = ({
       "team:ticket:updated": (p) =>
         push({
           title: "Team Ticket update",
-          message: `${p.teamId}- Ticket ${p.ticketId} updated by ${p.updatedBy}`,
+          message: `Team ${p.teamId}- Ticket ${p.ticketId} updated by ${p.updatedBy}`,
           type: "TICKET_UPDATED",
           meta: { channel: "team-ticket", event: "updated", ...p },
           severity: "info",
