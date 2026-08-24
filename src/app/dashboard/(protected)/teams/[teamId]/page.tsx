@@ -292,7 +292,7 @@ export default function OverviewPage() {
             </Stack>
           </CardContent>
       </Card>
-      {team.subscription.plan==="ENTERPRISE" &&
+      {team?.subscription?.plan==="ENTERPRISE" &&
         <Card
           sx={{
             borderRadius: 4,

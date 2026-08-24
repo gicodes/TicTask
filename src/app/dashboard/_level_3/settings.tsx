@@ -24,6 +24,7 @@ import {
   IconButton,
   Tooltip,
   CircularProgress,
+  Chip,
 } from '@mui/material';
 import { 
   Sun, 
@@ -42,6 +43,7 @@ import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 import DevicesAndSessions from '../_level_2/accountSettings/loggedInDevices';
 import { useUpdateInAppNotifSetting } from '@/hooks/useInAppNotifs';
+import { useRouter } from 'next/navigation';
 
 const isIOS = () => {
   const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -51,6 +53,7 @@ const isIOS = () => {
 const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches;
 
 export default function SettingsPage() {
+  const router = useRouter();
   const { user } = useAuth();
   const { showAlert, confirm } = useAlert();
   const { mode, setThemeMode } = useThemeMode();
@@ -259,13 +262,31 @@ export default function SettingsPage() {
             label={emailNotifsLoading ? "Saving..." : "Email Notifications"}
             disabled={emailNotifsLoading}
           />
-          {(user?.subscription?.active) && (
+          {/* {(user?.subscription?.active) && ( */}
             <>
-              <FormControlLabel
-                control={<Switch checked={pushNotif as boolean} onChange={handlePushNotifChange} />}
-                label={"Push Notifications"}
-                disabled={!requestPushPermission}
-              />
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={pushNotif as boolean}
+                      onChange={handlePushNotifChange}
+                      disabled={!requestPushPermission || !user?.subscription?.active}
+                    />
+                  }
+                  label="Push Notifications"
+                />
+
+                {!user?.subscription?.active && (
+                  <Chip
+                    label="Upgrade"
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => router.replace("/product/pricing")}
+                    sx={{ cursor: 'pointer' }}
+                  />
+                )}
+              </Stack>
               {showIOSGuidance && (
                 <Box py={2}>
                   <Box p={2} bgcolor="disabled.light" borderRadius={2}>
@@ -302,7 +323,7 @@ export default function SettingsPage() {
                 Push notifications require browser permission. You can manage them in your device settings later.
               </Typography>
             </>
-          )}
+          {/* )} */}
         </Stack>
       </SettingsCard>
 
