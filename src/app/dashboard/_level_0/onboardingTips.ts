@@ -29,16 +29,16 @@ export const Tips = [
   //   action: "Next",
   //   anchor: '#ticket-filters',
   // },
-  // {
-  //   title: 'Collaborate in Real-Time 🤝',
-  //   text: "Mention teammates, leave comments, and update statuses — all in one place for seamless teamwork.",
-  //   action: "Next",
-  //   anchor: '#ticket-comments',
-  // },
   {
-    title: 'Your Personal AI Assistant 🤖',
-    text: "Ask the AI to summarize tickets, suggest next steps, or automate repetitive actions. Efficiency, redefined.",
-    action: "Finish",
-    anchor: '#ai-assistant-trigger',
+    title: 'Collaborate in Real-Time 🤝',
+    text: "Mention teammates, leave comments, and update statuses — all in one place for seamless teamwork.",
+    action: "Next",
+    anchor: '#ticket-comments',
   },
+  // {
+  //   title: 'Your Personal AI Assistant 🤖',
+  //   text: "Ask the AI to summarize tickets, suggest next steps, or automate repetitive actions. Efficiency, redefined.",
+  //   action: "Finish",
+  //   anchor: '#ai-assistant-trigger',
+  // },
 ];

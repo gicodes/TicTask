@@ -60,14 +60,16 @@ export default function SettingsPage() {
     inAppNotifsLoading,
   } = useUpdateInAppNotifSetting();
   const { loading: authLoading, isAuthenticated } = useAuth();
-  const { requestPushPermission, unsubscribePush } = useNotifications();
-  const { updateWorkspaceName } = useUpdateWorkspaceName(user?.id);
-  const { updateEmailNotifications, tNotifsLoading } = useUpdateEmailNotifSetting();
   const [autoSave, setAutoSave] = useState(true);
-  const [emailNotif, setEmailNotif] = useState((user as User)?.data?.getTNotifsViaEmail ?? false);
-  const [pushNotif, setPushNotif] = useState<boolean>(
-    user?.pushSubscriptions?.[0]?.enabled ?? false
-  );  
+  const { updateWorkspaceName } = useUpdateWorkspaceName(user?.id);
+  const { requestPushPermission, unsubscribePush } = useNotifications();
+  const { 
+    updateEmailNotifications, 
+    emailNotifications,
+    emailNotifsLoading 
+  } = useUpdateEmailNotifSetting();
+  const [pushNotif, setPushNotif] = useState<boolean>((user as User)?.data?.getPushNotifs ?? false);
+    
   const [isSavingWSN, setIsSavingWSN] = useState(false);
   const [isEditingWSN, setIsEditingWSN] = useState(false);
   const [language, setLanguage] = useState('English');
@@ -79,6 +81,35 @@ export default function SettingsPage() {
   const expiresAt = subscription?.expiresAt ? new Date(subscription.expiresAt).toLocaleDateString() : '—';
 
   const [showIOSGuidance, setShowIOSGuidance] = useState(false);
+
+  const handleInAppNotifChange = async () => {
+    try {
+      await updateInAppNotifications(!inAppNotifications);
+
+      showAlert(`In-App notifications 
+        ${!inAppNotifications ? "turned on" : "turned off"}!`,
+        "success"
+      );
+    } catch {
+      showAlert("Something went wrong!", "error");
+    }
+  }
+
+  const handleEmailNotifChange = async () => {
+    const next = !emailNotifications;
+
+    if (!updateEmailNotifications) {
+      showAlert('Notification settings are unavailable right now.', 'error');
+      return;
+    }
+
+    try {
+      await updateEmailNotifications(next);
+      showAlert("Ticket notification settings changes detected", 'success');
+    } catch {
+      showAlert('Something went wrong!', 'error');
+    }
+  };
 
   const handlePushNotifChange = () => {
     const newValue = !pushNotif;
@@ -115,23 +146,6 @@ export default function SettingsPage() {
     forgotPassword({ email })
       .then(() => showAlert('Password reset link sent to your email!', 'success'))
       .catch(() => showAlert('Something went wrong!', 'error'));
-  };
-
-  const handleEmailNotifChange = async () => {
-    const next = !emailNotif;
-    setEmailNotif(next);
-
-    if (!updateEmailNotifications) {
-      showAlert('Notification settings are unavailable right now.', 'error');
-      return;
-    }
-
-    try {
-      await updateEmailNotifications(next);
-      showAlert("Ticket notification settings changes detected", 'success');
-    } catch {
-      showAlert('Something went wrong!', 'error');
-    }
   };
   
   const handleSetWorkSpaceName = async () => {
@@ -234,40 +248,23 @@ export default function SettingsPage() {
             control={
               <Switch
                 checked={inAppNotifications}
-                onChange={async () => {
-                  try {
-                    await updateInAppNotifications(!inAppNotifications);
-
-                    showAlert(
-                      `In-App notifications ${
-                        !inAppNotifications ? "turned on" : "turned off"
-                      }!`,
-                      "success"
-                    );
-                  } catch {
-                    showAlert("Something went wrong!", "error");
-                  }
-                }}
+                onChange={handleInAppNotifChange}
                 disabled={inAppNotifsLoading}
               />
             }
-            label={
-              inAppNotifsLoading
-                ? "Saving..."
-                : "In-App Notifications"
-            }
+            label={inAppNotifsLoading ? "Saving..." : "In-App Notifications"}
           />
           <FormControlLabel
-            control={<Switch checked={emailNotif} onChange={handleEmailNotifChange} />}
-            label={tNotifsLoading ? "Saving..." : "Email Notifications"}
-            disabled={tNotifsLoading}
+            control={<Switch checked={emailNotifications} onChange={handleEmailNotifChange} />}
+            label={emailNotifsLoading ? "Saving..." : "Email Notifications"}
+            disabled={emailNotifsLoading}
           />
           {(user?.subscription?.active) && (
             <>
               <FormControlLabel
                 control={<Switch checked={pushNotif as boolean} onChange={handlePushNotifChange} />}
-                label={tNotifsLoading ? "Saving..." : "Push Notifications"}
-                disabled={tNotifsLoading}
+                label={"Push Notifications"}
+                disabled={!requestPushPermission}
               />
               {showIOSGuidance && (
                 <Box py={2}>

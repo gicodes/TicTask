@@ -107,6 +107,7 @@ export const NotificationsProvider = ({
       if (process.env.NODE_ENV !== "production") console.log("[PUSH] 📣 Service Worker registered → scope:", registration.scope);
 
       let permission = Notification.permission;
+
       if (permission !== "granted") {
         if (process.env.NODE_ENV !== "production") console.log("[PUSH] 🚫 Permission not granted yet →", permission);
         return;
@@ -115,7 +116,7 @@ export const NotificationsProvider = ({
       let subscription = await registration.pushManager.getSubscription();
 
       if (!subscription) {
-        const res: GenericAPIRes = await apiGet(`${SERVER_URL}/notifications/push/public-key`);
+        const res: GenericAPIRes = await apiGet(`/notifications/push/public-key`);
 
         if (!res.ok) {
           const text = typeof res.data === "string"
@@ -124,7 +125,7 @@ export const NotificationsProvider = ({
           throw new Error(`VAPID fetch failed: ${res.status} – ${text.slice(0, 150)}`);
         }
 
-        const { publicKey } = (await res.data) as { publicKey?: string };
+        const publicKey = (await res.data as string);
         if (!publicKey) throw new Error("No VAPID public key");
 
         const applicationServerKey = urlBase64ToUint8Array(publicKey);
@@ -136,18 +137,13 @@ export const NotificationsProvider = ({
       }
 
       const subJson = subscription.toJSON();
-      const saveRes = await fetch(`${SERVER_URL}/notifications/push/subscribe`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.accessToken}`,
-        },
-        credentials: "include",
-        body: JSON.stringify({
+      const saveRes: GenericAPIRes = await apiPost(
+        `/notifications/push/subscribe`,
+        {
           endpoint: subJson.endpoint,
           keys: subJson.keys,
-        }),
-      });
+        }
+      );
 
       if (!saveRes.ok) {
         if (process.env.NODE_ENV !== "production") console.warn("[PUSH] Server save failed", saveRes.status);

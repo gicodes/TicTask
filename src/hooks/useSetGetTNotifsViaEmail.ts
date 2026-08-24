@@ -1,6 +1,6 @@
 import { apiPatch } from "@/lib/axios";
 import { useAuth } from "@/providers/auth";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { GenericAPIRes } from "@/types/axios";
 import { useSession } from "next-auth/react";
 
@@ -8,9 +8,17 @@ export const useUpdateEmailNotifSetting = () => {
   const { user } = useAuth();
   const { update } = useSession();
 
-  const [tNotifsLoading, setLoading] = useState(false);
+  const [emailNotifsLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [emailNotifications, setEmailNotifications] = useState<boolean>(
+    user?.data?.getTNotifsViaEmail ?? false
+  );
+
+  useEffect(() => {
+    setEmailNotifications(user?.data?.getTNotifsViaEmail ?? false);
+  }, [user?.data?.getTNotifsViaEmail]);
+  
   const updateEmailNotifications = useCallback(
     async (next: boolean) => {
       if (!user?.id) {
@@ -54,7 +62,8 @@ export const useUpdateEmailNotifSetting = () => {
 
   return {
     updateEmailNotifications,
-    tNotifsLoading,
+    emailNotifications,
+    emailNotifsLoading,
     error,
   };
 };

@@ -107,9 +107,12 @@ export type NotificationPreferences = {
 export interface UserPreferences {
   status: UserStatus;
 
-  muteNotifications?: boolean;
-  getInAppNotifs?: boolean;
-  getTNotifsViaEmail?: boolean;
+  muteNotifications: boolean;
+  
+  getInAppNotifs: boolean;
+  getPushNotifs: boolean
+  getTNotifsViaEmail: boolean;
+
   workSpaceName?: string;
 
   statusUntil?: string; 
