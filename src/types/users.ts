@@ -79,6 +79,9 @@ export type Invitation = {
   teamId: number;
   invitedById: number;
   createdAt: string;
+
+  team: Partial<Team>;
+  invitedBy: Partial<User>;
 };
 
 export type Client = {

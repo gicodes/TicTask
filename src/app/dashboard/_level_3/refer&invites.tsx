@@ -21,13 +21,15 @@ import {
   Typography, 
   Card, 
   CardContent, 
-  Button, 
   TextField, 
   IconButton, 
   Grid,
   Chip,
-  Divider
+  Divider,
+  Pagination
 } from '@mui/material';
+import { Button } from '@/assets/buttons';
+import { Invitation } from '@/types/users';
 
 export default function ReferPage() {
   const { user } = useAuth();
@@ -36,6 +38,10 @@ export default function ReferPage() {
   const [copied, setCopied] = useState(false);
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  const [pendingTeamInvites, setPendingTeamInvites] = useState<Invitation[]>([]);
+  const [pendingInvitesLoading, setPendingInvitesLoading] = useState(true);
+  const [pendingInvitePage, setPendingInvitePage] = useState(1);
 
   useEffect(() => {
     if (!user) return;
@@ -55,7 +61,28 @@ export default function ReferPage() {
         console.error(err);
         setLoading(false);
       });
+
+    api.get('/invite/teams/pending')
+      .then(({ data }) => {
+        setPendingTeamInvites(data.invites || []);
+        setPendingInvitesLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to load pending team invites:', err);
+        setPendingInvitesLoading(false);
+      });
   }, [user]);
+
+  const PENDING_INVITES_PER_PAGE = 5;
+
+  const pendingInvitePageCount = Math.ceil(
+    pendingTeamInvites.length / PENDING_INVITES_PER_PAGE
+  );
+
+  const paginatedPendingInvites = pendingTeamInvites.slice(
+    (pendingInvitePage - 1) * PENDING_INVITES_PER_PAGE,
+    pendingInvitePage * PENDING_INVITES_PER_PAGE
+  );
 
   const handleCopy = async () => {
     try {
@@ -98,13 +125,10 @@ export default function ReferPage() {
 
     const body = encodeURIComponent(
       `Hey!
-
       I’m inviting you to join me on TicTask —
       A powerful ticket & task management platform.
-
       Use my referral link to sign up:
       ${inviteLink}
-
       See you inside!
 
       ${user.name || ''}`
@@ -144,21 +168,18 @@ export default function ReferPage() {
 
                 <Stack direction={{ xs: 'column', sm: 'row'}} spacing={2}>
                   <Button
+                    tone='secondary'
                     startIcon={<Share />}
-                    variant="contained"
-                    color="inherit"
+                    sx={{ maxWidth: 250}}
                     fullWidth
-                    sx={{ textTransform: 'none', maxWidth: { sm: 234} }}
                     onClick={handleShare}
                   >
                     Share Link
                   </Button>
                   <Button
                     startIcon={<PersonAdd />}
-                    variant="outlined"
-                    color="inherit"
                     fullWidth
-                    sx={{ textTransform: 'none', maxWidth: { sm: 234} }}
+                    sx={{ maxWidth: 250}}
                     onClick={handleInviteEmail}
                   >
                     Invite via Email
@@ -262,6 +283,114 @@ export default function ReferPage() {
           </Card>
         )}
       </Stack>
+
+      {!pendingInvitesLoading && pendingTeamInvites.length > 0 && (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.3 }}
+  >
+    <Card
+      sx={{
+        borderRadius: 4,
+        boxShadow: '0 6px 20px rgba(0,0,0,0.08)',
+      }}
+    >
+      <CardContent>
+        <Stack spacing={2}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Stack>
+              <Typography variant="h6" fontWeight={700}>
+                Pending Team Invites
+              </Typography>
+
+              <Typography variant="body2" color="text.secondary">
+                Teams that have invited you to join
+              </Typography>
+            </Stack>
+
+            <Chip
+              label={pendingTeamInvites.length}
+              color="primary"
+              size="small"
+            />
+          </Stack>
+
+          <Divider />
+
+          <Stack spacing={1.5}>
+                  {paginatedPendingInvites.map((invite: Invitation) => (
+                    <Stack
+                      key={invite.id}
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      spacing={2}
+                      sx={{
+                        p: 1.5,
+                        borderRadius: 2,
+                        bgcolor: 'rgba(0,0,0,0.03)',
+                      }}
+                    >
+                      <Stack spacing={0.5}>
+                        <Typography fontWeight={600}>
+                          {invite.team?.name || 'Team invitation'}
+                        </Typography>
+
+                        <Typography variant="body2" color="text.secondary">
+                          Invited by{' '}
+                          {invite.invitedBy?.name ||
+                            invite.invitedBy?.email ||
+                            'Team owner'}
+                        </Typography>
+
+                        <Typography variant="caption" color="text.secondary">
+                          {new Date(invite.createdAt).toLocaleDateString()}
+                        </Typography>
+                      </Stack>
+
+                      <Button
+                        tone="action"
+                        onClick={() =>
+                          showAlert(
+                            'Check your email inbox for the secure invite link'
+                          )
+                        }
+                      >
+                        View Invite
+                      </Button>
+                    </Stack>
+                  ))}
+                </Stack>
+
+                {pendingInvitePageCount > 1 && (
+                  <>
+                    <Divider />
+
+                    <Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Pagination
+                        count={pendingInvitePageCount}
+                        page={pendingInvitePage}
+                        onChange={(_, page) => setPendingInvitePage(page)}
+                        color="primary"
+                        shape="rounded"
+                      />
+                    </Stack>
+                  </>
+                )}
+              </Stack>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
     </GenericGridPageLayout>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import api from "@/lib/axios";
+import { useState, useEffect } from "react";
 import { TeamMember } from "@/types/team";
 import { Button } from "@/assets/buttons";
 import { useTeam } from "@/hooks/useTeam";
@@ -20,6 +21,7 @@ import {
   DialogActions,
   Divider,
   Tooltip,
+  Pagination,
 } from "@mui/material";
 import { Crown } from "lucide-react";
 import { Add, DeleteOutline, Close } from "@mui/icons-material";
@@ -31,8 +33,46 @@ export default function MembersPage() {
   const { showAlert, confirm, prompt } = useAlert();
   const { team, inviteMember, removeMember, isOwner, loading } = useTeam();
 
+  const [pendingInvites, setPendingInvites] = useState<any[]>([]);
+  const [pendingInvitesLoading, setPendingInvitesLoading] = useState(false);
+  const [invitePage, setInvitePage] = useState(1);
+
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
+    
+  useEffect(() => {
+    if (!team?.id || !isOwner) return;
+
+    const fetchPendingInvites = async () => {
+      try {
+        setPendingInvitesLoading(true);
+
+        const { data } = await api.get(
+          `/team/${team.id}/invites/pending`
+        );
+
+        setPendingInvites(data.invites || []);
+      } catch (err) {
+        console.error("Failed to load pending invitations:", err);
+        showAlert("Failed to load pending invitations", "error");
+      } finally {
+        setPendingInvitesLoading(false);
+      }
+    };
+
+    fetchPendingInvites();
+  }, [team?.id, isOwner]);
+
+  const INVITES_PER_PAGE = 5;
+
+  const invitePageCount = Math.ceil(
+    pendingInvites.length / INVITES_PER_PAGE
+  );
+
+  const paginatedInvites = pendingInvites.slice(
+    (invitePage - 1) * INVITES_PER_PAGE,
+    invitePage * INVITES_PER_PAGE
+  );
 
   const handleInvite = async () => {
     if (!user) return;
@@ -150,15 +190,113 @@ export default function MembersPage() {
             ))}
           </Grid>
 
-          {isOwner && team?.invitations && team.invitations.length > 0 && (
-            <Card sx={{ borderRadius: 4, mt: 3 }}>
+          {isOwner && !pendingInvitesLoading && pendingInvites.length > 0 && (
+            <Card
+              sx={{
+                borderRadius: 4,
+                mt: 3,
+                bgcolor: "rgba(0,0,0,0.02)",
+              }}
+            >
               <CardContent>
-                <Typography fontWeight={600} mb={2}>
-                  Pending Invitations
-                </Typography>
-                {team.invitations.map((invite: { id: number; email: string }) => (
-                  <Typography key={invite.id}>{invite.email}</Typography>
-                ))}
+                <Stack spacing={2}>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Box>
+                      <Typography fontWeight={600}>
+                        Pending Invitations
+                      </Typography>
+
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                      >
+                        People invited to join this team
+                      </Typography>
+                    </Box>
+
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                    >
+                      {pendingInvites.length} pending
+                    </Typography>
+                  </Stack>
+
+                  <Divider />
+
+                  <Stack spacing={1}>
+                    {paginatedInvites.map((invite) => (
+                      <Stack
+                        key={invite.id}
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        spacing={2}
+                        sx={{
+                          p: 1.5,
+                          borderRadius: 2,
+                          bgcolor: "background.paper",
+                        }}
+                      >
+                        <Stack spacing={0.25}>
+                          <Typography fontWeight={600}>
+                            {invite.email}
+                          </Typography>
+
+                          {invite.invitedBy && (
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              Invited by{" "}
+                              {invite.invitedBy.name ||
+                                invite.invitedBy.email}
+                            </Typography>
+                          )}
+
+                          {invite.createdAt && (
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              {new Date(
+                                invite.createdAt
+                              ).toLocaleDateString()}
+                            </Typography>
+                          )}
+                        </Stack>
+
+                        <Typography
+                          variant="caption"
+                          color="warning.main"
+                          fontWeight={600}
+                        >
+                          Pending
+                        </Typography>
+                      </Stack>
+                    ))}
+                  </Stack>
+
+                  {invitePageCount > 1 && (
+                    <>
+                      <Divider />
+
+                      <Stack alignItems="center">
+                        <Pagination
+                          count={invitePageCount}
+                          page={invitePage}
+                          onChange={(_, page) => setInvitePage(page)}
+                          color="primary"
+                          shape="rounded"
+                        />
+                      </Stack>
+                    </>
+                  )}
+                </Stack>
               </CardContent>
             </Card>
           )}

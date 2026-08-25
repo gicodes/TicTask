@@ -39,9 +39,9 @@ export type NewNotification = Omit<
 
 export interface AppEventMap {
   "ticket:created": { title: string; createdBy: string | number };
-  "ticket:due_soon": { ticketId: number, dueDate: Date | string };
-  "ticket:updated": { ticketId: number, updatedBy: string | number };
-  "ticket:closed": { ticketId: number, closedBy: number | string }
+  "ticket:due_soon": { ticketId: number; dueDate: Date | string };
+  "ticket:updated": { ticketId: number; updatedBy: string | number };
+  "ticket:closed": { ticketId: number; closedBy: number | string }
   "ticket:assigned": { ticketId: number; assignee?: string | number };
   "ticket:comment": { ticketId: number; author?: string | number };
   
@@ -53,8 +53,8 @@ export interface AppEventMap {
   "team:ticket:comment": { teamId: number, ticketId: number; author?: string | number };
 
   "subscription:payment-failed": { userId: string; reason?: string };
-  "subscription:renewal-upcoming": { plan: string; renewDate: string };
   "auth:new-device": { device: string; ip?: string };
+  "auth:login": { email: string; device: string, ip: string; at: Date | string };
 }
 
 export type EventCallback<K extends keyof AppEventMap> = (

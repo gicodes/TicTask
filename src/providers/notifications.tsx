@@ -294,7 +294,7 @@ export const NotificationsProvider = ({
       "ticket:created": (p) =>
         push({
           title: "New ticket",
-          message: `${p.title} — created by ${p.createdBy}`,
+          message: `${p.title}⸺ Created by ${p.createdBy}`,
           type: "TICKET_CREATED",
           meta: { channel: "ticket", event: "created", ...p },
           severity: "success",
@@ -303,7 +303,7 @@ export const NotificationsProvider = ({
       "ticket:updated": (p) =>
         push({
           title: "Ticket update",
-          message: `Ticket #${p.ticketId} was updated`,
+          message: `Ticket ${p.ticketId} was updated`,
           type: "TICKET_UPDATED",
           meta: { channel: "ticket", event: "updated", ...p },
           severity: "info",
@@ -312,7 +312,7 @@ export const NotificationsProvider = ({
       "ticket:due_soon": (p) =>
         push({
           title: "Ticket reminder",
-          message: `Ticket #${p.ticketId} is due on ${new Date(p.dueDate).toLocaleString()}`,
+          message: `Ticket ${p.ticketId} is due on ${new Date(p.dueDate).toLocaleString()}`,
           type: "TICKET_DUE_SOON",
           meta: { channel: "ticket", event: "due_soon", ...p },
           severity: "warning",
@@ -330,7 +330,7 @@ export const NotificationsProvider = ({
       "ticket:comment": (p) =>
         push({
           title: "New comment",
-          message: `Comment on ticket #${p.ticketId}`,
+          message: `Comment on ticket ${p.ticketId}`,
           type: "COMMENT_ADDED",
           meta: { channel: "ticket", event: "comment", ...p },
           severity: "info",
@@ -339,7 +339,7 @@ export const NotificationsProvider = ({
       "ticket:closed": (p) =>
         push({
           title: "Ticket closed",
-          message: `Ticket #${p.ticketId} was closed`,
+          message: `Ticket ${p.ticketId} was closed`,
           type: "TICKET_CLOSED",
           meta: { channel: "ticket", event: "closed", ...p },
           severity: "info",
@@ -348,7 +348,7 @@ export const NotificationsProvider = ({
       "team:ticket:created": (p) =>
         push({
           title: "Team Ticket (NEW)",
-          message: `Team ${p.teamId}- ticket ${p.ticketId} — created by ${p.createdBy ?? "someone"}`,
+          message: `Team ${p.teamId}, Ticket ${p.ticketId}⸺ Created by ${p.createdBy ?? "someone"}`,
           type: "TICKET_CREATED",
           meta: { channel: "team-ticket", event: "created", ...p },
           severity: "success",
@@ -357,7 +357,7 @@ export const NotificationsProvider = ({
       "team:ticket:assigned": (p) =>
         push({
           title: "Team Ticket assigned",
-          message: `Team ${p.teamId}- Assigned Ticket ${p.ticketId} to ${p.assignedTo ?? p.assignees?.[0] ?? "a user"}`,
+          message: `Team ${p.teamId}⸺ Assigned Ticket ${p.ticketId} to ${p.assignedTo ?? p.assignees?.[0] ?? "a user"}`,
           type: "TICKET_ASSIGNED",
           meta: { channel: "team-ticket", event: "assigned", ...p },
           severity: "info",
@@ -366,25 +366,16 @@ export const NotificationsProvider = ({
       "team:ticket:updated": (p) =>
         push({
           title: "Team Ticket update",
-          message: `Team ${p.teamId}- Ticket ${p.ticketId} updated by ${p.updatedBy}`,
+          message: `Team ${p.teamId}, Ticket ${p.ticketId} updated by ${p.updatedBy}`,
           type: "TICKET_UPDATED",
           meta: { channel: "team-ticket", event: "updated", ...p },
           severity: "info",
         }),
 
-      "team:ticket:due_soon": (p) =>
-        push({
-          title: "Team Ticket reminder",
-          message: `Team ${p.teamId}- Ticket ${p.ticketId} due on ${new Date(p.dueDate).toLocaleString()}`,
-          type: "TICKET_DUE_SOON",
-          meta: { channel: "team-ticket", event: "due_soon", ...p },
-          severity: "warning",
-        }),
-
       "team:ticket:comment": (p) =>
         push({
           title: "New comment in Team",
-          message: `Team ${p.teamId}- Comment on ticket ${p.ticketId} by ${p.author ?? "someone"}`,
+          message: `Team ${p.teamId}⸺  Comment on ticket ${p.ticketId} by ${p.author ?? "someone"}`,
           type: "COMMENT_ADDED",
           meta: { channel: "team-ticket", event: "comment", ...p },
           severity: "info",
@@ -393,14 +384,14 @@ export const NotificationsProvider = ({
       "team:ticket:closed": (p) =>
         push({
           title: "Team Ticket closed",
-          message: `Team ${p.teamId}- Ticket ${p.ticketId} closed by ${p.closedBy}`, // ← fixed template bug
+          message: `Team ${p.teamId}, Ticket ${p.ticketId} closed by ${p.closedBy}`, // ← fixed template bug
           type: "TICKET_CLOSED",
           meta: { channel: "team-ticket", event: "closed", ...p },
           severity: "info",
         }),
 
       "subscription:payment-failed": (p) =>
-        addNotification({
+        push({
           title: "Payment failed",
           message: p.reason ?? "Unknown failure",
           type: "ALERT",
@@ -408,21 +399,12 @@ export const NotificationsProvider = ({
           severity: "error",
         }),
 
-      "subscription:renewal-upcoming": (p) =>
-        addNotification({
-          title: "Renewal upcoming",
-          message: `Plan renews on ${p.renewDate}`,
-          type: "ALERT",
-          meta: { channel: "subscription", event: "renewal-upcoming", ...p },
-          severity: "warning",
-        }),
-
-      "auth:new-device": (p) =>
-        addNotification({
-          title: "New device login",
-          message: p.device,
+      "auth:login": (p) =>
+        push({
+          title: "New login",
+          message: `Logged in with ${p.device} at ${p.at}`,
           type: "SYSTEM",
-          meta: { channel: "auth", event: "new-device", ...p },
+          meta: { channel: "auth", event: "login", ...p },
           severity: "warning",
         }),
     };
