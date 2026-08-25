@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { User } from '@/types/users';
 import { Button } from '@/assets/buttons';
@@ -43,7 +44,6 @@ import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 import DevicesAndSessions from '../_level_2/accountSettings/loggedInDevices';
 import { useUpdateInAppNotifSetting } from '@/hooks/useInAppNotifs';
-import { useRouter } from 'next/navigation';
 
 const isIOS = () => {
   const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -262,7 +262,6 @@ export default function SettingsPage() {
             label={emailNotifsLoading ? "Saving..." : "Email Notifications"}
             disabled={emailNotifsLoading}
           />
-          {/* {(user?.subscription?.active) && ( */}
             <>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <FormControlLabel
@@ -299,11 +298,12 @@ export default function SettingsPage() {
                     <Stack pl={2} my={1} fontSize={12}>
                       <ol className="mt-2 list-decimal space-y-1 pl-5">
                         <li>Open this site in Safari</li>
-                        <li>Tap the Share button (square with arrow up)</li>
+                        <li>Tap the share button or icon</li>
                         <li>Scroll down and select "Add to Home Screen"</li>
                         <li>Name it (e.g. "TicTask") and tap "Add"</li>
+                        <li>Allow TicTask send you notifications</li>
                         <li>Open the new icon from your Home Screen</li>
-                        <li>Come back here and enable notifications</li>
+                        <li>Come back here and enable push notifications</li>
                       </ol>
                     </Stack>
                     
@@ -323,7 +323,6 @@ export default function SettingsPage() {
                 Push notifications require browser permission. You can manage them in your device settings later.
               </Typography>
             </>
-          {/* )} */}
         </Stack>
       </SettingsCard>
 

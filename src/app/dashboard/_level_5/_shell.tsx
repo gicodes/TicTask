@@ -156,7 +156,6 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-
                   }
                 }}
               >

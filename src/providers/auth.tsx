@@ -7,7 +7,7 @@ import {
   signOut,
 } from 'next-auth/react';
 import { AppEvents } from './events';
-import { createContext, useCallback, useContext } from 'react';
+import { createContext, useCallback, useContext, useMemo } from 'react';
 import { AuthContextProps, AuthUser, LoginProps } from '@/types/auth';
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -31,8 +31,10 @@ const AuthInnerProvider = (
     !!session?.user &&
     !!session?.accessToken;
 
-  const user: AuthUser | null = session?.user ? 
-    {
+  const user = useMemo<AuthUser | null>(() => {
+    if (!session?.user) return null;
+    
+    return {
       id: Number(session.user.id),
       name: session.user.name ?? 'Untitled User',
       email: session.user.email ?? '',
@@ -51,7 +53,7 @@ const AuthInnerProvider = (
       pushSubscriptions: session.user?.pushSubscriptions,
       lastLoginAt: session.user?.lastLoginAt
     } 
-  : null;
+  }, [session]);
   
   const login = useCallback(
     async ({
