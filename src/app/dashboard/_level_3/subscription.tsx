@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/assets/buttons';
+import { useRouter } from 'next/navigation';
 import { useAlert } from '@/providers/alert';
 import { CreditCard } from '@mui/icons-material';
 import { Plan, Interval } from '@/types/subscription';
@@ -30,11 +31,14 @@ import { VscLinkExternal } from 'react-icons/vsc';
 import { UpgradeButtons } from '../_level_1/upgradeButtons';
 import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
+import { SubscriptionHistory } from '../_level_2/subscriptionHistory';
 
 export default function SubscriptionPage() {
-  const { showAlert, confirm } = useAlert();
+  const router = useRouter();
   const { update } = useSession();
+
   const { user } = useAuth();
+  const { showAlert, confirm } = useAlert();
   
   const {
     subscription,
@@ -93,18 +97,9 @@ export default function SubscriptionPage() {
     }
   };
 
-  const handleCancelSubscription = async () => {
-    const plan = subscription?.plan ?? 'FREE';
-    const formattedPlan = plan.charAt(0) + plan.slice(1).toLowerCase();
-    const ok = await confirm(
-      `Are you sure you want to cancel your ${formattedPlan} Subscription?`,
-      "Cancel Subscription Plan?",
-      'Yes, Cancel'
-    )
-    if (!ok) return;
-    cancel();
-    showAlert("Subscription Cancelled!")
-  }
+  const handleManageBilling = () => {
+    router.push('/dashboard/subscription/billing');
+  };
 
   const plan = subscription?.plan ?? 'FREE';
   const formattedPlan = plan.charAt(0) + plan.slice(1).toLowerCase();
@@ -153,18 +148,13 @@ export default function SubscriptionPage() {
 
               <Stack direction="row" spacing={2}>
                 {isPro || isEnterprise ? (
-                  <Stack pt={{ xs: 1, sm: 0}} direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                    <Button
-                      variant="outlined"
-                      startIcon={<CreditCard />}
-                      onClick={() => showAlert('Billing portal coming soon', 'info')}
-                    >
-                      Manage Billing
-                    </Button>
-                    <Button tone="danger" onClick={handleCancelSubscription}>
-                      Cancel
-                    </Button>
-                  </Stack>
+                  <Button
+                    variant="outlined"
+                    startIcon={<CreditCard />}
+                    onClick={handleManageBilling}
+                  >
+                    Manage Billing
+                  </Button>
                 ) : (
                   <Stack py={1} spacing={{ xs: 1.5, sm: 2 }} direction={{ xs: 'column', lg: 'row' }}>
                     {!(isPro || isEnterprise) && (
@@ -233,21 +223,6 @@ export default function SubscriptionPage() {
         </Card>
       </motion.div>
 
-      <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-        <Card sx={{ borderRadius: 4, bgcolor: 'rgba(0,0,0,0.02)' }}>
-          <CardContent>
-            <Stack spacing={3}>
-              <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                Need help fixing an issue with your billing or subscription?
-              </Typography>
-              <Link href="/company/#contact-us">
-                <Button tone="secondary">Contact Support</Button>
-              </Link>
-            </Stack>
-          </CardContent>
-        </Card>
-      </motion.div>
-
       <Dialog open={open} onClose={() => !upgrading && setOpen(false)} maxWidth="xs" fullWidth>
         <DialogTitle fontWeight={700}>Choose Billing Cycle</DialogTitle>
         <DialogContent>
@@ -295,6 +270,25 @@ export default function SubscriptionPage() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {(isPro || isEnterprise || isStandard) && (
+        <SubscriptionHistory limit={5} compact />
+      )}
+
+      <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+        <Card sx={{ borderRadius: 4, bgcolor: 'rgba(0,0,0,0.02)' }}>
+          <CardContent>
+            <Stack spacing={3}>
+              <Typography variant="body2" sx={{ opacity: 0.8 }}>
+                Need help fixing an issue with your billing or subscription?
+              </Typography>
+              <Link href="/company/#contact-us">
+                <Button tone="secondary">Contact Support</Button>
+              </Link>
+            </Stack>
+          </CardContent>
+        </Card>
+      </motion.div>
     </GenericGridPageLayout>
   );
 }

@@ -7,7 +7,7 @@ import { getCurrentUser } from "./getCurrentUser";
 import { getTokenExpiry } from "./jwtDecode";
 import { nextAuthApiPost } from "./axios";
 
-import type { LoginRequest, LoginResponse } from "@/types/axios";
+import type { GenericAPIRes, LoginRequest, LoginResponse } from "@/types/axios";
 import type { NextAuthOptions } from "next-auth";
 import type { User } from "@/types/users";
 import type { JWT } from "next-auth/jwt";
@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
 
           return null;
         } catch (err) {
-          // console.error("Authorize error:", err);
+          if (process.env.NODE_ENV!=="production") console.error("Authorize error:", err);
           return null;
         }
       },
@@ -78,19 +78,26 @@ export const authOptions: NextAuthOptions = {
           refreshToken: authUser.refreshToken,
           accessTokenExpires: getTokenExpiry(authUser.accessToken),
           error: undefined,
+          shouldHydrate: false,
         };
       }
 
       if (trigger === "update") {
         if (session?.user) {
-          token.user = { ...token.user, ...session.user };
+          token.user = { ...(token.user as object), ...session.user };
         } else if (token.accessToken) {
           try {
-            const fresh = await getCurrentUser(token.accessToken as string);
-            token.user = fresh;
-          } catch {}
+            token.user = await getCurrentUser(token.accessToken as string);
+          } catch (err) {
+            if (process.env.NODE_ENV !== "production") {
+              console.error("[jwt] update() getCurrentUser failed:", err);
+            }
+          }
         }
-        token.shouldHydrate = true;
+        token.shouldHydrate = false;
+        token.error = undefined;
+        
+        return token;
       }
 
       if (
@@ -102,8 +109,8 @@ export const authOptions: NextAuthOptions = {
       }
 
       if (!token.refreshToken) {
-        return { 
-          ...token, 
+        return {
+          ...token,
           accessToken: undefined,
           accessTokenExpires: 0,
           error: "RefreshAccessTokenError",
@@ -115,7 +122,6 @@ export const authOptions: NextAuthOptions = {
         const res = await fetch(`${apiBase}/auth/refresh`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          credentials: 'include',
           body: JSON.stringify({ refreshToken: token.refreshToken }),
         });
 
@@ -131,7 +137,9 @@ export const authOptions: NextAuthOptions = {
           error: undefined,
         };
       } catch (err) {
-        // console.error("Token refresh error:", err);
+        if (process.env.NODE_ENV !== "production") {
+          console.error("Token refresh error:", err);
+        }
         return {
           ...token,
           accessToken: undefined,
@@ -153,12 +161,13 @@ export const authOptions: NextAuthOptions = {
       if (token.accessToken && !token.error && token.shouldHydrate) {
         try {
           session.user = await getCurrentUser(token.accessToken as string);
-        } catch { // fall back to token.user
+        } catch {
+          // keep token.user – never set error here
         }
       }
 
       return session;
-    }
+    },
   },
 };
 

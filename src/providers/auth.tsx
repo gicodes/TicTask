@@ -1,5 +1,11 @@
 'use client';
 
+import { 
+  createContext, 
+  useCallback, 
+  useContext, 
+  useMemo 
+} from 'react';
 import {
   SessionProvider,
   useSession,
@@ -7,8 +13,8 @@ import {
   signOut,
 } from 'next-auth/react';
 import { AppEvents } from './events';
-import { createContext, useCallback, useContext, useMemo } from 'react';
 import { AuthContextProps, AuthUser, LoginProps } from '@/types/auth';
+import { SessionErrorWatcher as useSessionErrorWatcher } from '@/lib/sessionWatcher';
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
@@ -54,6 +60,8 @@ const AuthInnerProvider = (
       lastLoginAt: session.user?.lastLoginAt
     } 
   }, [session]);
+
+  useSessionErrorWatcher();
   
   const login = useCallback(
     async ({
