@@ -38,8 +38,7 @@ export default function TicketDetailDrawer({
   onClose,
   onUpdate,
   ticketId,
-}: TICKET_WORKSPACE_PROPS) {
-
+}: TICKET_WORKSPACE_PROPS ) {
   const { user } = useAuth();
   const { selectedTicket: ticket, selectTicket, updateTicket } = useTickets();
   const { reset } = useForm<FormValues>({ defaultValues: { dueDate: '' } });
@@ -84,7 +83,9 @@ export default function TicketDetailDrawer({
 
   const handleShare = async () => {
     if (!ticket) return;
-    const shareUrl = `${window.location.origin}/tickets/${ticket.id}`;
+
+    const shareUrl = `${window.location.origin}/dashboard/tickets?ticket=${ticket.id}`;    
+    
     try {
       if (navigator.share) {
         await navigator.share({ title: ticket.title, text: 'Check out this ticket:', url: shareUrl });

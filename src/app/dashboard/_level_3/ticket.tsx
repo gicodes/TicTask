@@ -1,18 +1,20 @@
 'use client'
 
+import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
-import { CloseSharp } from '@mui/icons-material';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+
 import { Ticket } from '@/types/ticket';
 import { FaPlusCircle } from 'react-icons/fa';
 import { useTickets } from '@/providers/tickets';
 import TicketsList from '../_level_2/list/_list';
+import { CloseSharp } from '@mui/icons-material';
 import TicketBoard from '../_level_2/board/_board';
 import Toolbar from '../_level_2/ticketsPageToolbar';
 import { Box, Divider, Drawer, Typography } from '@mui/material';
 import TicketDetailDrawer from '../_level_2/viewTicket/TWSMiniDrawer';
 import TicketFormDrawer from '../_level_2/createTicket/CNTFormsDrawer';
 import { PLANNER_TASK_TYPES, TICKET_LIST_HEADERS, TICKET_STATUSES, TICKET_TYPES } from '../_level_0/constants';
-import Link from 'next/link';
 
 export function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
@@ -26,10 +28,17 @@ export function useDebounce<T>(value: T, delay = 300): T {
 }
 
 const TicketsPage: React.FC = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const { tickets, fetchTickets, updateTicket } = useTickets();
+
+  const ticketFromUrl = searchParams.get('ticket');
+  const selectedTicket = ticketFromUrl ? Number(ticketFromUrl) || ticketFromUrl : null;
+  
   const [formOpen, setFormOpen] = useState(false);
   const [grouped, setGrouped] = useState<Record<string, Ticket[]>>({});
-  const [selectedTicket, setSelectedTicket] = useState<string | number | null>(null);
   const [view, setView] = useState<'board' | 'list'>('board');
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedQuery = useDebounce(searchQuery);
@@ -69,8 +78,19 @@ const TicketsPage: React.FC = () => {
     setGrouped(map);
   }, [filteredTickets]);
 
-  const openDetail = (id: number) => setSelectedTicket(id);
-  const closeDetail = () => setSelectedTicket(null);
+  const openDetail = (id: number | string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('ticket', String(id));
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  const closeDetail = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('ticket');
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
+
   const refresh = () => fetchTickets(true);
 
   return (
