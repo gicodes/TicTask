@@ -3,7 +3,13 @@ import type { ReactNode } from 'react';
 import { ConfirmationNumberOutlined } from '@mui/icons-material'
 import { Box, Card, CardContent, Chip, Stack, Typography } from '@mui/material'
 
-const SomeOnePays = ({ children }: { children: ReactNode }) => {
+const SomeOnePays = ({ 
+  children, 
+  flex
+}: { 
+  children?: ReactNode, 
+  flex?: boolean 
+}) => {
   const router = useRouter();
   return (
     <Card

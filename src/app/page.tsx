@@ -7,6 +7,7 @@ import IndexPitch from "@/components/_landing/pitch";
 import Features from "@/components/_landing/features";
 import ProPlatform from "@/components/_landing/platforms";
 import Demo from "@/components/_landing/demo";
+import SomeOnePays from "@/assets/marketingCard";
 
 export default function Home() {
   return (
@@ -21,11 +22,14 @@ export default function Home() {
         <div className={styles.indexPitch}>
           <IndexPitch />
         </div>
-        <div className={styles.proPlatforms}>
-          <ProPlatform />
-        </div>
         <div className={styles.features}>
           <Features />
+        </div>
+        <div>
+          <SomeOnePays />
+        </div>
+        <div className={styles.proPlatforms}>
+          <ProPlatform />
         </div>
         <div className={styles.faqSection}>
           <FAQ />
