@@ -52,9 +52,9 @@ export default function TicketsList({
     }
 
     return (
-      <Typography color={isDisabled ? 'var(--disabled)' : isOverdue ? 'error' : 'inherit'} variant='body2'>
-        {isOverdue && 'OVERDUE • '}
+      <Typography color={isDisabled ? 'var(--disabled)' : isOverdue ? 'error' : 'inherit'} variant='caption'>
         {date.toLocaleDateString([], { month: 'short', day: 'numeric' })}
+        {isOverdue && ' • OVERDUE'}
       </Typography>
     );
   };
