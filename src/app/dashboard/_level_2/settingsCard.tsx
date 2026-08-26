@@ -20,21 +20,23 @@ export default function SettingsCard({
   children: React.ReactNode;
 }) {
   return (
-    <Card sx={{ mb: 3, borderRadius: 3, boxShadow: 1 }}>
-      <CardContent>
-        <Stack direction="row" alignItems="center" gap={1} mb={1}>
-          {icon}
-          <Typography variant="h6" fontWeight={600}>
-            {title}
-          </Typography>
-        </Stack>
-        {subtitle && (
-          <Typography variant="body2" color="text.secondary" mb={2}>
-            {subtitle}
-          </Typography>
-        )}
-        {children}
-      </CardContent>
-    </Card>
+    <section id={title.toLowerCase()}>
+      <Card sx={{ mb: 3, borderRadius: 3, boxShadow: 1 }}>
+        <CardContent>
+          <Stack direction="row" alignItems="center" gap={1} mb={1}>
+            {icon}
+            <Typography variant="h6" fontWeight={600}>
+              {title}
+            </Typography>
+          </Stack>
+          {subtitle && (
+            <Typography variant="body2" color="text.secondary" mb={2}>
+              {subtitle}
+            </Typography>
+          )}
+          {children}
+        </CardContent>
+      </Card>
+    </section>
   );
 }

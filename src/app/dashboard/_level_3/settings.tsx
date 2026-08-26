@@ -406,7 +406,7 @@ export default function SettingsPage() {
 
       <SettingsCard
         icon={<CreditCard size={18} />}
-        title="Billing"
+        title="Subscription"
         subtitle="View your current plan and manage your subscription."
       >
         { loading ? (
@@ -427,8 +427,8 @@ export default function SettingsPage() {
             </Typography>
             
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-              <Button component={Link} href="/dashboard/subscription">
-                Manage Subscription
+              <Button component={Link} href="/dashboard/subscription/billing">
+                Manage Billing
               </Button>
               <Button component={Link} href="/product/pricing" tone='secondary'>
                 See Plans & Prices
