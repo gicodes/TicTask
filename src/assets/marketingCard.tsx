@@ -1,3 +1,5 @@
+'use client'
+
 import { useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { ConfirmationNumberOutlined } from '@mui/icons-material'
@@ -11,6 +13,7 @@ const SomeOnePays = ({
   flex?: boolean 
 }) => {
   const router = useRouter();
+
   return (
     <Card
       sx={{
