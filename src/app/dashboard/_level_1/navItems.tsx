@@ -100,6 +100,7 @@ export const getFilteredNav = (user: AuthUser | null) => {
   }
 
   if (
+    // user.subscription?.active ||
     user.userType === 'BUSINESS' ||
     user.teamMembership ||
     user.data?.approved

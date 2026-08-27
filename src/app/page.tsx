@@ -1,13 +1,13 @@
 import styles from "./page.module.css";
 import CTA from "@/components/_landing/cta";
 import FAQ from "@/components/_landing/faq";
+import Demo from "@/components/_landing/demo";
 import Hero from "@/components/_landing/hero";
 import Footer from "@/components/_landing/footer";
 import IndexPitch from "@/components/_landing/pitch";
 import Features from "@/components/_landing/features";
 import ProPlatform from "@/components/_landing/platforms";
-import Demo from "@/components/_landing/demo";
-import SomeOnePays from "@/assets/marketingCard";
+import MarketingCard from "../components/_landing/marketing";
 
 export default function Home() {
   return (
@@ -25,8 +25,8 @@ export default function Home() {
         <div className={styles.features}>
           <Features />
         </div>
-        <div>
-          <SomeOnePays />
+        <div className={styles.marketing}>
+          <MarketingCard />
         </div>
         <div className={styles.proPlatforms}>
           <ProPlatform />

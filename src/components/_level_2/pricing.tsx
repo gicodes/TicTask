@@ -72,7 +72,7 @@ export default function PricingSection() {
             Simple, transparent pricing
           </Typography>
           <Typography variant="body1" textAlign="center" sx={{ opacity: 0.8, maxWidth: 600 }}>
-            Choose a plan that fits your team&nbsp;s pace. Upgrade anytime as your workflow expands.
+            Choose a plan that fits your team&apos;s pace. Upgrade anytime as your workflow expands.
           </Typography>
 
           <ToggleButtonGroup

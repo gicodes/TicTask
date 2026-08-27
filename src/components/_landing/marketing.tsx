@@ -2,19 +2,14 @@
 
 import type { ReactNode } from 'react'
 import {
-  GroupsOutlined,
-  LockOutlined,
-  WorkspacePremiumOutlined,
-} from '@mui/icons-material'
-import {
   Box,
   Card,
   CardContent,
   Chip,
   Stack,
   Typography,
-  useTheme,
 } from '@mui/material'
+import { LockOutlined, GroupsOutlined } from '@mui/icons-material'
 
 type MarketingCardProps = {
   children?: ReactNode
@@ -22,21 +17,21 @@ type MarketingCardProps = {
 }
 
 const MarketingCard = ({ children, flex = false }: MarketingCardProps) => {
-  const theme = useTheme()
-  const isDark = theme.palette.mode === 'dark'
-
   return (
     <Card
+      elevation={0}
       sx={{
-        borderRadius: 5,
+        borderRadius: 4,
         overflow: 'hidden',
         position: 'relative',
-        background: isDark ? 'rgba(255,255,255,0.03)' : '#ffffff',
+        bgcolor: (theme) =>
+          theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.03)' : '#fafafa',
         border: '1px solid',
         borderColor: 'divider',
-        boxShadow: isDark
-          ? '0 20px 50px rgba(0,0,0,0.35)'
-          : '0 16px 48px rgba(0,0,0,0.06)',
+        boxShadow: (theme) =>
+          theme.palette.mode === 'dark'
+            ? '0 20px 50px rgba(0,0,0,0.35)'
+            : '0 16px 48px rgba(0,0,0,0.06)',
       }}
     >
       <Box
@@ -45,19 +40,19 @@ const MarketingCard = ({ children, flex = false }: MarketingCardProps) => {
           width: 280,
           height: 280,
           borderRadius: '50%',
-          bgcolor: isDark ? 'common.white' : 'common.black',
-          opacity: isDark ? 0.03 : 0.025,
-          filter: 'blur(70px)',
+          bgcolor: 'text.primary',
+          opacity: 0.03,
+          filter: 'blur(60px)',
           top: -120,
-          right: -90,
+          right: -100,
           pointerEvents: 'none',
         }}
       />
 
       <CardContent
         sx={{
-          p: { xs: 2.5, sm: 3.5, md: 4.5 },
-          '&:last-child': { pb: { xs: 2.5, sm: 3.5, md: 4.5 } },
+          p: { xs: 3, sm: 4, md: 5 },
+          '&:last-child': { pb: { xs: 3, sm: 4, md: 5 } },
         }}
       >
         <Stack
@@ -66,8 +61,11 @@ const MarketingCard = ({ children, flex = false }: MarketingCardProps) => {
           alignItems={flex ? { md: 'center' } : 'stretch'}
         >
           <Stack
-            spacing={{ xs: 3, sm: 3.5 }}
-            sx={{ flex: flex ? 1 : 'unset', minWidth: 0 }}
+            spacing={3}
+            sx={{
+              flex: flex ? 1 : undefined,
+              minWidth: 0,
+            }}
           >
             <Stack
               direction="row"
@@ -84,14 +82,12 @@ const MarketingCard = ({ children, flex = false }: MarketingCardProps) => {
                     display: 'grid',
                     placeItems: 'center',
                     flexShrink: 0,
-                    bgcolor: isDark ? 'common.white' : 'common.black',
-                    color: isDark ? 'common.black' : 'common.white',
-                    boxShadow: isDark
-                      ? '0 6px 20px rgba(255,255,255,0.08)'
-                      : '0 6px 20px rgba(0,0,0,0.12)',
+                    bgcolor: 'text.primary',
+                    color: 'background.paper',
+                    boxShadow: '0 8px 20px rgba(0,0,0,0.12)',
                   }}
                 >
-                  <GroupsOutlined fontSize="small" />
+                  <LockOutlined sx={{ fontSize: 20 }} />
                 </Box>
 
                 <Box display={'grid'} gap={0.5}>
@@ -105,32 +101,33 @@ const MarketingCard = ({ children, flex = false }: MarketingCardProps) => {
                       color: 'text.secondary',
                     }}
                   >
-                    Collaboration
+                    Organization
                   </Typography>
                   <Typography
-                    variant="h6"
+                    variant={"h5"}
+                    fontSize={{ xs: 18, sm: 20, lg: 24}}
                     fontWeight={800}
-                    sx={{ lineHeight: 1.25, letterSpacing: '-0.02em' }}
+                    sx={{ lineHeight: 1.15, letterSpacing: '-0.02em' }}
                   >
-                    Teams
+                    Gated by design
                   </Typography>
                 </Box>
               </Stack>
 
               <Chip
-                icon={<WorkspacePremiumOutlined sx={{ fontSize: 14 }} />}
-                label="ENTERPRISE"
+                label="UNLOCKED WITH PLAN"
                 size="small"
+                icon={<GroupsOutlined sx={{ fontSize: '14px !important' }} />}
                 sx={{
                   display: { xs: 'none', sm: 'flex' },
                   fontWeight: 700,
                   fontSize: 10,
-                  letterSpacing: '0.08em',
+                  letterSpacing: '0.06em',
                   height: 26,
-                  bgcolor: isDark ? 'rgba(255,255,255,0.06)' : 'action.hover',
+                  bgcolor: 'action.hover',
                   border: '1px solid',
                   borderColor: 'divider',
-                  color: 'text.primary',
+                  color: 'text.secondary',
                   '& .MuiChip-icon': {
                     color: 'text.secondary',
                     ml: 0.75,
@@ -139,49 +136,56 @@ const MarketingCard = ({ children, flex = false }: MarketingCardProps) => {
               />
             </Stack>
 
-            <Box sx={{ maxWidth: 620 }}>
+            <Box sx={{ maxWidth: 800, py: { xs: 2, md: 3, xl: 4} }}>
               <Typography
-                variant="h4"
-                fontWeight={850}
+                variant="h1"
+                fontWeight={900}
                 sx={{
                   fontSize: {
-                    xs: '1.75rem',
-                    sm: '2.2rem',
-                    md: '2.45rem',
+                    xs: '2rem',
+                    sm: '2.5rem',
+                    md: '3rem',
+                    lg: '4rem',
+                    xl: '4.5rem'
                   },
-                  lineHeight: 1.05,
+                  lineHeight: 1.25,
                   letterSpacing: '-0.045em',
+                  color: 'text.primary',
                 }}
               >
-                Someone pays.
+                One Account.
+                <br/>
+                One Paid Plan.
                 <br />
-                Everyone plays.
-              </Typography>
-
-              <Typography
-                variant="body2"
-                sx={{
-                  mt: 1.25,
-                  color: 'text.secondary',
-                  fontStyle: 'italic',
-                  letterSpacing: '0.01em',
-                }}
-              >
-                We just call that someone the Owner.
+                Own A Workforce.
               </Typography>
 
               <Typography
                 variant="body1"
                 sx={{
-                  mt: 2.25,
-                  maxWidth: 540,
-                  color: 'text.secondary',
-                  lineHeight: 1.7,
+                  mt: 1.25,
+                  color: 'text.disabled',
+                  fontStyle: 'italic',
+                  letterSpacing: '0.01em',
                 }}
               >
-                A shared space for your team to create, assign, discuss, and
-                move tickets — without turning collaboration into another
-                meeting. Guests stay free. The Owner keeps the keys.
+                We keep the best parts behind the gate — on purpose.
+              </Typography>
+
+              <Typography
+                variant="body1"
+                sx={{
+                  mt: 2.5,
+                  maxWidth: 540,
+                  color: 'text.secondary',
+                  lineHeight: 1.75,
+                  fontSize: { xs: '1rem', sm: '1.2rem' },
+                }}
+              >
+                Personal plans unlock the essentials. Organization plans unlock
+                Teams — shared tickets, real collaboration, guest invites, and
+                the workflows that actually move work forward. Everything else
+                stays deliberately out of reach until you’re ready.
               </Typography>
             </Box>
 
@@ -189,36 +193,28 @@ const MarketingCard = ({ children, flex = false }: MarketingCardProps) => {
               direction="row"
               flexWrap="wrap"
               gap={1}
-              sx={{ pt: { xs: 0.5, sm: 1 } }}
+              sx={{ pt: 0.5 }}
             >
               {[
-                { label: 'Team workspace', locked: true },
-                { label: 'Guest invites', locked: true },
-                { label: 'Shared tickets', locked: false },
-                { label: 'Push & email', locked: false },
-              ].map((item) => (
+                'Teams workspace',
+                'Guest invites',
+                'Shared tickets',
+                'Priority support',
+                'Advanced automation',
+              ].map((label) => (
                 <Chip
-                  key={item.label}
+                  key={label}
+                  label={label}
                   size="small"
-                  icon={
-                    item.locked ? (
-                      <LockOutlined sx={{ fontSize: '13px !important' }} />
-                    ) : undefined
-                  }
-                  label={item.label}
                   sx={{
-                    height: 28,
                     fontWeight: 600,
-                    fontSize: 12,
+                    fontSize: 11,
                     letterSpacing: '0.02em',
                     bgcolor: 'transparent',
                     border: '1px solid',
                     borderColor: 'divider',
-                    color: item.locked ? 'text.primary' : 'text.secondary',
-                    '& .MuiChip-icon': {
-                      color: 'text.disabled',
-                      ml: 0.75,
-                    },
+                    color: 'text.secondary',
+                    height: 28,
                   }}
                 />
               ))}
@@ -228,15 +224,12 @@ const MarketingCard = ({ children, flex = false }: MarketingCardProps) => {
           {children && (
             <Box
               sx={{
-                flex: flex ? { md: '0 0 42%' } : 'unset',
+                flex: flex ? { md: 1 } : undefined,
                 width: '100%',
                 minWidth: 0,
-                padding: 1,
-                borderRadius: 3,
-                overflow: 'hidden',
-                border: '1px solid',
-                borderColor: 'divider',
-                bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'grey.50',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: { xs: 'center', md: flex ? 'flex-end' : 'center' },
               }}
             >
               {children}

@@ -6,6 +6,7 @@ import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
 import { useSubscription } from "@/providers/subscription";
+import { Typography } from "@mui/material";
 
 const Hero = () => {
   const { startFreeTrial } = useSubscription();
@@ -43,13 +44,13 @@ const Hero = () => {
     <section id="get-started">
       <div className={styles.heroTitle}>
         <h2> Ticket <span className="font-xl">&</span> Task Management System </h2>
-        <h2> <span className="custom-warm">Driven by AI</span>, Designed for Everyone </h2>
+        <h2> <span className="custom-warm">Driven by Org.</span> Designed for Everyone </h2>
       </div>
 
-      <div className={styles.heroSubtitle}>
-        TicTask is a lightweight, collaborative ticket and task management platform built for fast, friendly, agile teamwork. 
-        Whether you&apos;re a small team or a large enterprise, TicTask is designed to meet your needs with its intuitive interface and robust features.
-      </div>
+      <Typography className={styles.heroSubtitle} fontSize={{ xs: 16, md: 18, xl: 20 }}>
+        TicTask is a lightweight multi-faceted task management platform built for fast, friendly, agile teamwork. 
+        Whether you&apos;re a small team or a large enterprise, TicTask is designed to meet your organisational needs with very simple, yet robust features.
+      </Typography>
 
       <div className={styles.heroActions}>
         <div className={styles.btnGroup}>

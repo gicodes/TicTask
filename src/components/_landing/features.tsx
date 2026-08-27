@@ -41,7 +41,6 @@ const FeaturesShowcase = () => {
     <Box
       sx={{
         position: 'relative',
-        minHeight: { xs: 360, md: 669 },
         display: 'flex',
         alignItems: 'center',
         bgcolor: '#0a0a0a',
@@ -75,6 +74,7 @@ const FeaturesShowcase = () => {
           zIndex: 1,
         }}
       />
+
       <Box 
         sx={{ 
           paddingTop: { xs: 4, md: 8 },
@@ -82,78 +82,150 @@ const FeaturesShowcase = () => {
           position: 'relative', 
           zIndex: 2, 
           width: '100%', 
-          px: { xs: 3, md: 6, lg: 10 } }}
-        >
+          px: { xs: 3, md: 6, lg: 10 },
+        }}
+      >
         <Stack
           direction={{ xs: 'column', md: 'row' }}
           spacing={{ xs: 6, md: 10 }}
           alignItems="center"
-          maxWidth="1400px"
+          maxWidth={1400}
           mx="auto"
         >
-          <Box sx={{ flex: 1, maxWidth: { md: '500px', lg: '600px' } }}>
-            <Box minHeight={100}>
+          <Box sx={{ flex: 1, width: '100%' }}>
+            <Stack
+              direction="row"
+              alignItems="flex-start"
+              justifyContent="space-between"
+              gap={2}
+              mb={{ xs: 3.5, sm: 4 }}
+            >
+              <Stack direction="row" spacing={1.5} alignItems="center">
+                <Box
+                  sx={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 2.5,
+                    display: 'grid',
+                    placeItems: 'center',
+                    flexShrink: 0,
+                    bgcolor: 'common.white',
+                    color: 'common.black',
+                    boxShadow: '0 6px 20px rgba(255,255,255,0.08)',
+                  }}
+                >
+                  <Box
+                    component="span"
+                    sx={{
+                      display: 'flex',
+                      fontSize: 22,
+                      lineHeight: 0,
+                      '& > svg': { fontSize: 'inherit' },
+                    }}
+                  >
+                    {current.icon}
+                  </Box>
+                </Box>
+
+                <Box>
+                  <Typography
+                    variant="overline"
+                    sx={{
+                      display: 'block',
+                      lineHeight: 1.2,
+                      fontWeight: 700,
+                      letterSpacing: '0.1em',
+                      color: 'rgba(255,255,255,0.55)',
+                    }}
+                  >
+                    Features
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    fontWeight={800}
+                    sx={{
+                      lineHeight: 1.25,
+                      letterSpacing: '-0.02em',
+                      color: 'common.white',
+                    }}
+                  >
+                    {current.shortLabel}
+                  </Typography>
+                </Box>
+              </Stack>
+
               <Chip
-                label="FEATURES"
+                label={`${String(currentIndex + 1).padStart(2, '0')} / ${String(features.length).padStart(2, '0')}`}
+                size="small"
                 sx={{
-                  bgcolor: 'rgba(255,255,255,0.1)',
-                  color: 'white',
-                  fontWeight: 600,
-                  px: 2,
+                  display: { xs: 'none', sm: 'flex' },
+                  fontWeight: 700,
+                  fontSize: 11,
+                  letterSpacing: '0.08em',
+                  height: 26,
+                  bgcolor: 'rgba(255,255,255,0.08)',
+                  border: '1px solid',
+                  borderColor: 'rgba(255,255,255,0.18)',
+                  color: 'rgba(255,255,255,0.85)',
                 }}
               />
-            </Box>
+            </Stack>
 
-            <Box
-              sx={{
-                position: "relative",
-                flex: 1,
-              }}
-            >              
+            <Box sx={{ position: 'relative', flex: 1 }}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 28 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.6 }}
+                  exit={{ opacity: 0, y: -18 }}
+                  transition={{ duration: 0.55, ease: 'easeOut' }}
                 >
-                  <Stack direction="row" alignItems="center" gap={2} mb={3}>
-                    <Box
-                      sx={{
-                        width: '100%',
-                        maxWidth: { xs: 32, sm: 50, md: 64},
-                        height: { xs: 32, sm: 50, md: 64},
-                        borderRadius: '50%',
-                        bgcolor: 'rgba(255,255,255,0.1)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 36,
-                        backdropFilter: 'blur(8px)',
-                      }}
-                    >
-                      {current.icon}
-                    </Box>
-                    <Typography 
-                      variant="h2" 
-                      fontWeight={800} 
-                      lineHeight={1.1}
-                      fontSize={{ xs: 30, sm: 36, md: 44, lg: 60}}
-                    >
-                      {current.title}
-                    </Typography>
-                  </Stack>
+                  <Typography 
+                    variant="h2" 
+                    fontWeight={800} 
+                    lineHeight={1.08}
+                    letterSpacing="-0.035em"
+                    fontSize={{ xs: 28, sm: 34, md: 42, lg: 52 }}
+                    sx={{ mb: 2.5, maxWidth: 720 }}
+                  >
+                    {current.title}
+                  </Typography>
 
-                  <Typography variant="h6" sx={{ opacity: 0.9, mb: 5, maxWidth: 600 }}>
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      opacity: 0.88, 
+                      mb: 4.5, 
+                      maxWidth: 560,
+                      fontWeight: 400,
+                      lineHeight: 1.55,
+                      fontSize: { xs: '1rem', sm: '1.15rem' },
+                    }}
+                  >
                     {current.description}
                   </Typography>
 
-                  <Stack spacing={2.5}>
+                  <Stack spacing={2.25} minHeight={{ xs: 260, sm: 200 }}>
                     {current.bulletPoints.map((point, idx) => (
-                      <Stack key={idx} direction="row" alignItems="flex-start" gap={2}>
-                        <MdCheckCircle size={22} color="#22ff88" style={{ marginTop: 3 }} />
-                        <Typography variant="body1" sx={{ opacity: 0.95 }}>
+                      <Stack key={idx} direction="row" alignItems="flex-start" gap={1.75}>
+                        <Box
+                          sx={{
+                            mt: 0.35,
+                            flexShrink: 0,
+                            color: 'rgba(255,255,255,0.9)',
+                            opacity: 0.85,
+                          }}
+                        >
+                          <MdCheckCircle size={20} />
+                        </Box>
+                        <Typography 
+                          variant="body1" 
+                          sx={{ 
+                            opacity: 0.92,
+                            lineHeight: 1.55,
+                            fontSize: { xs: '0.95rem', sm: '1rem' },
+                          }}
+                        >
                           {point}
                         </Typography>
                       </Stack>
@@ -167,48 +239,68 @@ const FeaturesShowcase = () => {
               sx={{
                 height: { xs: 100, md: 90 },
                 flexShrink: 0,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: { xs: "center", md: "flex-end" },
-                justifyContent: "flex-end",
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: { xs: 'center', md: 'flex-start' },
+                justifyContent: 'flex-end',
               }}
             >
               <Stack direction="row" gap={1.5}>
                 <IconButton
                   onClick={prev}
+                  aria-label="Previous feature"
                   sx={{
-                    border: '1px solid rgba(255,255,255,0.3)',
+                    width: 44,
+                    height: 44,
+                    border: '1px solid rgba(255,255,255,0.28)',
                     color: 'white',
-                    '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                    borderRadius: 2,
+                    transition: 'all 0.2s ease',
+                    '&:hover': { 
+                      bgcolor: 'rgba(255,255,255,0.1)',
+                      borderColor: 'rgba(255,255,255,0.5)',
+                    },
                   }}
                 >
-                  <MdKeyboardArrowLeft size={28} />
+                  <MdKeyboardArrowLeft size={26} />
                 </IconButton>
                 <IconButton
                   onClick={next}
+                  aria-label="Next feature"
                   sx={{
-                    border: '1px solid rgba(255,255,255,0.3)',
+                    width: 44,
+                    height: 44,
+                    border: '1px solid rgba(255,255,255,0.28)',
                     color: 'white',
-                    '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                    borderRadius: 2,
+                    transition: 'all 0.2s ease',
+                    '&:hover': { 
+                      bgcolor: 'rgba(255,255,255,0.1)',
+                      borderColor: 'rgba(255,255,255,0.5)',
+                    },
                   }}
                 >
-                  <MdKeyboardArrowRight size={28} />
+                  <MdKeyboardArrowRight size={26} />
                 </IconButton>
               </Stack>
 
-              <Stack direction="row" justifyContent="center" spacing={1.5} mt={4}>
+              <Stack direction="row" justifyContent="center" spacing={1.25} mt={3.5}>
                 {features.map((_, idx) => (
                   <Box
                     key={idx}
                     onClick={() => goTo(idx)}
+                    role="button"
+                    aria-label={`Go to feature ${idx + 1}`}
                     sx={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: '50%',
-                      bgcolor: idx === currentIndex ? '#fff' : 'rgba(255,255,255,0.3)',
+                      width: idx === currentIndex ? 22 : 8,
+                      height: 8,
+                      borderRadius: 4,
+                      bgcolor: idx === currentIndex ? '#fff' : 'rgba(255,255,255,0.28)',
                       cursor: 'pointer',
                       transition: 'all 0.3s ease',
-                      '&:hover': { bgcolor: 'rgba(255,255,255,0.7)' },
+                      '&:hover': { 
+                        bgcolor: idx === currentIndex ? '#fff' : 'rgba(255,255,255,0.55)',
+                      },
                     }}
                   />
                 ))}
@@ -223,8 +315,8 @@ const FeaturesShowcase = () => {
           position: 'absolute',
           bottom: 0,
           left: 0,
-          height: 3,
-          bgcolor: 'rgba(255,255,255,0.7)',
+          height: 2,
+          bgcolor: 'rgba(255,255,255,0.75)',
           width: `${((currentIndex + 1) / features.length) * 100}%`,
           transition: 'width 0.4s linear',
           zIndex: 4,
@@ -239,6 +331,7 @@ export default FeaturesShowcase;
 const features = [
   {
     icon: <MdEditCalendar />,
+    shortLabel: "Capture",
     imageUrl: "/features/99W9e.jpg",
     title: "Your mind ➞ TicTask ➞ Action",
     description: "Use TicTask to capture and organize tasks as they come to your mind. Then, easily convert them into actionable events.",
@@ -251,6 +344,7 @@ const features = [
   },
   {
     icon: <MdGroups />,
+    shortLabel: "Teams",
     imageUrl: "/features/DHeWP.jpg",
     title: "Built for Teams",
     description: "Collaborate with your entire team in real time. Share tasks, assign responsibilities, and keep everyone aligned in one workspace.",
@@ -263,6 +357,7 @@ const features = [
   },
   {
     icon: <MdSecurity />,
+    shortLabel: "Security",
     imageUrl: "/features/security.jpeg",
     title: "Security First",
     description: "Consistently update our systems and software to ensure your experience is safe and secure.",
@@ -275,6 +370,7 @@ const features = [
   },
   {
     icon: <MdAdminPanelSettings />,
+    shortLabel: "Access",
     imageUrl: "/features/fVwnw.jpg",
     title: "Role-Based Access Control",
     description: "Control who can do what. TicTask ensures secure and organized workflows with flexible roles and permissions.",
@@ -287,6 +383,7 @@ const features = [
   },
   {
     icon: <MdInsights />,
+    shortLabel: "Insights",
     imageUrl: "/features/ticketing_system.jpg",
     title: "Insights That Drive Action",
     description: "Go beyond task lists. TicTask gives you visibility into how your team is working, helping you improve efficiency.",
