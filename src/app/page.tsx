@@ -11,36 +11,52 @@ import MarketingCard from "../components/_landing/marketing";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <div className={styles.hero}>
-          <Hero />
-        </div>
-        <div className={styles.demoDisplay}>
-          <Demo />
-        </div>
-        <div className={styles.indexPitch}>
-          <IndexPitch />
-        </div>
-        <div className={styles.features}>
-          <Features />
-        </div>
-        <div className={styles.marketing}>
-          <MarketingCard />
-        </div>
-        <div className={styles.proPlatforms}>
-          <ProPlatform />
-        </div>
-        <div className={styles.faqSection}>
-          <FAQ />
-        </div>
-        <div className={styles.ctaSection}>
-          <CTA />
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <Footer />
-      </footer>
-    </div>
+    <>
+      <div className={styles.page}>
+        <main className={styles.main}>
+          <div className={styles.hero}>
+            <Hero />
+          </div>
+          <div className={styles.demoDisplay}>
+            <Demo />
+          </div>
+          <div className={styles.indexPitch}>
+            <IndexPitch />
+          </div>
+        </main>
+      </div>
+      <div className={styles.page2}>
+        <main>
+          <div className={styles.features}>
+            <Features />
+          </div>
+        </main>
+      </div>
+
+      <div className={styles.page}>
+        <main className={styles.main}>
+          <div className={styles.marketing}>
+            <MarketingCard />
+          </div>
+          <div className={styles.proPlatforms}>
+            <ProPlatform />
+          </div>
+          <div className={styles.faqSection}>
+            <FAQ />
+          </div>
+          <div className={styles.ctaSection}>
+            <CTA />
+          </div>
+        </main>
+      </div>
+      
+      <div className={styles.page2}>
+        <main className={styles.main}>
+          <footer className={styles.footer}>
+            <Footer />
+          </footer>
+        </main>
+      </div>
+    </>
   );
 }

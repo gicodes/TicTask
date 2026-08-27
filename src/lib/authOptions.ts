@@ -71,6 +71,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, trigger, session }): Promise<JWT> {
       if (user) {
         const authUser = user as User;
+        console.log("authUser in authOptions > login", authUser)
         return {
           ...token,
           user: authUser,
@@ -118,6 +119,7 @@ export const authOptions: NextAuthOptions = {
       }
 
       try {
+        console.log("refreshing in authOptions > refresh")
         const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
         const res = await fetch(`${apiBase}/auth/refresh`, {
           method: "POST",

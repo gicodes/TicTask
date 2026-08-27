@@ -16,6 +16,15 @@
   font-family: var(--font-geist-sans);
 }
 
+.page2 {
+  background-color: whitesmoke;
+
+  padding: 40px 20px;
+
+  width: 100%;
+  font-family: var(--font-geist-sans);
+}
+
 @media (prefers-color-scheme: dark) {
   .page {
     --gray-rgb: 255, 255, 255;

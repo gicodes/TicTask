@@ -2,7 +2,7 @@ import { X, LinkedIn, YouTube } from "@mui/icons-material";
 import { ReactElement, createElement } from "react";
 
 export const TEAM = [
-  { name: "Gideon Iduma", role: "Founder & CEO, TicTask", location: "Abuja, Nigeria" },
+  { name: "Gideon Iduma", role: "Founder & CEO", location: "Abuja, Nigeria" },
   { name: "Humphery Atteng", role: "Operations & Experience", location: "Lagos, Nigeria" },
   // { name: "Gi Codes (Gideon)", role: "Product Lead", location: "Abuja, Nigeria" },
   { name: "Obiaju Akachukwu", role: "Growth & Partnerships", location: "Lagos, Nigeria" },
@@ -35,7 +35,7 @@ export const VALUES = [
   },
 ];
 
-export const TEAM_BIO = "We are a small, distributed team passionate about building tools that make collaboration feel effortless. \n The idea is to make professional work completely remote — yet retain the most fundamental values of teamwork that has been for hundreds of years achieved within an physical office or workspace location\n — Making Teamwork Absolutely Remote";
+export const TEAM_BIO = "We are a small, distributed team passionate about building tools that make collaboration feel effortless. \n The grand idea is to make professional work completely remote, yet retain the most fundamental values of teamwork that has been for hundreds of years achieved within physical offices or workspaces — Making Teamwork Absolutely Remote";
 
 export const CAREERS = [
   {

@@ -51,23 +51,6 @@ export const ProductHero = () => {
           Designed for people who value progress over noise.
           Built to grow as your workflow grows.
         </Typography>
-
-        <Stack
-          direction={{ xs: "column", sm: "row" }}
-          spacing={2}
-          mt={5}
-        >
-          <Button component={Link} href="/product/pricing">
-            View Plans
-          </Button>
-          <Button
-            tone="secondary"
-            component={Link}
-            href="/auth/join/user"
-          >
-            Start Free
-          </Button>
-        </Stack>
       </Box>
     </section>
   );

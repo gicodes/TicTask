@@ -34,6 +34,8 @@ export const ProductCTA = () => {
       <Box
         py={12}
         px={{ xs: 2, md: 6}}
+        maxWidth={1200}
+        margin={'0 auto'}
         gap={6}
         textAlign="center"
         display="flex"

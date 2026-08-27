@@ -1,38 +1,43 @@
-import { Box, Container, Grid, Typography, Link } from "@mui/material";
+import { Box, Container, Grid, Typography, Link, Stack } from "@mui/material";
 import { FOOTER_LINKS } from "@/constants/footerLinks";
 
 const Footer = () => {
   return (
-    <Box component="footer" py={2}>
+    <Box 
+      component="footer" 
+      py={{ xs: 5, sm: 7, lg: 10}}
+      color={'black'}
+      margin={'0 auto'}
+    >
       <Container>
-        <Grid container 
-          spacing={{ xs: 4, sm: 6, md: 8, lg: 10, xl: 12}} 
+        <Grid 
+          container 
+          spacing={{ xs: 4, sm: 6, md: 8, lg: 10, xl: 12 }} 
           width={'100%'}
-
         >
           {
             Object.entries(FOOTER_LINKS).map(([title, items], i) => (
-              <Grid key={i} width={{xs: '100%', sm: 'fit-content'}} maxWidth={125}>
-                <Typography 
-                  variant="h6" 
-                  fontWeight={600} 
-                  mb={2}
-                  color="silver"
-                >
+              <Grid 
+                key={i} 
+                maxWidth={125}
+                width={{ xs: '100%', sm: 'fit-content' }} 
+              >
+                <Typography variant="h6" fontWeight={600}>
                   {title}
                 </Typography>
-                {items.map((item, idx) => (
-                  <Link
-                    key={idx}
-                    href={item.link}
-                    color="inherit"
-                    underline="hover"
-                    display="block"
-                    sx={{ mb: 1 }}
-                  >
-                    {item.title}
-                  </Link>
-                ))}
+                
+                <Stack py={2} gap={1}>
+                  {items.map((item, idx) => (
+                    <Link
+                      key={idx}
+                      href={item.link}
+                      color="inherit"
+                      underline="hover"
+                    >
+                      {item.title}
+                    </Link>
+                  ))}
+                </Stack>
               </Grid>
             ))
           }

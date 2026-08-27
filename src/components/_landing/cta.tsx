@@ -47,7 +47,7 @@ const CTA = () => {
       
       <div className={`${styles.btnGroup} mt-1 mx-auto justify-center`}>
         <Button onClick={GetPro}>
-          Go Pro
+          Pay for a plan
         </Button>
         <Button
           tone="secondary"

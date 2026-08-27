@@ -8,7 +8,7 @@ export const metadata = {
   openGraph: {
     title: "About TicTask — The Future of Flow",
     description:
-      "Meet the TicTask team, explore our values, and see how we’re shaping the future of collaborative work.",
+      "Meet the Tictask team, explore our values, and see how we’re shaping the future of collaborative work.",
     url: "https://tictask.org/company",
     siteName: "TicTask",
     images: [

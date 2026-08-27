@@ -112,10 +112,10 @@ export const FAQs = [
   },
   {
     q: "Which platforms and integrations do you support?",
-    a: "TicTask works in the browser today. Native apps and deeper integrations (Slack, calendar providers, etc.) are on the roadmap. You can already export and import data via our templates and JSON formats.",
+    a: "Tictask works in the browser today. Native apps and deeper integrations (Slack, calendar providers, etc.) are on the roadmap. You can already export and import data via our templates and JSON formats.",
   },
   {
-    q: "How do I get help or become a partner?",
-    a: "Use the Contact page at the bottom of any public page. For moderator, agent or partner programmes, head to the partner registration flow — we’ll run a short KYC check and get back to you.",
+    q: "Why do I not just pay for other popular tools",
+    a: "Simple — Because popular does not guarantee efficiency. In terms of cost, you're guaranteed to spend way less per organization seat in Tictask.",
   },
 ];

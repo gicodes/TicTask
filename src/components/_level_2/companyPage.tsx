@@ -64,13 +64,15 @@ export const ValuesSection = () => {
 export const TeamSection = () => {
   return (
     <Box py={10} px={2} textAlign="center">
-      <Typography variant="h4" fontWeight={700} my={1}>
-        Meet the TicTask Team
-      </Typography>
-      <Typography fontSize={17} maxWidth={669} mx={'auto'}>
-       {TEAM_BIO}
-      </Typography>
-
+      <Stack gap={2}>
+        <Typography variant="h4" fontWeight={700} my={1}>
+          The Product Team
+        </Typography>
+        <Typography fontSize={20} maxWidth={800} mx={'auto'}>
+        {TEAM_BIO}
+        </Typography>
+      </Stack>
+      
       <Grid container my={10} spacing={5} justifyContent="center">
         {TEAM.map((member) => (
           <Grid key={member.name}>

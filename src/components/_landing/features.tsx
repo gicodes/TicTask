@@ -46,6 +46,10 @@ const FeaturesShowcase = () => {
         bgcolor: '#0a0a0a',
         color: 'white',
         overflow: 'hidden',
+        width: '100%',
+        maxWidth: 1200,
+        borderRadius: 5,
+        margin: '0 auto'
       }}
     >
       <AnimatePresence mode="wait">
@@ -186,7 +190,11 @@ const FeaturesShowcase = () => {
                     lineHeight={1.08}
                     letterSpacing="-0.035em"
                     fontSize={{ xs: 28, sm: 34, md: 42, lg: 52 }}
-                    sx={{ mb: 2.5, maxWidth: 720 }}
+                    sx={{ 
+                      mb: 2.5, 
+                      maxWidth: 720,
+                      minHeight: { xs: 60 },
+                    }}
                   >
                     {current.title}
                   </Typography>
@@ -196,7 +204,8 @@ const FeaturesShowcase = () => {
                     sx={{ 
                       opacity: 0.88, 
                       mb: 4.5, 
-                      maxWidth: 560,
+                      minHeight: { xs: 99 },
+                      maxWidth: 600,
                       fontWeight: 400,
                       lineHeight: 1.55,
                       fontSize: { xs: '1rem', sm: '1.15rem' },

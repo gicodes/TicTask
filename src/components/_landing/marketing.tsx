@@ -155,7 +155,7 @@ const MarketingCard = ({ children, flex = false }: MarketingCardProps) => {
               >
                 One Account.
                 <br/>
-                One Paid Plan.
+                <span className='custom-dull'>One Paid Plan.</span>
                 <br />
                 Own A Workforce.
               </Typography>
