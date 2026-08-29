@@ -17,12 +17,14 @@
 }
 
 .page2 {
-  background-color: whitesmoke;
-
+  background-color: #fff;
   padding: 40px 20px;
-
   width: 100%;
   font-family: var(--font-geist-sans);
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='20' viewBox='0 0 120 20'%3E%3Ctext x='0' y='15' font-family='monospace' font-size='14' font-weight='700' fill='%23000'%3ETictask%3C/text%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 @media (prefers-color-scheme: dark) {
