@@ -38,9 +38,13 @@ const DevicesAndSessions = () => {
     loadSessions();
   };
 
-  const revokeOne = async (jti: string) => {
-    await apiDelete(`/auth/sessions/${jti}`);
-    setSessions((prev) => prev.filter((s) => s.id !== jti));
+  const revokeOne = async (id: string) => {
+    await apiDelete(`/auth/sessions/${id}`);
+    setSessions((prev) => prev.filter((s) => s.id !== id));
+
+    if (sessions.length !== 0) await signOut({ 
+      callbackUrl: "/dashboard/settings" 
+    });
   };
 
   const revokeAll = async () => {
@@ -55,7 +59,7 @@ const DevicesAndSessions = () => {
     setRevokingAll(true);
     try {
       await apiPost("/auth/sessions/revoke-all");
-      await signOut({ callbackUrl: "/auth/login" });
+      await signOut({ callbackUrl: "/dashboard/settings" });
     } catch {
       showAlert("Failed to log out all sessions", "error");
       setRevokingAll(false);

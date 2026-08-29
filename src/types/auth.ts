@@ -83,6 +83,7 @@ export type SessionItem = {
   device?: string;
   ip?: string;
 
+  sessionId: string;
   isCurrent: boolean;
   accessToken?: string;
 

@@ -9,7 +9,16 @@ export function SessionErrorWatcher() {
   useEffect(() => {
     if (session?.error === "RefreshAccessTokenError") {
       if (process.env.NODE_ENV !== "production") console.error("Signed out with callbackUrl:");
-      // signOut({ callbackUrl }); x
+      
+      if (session.user.lastLoginAt) {
+        const lastLoginTime = new Date(session.user.lastLoginAt).getTime();
+        const currentTime = new Date().getTime();
+        const hoursElapsed = (currentTime - lastLoginTime) / (1000 * 60 * 60);
+        
+        if (hoursElapsed > 24) {
+          signOut();
+        }
+      }
     }
   }, [session?.error]);
 
