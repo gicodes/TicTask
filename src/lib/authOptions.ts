@@ -137,9 +137,8 @@ export const authOptions: NextAuthOptions = {
           error: undefined,
         };
       } catch (err) {
-        if (process.env.NODE_ENV !== "production") {
-          console.error("Token refresh error:", err);
-        }
+        if (process.env.NODE_ENV !== "production") console.error("Token refresh error:", err);
+        
         return {
           ...token,
           accessToken: undefined,

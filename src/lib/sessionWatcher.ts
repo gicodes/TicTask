@@ -6,12 +6,13 @@ import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 
 export function SessionErrorWatcher() {
   const { data: session } = useSession();
-    const { getLoginUrl } = useAuthRedirect();
-
+  const { getLoginUrl } = useAuthRedirect();
+  const callbackUrl = getLoginUrl();
 
   useEffect(() => {
     if (session?.error === "RefreshAccessTokenError") {
-      signOut({ callbackUrl: getLoginUrl() });
+      if (process.env.NODE_ENV !== "production") console.error("Signed out with callbackUrl:", callbackUrl);
+      // signOut({ callbackUrl });
     }
   }, [session?.error]);
 
