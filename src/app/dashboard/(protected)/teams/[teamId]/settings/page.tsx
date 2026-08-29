@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/assets/buttons";
 import { useTeam } from "@/hooks/useTeam";
@@ -32,119 +31,64 @@ export default function SettingsPage() {
     showAlert("Team information succesfully updated!", 'success')
   };
 
-  const subscriptionPlan = 
-    team?.subscription?.plan === "STANDARD" ? "Standard"
-    : team?.subscription?.plan === ("PRO") ? "Pro" 
-    : team?.subscription?.plan === ("ENTERPRISE") ? "Enterprise"
-    : "Privileged"
-
-  const expiresAt = team?.subscription?.expiresAt ? new Date(team?.subscription.expiresAt).toLocaleDateString() : '—';
-
   if (!isAuthenticated) return;
 
   return (
     <Box maxWidth={800}>
-      <Card sx={{ mb: 4 }}>
-        <CardContent>
-          <Stack mb={2} gap={1}>
-            <Typography 
-              variant="h6" 
-              fontWeight={600}
-            > 
-              Appearance 
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8}}>
-              Configure the appearance of your team&apos;s workspace and playground
-            </Typography>
-          </Stack>
+      <SettingsCard
+        title="Team Profile" 
+        subtitle="Only team owners are allowed to mutate team name and description."
+      >
+        <Grid display={'grid'} gap={2}>
+          <TextField
+            label="Team Name"
+            placeholder={team?.name}
+            value={name ?? team?.name ?? ""}
+            disabled={!isOwner}
+            onChange={(e) => setName(e.target.value)}
+          />
 
-          <Box py={2}>
-            <Typography sx={{ opacity: 0.75 }}> <i>Coming soon to teams</i></Typography>
-          </Box>
-        </CardContent>
-      </Card>
+          <TextField
+            label="Description"
+            placeholder={team?.description || "No description"}
+            value={description ?? team?.description ?? ""}
+            multiline
+            rows={3}
+            disabled={!isOwner}
+            onChange={(e) => setDescription(e.target.value)}
+          />
 
-      <Card sx={{ mb: 4 }}>
-        <CardContent>
-          <Stack mb={2} gap={1}>
-            <Typography 
-              variant="h6" 
-              fontWeight={600}
-            > 
-              Team Profile
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8}}>
-              Only team owners are allowed to mutate team name and description
-            </Typography>
-          </Stack>
-
-          <Grid display={'grid'} gap={2}>
-            <TextField
-              label="Team Name"
-              placeholder={team?.name}
-              value={name ?? ""}
-              disabled={!isOwner}
-              onChange={(e) => setName(e.target.value)}
-            />
-
-            <TextField
-              label="Description"
-              placeholder={team?.description || "No description"}
-              value={description ?? ""}
-              multiline
-              rows={3}
-              disabled={!isOwner}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-
-            <Button tone="primary" onClick={handleSave}>
-              Save Changes
-            </Button>
-          </Grid>
-        </CardContent>
-      </Card>
-
-      <Card sx={{ mb: 4 }}>
-        <CardContent>
-          <Stack mb={2} gap={1}>
-            <Typography 
-              variant="h6" 
-              fontWeight={600}
-            > 
-              Notifications 
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8}}>
-              Configure how members of your team gets notified on ticket activities
-            </Typography>
-          </Stack>
-
-          <Box py={2}>
-            <Typography sx={{ opacity: 0.75 }}> <i>Coming soon to teams</i></Typography>
-          </Box>
-        </CardContent>
-      </Card>
+          <Button sx={{ maxWidth: 300 }} onClick={handleSave}>
+            Save Changes
+          </Button>
+        </Grid>
+      </SettingsCard>            
 
       <SettingsCard
-        title="Subscriptions"
-        subtitle="View your current plan and manage your subscription."
+        title="Appearance" 
+        subtitle="Configure the appearance of your team&apos;s workspace and playground"
       >
-        <Stack spacing={2} pt={2}>
-          <Typography variant="body1">
-            <strong>Current Plan:</strong> {subscriptionPlan}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Renews on {expiresAt}
-          </Typography>
-          
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} pt={1}>
-            <Button component={Link} href="/dashboard/subscription">
-              Manage Subscription
-            </Button>
-            <Button component={Link} href="/product/pricing" tone='secondary'>
-              See Plans & Prices
-            </Button>
-          </Stack>
-        </Stack>
+        <Box py={2}>
+          <Typography sx={{ opacity: 0.75 }}> <i>Coming soon to teams</i></Typography>
+        </Box>
+      </SettingsCard>
+
+      <SettingsCard
+        title="Workflow" 
+        subtitle="View and manage team workflow."
+      >
+        <Box py={2}>
+          <Typography sx={{ opacity: 0.75 }}> <i>Coming soon to teams</i></Typography>
+        </Box>
+      </SettingsCard>
+
+      <SettingsCard
+        title="Notifications"           
+        subtitle="Configure how members of your team gets notified on ticket activities"
+      >
+        <Box py={2}>
+          <Typography sx={{ opacity: 0.75 }}> <i>Coming soon to teams</i></Typography>
+        </Box>
       </SettingsCard>
 
       <Card sx={{ borderColor: "error.main", borderWidth: 1 }}>

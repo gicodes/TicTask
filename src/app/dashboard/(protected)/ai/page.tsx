@@ -29,10 +29,10 @@ const Page = () => {
         flexDirection: 'column',
       }}
     >
-
-    <Box flex={1} p={2} overflow="auto">
-      <AiChatPanel fullRender={true} />
-    </Box>
+      {/* <Box flex={1} p={2} overflow="auto">
+        <AiChatPanel fullRender={true} />
+      </Box> */}
+      <Typography py={10} variant='h3'>Tictask AI is unavailable at this time. Sorry!</Typography>
     </Box>
   )
 }

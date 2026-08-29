@@ -42,22 +42,31 @@ const Hero = () => {
 
   return (
     <section id="get-started">
-      <div className={styles.heroTitle}>
-        <h2> Ticket <span className="font-xl">&</span> Task Management System </h2>
-        <h2> <span className="custom-warm">Driven by Org.</span> Designed for Everyone </h2>
-      </div>
-
-      <Typography className={styles.heroSubtitle} fontSize={{ xs: 16, md: 18, xl: 20 }}>
-        TicTask is a lightweight multi-faceted task management platform built for fast, friendly, agile teamwork. 
-        Whether you&apos;re a small team or a large enterprise, TicTask is designed to meet your organisational needs with very simple, yet robust features.
-      </Typography>
-
-      <div className={styles.heroActions}>
-        <div className={styles.btnGroup}>
-          <Button onClick={handleStartTrial}> Start free trial </Button>
-          <Button tone='secondary'> Watch demo video</Button>
+      <div className="max-width-1k mx-auto">
+        <div className={styles.heroTitle}>
+          <h2> Ticket <span className="font-xl">&</span> Task Management System </h2>
+          <h2> <span className="custom-warm">Driven by Org.</span> Designed for Everyone </h2>
         </div>
-        <p className={styles.trialText}> 14-day free trial. No credit card required.</p>
+
+        <Typography  
+          px={1} 
+          py={5} 
+          mx={'auto'}
+          textAlign={'center'}
+          fontSize={{ xs: 16, md: 18, xl: 20 }}
+          sx={{ opacity: 0.75}}
+        >
+          TicTask is a lightweight multi-faceted task management platform built for fast, friendly, agile teamwork. 
+          Whether you&apos;re a small team or a large enterprise, TicTask is designed to meet your organizational needs with very simple, yet robust features.
+        </Typography>
+
+        <div className={styles.heroActions}>
+          <div className={styles.btnGroup}>
+            <Button onClick={handleStartTrial}> Start free trial </Button>
+            <Button tone='secondary'> Watch demo video</Button>
+          </div>
+          <p className={styles.trialText}> 14-day free trial. No credit card required.</p>
+        </div>
       </div>
     </section>
   );

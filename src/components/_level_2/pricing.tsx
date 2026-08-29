@@ -116,6 +116,7 @@ export default function PricingSection() {
                     boxShadow: plan.highlight
                       ? "0 8px 32px rgba(0,0,0,0.15)"
                       : "0 1px 4px rgba(0,0,0,0.1)",
+                    color: plan.highlight ? "var(--foreground)" : "inherit",
                   }}
                 >
                   <Stack spacing={2}>

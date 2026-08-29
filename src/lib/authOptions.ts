@@ -7,7 +7,7 @@ import { getCurrentUser } from "./getCurrentUser";
 import { getTokenExpiry } from "./jwtDecode";
 import { nextAuthApiPost } from "./axios";
 
-import type { GenericAPIRes, LoginRequest, LoginResponse } from "@/types/axios";
+import type { LoginRequest, LoginResponse } from "@/types/axios";
 import type { NextAuthOptions } from "next-auth";
 import type { User } from "@/types/users";
 import type { JWT } from "next-auth/jwt";
@@ -71,7 +71,6 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, trigger, session }): Promise<JWT> {
       if (user) {
         const authUser = user as User;
-        console.log("authUser in authOptions > login", authUser)
         return {
           ...token,
           user: authUser,
@@ -119,7 +118,6 @@ export const authOptions: NextAuthOptions = {
       }
 
       try {
-        console.log("refreshing in authOptions > refresh")
         const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
         const res = await fetch(`${apiBase}/auth/refresh`, {
           method: "POST",

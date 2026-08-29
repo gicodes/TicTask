@@ -76,7 +76,7 @@ export function TicketDetailPane({
           </Typography>
 
           {editMode ? (
-            <FormControl size="small" sx={{ width: { xs: 140, sm: 160 }, flexShrink: 0 }}>
+            <FormControl size="small" sx={{ width: { xs: 125, sm: 150 }, flexShrink: 0 }}>
               <InputLabel>Priority</InputLabel>
               <Select
                 value={ticket.priority || ''}
@@ -95,12 +95,14 @@ export function TicketDetailPane({
             ticket.priority && (
               <Box
                 sx={{
-                  width: { xs: 110, sm: 125 },
+                  width: 100,
                   minHeight: 40,
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 2,
+                  justifyContent: 'space-around',
+                  gap: 1,
                   px: 1.5,
+                  py: 0.5,
                   borderRadius: 2,
                   border: '1px solid',
                   borderColor: `${priorityColor(ticket.priority)}33`,

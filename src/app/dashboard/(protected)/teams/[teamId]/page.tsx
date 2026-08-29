@@ -463,10 +463,17 @@ export default function OverviewPage() {
       </Stack>
       
       <SomeOnePays>
-        <Stack
+        <Stack 
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          width={'100%'}
+          justifyContent={'space-between'}
+        >
+          <Stack
             direction={{ xs: "column", sm: "row" }}
             spacing={{ xs: 1, sm: 0 }}
             maxWidth={800}
+            width={'100%'}
             sx={{
               border: "1px solid",
               borderColor: "divider",
@@ -521,31 +528,17 @@ export default function OverviewPage() {
                   {item.label}
                 </Typography>
               </Stack>
-            ))}
-          </Stack>
-
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            alignItems={{ xs: "stretch", sm: "center" }}
-            justifyContent="space-between"
-            spacing={2}
+            ))}        
+          </Stack>  
+              
+          <Button
+            tone="action"
+            onClick={() => router.push(`/dashboard/teams/${teamId}/tickets`)}
+            sx={{ borderRadius: 2.5, fontWeight: 700 }}
           >
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ display: { xs: "none", sm: "block" }}}
-            >
-              Bring the team. We&apos;ll bring the tickets.
-            </Typography>
-
-            <Button
-              tone="action"
-              onClick={() => router.push(`/dashboard/teams/${teamId}/tickets`)}
-              sx={{ borderRadius: 2.5, fontWeight: 700 }}
-            >
-              Open Playground
-            </Button>
-          </Stack>
+            Open Playground
+          </Button>
+        </Stack>
       </SomeOnePays>
     </Stack>
   );

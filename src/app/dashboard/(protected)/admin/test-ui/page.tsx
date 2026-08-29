@@ -27,7 +27,7 @@ const Page = () => {
     <EmailTemplate
       subject="Invoice Notification"
       title="You have an incoming invoice"
-      subtitle="Invoice #12345 from TicTask"
+      subtitle="Invoice #12345 from Tictask"
       body1={body1}
       body2="<p>Please review the invoice and proceed with payment.</p>"
       closingRemark="<p>— The TicTask Team</p>"

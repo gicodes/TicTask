@@ -1,9 +1,7 @@
 'use client'
 
-import { Button } from "@/assets/buttons";
 import { Typography, Stack, Box } from "@mui/material";
 import { motion } from "framer-motion";
-import Link from "next/link";
 
 export const ProductHero = () => {
   return (

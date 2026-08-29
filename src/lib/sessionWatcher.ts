@@ -1,13 +1,17 @@
 "use client";
-import { useSession, signOut } from "next-auth/react";
+
 import { useEffect } from "react";
+import { useSession, signOut } from "next-auth/react";
+import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 
 export function SessionErrorWatcher() {
   const { data: session } = useSession();
+    const { getLoginUrl } = useAuthRedirect();
+
 
   useEffect(() => {
     if (session?.error === "RefreshAccessTokenError") {
-      signOut({ callbackUrl: "/auth/login" });
+      signOut({ callbackUrl: getLoginUrl() });
     }
   }, [session?.error]);
 

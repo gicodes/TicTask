@@ -35,6 +35,7 @@ interface UserNode {
   name: string;
   email: string;
   role: string;
+  sessionId?: string;
   createdAt: string;
   lastLoginIp?: string;
 }

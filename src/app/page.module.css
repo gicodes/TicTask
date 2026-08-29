@@ -140,7 +140,6 @@ a.secondary {
   font-size: 1rem;
   max-width: 800px;
   line-height: 25px;
-  color: var(--foreground);  
   opacity: 0.75;
   
   @media screen and (max-width: 600px) {
@@ -156,9 +155,10 @@ a.secondary {
 }
 
 .readyToStart {
-  min-height: 250px;
+  min-height: 360px;
   text-align: center;
-  margin: 20px auto;
+  padding: 25px 10px;
+  margin: 25px auto 10px;
 }
 
 .btnGroup {
