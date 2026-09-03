@@ -198,15 +198,12 @@ const TicketsPage: React.FC = () => {
           </Typography>
           
           <Box 
-            p={1} 
-            my={1}  
-            gap={1}
+            my={2}  
+            gap={2}
             display={'grid'} 
-            borderRadius={2} 
-            bgcolor={'rgba(0,0,0,0.07)'}
           >
-            <Typography variant='caption' color='info'>Can&apos;t find it on your a mobile device?</Typography>
-            <Typography fontSize={14} color='text.secondary'>✦ Expand toolbar (top-left corner) to see action buttons ✦<br/></Typography>
+            <Typography variant="subtitle2" sx={{ opacity: 0.75}}>Can&apos;t find it on your a mobile device?</Typography>
+            <Typography variant="body1">♺  Expand toolbar (top-left corner) to see action buttons ♺ <br/></Typography>
           </Box>
 
           <Divider sx={{ my: 5 }} />
@@ -215,8 +212,8 @@ const TicketsPage: React.FC = () => {
             Ticket Hub vs Task Manager?
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.8 }} mb={3}>
-            While both tools are similar and help you manage tickets, <strong>Ticket Hub</strong> offer range and simplicity.{" "}
-            <strong>Task manager</strong> handle specific tickets with timeline & built-in calendar to track tickets.{" "}
+            While both tools are similar and help you manage tickets, Ticket Hub offer range and simplicity.{" "}
+            Task manager handle specific tickets with timeline & built-in calendar to track tickets.{" "}
           </Typography>
 
           <Divider sx={{ my: 5 }} />
@@ -226,7 +223,7 @@ const TicketsPage: React.FC = () => {
             <li>Project Management: Break projects into actionable tickets & track progress.</li>
             <li>Customer Support: Manage personal or client requests & issues efficiently.</li>
             <li>Personal Productivity: Track your goals, habits, or anything worth accomplishing.</li>
-            <li>Event Planning: Organize, invite others to events by creating tickets as events/ meeting via <strong>Task Manager</strong>.</li>
+            <li>Event Planning: Organize, invite others to events by creating tickets as events/ meeting via Task Manager.</li>
             <li>Team Collaboration: Assign tickets to team member(s), set deadlines, tags and communicate within tickets.</li>
             <li>Invoicing: Bill clients by creating tickets as invoice and attach vital details.</li>
             <li>Community Notes: See updates, activity log with ticket comments and history.</li>

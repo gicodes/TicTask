@@ -41,7 +41,7 @@ const NotificationDropDown = ({
                 }}
                 onClick={markAllAsRead}
               >
-                Mark all read
+                Mark all as read
               </Typography> 
                 :
               <Typography

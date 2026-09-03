@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from "react"; 
 import { FAQs } from "@/constants/resources";
 import { 
   Accordion, 
@@ -14,6 +17,9 @@ import {
 } from "react-icons/vsc";
 
 const FAQ = () => {
+  const [openMore, setOpenMore] = useState(false);
+  const visibleFAQs = openMore ? FAQs : FAQs.slice(0, 5);
+
   return (
     <Box 
       border={'1px solid var(--disabled)'}
@@ -29,7 +35,7 @@ const FAQ = () => {
       </Typography>
       
       <Card>
-        {FAQs.map((f, i) => (
+        {visibleFAQs.map((f, i) => (
           <Accordion key={i} disableGutters sx={{ p: 1 }}>
             <AccordionSummary expandIcon={<VscTriangleDown />}>
               <Stack 
@@ -52,6 +58,18 @@ const FAQ = () => {
           </Accordion>
         ))}
       </Card>
+
+      <Box 
+        sx={{ 
+          mt: 2,
+          display: 'flex', 
+          justifyContent: 'right', 
+          cursor: 'pointer' 
+        }}     
+        onClick={() => setOpenMore(!openMore)}
+      >
+        <Typography>{openMore ? "Load Less" : "Load More"}</Typography>
+      </Box>
     </Box>
   );
 };

@@ -267,7 +267,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                 </Stack>
                   
                 { authMenuItems.slice(0, 6).map((item, i) => (
-                  <Link key={i} href={item.href}>
+                  <a key={i} href={item.href}>
                     <MenuItem 
                       disabled={item.disabled} 
                       style={{ 
@@ -280,7 +280,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                     >
                       {item.label} {item.cta && <FaExternalLinkAlt />}
                     </MenuItem>
-                  </Link>
+                  </a>
                 ))}
                 <Divider sx={{ my: 1}} />
 

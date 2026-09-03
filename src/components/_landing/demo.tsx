@@ -17,8 +17,9 @@ const Demo = () => {
             alt="Demo Image"
             width={600}
             height={400}
+            loading="eager"
             style={{ 
-              width: '100%', 
+              width: 'auto', 
               height: 'auto' 
             }}
           />
@@ -28,7 +29,7 @@ const Demo = () => {
             component="iframe"
             width="100%"
             height="auto"
-            src="https://www.youtube.com/embed/v=XUkq-0LtKvU"
+            src="https://www.youtube.com/embed/7t4e0wtqsvY"
             title="YouTube demo"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

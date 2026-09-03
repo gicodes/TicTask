@@ -92,30 +92,50 @@ export const BLOG_POSTS = [
 export const FAQs = [
   {
     q: "Is there a free plan?",
-    a: "Yes. Every personal account is freemium by default. You get full access to Tickets, Task Manager, Settings, and basic notifications. Organisation accounts get a 14-day free trial of Standard — no credit card required.",
+    a: "Yes. Every personal account is freemium by default. This means you get limited access to core system features i.e. tickets, notifications and free trial. Organisation accounts with expired or no subscription plan can also enjoy basic free access.",
   },
   {
-    q: "What’s the difference between Personal and Organisation accounts?",
-    a: "Personal accounts are for individuals. You can create tickets, manage your own work, and join teams when invited. Organisation accounts unlock the Teams page, let you create workspaces, and (on paid plans) invite free guests. Creating a team is reserved for organisation accounts.",
+    q: "What is the use of Calendar",
+    a: "The Tictask Calendar Tool helps you view tickets with a time line. This can be tickets with a set due date, task start time or meeting date. It is usually tied to tickets in a particular workspace."
+  },
+  {
+    q: "What’s the difference between personal and organisation accounts?",
+    a: "Personal accounts are for individuals, and lets you create tickets, manage calendar events, and join teams when invited. Organisation accounts have a Teams page — to create, manage and invite members (on free or paid accounts) to the team. Creating a team is reserved for organisation accounts with a paid plan, but managing workflow can be personal or business.",
   },
   {
     q: "Can I collaborate without paying?",
-    a: "Yes — if someone with a paid organisation plan invites you as a guest. Your access is tied to their subscription. You can still use all free personal features on your own account.",
+    a: "Yes, when (paid) organisation accounts invite you as a guest. Your access is tied to their subscription, without losing or complicating your personal workspace.",
   },
   {
     q: "What do the paid plans unlock?",
-    a: "Standard, Pro and Enterprise unlock the gated features: push notifications, advanced ticket controls, self-service tools, full Teams collaboration, guest invites, and higher limits. The higher the plan, the more guests and workspaces you can run.",
+    a: "Standard, pro and enterprise unlock gated features such as push notifications, advanced ticket controls, self-service tools, full Teams collaboration, guest invites, and higher limits. The higher the plan, the more guests and workspaces you can run.",
   },
   {
     q: "Is my data secure?",
-    a: "Yes. We use enterprise-grade encryption in transit and at rest, role-based access control, and regular security reviews. Only people you explicitly grant access can see your workspaces.",
+    a: "Yes — We use standard encryption in transit and at rest, role-based access control, and regular security reviews. Only people you explicitly grant access can see your workspaces, and we never ask you for passwords or security tokens.",
+  },
+  {
+    q: "Can we download your app?",
+    a: "Tictask.org is not available on app store yet. However, from your browser, you can add to home screen to feature as an app.",
+  },
+  {
+    q: "How do I know what's happening in a team I join",
+    a: "Personal notification preference, team setup and role. By default, (shared) ticket updates are sent via email and in-app notifications — except you mute notifications 🔕 or opt out. Paid accounts get an extra channel with Push notifications.",
   },
   {
     q: "Which platforms and integrations do you support?",
     a: "Tictask works in the browser today. Native apps and deeper integrations (Slack, calendar providers, etc.) are on the roadmap. You can already export and import data via our templates and JSON formats.",
   },
   {
-    q: "Why do I not just pay for other popular tools",
-    a: "Simple — Because popular does not guarantee efficiency. In terms of cost, you're guaranteed to spend way less per organization seat in Tictask.",
+    q: "Do I pay for the users I bring to the team?",
+    a: "Team Owner? Yes. Only one account pays for all the users in a team. This must be an organisation account and by default, the Team Owner. Both owner and other members in that team can invite users until the team is full."
+  },
+  {
+    q: "How many teams can an organisation have",
+    a: "An organisation can have as many teams. If an organisation has one close/ thin team, we suggest going for Standard Plan — it lets you create 1 team, 6 members max. When it needs more teams, Pro lets it create up to 3 teams, 6 members each. More? Organisation Plan takes 6+ teams with custom setup for members in the team."
+  },
+  {
+    q: "Where can we find contents to guide us better?",
+    a: "Go to Resources. You can find specifics in docs, however, every content on Tictask is educative when you pay attention.",
   },
 ];
