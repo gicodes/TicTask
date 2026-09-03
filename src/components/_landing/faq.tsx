@@ -68,7 +68,7 @@ const FAQ = () => {
         }}     
         onClick={() => setOpenMore(!openMore)}
       >
-        <Typography>{openMore ? "Load Less" : "Load More"}</Typography>
+        <Typography sx={{ opacity: 0.7 }}>{openMore ? "Load Less" : "Load More"}</Typography>
       </Box>
     </Box>
   );

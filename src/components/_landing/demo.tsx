@@ -19,7 +19,7 @@ const Demo = () => {
             height={400}
             loading="eager"
             style={{ 
-              width: 'auto', 
+              width: '100%', 
               height: 'auto' 
             }}
           />
@@ -29,7 +29,7 @@ const Demo = () => {
             component="iframe"
             width="100%"
             height="auto"
-            src="https://www.youtube.com/embed/7t4e0wtqsvY"
+            src="https://www.youtube.com/embed/7t4e0wtqsvY?si=mTiyxjxR1LHAckHt"
             title="YouTube demo"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

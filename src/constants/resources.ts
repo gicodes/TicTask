@@ -91,15 +91,15 @@ export const BLOG_POSTS = [
 
 export const FAQs = [
   {
-    q: "Is there a free plan?",
+    q: "Is there a free plan for new accounts?",
     a: "Yes. Every personal account is freemium by default. This means you get limited access to core system features i.e. tickets, notifications and free trial. Organisation accounts with expired or no subscription plan can also enjoy basic free access.",
   },
   {
     q: "What is the use of Calendar",
-    a: "The Tictask Calendar Tool helps you view tickets with a time line. This can be tickets with a set due date, task start time or meeting date. It is usually tied to tickets in a particular workspace."
+    a: "The Tictask Calendar Tool helps you see tickets with a time line on calendar. This can be tickets with a set due date, start time or deadline. Calendar is tied to tickets in a dedicated workspace."
   },
   {
-    q: "What’s the difference between personal and organisation accounts?",
+    q: "What’s the difference between personal and organisation?",
     a: "Personal accounts are for individuals, and lets you create tickets, manage calendar events, and join teams when invited. Organisation accounts have a Teams page — to create, manage and invite members (on free or paid accounts) to the team. Creating a team is reserved for organisation accounts with a paid plan, but managing workflow can be personal or business.",
   },
   {

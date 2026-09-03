@@ -62,8 +62,18 @@ const Hero = () => {
 
         <div className={styles.heroActions}>
           <div className={styles.btnGroup}>
-            <Button onClick={handleStartTrial}> Start free trial </Button>
-            <Button tone='secondary'> Watch demo video</Button>
+            <Button onClick={handleStartTrial}> 
+              Start free trial 
+            </Button>
+            <Button tone='secondary'>
+              <a 
+                href="https://youtu.be/7t4e0wtqsvY?si=mTiyxjxR1LHAckHt" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              > 
+                Watch demo video
+              </a>
+            </Button>
           </div>
           <p className={styles.trialText}> 14-day free trial. No credit card required.</p>
         </div>
