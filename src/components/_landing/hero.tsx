@@ -1,12 +1,14 @@
 'use client';
 
+import Demo from "./demo";
+import Link from "next/link";
 import { Button } from "@/assets/buttons";
 import styles from "@/app/page.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
-import { useSubscription } from "@/providers/subscription";
 import { Typography } from "@mui/material";
+import { useSubscription } from "@/providers/subscription";
 
 const Hero = () => {
   const { startFreeTrial } = useSubscription();
@@ -42,8 +44,8 @@ const Hero = () => {
 
   return (
     <section id="get-started">
-      <div className="max-width-1k mx-auto">
-        <div className={styles.heroTitle}>
+      <div className={styles.heroTitle}>
+        <div>
           <h2> Ticket <span className="font-xl">&</span> Task Management System </h2>
           <h2> <span className="custom-warm">Driven by Org.</span> Designed for Everyone </h2>
         </div>
@@ -59,23 +61,32 @@ const Hero = () => {
           TicTask is a lightweight multi-faceted task management platform built for fast, friendly, agile teamwork. 
           Whether you&apos;re a small team or a large enterprise, TicTask is designed to meet your organizational needs with very simple, yet robust features.
         </Typography>
+      </div>
 
+      <div className={styles.demoDisplay}>
+        <Demo />
+      </div>
+
+      <div className="max-width-1k mx-auto">
         <div className={styles.heroActions}>
           <div className={styles.btnGroup}>
             <Button onClick={handleStartTrial}> 
               Start free trial 
             </Button>
+            
             <Button tone='secondary'>
-              <a 
-                href="https://youtu.be/7t4e0wtqsvY?si=mTiyxjxR1LHAckHt" 
+              <Link 
+                href="/resources" 
                 target="_blank" 
                 rel="noopener noreferrer"
               > 
-                Watch demo video
-              </a>
+                Learn more
+              </Link>
             </Button>
           </div>
-          <p className={styles.trialText}> 14-day free trial. No credit card required.</p>
+          <p className={styles.trialText}> 
+            14-day free trial. No credit card required.
+          </p>
         </div>
       </div>
     </section>

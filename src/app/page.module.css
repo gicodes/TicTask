@@ -164,8 +164,11 @@ a.secondary {
 }
 
 .heroTitle {
-  gap: 5px;
+  gap: 10px;
   display: flex;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 0;
   text-align: center;
   flex-direction: column;
 }
@@ -433,4 +436,8 @@ a.secondary {
   margin: 50px auto 0;
   border-radius: 12px;
   background: fixed linear-gradient(135deg, #f0f0f0, #e0e0e0);
+}
+
+.demoDisplay {
+  margin: 10px auto 30px;
 }

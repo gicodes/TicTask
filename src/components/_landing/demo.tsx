@@ -13,7 +13,7 @@ const Demo = () => {
       >
         <Grid sx={{ width: { xs: 300, sm: 500, lg: 600 } }}>
           <Image
-            src="/abstract/tictask_imagine.jpg"
+            src="/abstract/Tictask_join.jpg"
             alt="Demo Image"
             width={600}
             height={400}

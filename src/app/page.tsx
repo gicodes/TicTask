@@ -19,9 +19,6 @@ export default function Home() {
           <div className={styles.hero}>
             <Hero />
           </div>
-          <div className={styles.demoDisplay}>
-            <Demo />
-          </div>
           <div className={styles.indexPitch}>
             <IndexPitch />
           </div>
