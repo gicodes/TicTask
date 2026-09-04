@@ -10,7 +10,7 @@ export const extendedMenuItems: Record<string, { label: string; href: string }[]
   Products: [
     { label: "Overview", href: "/product" },
     { label: "Pricing", href: "/product/pricing" },
-    { label: "Demo", href: "/product#demo" },
+    { label: "Demo", href: "https://www.youtube.com/embed/7t4e0wtqsvY?si=mTiyxjxR1LHAckHt" },
   ],
   Resources: [
     { label: "Overview", href: "/resources" },

@@ -2,7 +2,7 @@ export const FOOTER_LINKS = {
   PRODUCTS: [
     {title: "Overview", link: '/product'},
     {title: "Pricing", link: '/product/pricing'}, // *
-    {title: "Demo", link: '#'},
+    {title: "Demo", link: 'https://www.youtube.com/embed/7t4e0wtqsvY?si=mTiyxjxR1LHAckHt'}, 
     {title: "Integration", link: '#'}  // *
   ],
   RESOURCES: [

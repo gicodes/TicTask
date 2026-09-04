@@ -1,7 +1,10 @@
 "use client";
 
+import { 
+  signOut,
+  useSession,
+} from "next-auth/react";
 import { useEffect } from "react";
-import { useSession, signOut } from "next-auth/react";
 
 export function SessionErrorWatcher() {
   const { data: session } = useSession();

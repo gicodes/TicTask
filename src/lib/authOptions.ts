@@ -131,9 +131,9 @@ export const authOptions: NextAuthOptions = {
 
         return {
           ...token,
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken ?? token.refreshToken,
-          accessTokenExpires: getTokenExpiry(data.accessToken),
+          accessToken: data.data.accessToken,
+          refreshToken: data.data.refreshToken ?? token.refreshToken,
+          accessTokenExpires: getTokenExpiry(data.data.accessToken),
           error: undefined,
         };
       } catch (err) {
@@ -141,9 +141,9 @@ export const authOptions: NextAuthOptions = {
         
         return {
           ...token,
+          accessTokenExpires: 0,
           accessToken: undefined,
           refreshToken: undefined,
-          accessTokenExpires: 0,
           error: "RefreshAccessTokenError",
         };
       }

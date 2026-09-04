@@ -1,4 +1,5 @@
 import styles from "./page.module.css";
+
 import CTA from "@/components/_landing/cta";
 import FAQ from "@/components/_landing/faq";
 import Demo from "@/components/_landing/demo";
@@ -8,6 +9,7 @@ import IndexPitch from "@/components/_landing/pitch";
 import Features from "@/components/_landing/features";
 import ProPlatform from "@/components/_landing/platforms";
 import MarketingCard from "../components/_landing/marketing";
+import { WorkspaceFlowAnimation } from "@/components/_landing/animatedFlow";
 
 export default function Home() {
   return (
@@ -29,6 +31,9 @@ export default function Home() {
         <main>
           <div className={styles.features}>
             <Features />
+          </div>
+          <div className={styles.animationFlow}>
+            <WorkspaceFlowAnimation />
           </div>
         </main>
       </div>

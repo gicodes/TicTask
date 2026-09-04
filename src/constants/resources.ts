@@ -41,13 +41,13 @@ export const TEMPLATES = [
   {
     title: "Team Task Board",
     desc: "Kanban-ready workspace for small teams. Assign, move, and close tickets without extra setup.",
-    file: "/resources/templates/team-task-board.json",
+    file: "#",
     tags: ["Project", "Team", "Kanban"],
   },
   {
     title: "Onboarding Checklist",
     desc: "Step-by-step checklist for new members. Assign owners and track completion in one place.",
-    file: "/resources/templates/onboarding-checklist.json",
+    file: "#",
     tags: ["HR", "Checklist", "Onboarding"],
   },
 ];

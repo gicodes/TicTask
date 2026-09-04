@@ -106,7 +106,7 @@ export default function TeamsPage() {
                 <>
                   <Stack>
                     <Typography variant="h6" fontWeight={700}>
-                      Your {teams.length > 1 ? "Teams" : "Team"}
+                      Your {teams.length > 1 ? "Teams" : "Team"} ({teams.length})
                     </Typography>
                     <Typography variant="body1" sx={{ opacity: 0.7 }}>
                       Click to go into team workspace

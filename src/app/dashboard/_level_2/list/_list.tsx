@@ -1,22 +1,22 @@
 import {
   Box,
-  Typography,
+  Chip,
+  alpha,
+  Stack,
   Avatar,
   Tooltip,
-  Stack,
-  Chip,
   useTheme,
-  alpha,
+  Typography,
 } from '@mui/material';
 import {
   Bug,
-  Lightbulb,
   Clock,
-  DollarSign,
   Users,
-  Paperclip,
   Repeat,
   Calendar,
+  Lightbulb,
+  Paperclip,
+  DollarSign,
 } from 'lucide-react';
 import { Ticket } from '@/types/ticket';
 import NoTickets from '../../_level_1/tEmpty';
@@ -119,8 +119,7 @@ export default function TicketsList({
   };
 
   const renderStatus = (ticket: Ticket) => {
-    const status =
-      ticket.status === 'IN_PROGRESS' ? 'IN PROGRESS' : ticket.status;
+    const status = ticket.status === 'IN_PROGRESS' ? 'IN PROGRESS' : ticket.status;
     const { bg, color } = getStatusColor(ticket.status);
 
     return (
@@ -160,11 +159,11 @@ export default function TicketsList({
             variant="outlined"
             sx={{
               height: 20,
-              fontSize: '0.65rem',
               borderRadius: 1.2,
+              fontSize: '0.65rem',
+              bgcolor: alpha(theme.palette.background.default, 0.4),
               borderColor: alpha(theme.palette.text.secondary, 0.22),
               color: 'text.secondary',
-              bgcolor: alpha(theme.palette.background.default, 0.4),
             }}
           />
         ))}
@@ -321,22 +320,22 @@ export default function TicketsList({
   return (
     <Box
       sx={{
-        px: { xs: 0.5, sm: 1 },
         py: 1,
+        gap: 2,
         display: 'grid',
-        gap: 2, 
+        px: { xs: 0.5, sm: 1 },
         width: { xs: '100%', sm: 'max-content' },
       }}
     >
       <Stack
         sx={{
-          display: { xs: 'none', md: 'grid' },
-          gridTemplateColumns: gridTemplate.md,
           gap: 1.5,
           px: 2.5,
           py: 1.25,
-          justifyContent: 'space-between',
           alignItems: 'center',
+          justifyContent: 'space-between',
+          display: { xs: 'none', md: 'grid' },
+          gridTemplateColumns: gridTemplate.md,
           bgcolor: alpha(theme.palette.text.primary, 0.03),
           border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
           backdropFilter: 'blur(8px)',
@@ -400,7 +399,6 @@ export default function TicketsList({
             ticket.status === 'CANCELLED' ||
             ticket.status === 'CLOSED' ||
             ticket.status === 'RESOLVED';
-
           const accentColor = ticket.priority
             ? priorityColor(ticket.priority)
             : alpha(theme.palette.text.disabled, 0.4);
@@ -574,9 +572,7 @@ export default function TicketsList({
                 </Typography>
               )}
               {columns?.includes('Extra') && (
-                <Box
-                  sx={{ display: { xs: 'none', md: 'block' }, minWidth: 0 }}
-                >
+                <Box sx={{ display: { xs: 'none', md: 'block' }, minWidth: 0 }}>
                   {renderExtra(ticket)}
                 </Box>
               )}

@@ -426,3 +426,11 @@ a.secondary {
 .heroContainer {
   background: linear-gradient(135deg, #e3f2fd, #ffffff);
 }
+
+.animationFlow {
+  padding: 20px;
+  max-width: none;
+  margin: 50px auto 0;
+  border-radius: 12px;
+  background: fixed linear-gradient(135deg, #f0f0f0, #e0e0e0);
+}

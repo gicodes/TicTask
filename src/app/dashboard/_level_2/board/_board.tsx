@@ -1,22 +1,21 @@
 'use client';
 
+import React, { useMemo } from 'react';
 import { Ticket } from '@/types/ticket';
 import BoardColumn from './boardColumn';
-import React, { useMemo } from 'react';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import {
   Box,
-  useTheme,
-  useMediaQuery,
   Tabs,
   Tab,
-  IconButton,
   Tooltip,
+  useTheme,
+  IconButton,
+  useMediaQuery,
 } from '@mui/material';
 import { unknown } from 'zod';
 import { KANBAN_BOARD_PROPS } from '../../_level_1/tSchema';
+import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 
 export default function Board({
   grouped,
@@ -131,7 +130,7 @@ export default function Board({
               <Box sx={{ position: 'absolute', left: 0, top: 16, zIndex: 10 }}>
                 <Tooltip title={`See ${prevStatuses.join(', ').toLowerCase()}`}>
                   <IconButton onClick={handlePrevColumns}>
-                    <ChevronLeftIcon fontSize="large" />
+                    <ChevronLeft fontSize="large" />
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -165,7 +164,7 @@ export default function Board({
             <Box sx={{ position: 'absolute', right: 0, top: 16, zIndex: 10 }}>
               <Tooltip title={`See ${nextStatuses.join(', ').toLowerCase()}`}>
                 <IconButton onClick={handleNextColumns}>
-                  <ChevronRightIcon fontSize="large" />
+                  <ChevronRight fontSize="large" />
                 </IconButton>
               </Tooltip>
             </Box>
