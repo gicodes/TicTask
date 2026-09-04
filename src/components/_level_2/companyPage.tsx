@@ -117,7 +117,7 @@ export default function CompanyPage() {
     <Box>
       <CompanyHero />
       <ValuesSection />
-      <TeamSection />
+      {/* <TeamSection /> */}
       <ContactUsSection />
       <SocialsSection />
     </Box>
