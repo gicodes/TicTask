@@ -56,7 +56,7 @@ export default function EventRenderer({ event }: { event: PlannerEvent }) {
           gap: 5
         }}
       >
-        <div style={{ fontWeight: 600, fontSize: 12.5 }}>
+        <div style={{ fontWeight: 600, fontSize: 12.5, }}>
           {event.title}
         </div>
         {event.status && (

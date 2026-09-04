@@ -2,7 +2,6 @@ import styles from "./page.module.css";
 
 import CTA from "@/components/_landing/cta";
 import FAQ from "@/components/_landing/faq";
-import Demo from "@/components/_landing/demo";
 import Hero from "@/components/_landing/hero";
 import Footer from "@/components/_landing/footer";
 import IndexPitch from "@/components/_landing/pitch";

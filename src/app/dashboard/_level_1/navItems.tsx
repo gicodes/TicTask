@@ -51,7 +51,7 @@ export const NAV_ITEMS = [
   { label: "Metrics", path: '/dashboard/metrics', icon: <FcDataEncryption /> },
   { label: 'Careers', path: '/dashboard/admin/careers', icon: <MdWorkHistory />},
   { label: 'Partners', path: '/dashboard/admin/partners', icon: <GiThreeFriends />},
-  { label: 'Products', path: '/product', icon: <MdCategory />, external: true },
+  { label: 'Product', path: '/product', icon: <MdCategory />, external: true },
   { label: 'Legal', path: '/legal', icon: <FcDocument />, external: true},
   { label: 'More', path: '#', icon: <CgMenuGridR />, more: true }, 
   // more includes Docs, FAQ, blog, community and register Go to Signup
@@ -72,7 +72,7 @@ export const getFilteredNav = (user: AuthUser | null) => {
     const allowed = [
       'Ticket Hub',
       'Task Manager',
-      'Products',
+      'Product',
       'Invite',
       'Legal',
       'Settings',
@@ -84,7 +84,7 @@ export const getFilteredNav = (user: AuthUser | null) => {
   const allowed = [
     'Ticket Hub',
     'Task Manager',
-    'Products',
+    'Product',
     'Invite',
     'Legal',
     'Subscription',

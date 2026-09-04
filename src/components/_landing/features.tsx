@@ -367,7 +367,7 @@ const features = [
   {
     icon: <MdSecurity />,
     shortLabel: "Security",
-    imageUrl: "/features/security.jpeg",
+    imageUrl: "/features/app-security.avif",
     title: "Security First",
     description: "Consistently update our systems and software to ensure your experience is safe and secure.",
     bulletPoints: [

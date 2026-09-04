@@ -1,16 +1,16 @@
 import { LinkItem } from "./constants";
 
 export const menuItems = [
-  { label: "Products", href: "/product" },
+  { label: "Product", href: "/product" },
   { label: "Resources", href: "/resources" },
   { label: "Company", href: "/company" },
 ];
 
 export const extendedMenuItems: Record<string, { label: string; href: string }[]> = {
-  Products: [
+  Product: [
     { label: "Overview", href: "/product" },
     { label: "Pricing", href: "/product/pricing" },
-    { label: "Demo", href: "https://www.youtube.com/embed/7t4e0wtqsvY?si=mTiyxjxR1LHAckHt" },
+    { label: "Demo", href: "/product/demo" },
   ],
   Resources: [
     { label: "Overview", href: "/resources" },

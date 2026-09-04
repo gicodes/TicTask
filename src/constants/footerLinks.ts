@@ -2,7 +2,7 @@ export const FOOTER_LINKS = {
   PRODUCTS: [
     {title: "Overview", link: '/product'},
     {title: "Pricing", link: '/product/pricing'}, // *
-    {title: "Demo", link: 'https://www.youtube.com/embed/7t4e0wtqsvY?si=mTiyxjxR1LHAckHt'}, 
+    {title: "Demo", link: '/product/demo'}, 
     {title: "Integration", link: '#'}  // *
   ],
   RESOURCES: [
@@ -28,7 +28,7 @@ export const FOOTER_LINKS = {
 };
 
 export const sections = {
-  PRODUCTS: ["All Products", "Pricing", "Demo", "Integration"],
+  PRODUCT: ["All Products", "Pricing", "Demo", "Integration"],
   RESOURCES: ["Blog", "Help Center", "Developer", "Free Tools", "Security"],
   COMPANY: ["About", "Careers", "Become a Partner", "Find a Partner", "Contact Us"],
   LEGAL: ["Terms of Service", "Privacy Policy", "Cookie Policy", "Data Protection"],

@@ -6,7 +6,6 @@ import { Box, Stack, Typography, Avatar, Paper } from '@mui/material';
 import { TicketListRowTemplate } from '@/app/resources/_level_2/ricketListRowTemplate';
 import { TicketCardTemplate } from '@/app/resources/_level_2/ticketCardTemplate';
 
-
 const DEMO_TICKETS = [
   {
     id: 1,
@@ -62,11 +61,65 @@ export const WorkspaceFlowAnimation = () => {
   const ticket = DEMO_TICKETS[activeTicket];
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, y: 50, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{
+        duration: 0.8,
+        delay: 0.15,
+      }}
+    >
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: 1180,
+          mx: 'auto',
+          borderRadius: {
+            xs: 3,
+            md: 5,
+          },
+          overflow: 'hidden',
+          boxShadow:
+            '0 40px 100px rgba(0,0,0,.18)',
+          padding: { xs: 0, md: "0 0 2rem"},
+          background: 'white',
+        }}
+        gap={3}
+        display="flex"
+        flexDirection="column"
+      >
+        <Box
+          sx={{
+            height: 42,
+            px: 2,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            background: '#181818',
+          }}
+        >
+          {[1, 2, 3].map((item) => (
+            <Box
+              key={item}
+              sx={{
+                width: 9,
+                height: 9,
+                borderRadius: '50%',
+                background:
+                  item === 1
+                    ? '#ff5f57'
+                    : item === 2
+                      ? '#febc2e'
+                      : '#28c840',
+              }}
+            />
+          ))}
+      </Box>
+        
       <Typography 
         variant="h6" 
         color="text.primary" 
-        fontWeight={700} mb={2} 
+        fontWeight={700} 
         textAlign="center"
         sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' } }}
       >
@@ -186,6 +239,7 @@ export const WorkspaceFlowAnimation = () => {
           ))}
         </Stack>
       </Box>
-    </>
+    </Box>
+    </motion.div>
   );
 };

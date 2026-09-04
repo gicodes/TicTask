@@ -1,8 +1,8 @@
 'use client'
 
+import { motion } from 'framer-motion';
 import { DIFFERENTIAL, FEATURES } from '@/constants/product';
 import { Box, Container, Grid, Typography, Stack } from '@mui/material';
-import { motion } from 'framer-motion';
 
 export const ProductShowcase = () => {
   return (

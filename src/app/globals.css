@@ -207,7 +207,7 @@ h6 { font-size: 1.5rem; }
   }
 }
 
-.pulse {
+.pulse, .action-pulse {
   display: inline-block;
   animation: pulse 2.5s ease-in-out infinite;
 }
@@ -221,6 +221,12 @@ h6 { font-size: 1.5rem; }
   0% { color: #888; }
   50% { color: #00bfa5; }
   100% { color: #888; }
+}
+
+@keyframes action-pulse {
+  0% { color: #888; }
+  50% { color: #888; }
+  100% { color: #f38600; }
 }
 
 .highlight-glow {

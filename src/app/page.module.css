@@ -394,7 +394,7 @@ a.secondary {
 }
 
 .marketing {
-  margin: 50px 0;
+  margin: 20px 0;
 }
 
 .container {
@@ -431,11 +431,8 @@ a.secondary {
 }
 
 .animationFlow {
-  padding: 20px;
   max-width: none;
   margin: 50px auto 0;
-  border-radius: 12px;
-  background: fixed linear-gradient(135deg, #f0f0f0, #e0e0e0);
 }
 
 .demoDisplay {

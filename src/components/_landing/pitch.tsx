@@ -6,19 +6,19 @@ const pitchpoints = [
   {
     icon: "10+",
     title: "Use Cases",
-    description: "Create Ticket as Task, Issue, Invoice & more",
+    description: "Create ticket as task, Issue, Invoice & more",
     color: "gray"
   },
   {
     icon: <TbStatusChange />,
     title: "Track Ticket Status",
-    description: "Track ticket status. Update or assign tickets to TikTask agent, bot or external receipient",
+    description: "Track ticket status. update & share with team",
     color: "darkorange",
   },
   {
     icon: <MdNotificationsActive />,
     title: "Push Notifications",
-    description: "Get ticket updates via email, or push",
+    description: "Get ticket updates via email or push",
     color: "gray",
   },
 ]
@@ -28,18 +28,19 @@ const IndexPitch = () => {
     <Container>
       <Stack textAlign={'center'} display={'grid'} gap={5}>
         <Typography
-          variant="h5"
-          fontWeight={501}
+          variant="h4"
+          fontWeight={700}
           sx={{
             opacity: 0,
             animation: 'fadeIn 1.5s ease forwards',
           }}
+          fontFamily={'var((--font-geist-sans))'}
         >
-          <i>
-            Never miss a task, routine or opportunity to get your{' '}
-          </i>
-          <span className="custom-dull font-md pulse">
-            <i>Sh⥘t together</i>
+          Tickets that <span className="pulse">
+            track itself
+          </span> & {" "}
+          <span className="action-pulse">
+            facilitate work
           </span>
         </Typography>
         <Box 
