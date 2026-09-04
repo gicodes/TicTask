@@ -52,7 +52,7 @@ const Hero = () => {
 
         <Typography  
           px={1} 
-          py={3} 
+          py={{ xs: 1, md: 2, xl: 3 }} 
           mx={'auto'}
           textAlign={'center'}
           fontSize={{ xs: 16, md: 18, xl: 20 }}
