@@ -197,9 +197,11 @@ export const ProductShowcase = () => {
                           sx={{
                             p: 4,
                             borderRadius: 3,
-                            background: i === 0 ? '#f8f9fa' : 'white',
+                            background: 'black',
+                            color: 'white',
+                            transition: 'all 0.3s ease',
                             border: i === 1 
-                              ? '1px solid red' 
+                              ? '1px solid var(--accent)' 
                               : '1px solid rgba(0,0,0,0.1)',
                             boxShadow: i === 1 
                               ? '0 10px 30px rgba(0,0,0,0.1)' 
@@ -212,8 +214,8 @@ export const ProductShowcase = () => {
                               px: 3,
                               py: 0.75,
                               borderRadius: '999px',
-                              background: i === 1 ? '#000' : i===2 ? 'var(--flair)' : 'rgba(0,0,0,0.08)',
-                              color: i === 1 ? '#fff' : i===2 ? 'white' : '#111',
+                              background: i === 1 ? '#fff' : i===2 ? 'var(--special)' : 'var(--disabled)',
+                              color: i === 1 ? '#000' : i===2 ? 'white' : '#111',
                               fontWeight: 700,
                               mb: 3,
                               fontSize: '0.95rem',

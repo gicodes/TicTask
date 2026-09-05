@@ -16,19 +16,44 @@ import {
   VscTriangleDown 
 } from "react-icons/vsc";
 
-const FAQ = () => {
+const FAQ = ({ faqPage }: { faqPage?: boolean }) => {
   const [openMore, setOpenMore] = useState(false);
   const visibleFAQs = openMore ? FAQs : FAQs.slice(0, 5);
 
+  if (faqPage === true) return (
+    <Box maxWidth={1200} mx="auto" px={2} py={4}>
+      {FAQs.map((f, i) => (
+        <Accordion key={i} disableGutters sx={{ p: 1 }}>
+          <AccordionSummary expandIcon={<VscTriangleDown />}>
+            <Stack 
+              display={'flex'} 
+              direction={'row'} 
+              alignItems={'center'} 
+              gap={1}
+            >
+              <VscDebugBreakpointConditional /> 
+              <Typography fontWeight={500}>
+                {f.q}
+              </Typography>
+            </Stack>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography color="text.secondary">
+              {f.a}
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </Box>
+  ) 
+  
   return (
     <Box 
-      border={'1px solid var(--disabled)'}
       borderRadius={4} 
-      px={2}
-      py={{ xs: 2, sm: 4, md: 6}} 
+      p={2} 
       maxWidth={1000} 
       mx="auto"
-      boxShadow={2}
+      mt={8}
     >
       <Typography variant="h5" textAlign="center" mb={4} fontWeight={600}>
         Frequently Asked Questions

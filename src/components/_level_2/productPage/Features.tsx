@@ -9,8 +9,8 @@ import { motion } from 'framer-motion';
 
 const features = [
   {
-    eyebrow: 'TASKS',
-    title: 'Everything starts with a task.',
+    eyebrow: 'TICKET OR TASK',
+    title: 'Everything starts with a ticket or task.',
     description:
       'Capture the work. Add context. Give it an owner. TicTask keeps the details close to the work itself.',
     image: '/in-app/Create-ticket.png',
@@ -26,7 +26,7 @@ const features = [
     eyebrow: 'TIMELINES',
     title: 'See the bigger picture.',
     description:
-      'Understand dependencies, deadlines and progress without having to dig through endless conversations.',
+      'Tickets with due date or timeline appear in Calendar. Understand dependencies, deadlines and progress without having to dig through endless conversations.',
     image: '/in-app/Calendar events.png',
   },
 ];
@@ -81,7 +81,7 @@ export const ProductFeatures = () => {
                     fontSize: '.75rem',
                     fontWeight: 900,
                     letterSpacing: '.12em',
-                    color: 'var(--flair)',
+                    color: 'text.secondary',
                     mb: 2,
                   }}
                 >
@@ -108,7 +108,7 @@ export const ProductFeatures = () => {
                   sx={{
                     fontSize: '1.05rem',
                     lineHeight: 1.8,
-                    maxWidth: 470,
+                    maxWidth: 480,
                     opacity: 0.65,
                   }}
                 >

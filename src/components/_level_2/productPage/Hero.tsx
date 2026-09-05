@@ -10,7 +10,7 @@ export const ProductHero = () => {
         textAlign="center"
         maxWidth="xl"
         mx="auto"
-        py={18}
+        py={15}
         px={1.5}
         display="flex"
         flexDirection="column"
@@ -27,7 +27,7 @@ export const ProductHero = () => {
             marginBottom: "1.5rem",
           }}
         >
-          Work that flows. <br /> Teams that don&apos;t fight their tools.
+          Work that flows. <br /> Teams that don&apos;t dread their tools.
         </motion.h1>
 
         <Typography
@@ -36,18 +36,8 @@ export const ProductHero = () => {
           maxWidth="md"
           sx={{ opacity: 0.85 }}
         >
-          TicTask brings clarity, momentum, and structure into one calm workspace —
-          from personal focus to enterprise-scale execution.
-        </Typography>
-
-        <Typography
-          variant="body2"
-          maxWidth="sm"
-          mt={2}
-          sx={{ opacity: 0.65 }}
-        >
-          Designed for people who value progress over noise.
-          Built to grow as your workflow grows.
+          Bringing clarity, momentum, and structure into one calm workspace—
+          from personal focus to enterprise scale execution.
         </Typography>
       </Box>
     </section>

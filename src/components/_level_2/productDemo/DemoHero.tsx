@@ -153,6 +153,7 @@ export const ProductDemoHero = () => {
                     aspectRatio: '16 / 9',
                     objectFit: 'cover',
                     background: '#090909',
+                    border: 'none',
                   }}
                 />
               </Box>

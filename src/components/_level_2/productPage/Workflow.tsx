@@ -30,6 +30,13 @@ const steps = [
       'Move work forward together without losing context between people and projects.',
     image: '/features/action.avif',
   },
+  {
+    number: '04',
+    title: 'Deliver',
+    description:
+      'Keep work on track and get it done with clear priorities, timelines and progress tracking.',
+    image: '/features/delivery.avif',
+  },
 ];
 
 export const ProductWorkflow = () => {
@@ -58,7 +65,7 @@ export const ProductWorkflow = () => {
             <Typography
               sx={{
                 fontWeight: 800,
-                color: 'var(--disabled)',
+                color: 'var(--accent)',
                 mb: 4,
               }}
             >

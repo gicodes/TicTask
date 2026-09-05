@@ -9,14 +9,21 @@ import { Button } from "@/assets/buttons";
 export default function CareersSection (){
   return (
     <section id="careers">
-      <Box py={12} textAlign="center" px={2}>
+      <Box 
+        py={12} 
+        px={2}
+        gap={4}
+        flexDirection="column" 
+        textAlign="center" 
+        display="flex" 
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <Typography variant="h3" fontWeight={700} mb={2}>
-            Join us in building a calmer future of work
+            Join us in building the future of work
           </Typography>
           <Typography
             variant="body1"
@@ -38,10 +45,11 @@ export default function CareersSection (){
                 transition={{ delay: i * 0.1 }}
                 style={{
                   borderRadius: "16px",
-                  border: "1px solid var(--dull-gray)",
                   padding: "2rem",
                   width: 320,
                   textAlign: "left",
+                  border: "1px solid var(--disabled)",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
                 }}
               >
                 <Stack spacing={1} mb={2}>

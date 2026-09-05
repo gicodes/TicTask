@@ -1,6 +1,8 @@
 import { ProductCTA } from '@/components/_level_2/productPage/CTA'
 import { ProductHero } from '@/components/_level_2/productPage/Hero';
 import { ProductShowcase } from '@/components/_level_2/productPage/Showcase';
+import { ProductFeatures } from '@/components/_level_2/productPage/Features';
+import { ProductWorkflow } from '@/components/_level_2/productPage/Workflow';
 
 export const metadata = {
   title: "TicTask Products — Workflows that Flow",
@@ -36,6 +38,8 @@ const Page = () => {
   return (
     <main>
       <ProductHero />
+      <ProductWorkflow />
+      <ProductFeatures />
       <ProductShowcase />
       <ProductCTA />
     </main>

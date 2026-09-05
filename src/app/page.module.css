@@ -29,10 +29,6 @@
   position: relative;
 }
 
-.page2 footer {
-  background-color: white;
-}
-
 .page2::before {
   content:
     "Tictask   Tictask   Tictask   Tictask   Tictask   "
@@ -123,6 +119,10 @@ a.secondary {
     padding-bottom: 50px;
   }
 
+  .page2 {
+    padding: 15px;
+  }
+
   .main {
     align-items: center;
   }
@@ -168,7 +168,6 @@ a.secondary {
   display: flex;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 10px 0;
   text-align: center;
   flex-direction: column;
 }
@@ -432,7 +431,7 @@ a.secondary {
 
 .animationFlow {
   max-width: none;
-  margin: 50px auto 0;
+  margin: 40px auto 0;
 }
 
 .demoDisplay {

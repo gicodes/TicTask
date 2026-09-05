@@ -12,7 +12,7 @@ const pitchpoints = [
   {
     icon: <TbStatusChange />,
     title: "Track Ticket Status",
-    description: "Track ticket status. update & share with team",
+    description: "See ticket status in real-time, update, start or assign to team",
     color: "darkorange",
   },
   {
@@ -34,7 +34,8 @@ const IndexPitch = () => {
             opacity: 0,
             animation: 'fadeIn 1.5s ease forwards',
           }}
-          fontFamily={'var((--font-geist-sans))'}
+          // chat please use a very fine font family for modern aesthetic look
+          fontFamily={'"Helvetica Neue", Helvetica, Arial, sans-serif'}
         >
           Tickets that <span className="pulse">
             track itself
