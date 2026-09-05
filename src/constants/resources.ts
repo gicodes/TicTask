@@ -6,7 +6,19 @@ export const RESOURCES = [
     image: "https://images.unsplash.com/photo-1471958680802-1345a694ba6d?q=80&w=1566&auto=format&fit=crop",
   },
   {
-    title: "Templates",
+    title: "FAQ",
+    desc: "Straight answers to the questions people actually ask",
+    link: "/resources/faq",
+    image: "https://images.unsplash.com/photo-1652077859695-de2851a95620?q=80&w=880&auto=format&fit=crop",
+  },
+  {
+    title: "Blog",
+    desc: "Product thinking, team workflows, and behind-the-scenes notes",
+    link: "/resources/blog",
+    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80",
+  },
+  {
+    title: "Template",
     desc: "Ready-made boards and checklists so you never start from zero",
     link: "/resources/templates",
     image: "https://images.unsplash.com/photo-1695634281181-b2357af34c61?q=80&w=1470&auto=format&fit=crop",
@@ -18,19 +30,7 @@ export const RESOURCES = [
     image: "https://images.unsplash.com/photo-1653130892179-98a1a5a19f32?q=80&w=1470&auto=format&fit=crop",
   },
   {
-    title: "Blog",
-    desc: "Product thinking, team workflows, and behind-the-scenes notes",
-    link: "/resources/blog",
-    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80",
-  },
-  {
-    title: "FAQ",
-    desc: "Straight answers to the questions people actually ask",
-    link: "/resources/faq",
-    image: "https://images.unsplash.com/photo-1652077859695-de2851a95620?q=80&w=880&auto=format&fit=crop",
-  },
-  {
-    title: "Developers",
+    title: "Developer",
     desc: "Open-source files, contribution guide, and API notes",
     link: "/resources/docs/dev",
     image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80",

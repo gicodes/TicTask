@@ -23,22 +23,29 @@ const FAQ = ({ faqPage }: { faqPage?: boolean }) => {
   if (faqPage === true) return (
     <Box maxWidth={1200} mx="auto" px={2} py={4}>
       {FAQs.map((f, i) => (
-        <Accordion key={i} disableGutters sx={{ p: 1 }}>
+        <Accordion 
+          key={i} 
+          disableGutters 
+          sx={{ 
+            py: { xs: 1.5, sm: 2 },
+            px: { xs: 1, sm: 1.5, md: 2 } 
+          }}
+        >
           <AccordionSummary expandIcon={<VscTriangleDown />}>
             <Stack 
               display={'flex'} 
               direction={'row'} 
               alignItems={'center'} 
-              gap={1}
+              gap={{ xs: 1.2, sm: 1.5, md: 2 }}
             >
               <VscDebugBreakpointConditional /> 
-              <Typography fontWeight={500}>
+              <Typography fontSize={15} fontWeight={500}>
                 {f.q}
               </Typography>
             </Stack>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography color="text.secondary">
+            <Typography color="text.secondary" p={1}>
               {f.a}
             </Typography>
           </AccordionDetails>
@@ -49,8 +56,8 @@ const FAQ = ({ faqPage }: { faqPage?: boolean }) => {
   
   return (
     <Box 
-      borderRadius={4} 
-      p={2} 
+      borderRadius={{ xs: 2, sm: 2.5, md: 3}} 
+      p={1} 
       maxWidth={1000} 
       mx="auto"
       mt={8}
@@ -59,24 +66,31 @@ const FAQ = ({ faqPage }: { faqPage?: boolean }) => {
         Frequently Asked Questions
       </Typography>
       
-      <Card>
+      <Card sx={{ borderRadius: 3, px: 0}}>
         {visibleFAQs.map((f, i) => (
-          <Accordion key={i} disableGutters sx={{ p: 1 }}>
+          <Accordion 
+            key={i} 
+            disableGutters 
+            sx={{ 
+              py: { xs: 1.5, sm: 2 },
+              px: { xs: 0, sm: 1.5, md: 2 }, 
+            }}
+          >
             <AccordionSummary expandIcon={<VscTriangleDown />}>
               <Stack 
                 display={'flex'} 
                 direction={'row'} 
                 alignItems={'center'} 
-                gap={1}
+                gap={{ xs: 1.2, sm: 1.5, md: 2 }}
               >
                 <VscDebugBreakpointConditional /> 
-                <Typography fontWeight={500}>
+                <Typography fontSize={15} fontWeight={500}>
                   {f.q}
                 </Typography>
               </Stack>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography color="text.secondary">
+              <Typography color="text.secondary" p={1}>
                 {f.a}
               </Typography>
             </AccordionDetails>

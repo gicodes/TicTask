@@ -51,6 +51,7 @@ export const TicketListRowTemplate: React.FC<TicketListRowTemplateProps> = ({
         border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
         overflow: 'hidden',
         maxWidth: compact ? 320 : 420,
+        minHeight: 180,
         width: '100%',
         '&::before': {
           content: '""',

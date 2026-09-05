@@ -1,9 +1,10 @@
-import { TemplateCard } from "@/app/resources/_level_2/templateCard";
-import { ResourceHero } from "@/app/resources/_level_3";
-import { Box, Grid, Typography } from "@mui/material";
+
 import { TEMPLATES } from "@/constants/resources";
-import { TicketListRowTemplate } from '@/app/resources/_level_2/ricketListRowTemplate';
+import { Box, Grid, Typography } from "@mui/material";
+import { ResourceHero } from "@/app/resources/_level_3";
+import { TemplateCard } from "@/app/resources/_level_2/templateCard";
 import { TicketCardTemplate } from '@/app/resources/_level_2/ticketCardTemplate';
+import { TicketListRowTemplate } from '@/app/resources/_level_2/ticketListRowTemplate';
 
 
 export default function TemplatesPage() {

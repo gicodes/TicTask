@@ -6,19 +6,19 @@ const pitchpoints = [
   {
     icon: "10+",
     title: "Use Cases",
-    description: "Create ticket as task, invoice, issue & more",
+    description: "Create ticket as task, invoice, issue & more.",
     color: "gray"
   },
   {
     icon: <TbStatusChange />,
     title: "Track Ticket Status",
-    description: "See ticket status in real-time, update, start or assign to team",
+    description: "See ticket status in real-time. Update, start or assign to team.",
     color: "darkorange",
   },
   {
     icon: <MdNotificationsActive />,
     title: "Push Notifications",
-    description: "Get ticket updates via email or push",
+    description: "Get ticket updates via 3+ channels: email, push & in-app.",
     color: "gray",
   },
 ]
@@ -26,20 +26,20 @@ const pitchpoints = [
 const IndexPitch = () => {
   return (
     <Container>
-      <Stack textAlign={'center'} display={'grid'} gap={5}>
+      <Stack textAlign={'center'} display={'grid'} gap={5} mb={5}>
         <Typography
           variant="h4"
-          fontWeight={700}
           fontFamily={'var(--font-sans)'}
           sx={{
             opacity: 0,
+            lineHeight: 1.5,
             animation: 'fadeIn 1.5s ease forwards',
           }}
         >
-          Tickets that <span className="action-pulse">
+          Tickets that <span className="action-pulse font-weight-b">
             track itself
-          </span> & {" "}
-          <span className="pulse">
+          </span> <span className="opac-1 font-lg">&</span> {" "}
+          <span className="pulse bold">
             facilitate work
           </span>
         </Typography>

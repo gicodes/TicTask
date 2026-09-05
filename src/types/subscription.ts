@@ -96,3 +96,28 @@ type Meta = {
   hasNext: boolean;
   hasPrev: boolean;
 };
+
+export type HistoryItem = {
+  id: string;
+  type: string;
+  plan?: string;
+  amount?: number;
+  currency?: string;
+  status?: string;
+  description: string;
+  invoiceUrl?: string;
+  billingCycle: string;
+  createdAt: Date;
+};
+
+export type Pagination = {
+  page: number;
+  limit: number;
+  total: number;
+  hasMore: boolean;
+};
+
+export type HistoryProps = {
+  limit?: number;
+  compact?: boolean;
+};

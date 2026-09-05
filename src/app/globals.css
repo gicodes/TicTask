@@ -137,6 +137,8 @@ h6 { font-size: 1.5rem; }
 .font-xxl { font-size: 2.75rem; }
 .font-sxl { font-size: 3rem; }
 
+.bold { font-weight: 700; }
+.font-weight-b { font-weight: 501; }
 .font-weight-l { font-weight: 200; }
 .text-italic { font-style: italic;}
 
@@ -190,6 +192,8 @@ h6 { font-size: 1.5rem; }
 
 .mb-1 { margin-bottom: 0.5rem; }
 .mb-2 { margin-bottom: 1rem; }
+
+.opac-1 { opacity: 0.75;}
 
 .btn {
   border-radius: 9999px;

@@ -65,7 +65,7 @@ export default function FaqPage() {
       
       <Box py={8} maxWidth={1200} mx="auto">
         <Typography variant="h5" textAlign="center">
-          Common Questions and Helpful Answers
+          Helpful Answers To Common Questions
         </Typography>
         <FAQ faqPage={true} />
       </Box>

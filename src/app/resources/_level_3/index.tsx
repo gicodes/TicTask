@@ -112,7 +112,6 @@ export const ResourceGrid = () => {
           </IconButton>
         </Box>
 
-        {/* Horizontal Scroll Track */}
         <Box
           ref={scrollRef}
           sx={{
@@ -122,11 +121,9 @@ export const ResourceGrid = () => {
             scrollSnapType: "x mandatory",
             scrollBehavior: "smooth",
             px: { xs: 2, sm: 3, md: 6, lg: 8 },
-            pb: 2, // room for scrollbar / shadow
-            // Hide scrollbar but keep functionality
+            pb: 2, 
             scrollbarWidth: "none",
             "&::-webkit-scrollbar": { display: "none" },
-            // Soft edge fade (optional polish)
             maskImage: {
               xs: "none",
               md: "linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%)",

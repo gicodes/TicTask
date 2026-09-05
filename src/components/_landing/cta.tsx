@@ -43,7 +43,7 @@ const CTA = () => {
   return (
     <div className={styles.readyToStart}>
       <p className="font-sm max-width-800 mx-auto">Unlock advanced features and enhanced productivity by starting the paid version</p>
-      <h2 className="my-3 custom-dull">Set{whiteDot} Ready{whiteDot} <span className="custom-warm">Go{whiteDot}</span></h2>
+      <h2 className="my-3 custom-dull">Set{whiteDot} <span className="custom-warm">Ready{whiteDot}</span> <span className="pulse">Go{whiteDot}</span></h2>
       
       <div className={`${styles.btnGroup} mt-1 mx-auto justify-center`}>
         <Button onClick={GetPro}>
