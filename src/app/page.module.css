@@ -206,6 +206,10 @@ a.secondary {
   gap: 20px;
   margin: 10px auto;
 
+  Button {
+    min-width: 200;
+  }
+
   @media screen and (max-width: 600px) {
     flex-direction: column;
     width: 100%;
