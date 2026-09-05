@@ -30,17 +30,16 @@ const IndexPitch = () => {
         <Typography
           variant="h4"
           fontWeight={700}
+          fontFamily={'var(--font-sans)'}
           sx={{
             opacity: 0,
             animation: 'fadeIn 1.5s ease forwards',
           }}
-          // chat please use a very fine font family for modern aesthetic look
-          fontFamily={'"Helvetica Neue", Helvetica, Arial, sans-serif'}
         >
-          Tickets that <span className="pulse">
+          Tickets that <span className="action-pulse">
             track itself
           </span> & {" "}
-          <span className="action-pulse">
+          <span className="pulse">
             facilitate work
           </span>
         </Typography>

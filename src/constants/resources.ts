@@ -136,6 +136,6 @@ export const FAQs = [
   },
   {
     q: "Where can we find contents to guide us better?",
-    a: "Go to Resources. You can find specifics in docs, however, every content on Tictask is educative when you pay attention.",
+    a: "Go to Resources. You can find specifics topics in docs. However, information is available across various sections and pages from product to company.",
   },
 ];

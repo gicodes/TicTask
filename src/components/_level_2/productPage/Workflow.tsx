@@ -34,7 +34,7 @@ const steps = [
     number: '04',
     title: 'Deliver',
     description:
-      'Keep work on track and get it done with clear priorities, timelines and progress tracking.',
+      'Keep work connected from start to finish, and deliver results with confidence.',
     image: '/features/delivery.avif',
   },
 ];

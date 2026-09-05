@@ -27,7 +27,7 @@ export const ProductHero = () => {
             marginBottom: "1.5rem",
           }}
         >
-          Work that flows. <br /> Teams that don&apos;t dread their tools.
+          Work that flows. <br /> Teams that don&apos;t hate their tools.
         </motion.h1>
 
         <Typography

@@ -66,8 +66,9 @@ export const ProductShowcase = () => {
                     mb: 8,
                   }}
                 >
-                  Start with simple tasks. Grow into structured projects.<br/>
-                  Scale into coordinated team execution — without switching tools.
+                  Start with simple tasks. 
+                  <br/>Grow into structured projects.<br/>
+                  Scale with coordinated team execution— without switching tools.
                 </Typography>
               </Box>
 
@@ -155,10 +156,10 @@ export const ProductShowcase = () => {
                     position: 'absolute',
                     inset: 0,
                     backgroundImage:
-                      'radial-gradient(rgba(0,0,0,0.6) 1px, transparent 1px)',
+                      'radial-gradient(rgba(0,0,0,0.3) 3px, transparent 1px)',
                     backgroundSize: '1px 5px',
                     maskImage:
-                      'radial-gradient(circle at center, transparent 15%, black 50%)',
+                      'radial-gradient(circle at center, transparent 12%, black 60%)',
                     WebkitMaskImage:
                       'radial-gradient(circle at center, transparent 10%, black 70%)',
                     opacity: .50,
@@ -197,8 +198,8 @@ export const ProductShowcase = () => {
                           sx={{
                             p: 4,
                             borderRadius: 3,
-                            background: 'black',
-                            color: 'white',
+                            background: 'rgba(255,255,255,.5)',
+                            color: 'black',
                             transition: 'all 0.3s ease',
                             border: i === 1 
                               ? '1px solid var(--accent)' 
@@ -214,8 +215,8 @@ export const ProductShowcase = () => {
                               px: 3,
                               py: 0.75,
                               borderRadius: '999px',
-                              background: i === 1 ? '#fff' : i===2 ? 'var(--special)' : 'var(--disabled)',
-                              color: i === 1 ? '#000' : i===2 ? 'white' : '#111',
+                              background: i===1 ? '#111' : i===2 ? 'var(--special)' : 'var(--disabled)',
+                              color: '#fff',
                               fontWeight: 700,
                               mb: 3,
                               fontSize: '0.95rem',

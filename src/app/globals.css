@@ -207,9 +207,14 @@ h6 { font-size: 1.5rem; }
   }
 }
 
-.pulse, .action-pulse {
+.pulse {
   display: inline-block;
   animation: pulse 2.5s ease-in-out infinite;
+}
+
+.action-pulse {
+  display: inline-block;
+  animation: action-pulse 5s ease-in-out infinite;
 }
 
 @keyframes fadeIn {
