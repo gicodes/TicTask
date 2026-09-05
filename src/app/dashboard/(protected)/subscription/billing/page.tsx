@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/assets/buttons';
+import { useAuth } from '@/providers/auth';
 import { useAlert } from '@/providers/alert';
 import { useSubscription } from '@/providers/subscription';
-import { useAuth } from '@/providers/auth';
 import {
   Box,
   Stack,
@@ -33,46 +33,17 @@ import {
   Refresh,
   SupportAgent,
 } from '@mui/icons-material';
+import { apiGet } from '@/lib/axios';
+import { GenericAPIRes } from '@/types/axios';
+import { BillingOverview } from '@/types/billing';
 import { VscLinkExternal } from 'react-icons/vsc';
 import GenericGridPageLayout from '@/app/dashboard/_level_1/genGridPageLayout';
 import { SubscriptionHistory } from '@/app/dashboard/_level_2/subscriptionHistory';
 import GenericDashboardPagesHeader from '@/app/dashboard/_level_1/genDashPagesHeader';
-import { apiGet } from '@/lib/axios';
-import { GenericAPIRes } from '@/types/axios';
-
-type BillingOverview = {
-  subscription: {
-    plan: string;
-    billingCycle?: string | null;
-    active: boolean;
-    expiresAt: string;
-    amount?: number | null;
-    daysRemaining?: number;
-    subscribed?: boolean;
-  } | null;
-  customerCode: string | null;
-  canUpdatePaymentMethod: boolean;
-  recentHistory: Array<{
-    id: string;
-    type: string;
-    plan?: string;
-    amount?: number;
-    currency?: string;
-    status?: string;
-    description: string;
-    reference?: string;
-    createdAt: string;
-  }>;
-};
-
-const fade = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { delay, duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-});
 
 function formatMoney(amount?: number | null, currency = 'NGN') {
   if (amount == null) return '—';
+  
   return new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency,
@@ -147,7 +118,6 @@ export default function ManageBillingPage() {
   };
 
   const handleUpdatePayment = () => {
-    // Paystack has no hosted portal — wire your re-auth / card update flow here
     showAlert('Card update flow coming soon. Contact support if your card needs updating.', 'info');
   };
 

@@ -31,9 +31,10 @@ export default function PricingSection() {
   const router = useRouter();
   const { user } = useAuth();
   const { showAlert } = useAlert();
-  const { subscription, upgradeToCheckout, billingCycle } = useSubscription();
-  const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
+  const [loading, setLoading] = useState(false);
   const isBusiness = user?.userType === "BUSINESS";
+  const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
+  const { subscription, upgradeToCheckout, billingCycle } = useSubscription();
 
   const plans = PLANS.filter(
     (p) => (isBusiness ? ["Standard", "Pro", "Enterprise"].includes(p.name) : p.name !== "Enterprise")
@@ -58,10 +59,11 @@ export default function PricingSection() {
       router.push("/auth/login?returnUrl=/product/pricing");
       return;
     }
-
+    setLoading(true)
     const url = await upgradeToCheckout(plan, billing);
     
     router.push(url!);
+    setLoading(false)
   };
 
   return (
@@ -163,8 +165,8 @@ export default function PricingSection() {
                       ))}
                     </List>
 
-                    <Button onClick={() => handleCheckout(plan.name.toUpperCase() as Plan)}>
-                      {getButtonLabel(plan.plan)}
+                    <Button disabled={loading} onClick={() => handleCheckout(plan.name.toUpperCase() as Plan)}>
+                      {loading ? "Initializing" : getButtonLabel(plan.plan)}
                     </Button>
                   </Stack>
                 </Box>
