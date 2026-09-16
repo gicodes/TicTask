@@ -18,7 +18,7 @@ const pitchpoints = [
   {
     icon: <MdNotificationsActive />,
     title: "Push Notifications",
-    description: "Get ticket updates via 3+ channels: email, push & in-app.",
+    description: "Get ticket updates via email, in-app & push.",
     color: "gray",
   },
 ]

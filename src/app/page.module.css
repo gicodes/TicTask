@@ -195,10 +195,13 @@ a.secondary {
 }
 
 .readyToStart {
-  min-height: 360px;
   text-align: center;
-  padding: 25px 10px;
+  padding: 25px 0;
   margin: 25px auto 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .btnGroup {

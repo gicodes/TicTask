@@ -28,21 +28,15 @@ import { TicketCardTemplate } from '@/app/resources/_level_2/ticketCardTemplate'
 import { TicketListRowTemplate } from '@/app/resources/_level_2/ticketListRowTemplate';
 
 export const WorkspaceFlowAnimation = () => {
-  const [ticketIndex, 
-    setTicketIndex] = useState(0);
-  const [ticket, 
-    setTicket] = useState<ActiveTicket>(
-    createTicket(INITIAL_TICKET),
-  );
+  const [ticketIndex, setTicketIndex] = useState(0);
+  const [ticket, setTicket] = useState<ActiveTicket>(createTicket(INITIAL_TICKET),);
   const [phase, setPhase] = useState<FlowPhase>('idle');
   const [typedTitle, setTypedTitle] = useState('');
   const [typedDescription, setTypedDescription] = useState('');
   const [createClicked, setCreateClicked] = useState(false);
-
   const demoTicket = DEMO_TICKETS[ticketIndex];
 
-  const description = useMemo(
-    () => `Quick description for ${demoTicket.title.toLowerCase()}`,
+  const description = useMemo(() => `Quick description for ${demoTicket.title.toLowerCase()}`,
     [demoTicket.title],
   );
 
@@ -158,9 +152,7 @@ export const WorkspaceFlowAnimation = () => {
 
     typeTitle();
 
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true };
   }, [phase, demoTicket.title, description]);
 
   const formVisible =
@@ -288,13 +280,13 @@ export const WorkspaceFlowAnimation = () => {
             maxWidth: 720,
             mx: 'auto',
             mt: 3,
-            py: 4,
-            px: 2,
+            py: { xs: 2.5, sm: 4 },
+            px: { xs: 1, sm: 2 },
             minHeight: 500,
             overflow: 'hidden',
             border: { xs: 'none', sm: '1px solid' },
             borderColor: 'divider',
-            boxShadow: { xs: 0, sm: 3},
+            boxShadow: { xs: 0, sm: 3 },
             boxSizing: 'border-box',
           }}
         >
@@ -545,122 +537,155 @@ export const WorkspaceFlowAnimation = () => {
                 <LayoutGroup id={`ticket-board-${ticket.id}`}>
                   <Stack
                     direction="row"
-                    gap={1.5}
-                    sx={{ minHeight: 300 }}
+                    gap={{ xs: 0.5, sm: 1.5 }}
+                    sx={{
+                      minHeight: 300,
+                      width: '100%',
+                    }}
                   >
-                    {COLUMNS.map((columnName) => {
-                      const isCurrentColumn =
-                        ticket.status === columnName;
+                    { COLUMNS.map((columnName) => {
+                      const isCurrentColumn = ticket.status === columnName;
 
                       return (
-                        <Paper
-                          key={columnName}
-                          variant="outlined"
+                        <Box
                           sx={{
-                            flex: 1,
+                            display: 'flex',
                             minWidth: 0,
-                            p: 1.25,
-                            borderRadius: 2,
-                            bgcolor: isCurrentColumn
-                              ? 'action.hover'
-                              : 'transparent',
-                            borderColor: isCurrentColumn
-                              ? 'primary.main'
-                              : 'divider',
-                            transition:
-                              'background 0.4s ease, border-color 0.4s ease',
+
+                            flex: {
+                              xs: isCurrentColumn ? 3.2 : 0.7,
+                              sm: 1,
+                            },
+
+                            transition: {
+                              xs: 'flex 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
+                              sm: 'none',
+                            },
                           }}
                         >
-                          <Typography
-                            variant="caption"
-                            fontWeight={700}
-                            color="text.secondary"
+                          <Paper
+                            variant="outlined"
                             sx={{
-                              mb: 1.5,
-                              display: 'block',
-                              letterSpacing: 0.5,
+                              width: '100%',
+                              minWidth: 0,
+                              p: { xs: 0.65, sm: 1.25 },
+                              borderRadius: 2,
+                              bgcolor: isCurrentColumn
+                                ? 'rgba(25, 118, 210, 0.06)'
+                                : 'transparent',
+                              borderColor: isCurrentColumn
+                                ? 'primary.main'
+                                : 'divider',
+                              boxShadow: isCurrentColumn
+                                ? '0 8px 24px rgba(25, 118, 210, 0.12)'
+                                : 'none',
+                              opacity: isCurrentColumn ? 1 : 0.5,
+                              transform: isCurrentColumn
+                                ? 'translateY(-2px)'
+                                : 'translateY(0)',
+                              transition: `
+                                background 0.4s ease,
+                                border-color 0.4s ease,
+                                box-shadow 0.4s ease,
+                                opacity 0.4s ease,
+                                transform 0.4s ease
+                              `,
                             }}
                           >
-                            {columnName}
-                          </Typography>
+                            <Typography
+                              variant="caption"
+                              fontWeight={700}
+                              color="text.secondary"
+                              sx={{
+                                mb: 1.5,
+                                display: 'block',
+                                letterSpacing: 0.5,
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              {columnName}
+                            </Typography>
 
-                          <Box
-                            sx={{
-                              position: 'relative',
-                              minHeight: 210,
-                            }}
-                          >
-                            <AnimatePresence>
-                              {isCurrentColumn && (
-                                <motion.div
-                                  layoutId={`ticket-${ticket.id}`}
-                                  initial={{
-                                    opacity: 0,
-                                    scale: 0.92,
-                                    y: 20,
-                                  }}
-                                  animate={{
-                                    opacity: 1,
-                                    scale: 1,
-                                    y: 0,
-                                  }}
-                                  exit={{
-                                    opacity: 0,
-                                    scale: 0.92,
-                                  }}
-                                  transition={{
-                                    layout: {
-                                      type: 'spring',
-                                      stiffness: 240,
-                                      damping: 28,
-                                    },
-                                    opacity: { duration: 0.25 },
-                                    scale: { duration: 0.35 },
-                                  }}
-                                  style={{
-                                    width: '100%',
-                                  }}
-                                >
+                            <Box
+                              sx={{
+                                position: 'relative',
+                                minHeight: 210,
+                              }}
+                            >
+                              <AnimatePresence>
+                                {isCurrentColumn && (
                                   <motion.div
-                                    animate={ isMoving
-                                      ? { scale: [
-                                          1,
-                                          1.025,
-                                          1,
-                                        ]}
-                                      : { scale: 1 }
-                                    }
+                                    layoutId={`ticket-${ticket.id}`}
+                                    initial={{
+                                      opacity: 0,
+                                      scale: 0.92,
+                                      y: 20,
+                                    }}
+                                    animate={{
+                                      opacity: 1,
+                                      scale: 1,
+                                      y: 0,
+                                    }}
+                                    exit={{
+                                      opacity: 0,
+                                      scale: 0.92,
+                                    }}
                                     transition={{
-                                      duration: 0.65,
-                                      ease: 'easeInOut',
+                                      layout: {
+                                        type: 'spring',
+                                        stiffness: 240,
+                                        damping: 28,
+                                      },
+                                      opacity: { duration: 0.25 },
+                                      scale: { duration: 0.35 },
+                                    }}
+                                    style={{
+                                      width: '100%',
                                     }}
                                   >
-                                    {renderTicket()}
+                                    <motion.div
+                                      animate={ isMoving
+                                        ? { scale: [
+                                            1,
+                                            1.025,
+                                            1,
+                                          ]}
+                                        : { scale: 1 }
+                                      }
+                                      transition={{
+                                        duration: 0.65,
+                                        ease: 'easeInOut',
+                                      }}
+                                    >
+                                      {renderTicket()}
+                                    </motion.div>
                                   </motion.div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
+                                )}
+                              </AnimatePresence>
 
-                            {!isCurrentColumn && (
-                              <Box
-                                sx={{
-                                  height: 100,
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  opacity: 0.35,
-                                }}
-                              >
-                                <Typography
-                                  variant="caption"
-                                  color="text.secondary"
+                              {!isCurrentColumn && (
+                                <Box
+                                  sx={{
+                                    height: 100,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    opacity: 0.35,
+                                  }}
                                 >
-                                  —
-                                </Typography>
-                              </Box>
-                            )}
-                          </Box>
-                        </Paper>
+                                  <Typography
+                                    variant="caption"
+                                    color="text.secondary"
+                                  >
+                                    —
+                                  </Typography>
+                                </Box>
+                              )}
+                            </Box>
+                          </Paper>
+                        </Box>
                       );
                     })}
                   </Stack>

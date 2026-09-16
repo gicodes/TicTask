@@ -42,10 +42,15 @@ const CTA = () => {
   
   return (
     <div className={styles.readyToStart}>
-      <p className="font-sm max-width-800 mx-auto">Unlock advanced features and enhanced productivity by starting the paid version</p>
-      <h2 className="my-3 custom-dull">Set{whiteDot} <span className="custom-warm">Ready{whiteDot}</span> <span className="pulse">Go{whiteDot}</span></h2>
+      <p className="font-sm max-width-800 mx-auto">Unlock the full power of Tictask and turn every workflow into momentum with smarter planning, sharper execution, and seamless collaboration.</p>
       
-      <div className={`${styles.btnGroup} mt-1 mx-auto justify-center`}>
+      <h3 className="custom-dull">
+        <span>Set{whiteDot} </span>
+        <span className="custom-warm">Ready{whiteDot}</span>&nbsp;
+        <span className="pulse">Go{whiteDot}</span>
+      </h3>
+      
+      <div className={`${styles.btnGroup} mx-auto justify-center`}>
         <Button onClick={GetPro}>
           Pay for a plan
         </Button>
