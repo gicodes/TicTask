@@ -32,6 +32,7 @@ import {
   ContentCopy,
   Refresh,
   SupportAgent,
+  WarningAmber,
 } from '@mui/icons-material';
 import { apiGet } from '@/lib/axios';
 import { GenericAPIRes } from '@/types/axios';
@@ -186,7 +187,7 @@ export default function ManageBillingPage() {
       )}
 
       {!loading && !subLoading && (
-        <Stack spacing={2.5}>
+        <Stack spacing={{ xs: 2.5, sm: 3, md: 4 }}>
           <motion.div>
             <Card
               sx={{
@@ -283,43 +284,6 @@ export default function ManageBillingPage() {
                         </Stack>
                       )}
                     </Stack>
-                  </Stack>
-
-                  <Stack
-                    direction={{ xs: 'column', sm: 'row' }}
-                    spacing={1.5}
-                    alignItems={{ xs: 'stretch', md: 'flex-start' }}
-                    sx={{ minWidth: { md: 220 } }}
-                  >
-                    {isPaid && (
-                      <>
-                        <Button
-                          variant="outlined"
-                          startIcon={<CreditCard />}
-                          onClick={handleUpdatePayment}
-                          sx={{ textTransform: 'none', borderRadius: 2.5 }}
-                        >
-                          Update card
-                        </Button>
-                        <Button
-                          tone="danger"
-                          onClick={handleCancel}
-                          sx={{ textTransform: 'none', borderRadius: 2.5 }}
-                        >
-                          Cancel plan
-                        </Button>
-                      </>
-                    )}
-                    {!isPaid && (
-                      <Button
-                        component={Link}
-                        href="/dashboard/subscription"
-                        variant="contained"
-                        sx={{ textTransform: 'none', borderRadius: 2.5 }}
-                      >
-                        Upgrade plan
-                      </Button>
-                    )}
                   </Stack>
                 </Stack>
               </CardContent>
@@ -423,11 +387,11 @@ export default function ManageBillingPage() {
                   direction={{ xs: 'column', sm: 'row' }}
                   justifyContent="space-between"
                   alignItems={{ xs: 'stretch', sm: 'center' }}
-                  spacing={2}
+                  spacing={4}
                 >
                   <Stack direction="row" spacing={1.5} alignItems="flex-start">
-                    <SupportAgent sx={{ opacity: 0.7, mt: 0.25 }} />
-                    <Box>
+                    <SupportAgent />
+                    <Box gap={1} display={'grid'}>
                       <Typography variant="subtitle2" fontWeight={700}>
                         Billing help
                       </Typography>
@@ -454,6 +418,75 @@ export default function ManageBillingPage() {
                     >
                       View plans
                     </Button>
+                  </Stack>
+                </Stack>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div>
+            <Card
+              sx={{
+                borderRadius: 4,
+                bgcolor: (t) => alpha(t.palette.primary.main, 0.04),
+                border: '1px solid',
+                borderColor: 'divider',
+                boxShadow: 'none',
+              }}
+            >
+              <CardContent sx={{ p: { xs: 2.5, sm: 3 } }}>
+                <Stack 
+                  width={'100%'} 
+                  spacing={4} 
+                  display={'flex'}
+                  flexDirection={{ xs: 'column', sm: 'row'}}
+                  justifyContent={'space-between'}
+                >
+                  <Stack direction="row" spacing={1.5} alignItems="flex-start">
+                    <WarningAmber color='warning' />
+                    <Box gap={1} display={'grid'}>
+                      <Typography variant="subtitle2" fontWeight={700}>
+                        Billing Actions
+                      </Typography>
+                      <Typography variant="body2" sx={{ maxWidth: 420 }} color='warning.main'>
+                        You are advised to carefully navigate this section. Actions are often irrevesible and may have consequences.
+                      </Typography>
+                    </Box>
+                  </Stack>
+
+                  <Stack 
+                    spacing={1.5}
+                    direction={{ xs: 'column', md: 'row'}}
+                  >
+                    {isPaid && (
+                      <>
+                        <Button
+                          variant="outlined"
+                          startIcon={<CreditCard />}
+                          onClick={handleUpdatePayment}
+                          sx={{ textTransform: 'none', borderRadius: 2.5 }}
+                        >
+                          Update card
+                        </Button>
+                        <Button
+                          tone="danger"
+                          onClick={handleCancel}
+                          sx={{ textTransform: 'none', borderRadius: 2.5 }}
+                        >
+                          Cancel plan
+                        </Button>
+                      </>
+                    )}
+                    {!isPaid && (
+                      <Button
+                        component={Link}
+                        href="/dashboard/subscription"
+                        variant="contained"
+                        sx={{ textTransform: 'none', borderRadius: 2.5 }}
+                      >
+                        Upgrade plan
+                      </Button>
+                    )}
                   </Stack>
                 </Stack>
               </CardContent>

@@ -1,12 +1,11 @@
 "use client";
 
-import { Card, CardContent, Box, Stack, Typography, IconButton} from "@mui/material";
 import { RESOURCES } from "@/constants/resources";
 import { Button } from "@/assets/buttons";
 import { useRef } from "react";
 import Link from "next/link";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
+import { Card, CardContent, Box, Stack, Typography, IconButton} from "@mui/material";
 
 export const ResourceHero = ({
   title, subtitle
@@ -24,11 +23,11 @@ export const ResourceHero = ({
           {title || "Learn. Build. Grow with TicTask."}
         </Typography>
         <Typography variant="body1" color="var(--secondary)" maxWidth="md">
-          {subtitle || "Dive into the educational and technical side of TicTask. Featuring Documentation, Frequently Asked Questions and Blog."}
+          {subtitle || "Explore some of the articles we have written for TicTask users. For beginners and experts to learn, apply and even modify."}
         </Typography>
         {!title && !subtitle && 
           <Button component={Link} href={'/resources/docs'}>
-            Explore Resources
+            Getting Started
           </Button>
         }
       </Stack>
@@ -89,7 +88,7 @@ export const ResourceGrid = () => {
               transition: "all 0.25s ease",
             }}
           >
-            <ArrowBackIosNewIcon fontSize="small" />
+            <ArrowBackIosNew fontSize="small" />
           </IconButton>
 
           <IconButton
@@ -108,7 +107,7 @@ export const ResourceGrid = () => {
               transition: "all 0.25s ease",
             }}
           >
-            <ArrowForwardIosIcon fontSize="small" />
+            <ArrowForwardIos fontSize="small" />
           </IconButton>
         </Box>
 

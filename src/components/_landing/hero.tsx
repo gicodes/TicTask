@@ -59,7 +59,7 @@ const Hero = () => {
           sx={{ opacity: 0.75}}
         >
           TicTask is a lightweight multi-faceted task management platform built for fast, friendly, agile teamwork. 
-          Whether you&apos;re a small team or a large enterprise, TicTask is designed to meet your organizational needs with very simple, yet robust features.
+          Whether you&apos;re a  solopreneur, small team or a large enterprise, TicTask is designed to meet your organizational needs with very simple, yet robust features.
         </Typography>
       </div>
 
@@ -69,6 +69,9 @@ const Hero = () => {
 
       <div className="max-width-1k mx-auto">
         <div className={styles.heroActions}>
+          <p className={'opac-1'}> 
+            14-day free trial. No credit card required.
+          </p>
           <div className={styles.btnGroup}>
             <Button onClick={handleStartTrial}> 
               Start free trial 
@@ -84,9 +87,6 @@ const Hero = () => {
               </Link>
             </Button>
           </div>
-          <p className={styles.trialText}> 
-            14-day free trial. No credit card required.
-          </p>
         </div>
       </div>
     </section>

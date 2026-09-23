@@ -271,9 +271,9 @@ export default function SubscriptionPage() {
         </DialogActions>
       </Dialog>
 
-      {(isPro || isEnterprise || isStandard) && (
+      {/* {(isPro || isEnterprise || isStandard) && (
         <SubscriptionHistory limit={5} compact />
-      )}
+      )} */}
 
       <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
         <Card sx={{ borderRadius: 4, bgcolor: 'rgba(0,0,0,0.02)' }}>

@@ -26,6 +26,7 @@ import { GenericAPIRes } from '@/types/axios';
 import { formatDateTime } from '@/lib/formatDateTime';
 import { getExpiryDate } from '@/lib/getSubExpiryDate';
 import { HistoryItem, HistoryProps, Pagination } from '@/types/subscription';
+import { DoneOutlined } from '@mui/icons-material';
 
 export function SubscriptionHistory({
   limit = 10,
@@ -65,10 +66,7 @@ export function SubscriptionHistory({
     fetchHistory();
   }, [limit, showAlert]);
 
-  const formatAmount = (
-    amount?: number,
-    currency = 'usd'
-  ) => {
+  const formatAmount = (amount?: number, currency = 'usd') => {
     if (amount == null) return '—';
 
     return new Intl.NumberFormat('en-US', {
@@ -122,7 +120,6 @@ export function SubscriptionHistory({
         width: '100%',
         maxWidth: '100%',
         minWidth: 0,
-        overflow: 'hidden',
       }}
     >
       <Card
@@ -139,20 +136,33 @@ export function SubscriptionHistory({
             width: '100%',
             minWidth: 0,
             boxSizing: 'border-box',
-            p: { xs: 1.5, sm: 3 },
+            p: {
+              xs: 1.5,
+              sm: 2,
+              md: 2.5,
+              lg: 3,
+            },
             '&:last-child': {
-              pb: { xs: 1.5, sm: 3 },
+              pb: {
+                xs: 1.5,
+                sm: 2,
+                md: 2.5,
+                lg: 3,
+              },
             },
           }}
         >
           <Stack
-            direction={{ xs: 'row', sm: 'row' }}
+            direction="row"
             justifyContent="space-between"
-            alignItems={{ xs: 'center', sm: 'center' }}
+            alignItems="center"
             spacing={1}
             sx={{
               minWidth: 0,
-              mb: { xs: 1.5, sm: 2 },
+              mb: {
+                xs: 1.5,
+                sm: 2,
+              },
             }}
           >
             <Typography
@@ -160,10 +170,16 @@ export function SubscriptionHistory({
               fontWeight={700}
               sx={{
                 minWidth: 0,
-                fontSize: { xs: '1rem', sm: '1.25rem' },
+                fontSize: {
+                  xs: '1rem',
+                  sm: '1.1rem',
+                  md: '1.2rem',
+                  lg: '1.25rem',
+                },
                 lineHeight: 1.3,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
               }}
             >
               Billing History
@@ -176,8 +192,16 @@ export function SubscriptionHistory({
                 sx={{
                   flexShrink: 0,
                   minWidth: 'auto',
-                  px: { xs: 1, sm: 1.5 },
-                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  px: {
+                    xs: 1,
+                    sm: 1.25,
+                    md: 1.5,
+                  },
+                  fontSize: {
+                    xs: '0.75rem',
+                    sm: '0.8rem',
+                    md: '0.875rem',
+                  },
                 }}
               >
                 View all
@@ -185,7 +209,15 @@ export function SubscriptionHistory({
             )}
           </Stack>
 
-          <Divider sx={{ opacity: 0.2, mb: { xs: 1.5, sm: 2 } }} />
+          <Divider
+            sx={{
+              opacity: 0.2,
+              mb: {
+                xs: 1.5,
+                sm: 2,
+              },
+            }}
+          />
 
           {!items.length ? (
             <Typography
@@ -193,7 +225,10 @@ export function SubscriptionHistory({
               sx={{
                 opacity: 0.7,
                 py: 2,
-                textAlign: { xs: 'center', sm: 'left' },
+                textAlign: {
+                  xs: 'center',
+                  sm: 'left',
+                },
               }}
             >
               No billing history yet.
@@ -202,7 +237,10 @@ export function SubscriptionHistory({
             <>
               <Box
                 sx={{
-                  display: { xs: 'flex', sm: 'none' },
+                  display: {
+                    xs: 'flex',
+                    sm: 'none',
+                  },
                   flexDirection: 'column',
                   gap: 1.5,
                   width: '100%',
@@ -211,7 +249,6 @@ export function SubscriptionHistory({
               >
                 {items.map((item) => {
                   const createdAt = new Date(item.createdAt);
-
                   const expiryDate = getExpiryDate(
                     item.billingCycle,
                     item.createdAt
@@ -232,7 +269,6 @@ export function SubscriptionHistory({
                         bgcolor: 'background.paper',
                       }}
                     >
-                      {/* Top row */}
                       <Stack
                         direction="row"
                         justifyContent="space-between"
@@ -291,19 +327,25 @@ export function SubscriptionHistory({
                                 px: 1,
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
                               },
                             }}
                           />
                         )}
                       </Stack>
 
-                      <Divider sx={{ my: 1.25, opacity: 0.15 }} />
+                      <Divider
+                        sx={{
+                          my: 1.25,
+                          opacity: 0.15,
+                        }}
+                      />
 
-                      {/* Details */}
                       <Box
                         sx={{
                           display: 'grid',
-                          gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
+                          gridTemplateColumns:
+                            'minmax(0, 1fr) minmax(0, 1fr)',
                           columnGap: 1.5,
                           rowGap: 1.25,
                           width: '100%',
@@ -324,9 +366,6 @@ export function SubscriptionHistory({
                           <Typography
                             variant="body2"
                             fontWeight={600}
-                            sx={{
-                              overflowWrap: 'anywhere',
-                            }}
                           >
                             {formatAmount(item.amount, item.currency)}
                           </Typography>
@@ -404,67 +443,98 @@ export function SubscriptionHistory({
                 })}
               </Box>
 
-              {/* =========================================================
-                  TABLET / DESKTOP VIEW
-                  ========================================================= */}
               <TableContainer
                 component={Paper}
                 elevation={0}
                 sx={{
-                  display: { xs: 'none', sm: 'block' },
-                  bgcolor: 'transparent',
+                  display: {
+                    xs: 'none',
+                    sm: 'block',
+                  },
                   width: '100%',
                   maxWidth: '100%',
-                  overflowX: 'auto',
-                  WebkitOverflowScrolling: 'touch',
-
-                  '&::-webkit-scrollbar': {
-                    height: 6,
-                  },
-
-                  '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: 'rgba(0,0,0,0.2)',
-                    borderRadius: 3,
-                  },
+                  minWidth: 0,
+                  bgcolor: 'transparent',
+                  overflowX: 'hidden',
                 }}
               >
                 <Table
                   size="small"
                   sx={{
                     width: '100%',
-                    minWidth: 760,
-                    tableLayout: 'auto',
+                    tableLayout: 'fixed',
+
+                    '& .MuiTableCell-root': {
+                      px: {
+                        sm: 1,
+                        md: 1.25,
+                        lg: 1.5,
+                      },
+                      py: {
+                        sm: 1,
+                        md: 1.25,
+                        lg: 1.5,
+                      },
+                      fontSize: {
+                        sm: '0.75rem',
+                        md: '0.8rem',
+                        lg: '0.875rem',
+                      },
+                      verticalAlign: 'top',
+                    },
+
+                    '& .MuiTableCell-head': {
+                      fontWeight: 700,
+                      whiteSpace: 'nowrap',
+                    },
                   }}
                 >
+                  <colgroup>
+                    <col
+                      style={{
+                        width: '15%',
+                      }}
+                    />
+
+                    <col
+                      style={{
+                        width: '36%',
+                      }}
+                    />
+
+                    <col
+                      style={{
+                        width: '12%',
+                      }}
+                    />
+
+                    <col
+                      style={{
+                        width: '12%',
+                      }}
+                    />
+
+                    <col
+                      style={{
+                        width: '10%',
+                      }}
+                    />
+
+                    <col
+                      style={{
+                        width: '15%',
+                      }}
+                    />
+                  </colgroup>
+
                   <TableHead>
                     <TableRow>
-                      <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                        Date · Time
-                      </TableCell>
-
-                      <TableCell
-                        sx={{
-                          minWidth: 180,
-                        }}
-                      >
-                        Description
-                      </TableCell>
-
-                      <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                        Amount
-                      </TableCell>
-
-                      <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                        Status
-                      </TableCell>
-
-                      <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                        Action
-                      </TableCell>
-
-                      <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                        Expires On
-                      </TableCell>
+                      <TableCell>Date · Time</TableCell>
+                      <TableCell>Description</TableCell>
+                      <TableCell>Amount</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Action</TableCell>
+                      <TableCell>Expires On</TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -481,40 +551,65 @@ export function SubscriptionHistory({
                         <TableRow key={item.id} hover>
                           <TableCell
                             sx={{
-                              whiteSpace: 'nowrap',
-                              verticalAlign: 'top',
+                              whiteSpace: {
+                                sm: 'normal',
+                                md: 'nowrap',
+                              },
+                              overflowWrap: 'anywhere',
+                              wordBreak: 'break-word',
                             }}
                           >
-                            {formatDateTime(createdAt)}
+                            <div style={{ whiteSpace: 'pre-line' }}>
+                              {formatDateTime(createdAt)}
+                            </div>
                           </TableCell>
-
                           <TableCell
                             sx={{
-                              minWidth: 180,
-                              maxWidth: 320,
-                              verticalAlign: 'top',
+                              minWidth: 0,
+                              maxWidth: 0,
+                              overflow: 'hidden',
                             }}
                           >
                             <Typography
                               variant="body2"
                               sx={{
+                                minWidth: 0,
                                 overflow: 'hidden',
-                                textOverflow: 'ellipsis',
+                                textOverflow: {
+                                  sm: 'ellipsis',
+                                  md: 'ellipsis',
+                                  lg: 'clip',
+                                },
+                                display: {
+                                  sm: '-webkit-box',
+                                  lg: 'block',
+                                },
+                                WebkitBoxOrient: 'vertical',
+                                WebkitLineClamp: {
+                                  sm: 2,
+                                  md: 2,
+                                },
                                 overflowWrap: 'anywhere',
                                 wordBreak: 'break-word',
+                                lineHeight: 1.4,
                               }}
                             >
-                              {item.description}
+                              {(item.description || 'Subscription payment').replace(
+                                /,/g,
+                                ',\u200B'
+                              )}
                             </Typography>
 
                             {item.plan && (
                               <Typography
                                 variant="caption"
                                 sx={{
-                                  opacity: 0.7,
                                   display: 'block',
-                                  overflowWrap: 'anywhere',
-                                  wordBreak: 'break-word',
+                                  mt: 0.25,
+                                  opacity: 0.7,
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap',
                                 }}
                               >
                                 {item.plan}
@@ -524,8 +619,11 @@ export function SubscriptionHistory({
 
                           <TableCell
                             sx={{
+                              minWidth: 0,
+                              overflow: 'hidden',
                               whiteSpace: 'nowrap',
-                              verticalAlign: 'top',
+                              textOverflow: 'ellipsis',
+                              maxWidth: { sm: 150, md: 200 },
                             }}
                           >
                             {formatAmount(item.amount, item.currency)}
@@ -533,23 +631,18 @@ export function SubscriptionHistory({
 
                           <TableCell
                             sx={{
-                              verticalAlign: 'top',
                             }}
                           >
                             {item.status && (
-                              <Chip
-                                label={item.status}
-                                size="small"
-                                color={statusColor(item.status) as any}
-                                variant="outlined"
-                              />
+                              <Typography width={'100%'}> {item.status==="succeeded" ? <DoneOutlined color='primary' /> : "❌"} </Typography>
                             )}
                           </TableCell>
 
                           <TableCell
                             sx={{
-                              whiteSpace: 'nowrap',
-                              verticalAlign: 'top',
+                              minWidth: 0,
+                              overflowWrap: 'anywhere',
+                              wordBreak: 'break-word',
                             }}
                           >
                             {formatAction(item.type)}
@@ -557,11 +650,17 @@ export function SubscriptionHistory({
 
                           <TableCell
                             sx={{
-                              whiteSpace: 'nowrap',
-                              verticalAlign: 'top',
+                              whiteSpace: {
+                                sm: 'normal',
+                                md: 'nowrap',
+                              },
+                              overflowWrap: 'anywhere',
+                              wordBreak: 'break-word',
                             }}
                           >
-                            {expiryDate.toDateString()}
+                            <div style={{ whiteSpace: 'pre-line' }}>
+                              {formatDateTime(expiryDate)}
+                            </div>
                           </TableCell>
                         </TableRow>
                       );
