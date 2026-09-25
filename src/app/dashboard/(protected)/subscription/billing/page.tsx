@@ -320,12 +320,12 @@ export default function ManageBillingPage() {
                         {user?.email ?? '—'}
                       </Typography>
                     </Box>
-                    <Chip
+                    {data?.customerCode && <Chip
                       size="small"
                       label="Paystack"
                       variant="outlined"
                       sx={{ fontWeight: 600, letterSpacing: 0.3 }}
-                    />
+                    />}
                   </Stack>
 
                   <Stack
@@ -360,7 +360,7 @@ export default function ManageBillingPage() {
 
                   {!data?.canUpdatePaymentMethod && (
                     <Typography variant="caption" sx={{ opacity: 0.6 }}>
-                      Complete a successful payment to link a Paystack customer profile.
+                      Complete a successful payment to link a customer profile.
                     </Typography>
                   )}
                 </Stack>

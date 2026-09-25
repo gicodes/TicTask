@@ -251,7 +251,7 @@ export default function TeamsPage() {
               <br/><br/>
               To create a Team, click<span className="btn">✛ Create Team</span>
               <br/><br/>
-              <i>[ Active subscription plan determines the number of teams you can create, and max number of members allowed in each team ]</i>
+              <i>[ Active subscription plan determine the number of teams you can create, and max number of members allowed in each team ]</i>
             </Typography>
 
             <Divider sx={{ my: 5 }} />

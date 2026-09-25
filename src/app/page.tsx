@@ -23,6 +23,7 @@ export default function Home() {
           </div>
         </main>
       </div>
+
       <div className={styles.page2}>
         <main>
           <div className={styles.features}>
