@@ -40,9 +40,9 @@ export default function Home() {
           <div className={styles.marketing}>
             <MarketingCard />
           </div>
-          <div className={styles.proPlatforms}>
+          {/* <div className={styles.proPlatforms}>
             <ProPlatform />
-          </div>
+          </div> */}
           <div className={styles.faqSection}>
             <FAQ />
           </div>
