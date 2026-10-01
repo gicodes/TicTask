@@ -4,12 +4,12 @@ const workflows = [
   {
     team: "Product",
     flow: "Think → Ticket → Board → Resolved",
-    copy: "Actions as tickets. Status is the standup. Comments replace the side channel.",
+    copy: "Actions as tickets. Status is the standup. Comments replace the side communication/ chat channel.",
   },
   {
-    team: "Ops",
+    team: "Operations",
     flow: "Issue → Assign → In progress → Closed",
-    copy: "Intake does not need a helpdesk suite. Priority, owner, and history live on the same card.",
+    copy: "Issues do not need a helpdesk suite or paperwork. Title, priority and deadline live in the same space.",
   },
   {
     team: "Studio / freelance",
@@ -60,7 +60,7 @@ export const Workflows = () => (
             fontStyle: "italic",
             fontWeight: 380,
             letterSpacing: "-0.06em",
-            opacity: 0.55,
+            color: "var(--accent)"
           }}
         >
           actually run it.
@@ -68,7 +68,7 @@ export const Workflows = () => (
       </Typography>
       <Typography
         sx={{
-          maxWidth: 420,
+          maxWidth: 500,
           ml: { md: "auto" },
           fontSize: { xs: 16, md: 18 },
           lineHeight: 1.6,
@@ -76,7 +76,8 @@ export const Workflows = () => (
         }}
       >
         Create tickets that can be a task, an issue, a meeting, or an invoice.
-        The workflow is the status column. The team is whoever was invited.
+        The team is whoever was invited. Workflow becomes visible in real-time 
+        with records of what happened and when.
       </Typography>
     </Box>
 

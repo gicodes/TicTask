@@ -46,7 +46,7 @@ const IndexInsight = () => {
             maxWidth: 700,
           }}
         >
-          Everything you need
+          Anything you need
           <br />
           <Box component="span" color="var(--disabled)">
             to move work forward.
@@ -61,7 +61,7 @@ const IndexInsight = () => {
           variant="h6"
         >
           TicTask brings planning, collaboration, automation and insight
-          together in one focused workspace — without the complexity of
+          together in one focused workspace — while avoiding the complexity and cost of
           traditional project management tools.
         </Typography>
       </Box>
@@ -166,7 +166,7 @@ const IndexInsight = () => {
                           color: "var(--flair)",
                         }}
                       >
-                        - {f.split(",").join(" ")}
+                        :: {f.split(",").join(" ")}
                       </Typography>
                     ))}
                   </Box>
@@ -198,6 +198,33 @@ const IndexInsight = () => {
             </Box>
           ))}
         </Stack>
+        <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 1.5,
+              px: { xs: 2.25, md: 3 },
+              py: 1.75,
+              borderTop:
+                "1px solid color-mix(in srgb, currentColor 10%, transparent)",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 12,
+                letterSpacing: "0.02em",
+                color: "var(--disabled)",
+              }}
+            >
+              <Box component="span" sx={{ color: "var(--flair)", fontWeight: 700 }}>
+                ::
+              </Box>{" "}
+              marks a paid or owner-gated capability. Subscription sits in billing —
+              not in the product surface.
+            </Typography>
+          </Box>
       </Box>
     </Box>
   );

@@ -1,11 +1,5 @@
 import { Box, Typography } from "@mui/material";
 
-const layers = [
-  { name: "Native", items: ["Email", "In-app", "Calendar", "Board / List"] },
-  { name: "Unlocks on Pro", items: ["Slack", "GitHub", "Drive", "Push"] },
-  { name: "Open surface", items: ["Community", "Resources", "Templates", "Build with us"] },
-];
-
 export const Ecosystem = () => (
   <Box
     component="section"
@@ -13,8 +7,7 @@ export const Ecosystem = () => (
       width: "100%",
       maxWidth: 1240,
       mx: "auto",
-      px: { xs: 2.5, md: 4 },
-      py: { xs: 10, md: 16 },
+      p: { xs: 2, md: 4 },
     }}
   >
     <Box
@@ -32,20 +25,27 @@ export const Ecosystem = () => (
         sx={{
           fontSize: { xs: "2.6rem", md: "4.2rem" },
           letterSpacing: "-0.07em",
-          lineHeight: 0.92,
+          lineHeight: 1,
           fontWeight: 450,
-          maxWidth: 640,
+          maxWidth: 669,
         }}
       >
         Lives in your stack.
         <Box component="span" sx={{ display: "block", opacity: 0.45 }}>
-          Does not become your stack.
+          And can stand on its own.
         </Box>
       </Typography>
 
-      <Typography sx={{ mt: 3, mb: { xs: 6, md: 8 }, maxWidth: 460, opacity: 0.65, lineHeight: 1.6 }}>
-        Notifications and views are native. Slack, GitHub and Drive arrive with Pro.
-        Community never waits on a plan.
+      <Typography 
+        sx={{ 
+          mt: 3, mb: { xs: 6, md: 8 }, 
+          maxWidth: 500, opacity: 0.65, 
+          lineHeight: 1.6 
+        }}
+      >
+        Simple UIX, Responsive layouts + Notifications that are native. 
+        Slack, GitHub and Drive integrations arrive with Enterprise.<br/> 
+        Personal workspace & Community never require a plan.
       </Typography>
 
       <Box
@@ -90,3 +90,30 @@ export const Ecosystem = () => (
     </Box>
   </Box>
 );
+
+const layers = [
+  { 
+    name: "Native (Freemium)", 
+    items: ["Tickets", "Personal workspace", "Email", "In-app", "Board / List", "Calendar",] 
+  },
+  { 
+    name: "Open surface", 
+    items: ["Community", "Resources", "Templates", "Build with us"] 
+  },
+  {
+    name: "Organization Account",
+    items: ["Billing", "Team Owner", "Workflow", "Enterprise"]
+  },
+  { 
+    name: "Paid plan (Standard)", 
+    items: ["AI assistance", "Push", "Invoice"] 
+  },
+  { 
+    name: "Unlocks on Pro", 
+    items: ["Export", "Integrations", "Ticket / team limits", "Priority"] 
+  },
+  { 
+    name: "Enterprise", 
+    items: ["Custom workflow", "Automation","SSO",  "Roles & permissions", "Timeline & Gantt",] 
+  },
+];

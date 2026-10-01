@@ -58,7 +58,7 @@ const SignInOptions = () => {
           startIcon={option.icon}
           onClick={() => notAuthorized(option)}
         >
-          <span className='font-weight-l'>Continue with {option.name}</span>
+          <span className='semi-light'>Continue with {option.name}</span>
         </Button>
       ))}
     </Stack>

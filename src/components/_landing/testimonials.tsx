@@ -8,12 +8,12 @@ const voices = [
   },
   {
     quote: "They invited me in on a free account. I still have my own workspace.",
-    who: "Contractor",
+    who: "Freelancer",
     where: "Joined as member",
   },
   {
-    quote: "Invoice as a ticket type is the first time billing felt like part of delivery.",
-    who: "Independent studio",
+    quote: "Invoice as a ticket type is the first time billing felt like a walk in the park.",
+    who: "Solo-preneur",
     where: "Standard plan",
   },
 ];
@@ -37,7 +37,7 @@ export const Voices = () => (
         fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
       }}
     >
-      from the workspace
+      From the workspace
     </Typography>
 
     <Box sx={{ display: "grid", gap: { xs: 8, md: 12 } }}>

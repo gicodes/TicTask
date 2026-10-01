@@ -6,6 +6,7 @@ import styles from "@/app/page.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
+import { Box, Typography } from "@mui/material";
 import { useSubscription } from "@/providers/subscription";
 
 const Hero = () => {
@@ -43,16 +44,39 @@ const Hero = () => {
   return (
     <section id="get-started" style={{ width: '100%'}}>
       <div className={styles.heroTitle}>
-        <h2 className={'min-height-50'}>
-          Simple task management tool
-        </h2>
+        <Typography
+          component="h2"
+          sx={{
+            fontSize: { xs: "3rem", md: "5.2rem" },
+            lineHeight: 1.1,
+            letterSpacing: "-0.07em",
+            fontWeight: 450,
+            width: '100%',
+            maxWidth: 600,
+            display: 'grid',
+            mx: 'auto',
+            mb: 1,
+          }}
+        >
+          Every task
+          <Box
+            component="span"
+            sx={{
+              display: "flex",
+              fontStyle: "italic",
+              fontWeight: 380,
+              letterSpacing: "-0.06em",
+              opacity: 0.55,
+              justifyContent: 'right'
+            }}
+          >
+            Starts as a<span className="semi-bold">&nbsp;ticket</span>.
+          </Box>
+        </Typography>
+
         <p className={styles.heroLead}>
           For individuals & teams who want to get things done without the clutter.
         </p>
-
-        <span className={styles.heroEyebrow}>
-          <span className="custom-warm">Driven by Organisation</span> · Designed for Everyone
-        </span>
       </div>
 
       <div className={styles.heroCTA}>
@@ -82,10 +106,10 @@ const Hero = () => {
       
       <div className={styles.heroSocialProof}>
         <div className={styles.socialProofAvatars}>
-          <span className={styles.avatar}>A</span>
-          <span className={styles.avatar}>J</span>
-          <span className={styles.avatar}>M</span>
-          <span className={styles.avatar}>S</span>
+          <span className={styles.avatar}>SE</span>
+          <span className={styles.avatar}>OB</span>
+          <span className={styles.avatar}>BC</span>
+          <span className={styles.avatar}>GC</span>
           <span className={styles.avatarMore}>+</span>
         </div>
 

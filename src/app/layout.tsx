@@ -26,17 +26,16 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppRouterCacheProvider options={{ key: 'css' }}>
           <QueryProvider>
-            <StripeProvider>
-              <AuthProvider>
-                <AlertProvider>
-                  <SubscriptionProvider>
-                    <ConditionalLayout>
-                      {children}
-                    </ConditionalLayout>
-                  </SubscriptionProvider>
-                </AlertProvider>
-              </AuthProvider>
-            </StripeProvider>
+            {/* <StripeProvider> removed */} 
+            <AuthProvider>
+              <AlertProvider>
+                <SubscriptionProvider>
+                  <ConditionalLayout>
+                    {children}
+                  </ConditionalLayout>
+                </SubscriptionProvider>
+              </AlertProvider>
+            </AuthProvider>
           </QueryProvider>
         </AppRouterCacheProvider>
       </body>

@@ -1,5 +1,5 @@
 import { TbStatusChange } from "react-icons/tb";
-import { MdNotificationsActive } from "react-icons/md";
+import { MdGroupWork, MdNotificationsActive } from "react-icons/md";
 import { Badge, Box, Container, Stack, Typography } from '@mui/material';
 
 const pitchpoints = [
@@ -16,10 +16,10 @@ const pitchpoints = [
     color: "darkorange",
   },
   {
-    icon: <MdNotificationsActive />,
-    title: "Push Notifications",
-    description: "Get ticket updates via email, in-app & push.",
-    color: "gray",
+    icon: <MdGroupWork />,
+    title: "Work With Others",
+    description: "Invite to team, assign tickets and collaborate on tasks.",
+    color: "var(--success)",
   },
 ]
 
@@ -36,7 +36,7 @@ const IndexPitch = () => {
             animation: 'fadeIn 1.5s ease forwards',
           }}
         >
-          Tickets that <span className="action-pulse font-weight-b">
+          Tickets that <span className="action-pulse semi-bold">
             track itself
           </span> <span className="opac-1 font-lg">&</span> {" "}
           <span className="pulse bold">

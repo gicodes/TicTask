@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Box, Typography, IconButton, Stack, Chip } from "@mui/material";
 import { 
   MdEditCalendar, 
   MdGroups, 
@@ -13,6 +11,10 @@ import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
 } from "react-icons/md";
+import Link from "next/link";
+import { Button } from "@/assets/buttons";
+import { motion, AnimatePresence } from "framer-motion";
+import { Box, Typography, IconButton, Stack, Chip } from "@mui/material";
 
 const FeaturesShowcase = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,7 +36,6 @@ const FeaturesShowcase = () => {
 
   const prev = () => goTo((currentIndex - 1 + features.length) % features.length);
   const next = () => goTo((currentIndex + 1) % features.length);
-
   const current = features[currentIndex];
 
   return (
@@ -333,8 +334,18 @@ const FeaturesShowcase = () => {
           }}
         />
       </Box>
+
+      <Box mt={12} textAlign="right">
+        <Typography variant="h6" mb={6} className="custom-dull"> ⁓ <i>The deeper you go, the more you'll discover</i></Typography>
+        <Button
+          size="large"
+          variant="contained"
+          endIcon={<MdKeyboardArrowRight size={20} />}
+        >
+          <Link href="/product">Explore the product</Link>
+        </Button>
+      </Box>
     </Box>
-    
   );
 };
 

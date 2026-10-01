@@ -48,8 +48,8 @@ export const ProductCTA = () => {
             Compare plans. Choose your pace.
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.7 }}>
-            From personal focus to enterprise orchestration —
-            only upgrade when your workflow truly needs it.
+            From personal focus to enterprise orchestration.
+            Only upgrade when your workflow truly need it.
           </Typography>
           <Button
             tone="secondary"

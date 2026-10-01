@@ -267,30 +267,24 @@ const Header = () => {
                           slotProps={{
                             paper: {
                               onMouseEnter: clearCloseTimer,
-                              onMouseLeave:
-                                scheduleDesktopMenuClose,
+                              onMouseLeave: scheduleDesktopMenuClose,
                               sx: {
                                 mt: 1.25,
                                 minWidth: {
                                   md: 300,
                                   lg: 360,
                                 },
-                                maxWidth:
-                                  "calc(100vw - 32px)",
-                                  p: 1.25,
-                                  overflow: "hidden",
-                                  borderRadius: "16px",
-                                  border: "1px solid",
-                                borderColor:
-                                  "rgba(127, 127, 127, 0.18)",
-                                  bgcolor:
-                                  "var(--background)",
-                                  color:
-                                  "var(--foreground)",
-                                  backgroundImage: "linear-gradient(135deg, rgba(255,255,255,0.04), transparent 45%)",
-                                  boxShadow:
-                                  "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08)",
-                                  zIndex: 1400,
+                                maxWidth: "calc(100vw - 32px)",
+                                p: 1.25,
+                                overflow: "hidden",
+                                borderRadius: "12px",
+                                border: "1px solid",
+                                borderColor: "rgba(127, 127, 127, 0.18)",
+                                bgcolor: "var(--foreground)",
+                                color: "var(--background)",
+                                backgroundImage: "linear-gradient(135deg, rgba(255,255,255,0.04), transparent 45%)",
+                                boxShadow: "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08)",
+                                zIndex: 1400,
                               },
                             },
                           }}
@@ -320,14 +314,14 @@ const Header = () => {
                                   py: 1.25,
                                   borderRadius: "11px",
                                   color: "inherit",
+                                  bgcolor: "action.hover",
                                   textDecoration: "none",
                                   transition: "background-color 140ms ease, transform 140ms ease",
                                   "&:hover": {
-                                    bgcolor: "action.hover",
+                                    bgcolor: "action.selected",
                                   },
                                   "&:active": {
-                                    transform:
-                                      "scale(0.985)",
+                                    transform: "scale(0.985)",
                                   },
                                   "&:focus-visible": {
                                     outline: "2px solid",
@@ -352,7 +346,6 @@ const Header = () => {
                                       lineHeight: 1.3,
                                       paddingBottom: 0.5,
                                       width: 'max-content',
-                                      borderBottom: '1px solid var(--disabled)'
                                     }}
                                   >
                                     {subItem.label}

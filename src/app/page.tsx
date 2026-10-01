@@ -23,7 +23,6 @@ export default function Home() {
           <div className={styles.hero}>
             <Hero />
           </div>
-          
           <div className={styles.indexPitch}>
             <IndexPitch />
           </div>
@@ -40,7 +39,7 @@ export default function Home() {
 
       <div className={styles.page}>
         <main className={styles.main}>
-          <div className={styles.indexInsight}>
+          <div className={styles.coreFeatures}>
             <div className={styles.insight}>
               <IndexInsight />
             </div>
@@ -48,26 +47,34 @@ export default function Home() {
               <Features />
             </div>
           </div>
-          <br/>
-          <div className={styles.marketing}>
-            <MarketingCard />
+
+          <div className={styles.ProFeatures}>
+            <div className={styles.marketing}>
+              <MarketingCard />
+            </div>
+            <div className={styles.howTeamsRun}>
+              <Workflows />
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <div className={styles.page3}>
+        <main className={styles.main}>
+          <div className={styles.demo}>
+            <div className={styles.demoDisplay}>
+              <Demo />
+            </div>
           </div>
         </main>
       </div>
 
       <div className={styles.page}>
         <main className={styles.main}>
-          <div className={styles.hero}>
-            <div className={styles.demoDisplay}>
-              <Demo />
-            </div>
-
-            <div>
-              <Workflows />
-              <Ecosystem />
-              <Voices />
-              <Pricing />
-            </div>
+          <div className={styles.product}>
+            <Ecosystem />
+            <Voices />
+            <Pricing />
           </div>
 
           <div className={styles.faqSection}>

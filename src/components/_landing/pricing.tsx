@@ -75,7 +75,7 @@ const PricingTeaser = () => {
               {plan.highlight && (
                 <Chip
                   size="small"
-                  label="Most teams"
+                  label="Popular"
                   sx={{ color: "var(--flair)", border: "1px solid var(--flair)" }}
                 />
               )}

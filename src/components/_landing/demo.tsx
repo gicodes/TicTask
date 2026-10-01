@@ -4,20 +4,15 @@ import React from 'react'
 
 const Demo = () => {
   return (
-    <Box>
-      <Stack 
-        px={{ xs: 2, md: 4 }}
-        mb={{ xs: 3, md: 4 }}
-        borderRadius={3}
-        border={'1px solid color-mix(in srgb, var(--flair) 50%, transparent)'}
-      >
+    <Box>   
+      <Box textAlign={'center'}>
         <Typography
           component="h2"
           sx={{
-            my: 3,
-            fontSize: { xs: "2.2rem", md: "3.4rem" },
             lineHeight: 1.35,
+            textAlign: 'center',
             letterSpacing: "-0.06em",
+            fontSize: { xs: "2.2rem", md: "3.4rem" },
           }}
         >
           Need a visual walkthrough? &nbsp;
@@ -34,12 +29,15 @@ const Demo = () => {
             See how TicTask works.
           </Box>
         </Typography>
-      </Stack>
-      
+        <Typography mt={2} mb={5} variant='h6'>
+          We have detailed some of the common flow and actions users experience in a 4-minute video
+        </Typography>
+      </Box>     
+          
       <Box p={1} bgcolor={'black'} borderRadius={2}>
         <Grid 
           container 
-          spacing={4} 
+          spacing={1} 
           alignItems="center" 
           justifyContent="center"
         >
@@ -67,9 +65,8 @@ const Demo = () => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               sx={{ 
-                display: 'block', 
                 width: { xs: '100%', sm: 600 }, 
-                minHeight: { xs: 200, sm: 400 },
+                minHeight: { xs: 200, sm: 401 },
                 alignItems: 'center',
               }}
             />

@@ -138,9 +138,11 @@ h6 { font-size: 1.5rem; }
 .font-sxl { font-size: 3rem; }
 
 .bold { font-weight: 700; }
-.font-weight-b { font-weight: 501; }
-.font-weight-l { font-weight: 200; }
-.text-italic { font-style: italic;}
+.semi-bold { font-weight: 500; }
+.semi-light { font-weight: 200; }
+.light { font-weight: 90; }
+
+.text-italic { font-style: italic; }
 
 .flex { display: flex; }
 .grid { display: grid; }
