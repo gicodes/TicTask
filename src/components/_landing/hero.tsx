@@ -58,19 +58,19 @@ const Hero = () => {
             mb: 1,
           }}
         >
-          Every task
+          <span>Every task</span>
           <Box
             component="span"
             sx={{
               display: "flex",
               fontStyle: "italic",
-              fontWeight: 380,
+              fontWeight: 500,
               letterSpacing: "-0.06em",
               opacity: 0.55,
               justifyContent: 'right'
             }}
           >
-            Starts as a<span className="semi-bold">&nbsp;ticket</span>.
+            Starts as a ticket
           </Box>
         </Typography>
 
