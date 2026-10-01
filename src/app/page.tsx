@@ -12,7 +12,7 @@ import IndexInsight from "@/components/_landing/insight";
 import { Workflows } from "@/components/_landing/outcomes";
 import { Ecosystem } from "@/components/_landing/ecosystem";
 import { Voices } from "@/components/_landing/testimonials";
-import MarketingCard from "../components/_landing/marketing";
+import { IndexMarketing } from "../components/_landing/marketing";
 import { WorkspaceFlowAnimation } from "@/components/_landing/animatedFlow";
 
 export default function Home() {
@@ -50,7 +50,7 @@ export default function Home() {
 
           <div className={styles.ProFeatures}>
             <div className={styles.marketing}>
-              <MarketingCard />
+              <IndexMarketing />
             </div>
             <div className={styles.howTeamsRun}>
               <Workflows />

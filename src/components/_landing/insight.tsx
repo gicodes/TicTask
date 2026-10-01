@@ -221,8 +221,8 @@ const IndexInsight = () => {
               <Box component="span" sx={{ color: "var(--flair)", fontWeight: 700 }}>
                 ::
               </Box>{" "}
-              marks a paid or owner-gated capability. Subscription sits in billing —
-              not in the product surface.
+              marks a paid or owner-gated capability. Billing sits in subscription,
+              not in the product.
             </Typography>
           </Box>
       </Box>

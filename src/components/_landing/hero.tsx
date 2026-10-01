@@ -70,7 +70,7 @@ const Hero = () => {
               justifyContent: 'right'
             }}
           >
-            Starts as a ticket
+            Starts as a <span className="custom-warm">&nbsp;ticket</span>
           </Box>
         </Typography>
 

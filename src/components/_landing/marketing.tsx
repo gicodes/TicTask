@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import Image from "next/image";
 import {
   Box,
   Card,
@@ -242,3 +243,19 @@ const MarketingCard = ({ children, flex = false }: MarketingCardProps) => {
 }
 
 export default MarketingCard
+
+export const IndexMarketing = () => {
+  return (
+    <Box>
+      <MarketingCard flex>
+        <Image
+          src="/features/gated by design.jpg"
+          alt="Marketing"
+          width={700}
+          height={420}
+          style={{ width: "100%", height: "auto" }}
+        />
+      </MarketingCard>
+    </Box>
+  )
+}
