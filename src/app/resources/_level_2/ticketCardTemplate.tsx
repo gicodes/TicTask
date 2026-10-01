@@ -85,7 +85,6 @@ export const TicketCardTemplate: React.FC<TicketCardTemplateProps> = ({
       }}
     >
       <Stack spacing={compact ? 1 : 1.5}>
-        {/* Title + Priority */}
         <Stack direction="row" alignItems="flex-start" justifyContent="space-between" gap={1}>
           <Stack direction="row" alignItems="flex-start" gap={0.75} flex={1} minWidth={0}>
             <TicketCheck size={16} style={{ marginTop: 2, color: accentColor, flexShrink: 0 }} />
@@ -175,9 +174,10 @@ export const TicketCardTemplate: React.FC<TicketCardTemplateProps> = ({
           </Box>
           <Stack direction="row" alignItems="center" gap={1}>
             {assignee && (
-              <Tooltip title={assignee.name || assignee.email}>
+              <Tooltip title={'assignee.name || assignee.email'}>
                 <Avatar sx={{ width: 24, height: 24, fontSize: 11, bgcolor: 'primary.main' }}>
-                  {(assignee.name?.[0] || assignee.email?.[0] || '?').toUpperCase()}
+                  {/* {(assignee.name?.[0] || assignee.email?.[0] || '?').toUpperCase()} */}
+                  TU
                 </Avatar>
               </Tooltip>
             )}

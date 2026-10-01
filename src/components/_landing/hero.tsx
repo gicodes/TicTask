@@ -1,13 +1,11 @@
 'use client';
 
-import Demo from "./demo";
 import Link from "next/link";
 import { Button } from "@/assets/buttons";
 import styles from "@/app/page.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
-import { Typography } from "@mui/material";
 import { useSubscription } from "@/providers/subscription";
 
 const Hero = () => {
@@ -43,50 +41,62 @@ const Hero = () => {
   };
 
   return (
-    <section id="get-started">
+    <section id="get-started" style={{ width: '100%'}}>
       <div className={styles.heroTitle}>
-        <div>
-          <h2> Ticket <span className="font-xl">&</span> Task Management System </h2>
-          <h2> <span className="custom-warm">Driven by Org.</span> Designed for Everyone </h2>
-        </div>
+        <h2 className={'min-height-50'}>
+          Simple task management tool
+        </h2>
+        <p className={styles.heroLead}>
+          For individuals & teams who want to get things done without the clutter.
+        </p>
 
-        <Typography  
-          px={1} 
-          py={{ xs: 1, md: 2, xl: 3 }} 
-          mx={'auto'}
-          textAlign={'center'}
-          fontSize={{ xs: 16, md: 18, xl: 20 }}
-          sx={{ opacity: 0.75}}
-        >
-          TicTask is a lightweight multi-faceted task management platform built for fast, friendly, agile teamwork. 
-          Whether you&apos;re a  solopreneur, small team or a large enterprise, TicTask is designed to meet your organizational needs with very simple, yet robust features.
-        </Typography>
+        <span className={styles.heroEyebrow}>
+          <span className="custom-warm">Driven by Organisation</span> · Designed for Everyone
+        </span>
       </div>
 
-      <div className={styles.demoDisplay}>
-        <Demo />
-      </div>
-
-      <div className="max-width-1k mx-auto">
+      <div className={styles.heroCTA}>
         <div className={styles.heroActions}>
-          <p className={'opac-1'}> 
-            14-day free trial. No credit card required.
-          </p>
           <div className={styles.btnGroup}>
-            <Button onClick={handleStartTrial}> 
+            <Button 
+              size="large"
+              onClick={handleStartTrial} 
+            > 
               Start free trial 
             </Button>
             
-            <Button tone='secondary'>
-              <Link 
-                href="/resources" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              > 
+            <Button 
+              tone='secondary'
+              size="large"
+            >
+              <Link href="/resources"> 
                 Learn more
               </Link>
             </Button>
           </div>
+          <p className={'opac-1'}> 
+            14-day free trial. No credit card required.
+          </p>
+        </div>
+      </div>
+      
+      <div className={styles.heroSocialProof}>
+        <div className={styles.socialProofAvatars}>
+          <span className={styles.avatar}>A</span>
+          <span className={styles.avatar}>J</span>
+          <span className={styles.avatar}>M</span>
+          <span className={styles.avatar}>S</span>
+          <span className={styles.avatarMore}>+</span>
+        </div>
+
+        <div className={styles.socialProofText}>
+          <div className={styles.socialProofStars}>
+            <span>★★★★★</span>
+          </div>
+
+          <p>
+            Trusted by individuals & teams
+          </p>
         </div>
       </div>
     </section>

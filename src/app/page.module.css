@@ -155,7 +155,6 @@ a.secondary {
   align-items: center;
   gap: 25px;
   padding: 1rem;
-  margin-top: 3rem;
 
   @media screen and (max-width: 600px) {
     margin-top: 1rem;
@@ -164,7 +163,6 @@ a.secondary {
 }
 
 .heroTitle {
-  gap: 10px;
   display: flex;
   max-width: 1000px;
   margin: 0 auto;
@@ -201,6 +199,8 @@ a.secondary {
   display: flex;
   flex-direction: column;
   gap: 25px;
+  text-align: center;
+  max-width: 1000;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -399,8 +399,17 @@ a.secondary {
   margin: 20px 0 40px;
 }
 
-.marketing {
+.indexInsight {
   margin: 20px 0;
+  max-width: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.insight {
+  max-width: 669px;
 }
 
 .container {
@@ -436,11 +445,131 @@ a.secondary {
   background: linear-gradient(135deg, #e3f2fd, #ffffff);
 }
 
+.heroEyebrow, .heroEyebrowDisabled {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: auto;
+  margin-bottom: 12px;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.heroEye {
+  padding: 5px 15px;
+  text-align: center;
+  border-radius: 99px;
+  border: 0.1px solid var(--accent);
+  background: transparent;
+  box-shadow: var(--surface-2);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.heroEyebrow {
+  color: var(--flair);
+}
+.heroEyebrowDisabled {
+  color: var(--disabled);
+}
+
+.heroLead {
+  max-width: 680px;
+  margin: 12px auto 24px;
+
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.6;
+
+  opacity: .75;
+}
+
+.heroCTA {
+  max-width: 1000;
+  margin: auto;
+  padding: 20px 0;
+}
+
 .animationFlow {
   max-width: none;
-  margin: 40px auto 0;
+  margin: 20px auto;
 }
 
 .demoDisplay {
+  max-width: 1250;
   margin: 40px auto;
+}
+.heroSocialProof {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+  opacity: 0.9;
+}
+
+.socialProofAvatars {
+  display: flex;
+  align-items: center;
+}
+
+.avatar,
+.avatarMore {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+
+  border: 2px solid var(--background);
+  margin-left: -8px;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.avatar:first-child {
+  margin-left: 0;
+}
+
+.avatar {
+  background: #e8e5df;
+  color: #292724;
+}
+
+.avatar:nth-child(2) {
+  background: #dce5e1;
+}
+
+.avatar:nth-child(3) {
+  background: #e7dcd6;
+}
+
+.avatar:nth-child(4) {
+  background: #dedfe8;
+}
+
+.avatarMore {
+  background: #242320;
+  color: white;
+}
+
+.socialProofText {
+  text-align: left;
+}
+
+.socialProofStars {
+  font-size: 11px;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: #c9953d;
+}
+
+.socialProofText p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: var(--muted);
 }

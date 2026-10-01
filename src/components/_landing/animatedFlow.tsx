@@ -284,8 +284,6 @@ export const WorkspaceFlowAnimation = () => {
             px: { xs: 1, sm: 2 },
             minHeight: 500,
             overflow: 'hidden',
-            border: { xs: 'none', sm: '1px solid' },
-            borderColor: 'divider',
             boxShadow: { xs: 0, sm: 3 },
             boxSizing: 'border-box',
           }}
@@ -313,7 +311,7 @@ export const WorkspaceFlowAnimation = () => {
                   fontWeight: 700,
                 }}
               >
-                T
+                TW
               </Avatar>
             </motion.div>
 
@@ -551,12 +549,10 @@ export const WorkspaceFlowAnimation = () => {
                           sx={{
                             display: 'flex',
                             minWidth: 0,
-
                             flex: {
                               xs: isCurrentColumn ? 3.2 : 0.7,
                               sm: 1,
                             },
-
                             transition: {
                               xs: 'flex 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
                               sm: 'none',

@@ -157,6 +157,7 @@ h6 { font-size: 1.5rem; }
 .space-between { justify-content: space-between; }
 
 .min-height-44 { min-height: 44px; }
+.min-height-50 { min-height: 50px; }
 .min-height-100 { min-height: 100px; }
 .min-height-500 { min-height: 500px; }
 
@@ -193,7 +194,8 @@ h6 { font-size: 1.5rem; }
 .mb-1 { margin-bottom: 0.5rem; }
 .mb-2 { margin-bottom: 1rem; }
 
-.opac-1 { opacity: 0.75;}
+.opac-1 { opacity: 0.75; }
+.opac-2 { opacity: 0.95; }
 
 .btn {
   border-radius: 9999px;

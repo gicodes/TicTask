@@ -42,8 +42,10 @@ const CTA = () => {
   
   return (
     <div className={styles.readyToStart}>
-      <p className="font-sm max-width-800 mx-auto">Unlock the full power of Tictask and turn every workflow into momentum with smarter planning, sharper execution, and seamless collaboration.</p>
+      <h6 className="font-sm max-width-800 mx-auto">Unlock the full power of Tictask and turn every workflow into momentum.</h6>
       
+      <span className={styles.heroEyebrowDisabled}> with smarter planning, sharper execution, and seamless collaboration.</span>
+
       <h3 className="custom-dull">
         <span>Set{whiteDot} </span>
         <span className="custom-warm">Ready{whiteDot}</span>&nbsp;
@@ -51,10 +53,11 @@ const CTA = () => {
       </h3>
       
       <div className={`${styles.btnGroup} mx-auto justify-center`}>
-        <Button onClick={GetPro}>
+        <Button onClick={GetPro} size="large">
           Pay for a plan
         </Button>
         <Button
+          size="large"
           tone="secondary"
           onClick={() => {
             window.open(

@@ -62,10 +62,16 @@ const FAQ = ({ faqPage }: { faqPage?: boolean }) => {
       mx="auto"
       mt={8}
     >
-      <Typography variant="h5" textAlign="center" mb={4} fontWeight={600}>
-        Frequently Asked Questions
-      </Typography>
-      
+      <Box textAlign="center" mb={2}>
+        <Typography variant="h5" mb={4} fontWeight={600}>
+          Frequently Asked Questions
+        </Typography>
+
+        <Typography variant="h6" pb={2} sx={{ opacity: 0.8 }}>
+          You can learn more about how it works from frequently asked questions
+        </Typography>
+      </Box>
+
       <Card sx={{ borderRadius: 3, px: 0}}>
         {visibleFAQs.map((f, i) => (
           <Accordion 
