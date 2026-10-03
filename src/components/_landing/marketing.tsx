@@ -253,6 +253,7 @@ export const IndexMarketing = () => {
           alt="Marketing"
           width={700}
           height={420}
+          loading="eager"
           style={{ width: "100%", height: "auto" }}
         />
       </MarketingCard>

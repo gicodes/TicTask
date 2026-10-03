@@ -29,12 +29,15 @@ const Demo = () => {
             See how TicTask works.
           </Box>
         </Typography>
-        <Typography mt={2} mb={5} variant='h6'>
-          We have detailed some of the common flow and actions users experience in a 4-minute video
+        <Typography mt={2} mb={1} variant='h6'>
+          We have detailed some common flow users experience in a 4-minute video
+        </Typography>
+        <Typography variant="caption" fontStyle={'italic'}>
+          Like, comment, and subscribe to our channel for more updates and tutorials!
         </Typography>
       </Box>     
           
-      <Box p={1} bgcolor={'black'} borderRadius={2}>
+      <Box p={1} mt={5} bgcolor={'black'} borderRadius={2}>
         <Grid 
           container 
           spacing={1} 
@@ -49,7 +52,7 @@ const Demo = () => {
               height={400}
               loading="eager"
               style={{ 
-                width: '100%', 
+                width: 'auto', 
                 height: 'auto' 
               }}
             />

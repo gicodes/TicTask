@@ -1,7 +1,7 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { forgotPassword } from '@/hooks/useForgotPass';
 import { LoginTemplateProps } from '@/types/auth';
-import RememberMe from '../_level_1/rememberMe';
+import RememberMe from './rememberMe';
 import { authErrorMessages } from '@/lib/auth';
 import { useAlert } from '@/providers/alert';
 import { Button } from '@/assets/buttons';

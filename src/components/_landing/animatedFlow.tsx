@@ -546,6 +546,7 @@ export const WorkspaceFlowAnimation = () => {
 
                       return (
                         <Box
+                          key={columnName}
                           sx={{
                             display: 'flex',
                             minWidth: 0,
