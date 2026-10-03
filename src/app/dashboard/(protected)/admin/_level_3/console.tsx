@@ -276,6 +276,11 @@ export default function AdminOverviewPage() {
               Summary of recent users
             </Typography>
           </Box>
+          <Box display="flex" gap={1} py={1}>
+            <Button tone="secondary" variant="outlined">
+              <Link href="/dashboard/admin/bulk-action">Bulk actions</Link>
+            </Button>
+          </Box>
         </Stack>
 
         <AdminComponents.DataTable
