@@ -51,12 +51,7 @@ const CATEGORIES: { value: BulkCategory; label: string }[] = [
 ];
 
 async function postBulk(body: Record<string, unknown>) {
-  const res: GenericAPIRes = await apiPost('/admin/send-bulk-messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify(body),
-  });
+  const res: GenericAPIRes = await apiPost('/admin/send-bulk-messages', body);
   
   if (!res.ok) {
     throw new Error(res.error?.message || 'Request failed');
