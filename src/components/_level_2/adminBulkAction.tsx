@@ -27,7 +27,7 @@ export type BulkTarget =
   | { kind: 'ids'; ids: number[] };
 
 type Preview = {
-  dryRun: true;
+  dryRun: boolean;
   category: BulkCategory;
   subject: string;
   count: number;
@@ -102,7 +102,14 @@ export function BulkEmailDialog({
     setBusy('preview');
     try {
       const data = await postBulk({ ...payload, dryRun: true });
-      setPreview(data as unknown as Preview);
+      const preview = {
+        dryRun: true,
+        category: data.category,
+        subject: data.subject,
+        count: data.targeted,
+        sample: data.failures.map((f) => f.email).slice(0, 5),
+      };
+      setPreview(preview);
     } catch (err) {
       showAlert(err instanceof Error ? err.message : 'Preview failed', 'error');
     } finally {
