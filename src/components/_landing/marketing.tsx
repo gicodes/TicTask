@@ -249,7 +249,7 @@ export const IndexMarketing = () => {
     <Box>
       <MarketingCard flex>
         <Image
-          src="/features/gated by design.jpg"
+          src="/features/Gated by design.jpg"
           alt="Gated by design"
           width={700}
           height={420}

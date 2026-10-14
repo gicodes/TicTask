@@ -35,6 +35,7 @@ type Preview = {
 };
 
 type BulkSendResult = {
+  dryRun: boolean;
   category: BulkCategory;
   subject: string;
   targeted: number;
@@ -103,7 +104,7 @@ export function BulkEmailDialog({
     try {
       const data = await postBulk({ ...payload, dryRun: true });
       const preview = {
-        dryRun: true,
+        dryRun: data.dryRun ?? false,
         category: data.category,
         subject: data.subject,
         count: data.targeted,
