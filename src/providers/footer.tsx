@@ -7,7 +7,7 @@ const GlobalFooter = () => {
       my={5}
     >
       <Typography variant="body2" textAlign="center"sx={{ opacity: 0.65}}>
-        © {new Date().getFullYear()} TicTask. All rights reserved.
+        Copyright © {new Date().getFullYear()} TicTask Ltd. All rights reserved.
       </Typography>
     </Grid>
   )

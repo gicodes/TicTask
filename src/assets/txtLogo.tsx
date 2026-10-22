@@ -5,7 +5,7 @@ import React from 'react'
 const Logo = ({ where = '/' }: { where?: string}) => {
   const Txt = <>
     <span>Tic</span>
-    <span className='custom-dull'>Task</span>
+    <span className='opac-3'>Task</span>
   </>;
 
   return (

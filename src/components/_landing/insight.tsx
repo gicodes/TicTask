@@ -161,8 +161,7 @@ const IndexInsight = () => {
                       <Typography
                         key={`${feature.name}-${f}-${index}`}
                         sx={{
-                          fontSize: 12,
-                          letterSpacing: "0.04em",
+                          fontSize: 13,
                           color: "var(--flair)",
                         }}
                       >
@@ -187,8 +186,7 @@ const IndexInsight = () => {
 
               <Typography
                 sx={{
-                  fontSize: 14,
-                  lineHeight: 1.55,
+                  fontSize: 14.5,
                   letterSpacing: "-0.015em",
                   maxWidth: 420,
                 }}
@@ -235,7 +233,7 @@ const CoreFeatures = [
     name: "Multi-faceted tickets",
     core: "10+ ticket types with assignment, tags, attachments and history",
     gated: ["Invoice tickets", "Ticket limits", "Ticket Comments"],
-    pro: "One object model for tasks, issues, meetings, notes — and invoice",
+    pro: "One object model for tasks, issues, meetings, invoice, notes etc",
   },
   {
     name: "AI assistance",

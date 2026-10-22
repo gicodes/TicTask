@@ -95,8 +95,8 @@ export const FAQs = [
     a: "Yes. Every personal account is freemium by default. This means you get limited access to core system features i.e. tickets, notifications and free trial. Organisation accounts with expired or no subscription plan can also enjoy basic free access.",
   },
   {
-    q: "What is the use of Calendar",
-    a: "The Tictask Calendar Tool helps you see tickets with a time line on calendar. This can be tickets with a set due date, start time or deadline. Calendar is tied to tickets in a dedicated workspace."
+    q: "What is the use of calendar",
+    a: "The TicTask Calendar Tool helps you see tickets with a time line on calendar. This can be tickets with a set due date, start time or deadline. Calendar is tied to tickets in a dedicated workspace."
   },
   {
     q: "What’s the difference between personal and organisation?",
@@ -124,7 +124,7 @@ export const FAQs = [
   },
   {
     q: "Which platforms and integrations do you support?",
-    a: "Tictask works in the browser today. Native apps and deeper integrations (Slack, calendar providers, etc.) are on the roadmap. You can already export and import data via our templates and JSON formats.",
+    a: "TicTask works in the browser today. Native apps and deeper integrations (Slack, calendar providers, etc.) are on the roadmap. You can already export and import data via our templates and JSON formats.",
   },
   {
     q: "Do I pay for the users I bring to the team?",

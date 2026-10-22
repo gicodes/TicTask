@@ -66,11 +66,11 @@ const Hero = () => {
               fontStyle: "italic",
               fontWeight: 500,
               letterSpacing: "-0.06em",
-              opacity: 0.55,
+              opacity: 1,
               justifyContent: 'right'
             }}
           >
-            Starts as a <span className="custom-warm">&nbsp;ticket</span>
+            <span className="opac-3">Starts as a</span> <span className="custom-warm">&nbsp;ticket</span>
           </Box>
         </Typography>
 
@@ -98,7 +98,7 @@ const Hero = () => {
               </Link>
             </Button>
           </div>
-          <p className={'opac-1'}> 
+          <p className={'opac-2'}> 
             14-day free trial. No credit card required.
           </p>
         </div>

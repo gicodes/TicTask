@@ -42,7 +42,7 @@ const CTA = () => {
   
   return (
     <div className={styles.readyToStart}>
-      <h6 className="font-sm max-width-800 mx-auto">Unlock the full power of Tictask and turn every workflow into momentum.</h6>
+      <h6 className="font-sm max-width-800 mx-auto">Unlock the full power of TicTask and turn every workflow into momentum.</h6>
       
       <span className={styles.heroEyebrowDisabled}> with smarter planning, sharper execution, and seamless collaboration.</span>
 
