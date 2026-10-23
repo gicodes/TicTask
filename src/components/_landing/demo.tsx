@@ -37,40 +37,52 @@ const Demo = () => {
         </Typography>
       </Box>     
           
-      <Box p={1} mt={5} bgcolor={'black'} borderRadius={2}>
-        <Grid 
-          container 
-          spacing={1} 
-          alignItems="center" 
+      <Box p={1} mt={5} bgcolor="black" borderRadius={2}>
+        <Grid
+          container
+          spacing={1}
+          alignItems="center"
           justifyContent="center"
         >
-          <Grid sx={{ width: { xs: 300, sm: 500, lg: 600 } }}>
+          <Grid
+            sx={{
+              width: { xs: '100%', sm: 500, md: 600 },
+              maxWidth: 600,
+            }}
+          >
             <Image
               src="/product/Tictask_Join.jpg"
-              alt="Demo Image"
+              alt="TicTask join demo"
               width={600}
               height={400}
-              loading="eager"
-              style={{ 
-                width: 'auto', 
-                height: 'auto' 
+              sizes="(max-width: 600px) 100vw, 600px"
+              priority
+              style={{
+                width: '100%',
+                height: 'auto',
+                maxWidth: '100%',
+                display: 'block',
               }}
             />
           </Grid>
-          <Grid>
+
+          <Grid
+            sx={{
+              width: { xs: '100%', sm: 600 },
+              maxWidth: 600,
+            }}
+          >
             <Box
               component="iframe"
-              width="100%"
-              height="auto"
               src="https://www.youtube.com/embed/7t4e0wtqsvY?si=mTiyxjxR1LHAckHt"
               title="YouTube demo"
-              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              sx={{ 
-                width: { xs: '100%', sm: 600 }, 
-                minHeight: { xs: 200, sm: 401 },
-                alignItems: 'center',
+              sx={{
+                width: '100%',
+                height: { xs: 220, sm: 338 },
+                border: 0,
+                display: 'block',
               }}
             />
           </Grid>
