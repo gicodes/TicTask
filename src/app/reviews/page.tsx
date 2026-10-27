@@ -88,7 +88,6 @@ export default function ReviewsPage() {
                 flexDirection: 'column',
                 p: 3,
                 borderRadius: 3,
-                border: '1px solid var(--border-color)',
                 bgcolor: 'var(--background)',
                 textDecoration: 'none',
                 color: 'inherit',
@@ -133,7 +132,7 @@ export default function ReviewsPage() {
                 <Stack direction="row" alignItems="center" spacing={1.2}>
                   <Avatar
                     src={review.author?.photo || undefined}
-                    sx={{ width: 32, height: 32, fontSize: 13 }}
+                    sx={{ width: 32, height: 32, fontSize: 13, color: 'black' }}
                   >
                     {review.author?.name?.[0] || 'T'}
                   </Avatar>

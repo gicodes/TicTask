@@ -6,6 +6,7 @@ import Link from 'next/link';
 import {
   Box,
   Container,
+  Paper,
   Rating,
   Stack,
   TextField,
@@ -83,62 +84,67 @@ export default function CreateReviewPage() {
         Share your experience with TicTask. <br/> Featured reviews are promoted as testimonials.
       </Typography>
 
-      <Box component="form" onSubmit={handleSubmit} bgcolor={'background.paper'}>
-        <Stack spacing={3}>
-          <Box>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              Rating
-            </Typography>
-            <Rating
-              value={rating}
-              onChange={(_, value) => setRating(value)}
-              size="large"
-              sx={{
-                color: 'var(--accent)',
-                '& .MuiRating-iconEmpty': { color: 'var(--disabled)' },
-              }}
+      <Box 
+        component="form" 
+        onSubmit={handleSubmit} 
+      >
+        <Paper sx={{ p: 2}}>
+          <Stack spacing={3}>
+            <Box>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                Rating
+              </Typography>
+              <Rating
+                value={rating}
+                onChange={(_, value) => setRating(value)}
+                size="large"
+                sx={{
+                  color: 'var(--accent)',
+                  '& .MuiRating-iconEmpty': { color: 'var(--disabled)' },
+                }}
+              />
+            </Box>
+
+            <TextField
+              label="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              fullWidth
+              variant="outlined"
             />
-          </Box>
 
-          <TextField
-            label="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            fullWidth
-            variant="outlined"
-          />
+            <TextField
+              label="Your review"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+              fullWidth
+              multiline
+              minRows={6}
+              variant="outlined"
+              placeholder="What do you like? How has TicTask helped you or your team?"
+            />
 
-          <TextField
-            label="Your review"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-            fullWidth
-            multiline
-            minRows={6}
-            variant="outlined"
-            placeholder="What do you like? How has TicTask helped you or your team?"
-          />
-
-          <Stack direction="row" spacing={2} sx={{ pt: 1 }}>
-            <Button
-              type="submit"
-              tone="primary"
-              disabled={submitting}
-            >
-              {submitting ? 'Submitting…' : 'Submit review'}
-            </Button>
-            <Button
-              tone="secondary"
-              component={Link}
-              href="/reviews"
-              sx={{ maxWidth: 120 }}
-            >
-              Cancel
-            </Button>
+            <Stack direction="row" spacing={2} sx={{ pt: 1 }}>
+              <Button
+                type="submit"
+                tone="primary"
+                disabled={submitting}
+              >
+                {submitting ? 'Submitting…' : 'Submit review'}
+              </Button>
+              <Button
+                tone="secondary"
+                component={Link}
+                href="/reviews"
+                sx={{ maxWidth: 120 }}
+              >
+                Cancel
+              </Button>
+            </Stack>
           </Stack>
-        </Stack>
+        </Paper>
       </Box>
     </Container>
   );
