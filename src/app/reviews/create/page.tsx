@@ -81,14 +81,14 @@ export default function CreateReviewPage() {
         Write a review
       </Typography>
       <Typography variant="body1" color="var(--secondary)" sx={{ mb: 5 }}>
-        Share your experience with TicTask. <br/> Featured reviews are promoted as testimonials.
+        Share your experience with TicTask. <br/> Published reviews can be featured as testimonials.
       </Typography>
 
       <Box 
         component="form" 
         onSubmit={handleSubmit} 
       >
-        <Paper sx={{ p: 2}}>
+        <Paper sx={{ p: 2, borderRadius: 3 }} elevation={0}>
           <Stack spacing={3}>
             <Box>
               <Typography variant="subtitle2" sx={{ mb: 1 }}>

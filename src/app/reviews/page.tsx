@@ -48,6 +48,12 @@ export default function ReviewsPage() {
         </Typography>
       </Box>
 
+      {isAdmin && <Box my={2}>
+        <Button component={Link} href={'/dashboard/admin/reviews'}>
+          Manage reviews
+        </Button>
+      </Box>}
+
       {loading ? (
         <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' } }}>
           {[1, 2, 3, 4].map((i) => (
@@ -74,7 +80,6 @@ export default function ReviewsPage() {
             display: 'grid',
             gap: 3,
             borderRadius: 4,
-            border: '1px dashed var(--disabled)',
             gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', lg: '1fr 1fr 1fr' },
           }}
         >
@@ -88,6 +93,7 @@ export default function ReviewsPage() {
                 flexDirection: 'column',
                 p: 3,
                 borderRadius: 3,
+                border: '1px solid var(--border-color)',
                 bgcolor: 'var(--background)',
                 textDecoration: 'none',
                 color: 'inherit',
