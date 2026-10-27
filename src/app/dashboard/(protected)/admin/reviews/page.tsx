@@ -120,7 +120,7 @@ export default function AdminReviewsPage() {
             Approve submissions and promote strong ones to the landing page.
           </Typography>
         </Box>
-        <Button tone="secondary" component={Link} href="/reviews" sx={{ maxWidth: 160 }}>
+        <Button tone="secondary" component={Link} href="/reviews" sx={{ maxWidth: 250 }}>
           View public page
         </Button>
       </Stack>

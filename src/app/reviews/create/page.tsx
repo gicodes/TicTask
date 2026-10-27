@@ -30,14 +30,14 @@ export default function CreateReviewPage() {
     return (
       <Container maxWidth="sm" sx={{ py: 12, textAlign: 'center' }}>
         <Typography variant="h5" sx={{ mb: 1 }}>Sign in required</Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+        <Typography variant="body2" color="var(--secondary)" sx={{ mb: 10 }}>
           Only registered users can write a review.
         </Typography>
         <Button
           tone="primary"
           component={Link}
           href={`/auth/login?returnUrl=${encodeURIComponent('/reviews/create')}`}
-          sx={{ maxWidth: 180 }}
+          sx={{ maxWidth: 200 }}
         >
           Sign in
         </Button>
@@ -83,7 +83,7 @@ export default function CreateReviewPage() {
         Share your experience with TicTask. <br/> Featured reviews are promoted as testimonials.
       </Typography>
 
-      <Box component="form" onSubmit={handleSubmit}>
+      <Box component="form" onSubmit={handleSubmit} bgcolor={'background.paper'}>
         <Stack spacing={3}>
           <Box>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>

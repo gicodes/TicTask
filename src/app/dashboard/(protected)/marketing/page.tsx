@@ -17,9 +17,12 @@ const Page = () => {
         <Typography color='error'>Marketing is currently unavailable</Typography>
       </Box>
 
-      <Button component={Link} href={'/dashboard/admin/reviews'}>
-        Go to reviews
-      </Button>
+      <Box maxWidth={600}>
+        <Button component={Link} href={'/dashboard/admin/reviews'}>
+          Go to reviews
+        </Button>
+      </Box>
+      
     </GenericGridPageLayout>
   )
 }
