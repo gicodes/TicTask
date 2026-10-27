@@ -23,20 +23,20 @@
   --btn-secondary-bg: var(--surface-1);
   --btn-secondary-color: var(--foreground);
 
-  --stormy: #DDA0DD;
-  --frost: #87CEEB;
-  --hail: #F4A460; 
+  --stormy: #902e90; /* light mode supported as opacity */
+  --frost: #416573; /* dark mode supported as opacity */
+  --hail: #904e14; /* dark mode supported as opacity */
 
-  --happy: #FAFAD2;
-  --chill: #D8BFD8;
+  --happy: #FAFAD2; /* light mode bg not supported */
+  --chill: #D8BFD8; /* light mode supported as opacity */
 
-  --autumn: #FFEBCD;
+  --autumn: #FFEBCD; /* light mode bg not supported */
   --spring: #8FBC8F;
-  --summer: #FFDEAD;
-  --winter: #F8F8FF;
+  --summer: #FFDEAD; /* light mode bg not supported */
+  --winter: #F8F8FF; /* light mode bg not supported */
 
-  --harmattan: #FFFAF0;
-  --clear: #E0FFFF;
+  --harmattan: #FFFAF0; /* light mode bg not supported */
+  --clear: #E0FFFF; /* light mode bg not supported */
 }
 
 @media (prefers-color-scheme: dark) {

@@ -52,7 +52,7 @@ export const PartnerBenefits = () => {
         color={'var(--background)'}
         bgcolor={'var(--foreground)'}
       >
-        <Typography variant="h4" fontWeight={700}> Why Partner with Us</Typography>
+        <Typography variant="h4" fontWeight={500}> Why Partner with Us</Typography>
         <Typography my={2} sx={{ opacity: 0.8 }}> A partnership built to serve high-value products</Typography>
         
         <Divider sx={{ background: 'var(--dull-gray)', maxWidth: 250, mx: 'auto'}} />

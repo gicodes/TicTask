@@ -326,7 +326,7 @@ const Header = () => {
                   sx={{
                     display: "grid",
                     gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-                    gap: 0.5,
+                    gap: 1.2,
                   }}
                 >
                   {(extendedMenuItems[openMenu ?? ""] ?? []).map((subItem) => (

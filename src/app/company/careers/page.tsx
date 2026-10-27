@@ -22,7 +22,7 @@ export default function CareersSection (){
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Typography variant="h3" fontWeight={700} mb={2}>
+          <Typography variant="h3" fontWeight={500} mb={2}>
             Join us in building the future of work
           </Typography>
           <Typography

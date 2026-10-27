@@ -40,11 +40,11 @@ const Page = () => {
           Google Ads
         </Button>
 
-        <Typography mt={3}> Google Ads are unavailable right now. Raise Funds and try again!</Typography>
+        <Typography variant='caption'> Google Ads are unavailable right now. Raise Funds and try again!</Typography>
       </Box>
 
       <Box maxWidth={600}>
-        <Button component={Link} href={'/reviews'} tone='action'>
+        <Button component={Link} href={'/reviews'} tone='action' variant='contained'>
           Go to reviews
         </Button>
       </Box>

@@ -84,18 +84,30 @@ export default function PricingSection() {
             sx={{
               mt: 3,
               "& .MuiToggleButton-root": {
-                border: "none",
-                textTransform: "none",
                 px: 3,
                 minWidth: 170,
+                border: "none",
+                textTransform: "none",
               },
             }}
           >
-            <Card sx={{ borderRadius: 99, minHeight: 50, display: "flex" }}>
-              <ToggleButton value="monthly">Monthly</ToggleButton>
-              <ToggleButton value="yearly">
-                Yearly <span className="font-xxs">&nbsp;(Save 20%)</span>
-              </ToggleButton>
+            <Card 
+              sx={{ 
+                minHeight: 50, 
+                display: "flex",
+                borderRadius: 99, 
+              }}
+            >
+              {[ "Monthly", "Yearly"].map((t) => (
+                <ToggleButton 
+                  value={t.toLocaleLowerCase()}
+                  sx={{
+                    fontWeight: billing===t.toLowerCase() ? 800 : 200
+                  }}
+                >
+                  {t} {t==="Yearly" && "(Save 20%)"}
+                </ToggleButton>
+              ))}
             </Card>
           </ToggleButtonGroup>
         </Stack>

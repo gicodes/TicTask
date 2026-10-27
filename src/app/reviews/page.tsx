@@ -51,10 +51,10 @@ export default function ReviewsPage() {
 
       { isAdmin && 
         <Box my={2} display={'flex'} justifyContent={'right'}>
-          <Button component={Link} href={'/dashboard/admin/reviews'}>
+          <Button tone='action' variant='contained' component={Link} href={'/dashboard/admin/reviews'}>
             Manage reviews
           </Button>
-          <Divider />
+          <Divider /> <br/>
         </Box>
       }
 

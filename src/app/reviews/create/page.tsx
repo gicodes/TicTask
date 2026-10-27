@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Box,
@@ -12,9 +11,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { apiPost } from '@/lib/axios';
 import { Button } from '@/assets/buttons';
-import { apiPost } from '@/lib/axios'; // adjust if your helper is named differently
 import { useAuth } from '@/providers/auth';
+import { useRouter } from 'next/navigation';
 import { useAlert } from '@/providers/alert';
 
 export default function CreateReviewPage() {
@@ -29,11 +29,18 @@ export default function CreateReviewPage() {
 
   if (!user) {
     return (
-      <Container maxWidth="sm" sx={{ py: 12, textAlign: 'center' }}>
+      <Container 
+        maxWidth="sm" 
+        sx={{ 
+          py: 12, 
+          textAlign: 'center' 
+        }}
+      >
         <Typography variant="h5" sx={{ mb: 1 }}>Sign in required</Typography>
         <Typography variant="body2" color="var(--secondary)" sx={{ mb: 10 }}>
           Only registered users can write a review.
         </Typography>
+
         <Button
           tone="primary"
           component={Link}
@@ -60,6 +67,7 @@ export default function CreateReviewPage() {
     }
 
     setSubmitting(true);
+
     try {
       await apiPost('/reviews', {
         title: title.trim(),
@@ -77,21 +85,37 @@ export default function CreateReviewPage() {
 
   return (
     <Container maxWidth="sm" sx={{ py: { xs: 6, md: 10 } }}>
-      <Typography variant="h3" sx={{ fontWeight: 500, letterSpacing: '-0.025em', mb: 1 }}>
-        Write a review
-      </Typography>
-      <Typography variant="body1" color="var(--secondary)" sx={{ mb: 5 }}>
-        Share your experience with TicTask. <br/> Published reviews can be featured as testimonials.
-      </Typography>
+      <Box display={'grid'} gap={2} textAlign={'center'}>
+        <Typography 
+          variant="h3" 
+          sx={{ fontWeight: 500, letterSpacing: '-0.025em'}}
+        >
+          Write a review
+        </Typography>
+        <Typography variant="body1" color="var(--secondary)" sx={{ mb: 5 }}>
+          Share your experience with TicTask <br/> Published reviews can be featured as testimonials
+        </Typography>
+      </Box>
+     
 
       <Box 
         component="form" 
         onSubmit={handleSubmit} 
       >
-        <Paper sx={{ p: 2, borderRadius: 3 }} elevation={0}>
+        <Paper 
+          sx={{ 
+            p: 3, 
+            borderRadius: { xs: 2, md: 3 } 
+          }} 
+          elevation={0.5}
+        >
           <Stack spacing={3}>
             <Box>
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              <Typography 
+                variant="subtitle2" 
+                color='var(--secondary)'
+                sx={{ mb: 1, letterSpacing: 1 }}
+              >
                 Rating
               </Typography>
               <Rating
