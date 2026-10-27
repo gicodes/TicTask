@@ -3,7 +3,7 @@ export const FOOTER_LINKS = {
     {title: "Overview", link: '/product'},
     {title: "Pricing", link: '/product/pricing'}, // *
     {title: "Demo", link: '/product/demo'}, 
-    {title: "Integration", link: '#'}  // *
+    {title: "Reviews", link: '/reviews'}  // *
   ],
   RESOURCES: [
     {title: "Blog", link: '/resources/blog'}, 

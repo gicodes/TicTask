@@ -6,21 +6,21 @@ function NotFound() {
   return (
     <Box
       component="main"
-      minHeight="100vh"
+      minHeight="75vh"
       display="flex"
       alignItems="center"
       justifyContent="center"
       px={3}
       textAlign="center"
     >
-      <Stack spacing={3} maxWidth={480}>
-        <Typography variant="overline" color="text.secondary" letterSpacing={2}>
+      <Stack spacing={3} maxWidth={600}>
+        <Typography variant="overline" color="var(--secondary)" letterSpacing={2}>
           404
         </Typography>
         <Typography variant="h3" fontWeight={700}>
           This page does not exist
         </Typography>
-        <Typography color="text.secondary">
+        <Typography color="var(--secondary)">
           The link may be outdated or the page may have moved. You can return home or continue from a public section.
         </Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="center">

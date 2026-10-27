@@ -4,16 +4,16 @@ import { LoginTemplateProps } from '@/types/auth';
 import RememberMe from './rememberMe';
 import { authErrorMessages } from '@/lib/auth';
 import { useAlert } from '@/providers/alert';
-import { Button } from '@/assets/buttons';
+import { Button  as AppButton } from '@/assets/buttons';
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { 
   Box, 
   Stack, 
   TextField, 
   Typography, 
   IconButton, 
-  InputAdornment 
+  InputAdornment, 
+  Button
 } from '@mui/material';
 
 const LoginTemplate = ({
@@ -29,6 +29,7 @@ const LoginTemplate = ({
 }: LoginTemplateProps) => {
   const { showAlert } = useAlert();
   const [showPassword, setShowPassword] = useState(false);
+  const [hasSentPRRequest, setHasSentPRRequest] = useState(false)
 
   const message = (error && authErrorMessages[error]) || authErrorMessages.Default;
   
@@ -42,8 +43,9 @@ const LoginTemplate = ({
     }
 
     try {
-      forgotPassword({email})
+      forgotPassword({email});
       showAlert("If you have a registered account with this email, a password reset link would be sent!", "success");
+      setHasSentPRRequest(true);
       return;
     } catch {
       showAlert("Something went wrong!", "error");
@@ -93,7 +95,14 @@ const LoginTemplate = ({
         />
         <Box display="flex" justifyContent="space-between">
           <Typography px={1} variant="caption" color="info.main">
-            <Link href="#" onClick={handleForgotPassword}>Forgot Password?</Link>
+            <Button 
+              variant='text' 
+              disabled={hasSentPRRequest} 
+              onClick={handleForgotPassword}
+              sx={{ textTransform: 'none', fontSize: 12, p: 0}}
+            >
+              Forgot Password?
+            </Button> 
           </Typography>
           <RememberMe 
             remember={remember} 
@@ -101,13 +110,13 @@ const LoginTemplate = ({
           />
         </Box>
         {error && (<Typography color="error.main" fontSize="0.9rem" textAlign={'center'}>{message}</Typography>)}
-        <Button
+        <AppButton
           type="submit"
           fullWidth
           disabled={submitting}
         >
           {submitting ? 'Signing in...' : 'Sign in with Email'}
-        </Button>
+        </AppButton>
       </Stack>
     </Box>
   );

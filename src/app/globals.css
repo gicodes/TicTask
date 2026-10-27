@@ -22,6 +22,21 @@
   --btn-primary-color: var(--background);
   --btn-secondary-bg: var(--surface-1);
   --btn-secondary-color: var(--foreground);
+
+  --stormy: #DDA0DD;
+  --frost: #87CEEB;
+  --hail: #F4A460; 
+
+  --happy: #FAFAD2;
+  --chill: #D8BFD8;
+
+  --autumn: #FFEBCD;
+  --spring: #8FBC8F;
+  --summer: #FFDEAD;
+  --winter: #F8F8FF;
+
+  --harmattan: #FFFAF0;
+  --clear: #E0FFFF;
 }
 
 @media (prefers-color-scheme: dark) {

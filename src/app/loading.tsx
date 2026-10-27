@@ -11,7 +11,7 @@ function Loading() {
       gap={2}
     >
       <CircularProgress size={32} thickness={4} />
-      <Typography variant="body2" color="text.secondary">
+      <Typography variant="body2" color="var(--secondary)">
         Loading TicTask
       </Typography>
     </Box>

@@ -53,9 +53,10 @@ export default function DeleteButton({
   return (
     <Tooltip title="Delete item?">
       <Card sx={{ borderRadius: '50%', bgcolor: 'var(--surface-2)', boxShadow: 2}}>
-      <IconButton size="medium" color="error" onClick={handleDelete}>
-        <Trash2 size={20} />
-      </IconButton></Card>
+        <IconButton size="medium" color="error" onClick={handleDelete}>
+          <Trash2 size={20} />
+        </IconButton>
+      </Card>
     </Tooltip>
   );
 }

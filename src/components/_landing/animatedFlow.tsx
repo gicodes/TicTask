@@ -258,7 +258,7 @@ export const WorkspaceFlowAnimation = () => {
         <Typography
           variant="h6"
           color="text.primary"
-          fontWeight={700}
+          fontWeight={100}
           textAlign="center"
           sx={{
             px: 2,
@@ -284,7 +284,6 @@ export const WorkspaceFlowAnimation = () => {
             px: { xs: 1, sm: 2 },
             minHeight: 500,
             overflow: 'hidden',
-            boxShadow: { xs: 0, sm: 3 },
             boxSizing: 'border-box',
           }}
         >

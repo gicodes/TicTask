@@ -32,11 +32,11 @@ export default function Error({
         <Typography variant="h4" fontWeight={700}>
           Something went wrong
         </Typography>
-        <Typography color="text.secondary">
+        <Typography color="var(--secondary)">
           An unexpected error occurred. You can try again or return to the dashboard.
         </Typography>
         {error.digest && (
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="var(--secondary)">
             Reference: {error.digest}
           </Typography>
         )}

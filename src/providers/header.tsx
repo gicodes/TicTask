@@ -14,10 +14,11 @@ import {
   Box,
   Collapse,
   Drawer,
+  Fade,
   IconButton,
   List,
   ListItem,
-  Popover,
+  Paper,
   Stack,
   Toolbar,
   Typography,
@@ -35,13 +36,12 @@ const Header = () => {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const authLinks = isAuthenticated ? userLinks : guestLinks;
 
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const authLinks = isAuthenticated ? userLinks : guestLinks;
-
   const clearCloseTimer = () => {
-    if (closeTimerRef.current) {
+    if (closeTimerRef.current !== null) {
       clearTimeout(closeTimerRef.current);
       closeTimerRef.current = null;
     }
@@ -60,21 +60,29 @@ const Header = () => {
       setOpenMenu(null);
       setAnchorEl(null);
       closeTimerRef.current = null;
-    }, 180);
+    }, 120);
   };
 
   const handleMenuEnter = (
     event: React.MouseEvent<HTMLElement>,
     label: string
   ) => {
-    if (!extendedMenuItems[label]) {
-      closeDesktopMenu();
+    const children = extendedMenuItems[label];
+
+    if (!children) {
+      scheduleDesktopMenuClose();
       return;
     }
 
     clearCloseTimer();
 
-    setAnchorEl(event.currentTarget);
+    const target = event.currentTarget;
+
+    if (openMenu === label && anchorEl === target) {
+      return;
+    }
+
+    setAnchorEl(target);
     setOpenMenu(label);
   };
 
@@ -186,196 +194,46 @@ const Header = () => {
 
                   return (
                     <Box
-                      key={item.href}
+                      component={Link}
+                      href={item.href}
+                      onMouseEnter={(event) => handleMenuEnter(event, item.label)}
+                      onFocus={(event) => handleMenuFocus(event, item.label)}
+                      aria-haspopup={hasChildren ? "true" : undefined}
+                      aria-expanded={hasChildren ? isOpen : undefined}
                       sx={{
-                        position: "relative",
-                        display: "flex",
+                        display: "inline-flex",
                         alignItems: "center",
+                        gap: 0.25,
+                        px: 1.25,
+                        py: 0.9,
+                        borderRadius: 2,
+                        color: "inherit",
+                        textDecoration: "none",
+                        fontSize: "1rem",
+                        fontWeight: 500,
+                        lineHeight: 1,
+                        transition: "background-color 140ms ease, color 140ms ease",
+                        "&:hover": {
+                          bgcolor: "action.hover",
+                        },
+                        "&:focus-visible": {
+                          outline: "2px solid",
+                          outlineColor: "primary.main",
+                          outlineOffset: 2,
+                        },
                       }}
-                      onMouseEnter={(event) =>
-                        handleMenuEnter(event, item.label)
-                      }
-                      onMouseLeave={scheduleDesktopMenuClose}
                     >
-                      <Box // Main Navigation Links
-                        component={Link}
-                        href={item.href}
-                        onFocus={() =>
-                          hasChildren &&
-                          setOpenMenu(item.label)
-                        }
-                        aria-haspopup={ hasChildren ? "true" : undefined }
-                        aria-expanded={ hasChildren ? isOpen : undefined }
-                        sx={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 0.25,
-                          px: 1.25,
-                          py: 0.9,
-                          borderRadius: 2,
-                          color: "inherit",
-                          textDecoration: "none",
-                          fontSize: "1rem",
-                          fontWeight: 500,
-                          lineHeight: 1,
-                          transition:
-                            "background-color 140ms ease, color 140ms ease",
-                            "&:hover": {
-                            bgcolor: "action.hover",
-                          },
-                          "&:focus-visible": {
-                            outline: "2px solid",
-                            outlineColor: "primary.main",
-                            outlineOffset: 2,
-                          },
-                        }}
-                      >
-                        {item.label}
+                      {item.label}
 
-                        {hasChildren && (
-                          <KeyboardArrowDownRoundedIcon
-                            sx={{
-                              fontSize: 20,
-                              opacity: 0.6,
-                              transition:
-                                "transform 160ms ease",
-                              transform: isOpen
-                                ? "rotate(180deg)"
-                                : "rotate(0deg)",
-                            }}
-                          />
-                        )}
-                      </Box>
-
-                      {hasChildren && ( // Desktop PopOver
-                        <Popover
-                          open={isOpen}
-                          anchorEl={anchorEl}
-                          onClose={closeDesktopMenu}
-                          disableRestoreFocus
-                          disableScrollLock
-                          disableAutoFocus
-                          disableEnforceFocus
-                          anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "left",
+                      {hasChildren && (
+                        <KeyboardArrowDownRoundedIcon
+                          sx={{
+                            fontSize: 20,
+                            opacity: 0.6,
+                            transition: "transform 160ms ease",
+                            transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
                           }}
-                          transformOrigin={{
-                            vertical: "top",
-                            horizontal: "left",
-                          }}
-                          slotProps={{
-                            paper: {
-                              onMouseEnter: clearCloseTimer,
-                              onMouseLeave: scheduleDesktopMenuClose,
-                              sx: {
-                                mt: 1.25,
-                                minWidth: {
-                                  md: 300,
-                                  lg: 360,
-                                },
-                                maxWidth: "calc(100vw - 32px)",
-                                p: 1.25,
-                                overflow: "hidden",
-                                borderRadius: "12px",
-                                border: "1px solid",
-                                borderColor: "rgba(127, 127, 127, 0.18)",
-                                bgcolor: "var(--foreground)",
-                                color: "var(--background)",
-                                backgroundImage: "linear-gradient(135deg, rgba(255,255,255,0.04), transparent 45%)",
-                                boxShadow: "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08)",
-                                zIndex: 1400,
-                              },
-                            },
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              display: "grid",
-                              gridTemplateColumns: {
-                                xs: "1fr",
-                                sm: "repeat(2, minmax(0, 1fr))",
-                              },
-                              gap: 0.5,
-                            }}
-                          >
-                            {children.map((subItem) => (
-                              <Box
-                                key={subItem.href}
-                                component={Link}
-                                href={subItem.href}
-                                onClick={closeDesktopMenu}
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  gap: 1,
-                                  minWidth: 0,
-                                  px: 1.25,
-                                  py: 1.25,
-                                  borderRadius: "11px",
-                                  color: "inherit",
-                                  bgcolor: "action.hover",
-                                  textDecoration: "none",
-                                  transition: "background-color 140ms ease, transform 140ms ease",
-                                  "&:hover": {
-                                    bgcolor: "action.selected",
-                                  },
-                                  "&:active": {
-                                    transform: "scale(0.985)",
-                                  },
-                                  "&:focus-visible": {
-                                    outline: "2px solid",
-                                    outlineColor:
-                                      "primary.main",
-                                    outlineOffset: -2,
-                                  },
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    minWidth: 0,
-                                    flex: 1,
-                                  }}
-                                >
-                                  <Box
-                                    component="span"
-                                    sx={{
-                                      display: "block",
-                                      fontSize: "1rem",
-                                      fontWeight: 600,
-                                      lineHeight: 1.3,
-                                      paddingBottom: 0.5,
-                                      width: 'max-content',
-                                    }}
-                                  >
-                                    {subItem.label}
-                                  </Box>
-                                </Box>
-
-                                <ArrowForwardRoundedIcon
-                                  sx={{
-                                    flexShrink: 0,
-                                    fontSize: 15,
-                                    color:
-                                      "text.secondary",
-                                    opacity: 0,
-                                    transform:
-                                      "translateX(-3px)",
-                                    transition:
-                                      "opacity 140ms ease, transform 140ms ease",
-
-                                    ".MuiBox-root:hover &":
-                                      {
-                                        opacity: 1,
-                                        transform:
-                                          "translateX(0)",
-                                      },
-                                  }}
-                                />
-                              </Box>
-                            ))}
-                          </Box>
-                        </Popover>
+                        />
                       )}
                     </Box>
                   );
@@ -392,7 +250,7 @@ const Header = () => {
                 alignItems: "center",
                 gap: 1,
               }}
-            >
+            > 
               {authLinks.map((link, index) =>
                 link?.cta ? (
                   <Button
@@ -427,6 +285,115 @@ const Header = () => {
                 )
               )}
             </Box>
+
+            <Fade
+              in={Boolean(openMenu && anchorEl)}
+              timeout={{ enter: 100, exit: 80 }}
+              appear={false}
+              unmountOnExit
+            >
+              <Paper
+                onMouseEnter={clearCloseTimer}
+                onMouseLeave={scheduleDesktopMenuClose}
+                sx={{
+                  position: "fixed",
+                  top: anchorEl
+                    ? anchorEl.getBoundingClientRect().bottom + 10
+                    : 0,
+                  left: anchorEl
+                    ? Math.min(
+                        anchorEl.getBoundingClientRect().left,
+                        window.innerWidth - 380
+                      )
+                    : 0,
+                  minWidth: { md: 300, lg: 360 },
+                  maxWidth: "calc(100vw - 32px)",
+                  p: 1.25,
+                  overflow: "hidden",
+                  borderRadius: "12px",
+                  border: "1px solid",
+                  borderColor: "rgba(127, 127, 127, 0.18)",
+                  bgcolor: "var(--surface-1)",
+                  color: "var(--foreground)",
+                  backgroundImage:
+                    "linear-gradient(135deg, rgba(255,255,255,0.04), transparent 45%)",
+                  boxShadow:
+                    "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08)",
+                  zIndex: 1400,
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                    gap: 0.5,
+                  }}
+                >
+                  {(extendedMenuItems[openMenu ?? ""] ?? []).map((subItem) => (
+                    <Box
+                      key={subItem.href}
+                      component={Link}
+                      href={subItem.href}
+                      onClick={closeDesktopMenu}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        minWidth: 0,
+                        px: 1.25,
+                        py: 1.25,
+                        borderRadius: "11px",
+                        color: "inherit",
+                        bgcolor: "action.hover",
+                        textDecoration: "none",
+                        transition: "background-color 140ms ease, transform 140ms ease",
+                        "&:hover": {
+                          bgcolor: "var(--background)",
+                        },
+                        "&:active": {
+                          transform: "scale(0.985)",
+                        },
+                        "&:focus-visible": {
+                          outline: "2px solid",
+                          outlineColor: "primary.main",
+                          outlineOffset: -2,
+                        },
+                      }}
+                    >
+                      <Box sx={{ minWidth: 0, flex: 1 }}>
+                        <Box
+                          component="span"
+                          sx={{
+                            display: "block",
+                            fontSize: "1rem",
+                            fontWeight: 600,
+                            lineHeight: 1.3,
+                            pb: 0.5,
+                          }}
+                        >
+                          {subItem.label}
+                        </Box>
+                      </Box>
+
+                      <ArrowForwardRoundedIcon
+                        sx={{
+                          flexShrink: 0,
+                          fontSize: 15,
+                          color: "var(--secondary)",
+                          opacity: 0,
+                          transform: "translateX(-3px)",
+                          transition: "opacity 140ms ease, transform 140ms ease",
+                          ".MuiBox-root:hover &": {
+                            opacity: 1,
+                            transform: "translateX(0)",
+                          },
+                        }}
+                      />
+                    </Box>
+                  ))}
+                </Box>
+              </Paper>
+            </Fade>
 
             <IconButton // Mobile Menu Button
               aria-label={

@@ -38,7 +38,6 @@ const PricingTeaser = () => {
     >
       <Chip
         sx={{
-          border: '1px solid var(--flair)',
           textTransform: "uppercase",
           color: 'gray',
           fontWeight: 600,

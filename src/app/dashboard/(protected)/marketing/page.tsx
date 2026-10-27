@@ -1,8 +1,10 @@
 'use client';
 
-import GenericDashboardPagesHeader from '../../_level_1/genDashPagesHeader'
-import GenericGridPageLayout from '../../_level_1/genGridPageLayout';
+import Link from 'next/link';
+import { Button } from '@/assets/buttons';
 import { Box, Typography } from '@mui/material';
+import GenericGridPageLayout from '../../_level_1/genGridPageLayout';
+import GenericDashboardPagesHeader from '../../_level_1/genDashPagesHeader';
 
 const Page = () => {
   return (
@@ -14,6 +16,10 @@ const Page = () => {
       <Box py={5} textAlign={{ xs: 'center' }}>
         <Typography color='error'>Marketing is currently unavailable</Typography>
       </Box>
+
+      <Button component={Link} href={'/dashboard/admin/reviews'}>
+        Go to reviews
+      </Button>
     </GenericGridPageLayout>
   )
 }

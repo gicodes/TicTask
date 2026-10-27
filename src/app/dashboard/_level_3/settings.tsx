@@ -26,6 +26,7 @@ import {
   Tooltip,
   CircularProgress,
   Chip,
+  Grid,
 } from '@mui/material';
 import { 
   Sun, 
@@ -166,14 +167,13 @@ export default function SettingsPage() {
     }
   };
 
-  const INTEGRATION_BUTTON = ({
-    title, action,
-  }: {
-    title: string;
-    action?: () => void;
-  }) => (
-    <Button tone='secondary' onClick={action}>
-      Connect {title}
+  const INTEGRATION_BUTTON = ({ title }: { title: string }) => (
+    <Button 
+      tone='retreat' 
+      variant='contained'
+      sx={{ maxWidth: 200 }}
+      onClick={() => showAlert("Unavailable to you", 'warning')}>
+      {title}
     </Button>
   );
   
@@ -395,10 +395,21 @@ export default function SettingsPage() {
         title="Integrations"
         subtitle="Connect your workspace with tools you use every day."
       >
-        <Stack spacing={1} sx={{ mt: 3 }}>
+        <Stack direction={{ xs: 'column', md: 'row'}} spacing={1} sx={{ mt: 3 }}>
           {['Slack', 'Github', 'Google Drive'].map((i) => (
-            <Box key={i} p={0.5}>
-              <INTEGRATION_BUTTON title={i} />
+            <Box key={i}>
+              <Grid 
+                border={'1px dashed var(--surface-2)'}
+                minWidth={250}
+                p={2}
+                gap={3}
+                display={'flex'}
+                flexDirection={'column'}
+                borderRadius={4}
+              >
+                <INTEGRATION_BUTTON title={i} />
+                <Typography variant='body2'>Connect {i} to import data and resources</Typography>
+              </Grid>
             </Box>
           ))}
         </Stack>

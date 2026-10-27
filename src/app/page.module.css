@@ -481,7 +481,7 @@ a.secondary {
 }
 
 .heroEyebrowDisabled {
-  color: var(--disabled);
+  color: var(--secondary);
 }
 
 .heroLead {
@@ -523,7 +523,6 @@ a.secondary {
   align-items: center;
 }
 
-.avatar,
 .avatarMore {
   width: 34px;
   height: 34px;
@@ -531,12 +530,13 @@ a.secondary {
   display: grid;
   place-items: center;
 
-  border: 2px solid var(--background);
-  margin-left: -8px;
+  border: 1px solid var(--background);
+  margin-left: -5px;
 
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  z-index: 1;
 }
 
 .avatar:first-child {

@@ -2,8 +2,8 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { PUBLIC_ENDPOINTS } from "@/constants/footerLinks";
 import { getSession } from "next-auth/react";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
-const NEXTAUTH_API_BASE_URL = process.env.API_URL || "http://localhost:4000/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const NEXTAUTH_API_BASE_URL = process.env.NEXT_PUBLIC_NAPDA_URL;
 
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
