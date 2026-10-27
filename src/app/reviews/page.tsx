@@ -6,6 +6,7 @@ import {
   Avatar,
   Box,
   Container,
+  Divider,
   Skeleton,
   Stack,
   Typography,
@@ -48,11 +49,14 @@ export default function ReviewsPage() {
         </Typography>
       </Box>
 
-      {isAdmin && <Box my={2}>
-        <Button component={Link} href={'/dashboard/admin/reviews'}>
-          Manage reviews
-        </Button>
-      </Box>}
+      { isAdmin && 
+        <Box my={2} display={'flex'} justifyContent={'right'}>
+          <Button component={Link} href={'/dashboard/admin/reviews'}>
+            Manage reviews
+          </Button>
+          <Divider />
+        </Box>
+      }
 
       {loading ? (
         <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' } }}>
@@ -96,7 +100,7 @@ export default function ReviewsPage() {
                 border: '1px solid var(--border-color)',
                 bgcolor: 'var(--background)',
                 textDecoration: 'none',
-                color: 'inherit',
+                color: 'var(--foreground)',
                 transition: 'all 180ms ease',
                 '&:hover': {
                   borderColor: 'var(--accent)',
@@ -153,15 +157,18 @@ export default function ReviewsPage() {
                 </Stack>
                 <ArrowRight size={18} color="var(--disabled)" />
               </Stack>
-              {isAdmin && <Box mt={1} display="flex" justifyContent="flex-end">
-                <DeleteButton endpoint="/review" id={review.id} />
-              </Box>}
+
+              { isAdmin && 
+                <Box mt={1} display="flex" justifyContent="flex-end">
+                  <DeleteButton endpoint="/review" id={review.id} />
+                </Box>
+              }
             </Box>
           ))}
         </Box>
       )}
 
-      {user && (
+      { user && (
         <Box sx={{ textAlign: 'center', mt: 8 }}>
           <Button tone="primary" component={Link} href="/reviews/create" sx={{ maxWidth: 220 }}>
             Write a review
