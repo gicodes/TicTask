@@ -48,6 +48,7 @@ export interface TICKET_TOOLBAR_PROPS {
 }
 
 export interface KANBAN_BOARD_PROPS {
+  loading: boolean;
   grouped: Record<string, Ticket[]>;
   setGrouped: React.Dispatch<React.SetStateAction<Record<string, Ticket[]>>>;
   openDetail: (id: number) => void;
@@ -71,6 +72,7 @@ export interface PLANNER_TOOLBAR_PROPS {
 }
 
 export interface BOARD_COLUMN { 
+  loading: boolean;
   title: string;
   tickets: Ticket[];
   onOpen?: (id: number) => void;

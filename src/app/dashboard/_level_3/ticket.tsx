@@ -32,7 +32,7 @@ const TicketsPage: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { tickets, fetchTickets, updateTicket } = useTickets();
+  const { tickets, fetchTickets, updateTicket, loading: tLoading } = useTickets();
 
   const ticketFromUrl = searchParams.get('ticket');
   const selectedTicket = ticketFromUrl ? Number(ticketFromUrl) || ticketFromUrl : null;
@@ -44,15 +44,20 @@ const TicketsPage: React.FC = () => {
   const debouncedQuery = useDebounce(searchQuery);
   const [readAboutTickets, setReadAboutTickets] = useState(false);
 
+  const [loading, setLoading] = useState(tLoading ?? false);
+
   useEffect(() => {
     const stored = localStorage.getItem('tictask_view');
     if (stored === 'board' || stored === 'list') {
+      setLoading(true);
       setView(stored);
     }
   }, []);
 
   useEffect(() => {
+    setLoading(true)
     localStorage.setItem('tictask_view', view);
+    setLoading(tLoading ?? false)
   }, [view]);
 
   const filteredTickets = useMemo(() => {
@@ -69,6 +74,7 @@ const TicketsPage: React.FC = () => {
     const map: Record<string, Ticket[]> = {};
     TICKET_STATUSES.forEach(s => map[s] = []);
 
+    setLoading(true)
     filteredTickets.forEach(t => {
       const status = t.status || 'OPEN';
       if (map[status]) map[status].push(t);
@@ -76,6 +82,7 @@ const TicketsPage: React.FC = () => {
     });
 
     setGrouped(map);
+    setLoading(false)
   }, [filteredTickets]);
 
   const openDetail = (id: number | string) => {
@@ -126,6 +133,7 @@ const TicketsPage: React.FC = () => {
 
       {view === 'board' ? (
         <TicketBoard
+          loading={loading}
           grouped={grouped}
           setGrouped={setGrouped}    
           openDetail={openDetail}

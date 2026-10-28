@@ -20,19 +20,20 @@ import {
   Paper,
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import { useAlert } from '@/providers/alert';
 import { apiGet } from '@/lib/axios';
+import { useAlert } from '@/providers/alert';
 import { GenericAPIRes } from '@/types/axios';
-import { formatDateTime } from '@/lib/formatDateTime';
-import { getExpiryDate } from '@/lib/getSubExpiryDate';
-import { HistoryItem, HistoryProps, Pagination } from '@/types/subscription';
 import { DoneOutlined } from '@mui/icons-material';
+import { formatDateTime } from '@/lib/formatDateTime';
+import { useSubscription } from '@/providers/subscription';
+import { HistoryItem, HistoryProps, Pagination } from '@/types/subscription';
 
 export function SubscriptionHistory({
   limit = 10,
   compact = false,
 }: HistoryProps) {
   const { showAlert } = useAlert();
+  const { subscription } = useSubscription();
 
   const [items, setItems] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -80,6 +81,8 @@ export function SubscriptionHistory({
 
     return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
   };
+
+  const expiresAt = subscription?.expiresAt ? new Date(subscription.expiresAt).toLocaleDateString() : '—';
 
   const statusColor = (status?: string) => {
     switch (status) {
@@ -249,10 +252,6 @@ export function SubscriptionHistory({
               >
                 {items.map((item) => {
                   const createdAt = new Date(item.createdAt);
-                  const expiryDate = getExpiryDate(
-                    item.billingCycle,
-                    item.createdAt
-                  );
 
                   return (
                     <Box
@@ -434,7 +433,7 @@ export function SubscriptionHistory({
                               overflowWrap: 'anywhere',
                             }}
                           >
-                            {expiryDate.toDateString()}
+                            {expiresAt}
                           </Typography>
                         </Box>
                       </Box>
@@ -541,11 +540,6 @@ export function SubscriptionHistory({
                   <TableBody>
                     {items.map((item) => {
                       const createdAt = new Date(item.createdAt);
-
-                      const expiryDate = getExpiryDate(
-                        item.billingCycle,
-                        item.createdAt
-                      );
 
                       return (
                         <TableRow key={item.id} hover>
@@ -659,7 +653,7 @@ export function SubscriptionHistory({
                             }}
                           >
                             <div style={{ whiteSpace: 'pre-line' }}>
-                              {formatDateTime(expiryDate)}
+                              {formatDateTime(expiresAt)}
                             </div>
                           </TableCell>
                         </TableRow>

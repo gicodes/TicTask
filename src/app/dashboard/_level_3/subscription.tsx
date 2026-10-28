@@ -31,15 +31,13 @@ import { VscLinkExternal } from 'react-icons/vsc';
 import { UpgradeButtons } from '../_level_1/upgradeButtons';
 import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
-import { SubscriptionHistory } from '../_level_2/subscriptionHistory';
 
 export default function SubscriptionPage() {
   const router = useRouter();
   const { update } = useSession();
 
   const { user } = useAuth();
-  const { showAlert, confirm } = useAlert();
-  
+  const { showAlert } = useAlert();
   const {
     subscription,
     isPro,
@@ -48,7 +46,6 @@ export default function SubscriptionPage() {
     loading,
     billingCycle,
     upgradeToCheckout,
-    cancel,
   } = useSubscription();
 
   const [open, setOpen] = useState(false);

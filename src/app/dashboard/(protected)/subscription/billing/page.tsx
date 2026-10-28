@@ -41,6 +41,8 @@ import { VscLinkExternal } from 'react-icons/vsc';
 import GenericGridPageLayout from '@/app/dashboard/_level_1/genGridPageLayout';
 import { SubscriptionHistory } from '@/app/dashboard/_level_2/subscriptionHistory';
 import GenericDashboardPagesHeader from '@/app/dashboard/_level_1/genDashPagesHeader';
+import { Plan } from '@/types/subscription';
+import { useRouter } from 'next/navigation';
 
 function formatMoney(amount?: number | null, currency = 'NGN') {
   if (amount == null) return '—';
@@ -61,8 +63,17 @@ export default function ManageBillingPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { showAlert, confirm } = useAlert();
+
+  const router = useRouter();
+
   const { user } = useAuth();
-  const { cancel, loading: subLoading } = useSubscription();
+  const { 
+    subscription,
+    cancel, 
+    loading: subLoading, 
+    upgradeToCheckout, 
+    billingCycle 
+  } = useSubscription();
 
   const [data, setData] = useState<BillingOverview | null>(null);
   const [loading, setLoading] = useState(true);
@@ -105,6 +116,16 @@ export default function ManageBillingPage() {
     }
   };
 
+  const handleCheckout = async () => {
+    if (!subscription) return;
+
+      setLoading(true)
+      const url = await upgradeToCheckout(subscription.plan, billingCycle);
+      
+      router.push(url!);
+      setLoading(false)
+    };
+
   const handleCancel = async () => {
     const plan = formatPlan(data?.subscription?.plan);
     const ok = await confirm(
@@ -119,7 +140,7 @@ export default function ManageBillingPage() {
   };
 
   const handleUpdatePayment = () => {
-    showAlert('Card update flow coming soon. Contact support if your card needs updating.', 'info');
+    showAlert('Card portal unavailable to you. Contact support if you need more help.', 'info');
   };
 
   const sub = data?.subscription;
@@ -284,6 +305,19 @@ export default function ManageBillingPage() {
                         </Stack>
                       )}
                     </Stack>
+                    <Stack direction={{ xs: 'column', md: 'row'}}>
+                      <Box mt={{ xs: 1 }} width={'100%'} maxWidth={600}>
+                        <Typography variant='caption' color='var(--secondary)'>
+                          {/* <span>If we cannot charge your account within 48 hours of expiry, subscription disconnects.</span> */}
+                          Extend your subscription to keep your <b>{(sub?.plan ?? '').toLowerCase()}</b> plan running. <br/> 
+                          Current cycle is used for extending. You can change it via <Link href={'/product/pricing'} className='custom-bw opac-2'>{" "}<b>pricing</b></Link> 
+                        </Typography>
+                      </Box>
+                      
+                      <Box width={'100%'} pt={2} display={'flex'} justifyContent={'end'}>
+                        <Button onClick={handleCheckout}>Extend Subscription</Button>
+                      </Box>
+                    </Stack>
                   </Stack>
                 </Stack>
               </CardContent>
@@ -403,20 +437,20 @@ export default function ManageBillingPage() {
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
                     <Button
                       component={Link}
-                      href="/company/#contact-us"
+                      href="/product/pricing"
+                      variant="outlined"
                       tone="secondary"
                       sx={{ textTransform: 'none', borderRadius: 2.5 }}
                     >
-                      Contact support
+                      View plans
                     </Button>
                     <Button
                       component={Link}
-                      href="/product/pricing"
-                      variant="outlined"
+                      href="/company/#contact-us"
                       endIcon={<VscLinkExternal size={14} />}
                       sx={{ textTransform: 'none', borderRadius: 2.5 }}
                     >
-                      View plans
+                      Support
                     </Button>
                   </Stack>
                 </Stack>
@@ -444,12 +478,12 @@ export default function ManageBillingPage() {
                 >
                   <Stack direction="row" spacing={1.5} alignItems="flex-start">
                     <WarningAmber color='warning' />
-                    <Box gap={1} display={'grid'}>
+                    <Box gap={2} display={'grid'}>
                       <Typography variant="subtitle2" fontWeight={700}>
                         Billing Actions
                       </Typography>
-                      <Typography variant="body2" sx={{ maxWidth: 420 }} color='warning.main'>
-                        You are advised to carefully navigate this section. Actions are often irrevesible and may have consequences.
+                      <Typography variant="body2" color='var(--error)'>
+                        You are advised to carefully navigate this section.<br/> Actions are often irrevesible and may have consequences.
                       </Typography>
                     </Box>
                   </Stack>
@@ -462,7 +496,6 @@ export default function ManageBillingPage() {
                       <>
                         <Button
                           variant="outlined"
-                          startIcon={<CreditCard />}
                           onClick={handleUpdatePayment}
                           sx={{ textTransform: 'none', borderRadius: 2.5 }}
                         >

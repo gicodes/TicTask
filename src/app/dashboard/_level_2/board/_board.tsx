@@ -13,11 +13,11 @@ import {
   IconButton,
   useMediaQuery,
 } from '@mui/material';
-import { unknown } from 'zod';
 import { KANBAN_BOARD_PROPS } from '../../_level_1/tSchema';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 
 export default function Board({
+  loading,
   grouped,
   setGrouped,
   openDetail,
@@ -27,7 +27,6 @@ export default function Board({
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.only('xs'));
   const isSmxMd = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
-  const isSmOrLarger = !isXs;
 
   const STATUSES = Object.keys(grouped);
 
@@ -120,13 +119,13 @@ export default function Board({
         </Tabs>
       )}
 
-      <DragDropContext onDragEnd={isSmOrLarger ? handleDragEnd : unknown as typeof handleDragEnd}>
+      <DragDropContext onDragEnd={handleDragEnd}>
         <Box
           sx={{
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'flex-start',
             width: '100%',
+            display: 'flex',
+            position: 'relative',
+            alignItems: 'flex-start',
           }}
         >
           {!isXs && startIndex > 0 && (
@@ -153,6 +152,7 @@ export default function Board({
                   }}
                 >
                   <BoardColumn
+                    loading={loading}
                     title={status}
                     tickets={grouped[status] || []}
                     onOpen={openDetail}

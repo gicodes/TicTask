@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import { PenTool } from 'lucide-react';
 import { FaPlusCircle, FaList } from 'react-icons/fa';
-import {  } from '@mui/material';
 import { Close, Search, ViewKanban } from '@mui/icons-material';
 
 const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({ 
@@ -131,12 +130,11 @@ const Toolbar: React.FC<TICKET_TOOLBAR_PROPS> = ({
               <Tooltip title="Create New Ticket">
                 <div>
                   <Button
-                    startIcon={<FaPlusCircle />}
+                    startIcon={<FaPlusCircle size={12} />}
                     onClick={onOpenCreate}
-                    tone="action"
-                    sx={{ minWidth: 196 }}
+                    variant='contained'
                   >
-                    NEW TICKET
+                    <span className='semi-light'>NEW TICKET</span> 
                   </Button>
                 </div>
               </Tooltip>

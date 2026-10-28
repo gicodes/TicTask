@@ -117,7 +117,7 @@ export default function SingleReviewPage() {
       <Stack direction="row" alignItems="center" spacing={2}>
         <Avatar
           src={review.author?.photo || undefined}
-          sx={{ width: 48, height: 48 }}
+          sx={{ width: 48, height: 48, color: 'black' }}
         >
           {review.author?.name?.[0] || 'T'}
         </Avatar>
