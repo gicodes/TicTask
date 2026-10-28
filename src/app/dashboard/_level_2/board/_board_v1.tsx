@@ -34,7 +34,12 @@ export default function Board({
       <Box sx={{ display: 'flex', overflowX: 'auto', pb: 2 }}>
         {STATUSES.map(s => (
           <SortableContext key={s} items={grouped[s].map(t => t.id)} strategy={verticalListSortingStrategy}>
-            <BoardColumn tickets={grouped[s]} onOpen={openDetail} title={s} isDragDisabled={true} />
+            <BoardColumn 
+              loading
+              tickets={grouped[s]} 
+              onOpen={openDetail} title={s} 
+              isDragDisabled={true} 
+            />
           </SortableContext>
         ))}
       </Box>

@@ -47,7 +47,7 @@ export default function TeamTicketsWorkspace() {
   const router = useRouter();
   const { team } = useTeam();
   const { isAuthenticated, user } = useAuth();
-  const { tickets, updateTicket, fetchTickets } = useTeamTicket();
+  const { tickets, updateTicket, fetchTickets, loading: tLoading } = useTeamTicket();
   
   const [view, setView] = useState<'board' | 'list' | 'calendar' | 'timeline' | 'gantt'>('board');
   const [statAnchor, setStatAnchor] = useState<HTMLElement | null>(null);
@@ -56,11 +56,14 @@ export default function TeamTicketsWorkspace() {
   const [selected, setSelected] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedQuery = useDebounce(searchQuery);
+  const [loading, setLoading] = useState(tLoading ?? false);
   
   const filteredTickets = useMemo(() => {
+    setLoading(true)
     if (!debouncedQuery.trim()) return tickets;
     const q = debouncedQuery.toLowerCase();
 
+    setLoading(tLoading ?? false)
     return tickets.filter(t =>
       [
         t.title,
@@ -262,6 +265,7 @@ export default function TeamTicketsWorkspace() {
 
       {view === 'board' && (
         <TicketBoard
+          loading={loading}
           grouped={grouped}
           setGrouped={setGrouped}
           openDetail={openDetail}
