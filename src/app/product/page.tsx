@@ -12,11 +12,11 @@ export const metadata = {
     title: "TicTask Products — Workflows that Flow",
     description:
       "Plan, organize, and collaborate with TicTask’s suite of connected tools for modern teams.",
-    url: "https://tictask.org/products",
+    url: "https://tictask.org/product",
     siteName: "TicTask",
     images: [
       {
-        url: "https://tictask.org/og/products.png",
+        url: "https://tictask.org/product/tictask_imagine.jpg.jpg",
         width: 1200,
         height: 630,
         alt: "TicTask Product Overview",
@@ -30,7 +30,7 @@ export const metadata = {
     title: "TicTask Products — Workflows that Flow",
     description:
       "Everything your team needs to move faster, together.",
-    images: ["https://tictask.org/og/products.png"],
+    images: ["https://tictask.org/product/tictask_imagine.jpg.jpg"],
   },
 };
 

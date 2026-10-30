@@ -105,7 +105,7 @@ export const getFilteredNav = (user: AuthUser | null) => {
     user.teamMembership ||
     user.data?.approved
   ) {
-    allowed.push('Teams');
+    allowed.unshift('Teams');
   }
 
   if (user.role === 'ADMIN') {

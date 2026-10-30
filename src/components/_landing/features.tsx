@@ -368,7 +368,7 @@ const features = [
   {
     icon: <MdGroups />,
     shortLabel: "Teams",
-    imageUrl: "/features/DHeWP.jpg",
+    imageUrl: "/og/company.jpg",
     title: "Built for Teams",
     description: "Collaborate with your entire team in real time. Share tasks, assign responsibilities, and keep everyone aligned in one workspace.",
     bulletPoints: [

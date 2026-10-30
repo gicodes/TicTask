@@ -12,7 +12,7 @@ export const metadata = {
     siteName: "TicTask",
     images: [
       {
-        url: "https://tictask.org/og/partner.png",
+        url: "https://tictask.org/og/partner.avif",
         width: 1200,
         height: 630,
         alt: "TicTask Partner Program",

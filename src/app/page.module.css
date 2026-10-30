@@ -29,6 +29,19 @@
   position: relative;
 }
 
+.page2b {
+  background-color: 'black';
+  width: 100%;
+  padding: 40px 20px;
+  font-family: var(--font-geist-sans);
+
+  background-image:
+    radial-gradient(circle, #111 0.5px, transparent 0.7px);
+  background-size: 2px 2px;
+
+  position: relative;
+}
+
 .page3 {
   background-color: #fff;
   color: black;

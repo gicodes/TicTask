@@ -1,5 +1,6 @@
 import styles from "./page.module.css";
 
+import type { Metadata } from 'next';
 import CTA from "@/components/_landing/cta";
 import FAQ from "@/components/_landing/faq";
 import Hero from "@/components/_landing/hero";
@@ -15,6 +16,36 @@ import { Voices } from "@/components/_landing/testimonials";
 import { IndexMarketing } from "../components/_landing/marketing";
 import { WorkspaceFlowAnimation } from "@/components/_landing/animatedFlow";
 
+export const metadata: Metadata = {
+  title: "TicTask — Ticket and task management you can use",
+  description:
+    "Create tickets, collaborate on projects and share experiences in one platform.",
+  openGraph: {
+    title: "TicTask Home: All-in-one professional workspace",
+    description:
+      "Explore the product and benefits of owning a workspace.",
+    url: "https://tictask.org/",
+    siteName: "TicTask",
+    images: [
+      {
+        url: "https://tictask.org/product/product.jpg",
+        width: 1200,
+        height: 630,
+        alt: "TicTask Home",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TicTask Home: All-in-one professional workspace",
+    description:
+      "Articles, documentation, and updates to help you master TicTask.",
+    images: ["https://tictask.org/product/product.jpg"],
+  },
+};
+
 export default function Home() {
   return (
     <>
@@ -29,7 +60,7 @@ export default function Home() {
         </main>
       </div>
 
-      <div className={styles.page2}>
+      <div className={styles.page2b}>
         <main>
           <div className={styles.animationFlow}>
             <WorkspaceFlowAnimation />    

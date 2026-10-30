@@ -14,10 +14,10 @@ export const extendedMenuItems: Record<string, { label: string; href: string }[]
     { label: "Reviews", href: "/reviews"}
   ],
   Resources: [
-    { label: "Overview", href: "/resources" },
+    { label: "Resources", href: "/resources" },
     { label: "FAQ", href: "/resources/faq" },
     { label: "Blog", href: "/resources/blog" },
-    { label: "Documentation", href: "/resources/docs" },
+    { label: "Read Docs", href: "/resources/docs" },
   ],
   Company: [
     { label: "Overview", href: "/company" },

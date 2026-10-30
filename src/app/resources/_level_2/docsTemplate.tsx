@@ -12,7 +12,7 @@ export const GenericHeader = ({ dev }: { dev?: boolean}) => (
       transition={{ duration: 0.6 }}
       style={{ fontSize: 44}}
     >
-      TicTask Documentation
+      TicTask In 10 minutes
     </motion.h1>
     <Typography variant="h6">
       {dev ? "Understanding how everything works. System. Design. Source. Code." : "Learn how to use TicTask quickly and effectively."}
