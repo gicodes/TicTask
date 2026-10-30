@@ -15,6 +15,7 @@ import { Box, Divider, Drawer, Typography } from '@mui/material';
 import TicketDetailDrawer from '../_level_2/viewTicket/TWSMiniDrawer';
 import TicketFormDrawer from '../_level_2/createTicket/CNTFormsDrawer';
 import { PLANNER_TASK_TYPES, TICKET_LIST_HEADERS, TICKET_STATUSES, TICKET_TYPES } from '../_level_0/constants';
+import { PenTool } from 'lucide-react';
 
 export function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
@@ -211,7 +212,7 @@ const TicketsPage: React.FC = () => {
             display={'grid'} 
           >
             <Typography variant="subtitle2" sx={{ opacity: 0.75}}>Can&apos;t find it on your a mobile device?</Typography>
-            <Typography variant="body1">♺  Expand toolbar (top-left corner) to see action buttons ♺ <br/></Typography>
+            <Typography variant="body1">♺ &nbsp; Expand toolbar <PenTool size={14} color='var(--accent)'/> to see action buttons </Typography>
           </Box>
 
           <Divider sx={{ my: 5 }} />
