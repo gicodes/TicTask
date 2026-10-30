@@ -101,7 +101,7 @@ export default function TeamsPage() {
                 </Typography>
               )}
 
-              {teams.length > 0 && (
+              {teams.length > 0 && !loading && (                
                 <>
                   <Stack>
                     <Typography variant="h6" fontWeight={700}>
