@@ -22,6 +22,7 @@ import {
   Drawer
 } from "@mui/material";
 import { Add, CloseSharp, Group } from "@mui/icons-material";
+import TeamsSkeleton from "../_level_2/teamsSkeleton";
 
 export default function TeamsPage() {
   const { teams, createTeam, loading } = useMyTeams();
@@ -92,9 +93,7 @@ export default function TeamsPage() {
           <CardContent>
             <Stack spacing={2}>
               { loading && 
-                <Typography textAlign="center" py={12}>
-                  Loading your teams...
-                </Typography>
+                <TeamsSkeleton />
               }
               {teams.length === 0 && !loading && (
                 <Typography textAlign="center" py={12}>
