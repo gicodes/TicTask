@@ -63,7 +63,7 @@ export const MORE_NAV_ITEMS = [
   { label: 'Docs', path: '/resources/docs', icon: <GrResources />, external: true},
   { label: 'FAQ', path: '/resources/faq', icon: <MdQuestionAnswer />, external: true},
   { label: 'Blog', path: '/resources/blog', icon: <RiBloggerLine />, external: true},
-  { label: 'Community', path: '#', icon: <FaPeopleCarry />, external: true},
+  { label: 'Reviews', path: '/reviews', icon: <FaPeopleCarry />, external: true},
   { label: "Go to Signup", path:'/auth/join/user', icon: <MdSwitchAccount />, external: true}, 
 ]
 
