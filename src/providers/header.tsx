@@ -187,13 +187,14 @@ const Header = () => {
                   },
                 }}
               >
-                {menuItems.map((item) => {
+                {menuItems.map((item, i) => {
                   const children = extendedMenuItems[item.label];
                   const hasChildren = Boolean(children);
                   const isOpen = openMenu === item.label;
 
                   return (
                     <Box
+                      key={i}
                       component={Link}
                       href={item.href}
                       onMouseEnter={(event) => handleMenuEnter(event, item.label)}

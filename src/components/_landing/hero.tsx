@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { apiGet } from "@/lib/axios";
 import { Avatar } from "@mui/material";
 import { Button } from "@/assets/buttons";
 import styles from "@/app/page.module.css";
@@ -9,17 +10,15 @@ import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/providers/alert";
 import { Box, Typography } from "@mui/material";
+import { Testimonial, AVATAR_BGS } from "@/types/review";
 import { useSubscription } from "@/providers/subscription";
-import { apiGet } from "@/lib/axios";
-import type { User } from "@/types/users";
-import type { UserProfileRes } from "@/types/axios";
 
-const SOCIAL_PROOF_USERS = [
-  { id: 8, initials: "SE", bg: 'var(--happy)' },
-  { id: 4, initials: "HA", bg: 'var(--clear)' },
-  { id: 23, initials: "NC", bg: 'var(--autumn)' },
-  { id: 18, initials: "VC", bg: 'var(--summer)' },
-];
+const getInitials = (name?: string | null) => {
+  if (!name) return "T";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
 
 const Hero = () => {
   const { startFreeTrial } = useSubscription();
@@ -27,29 +26,23 @@ const Hero = () => {
   const router = useRouter();
   const { user } = useAuth();
 
-  const [profiles, setProfiles] = useState<Record<number, User | null>>({});
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 
   useEffect(() => {
     let cancelled = false;
 
-    const fetchProfiles = async () => {
-      const results = await Promise.all(
-        SOCIAL_PROOF_USERS.map(async ({ id }) => {
-          try {
-            const res: UserProfileRes = await apiGet(`/user/${id}/public`);
-            return [id, res.data as User] as const;
-          } catch {
-            return [id, null] as const;
-          }
-        })
-      );
-
-      if (!cancelled) {
-        setProfiles(Object.fromEntries(results));
+    const fetchTestimonials = async () => {
+      try {
+        const res = await apiGet("/reviews/testimonials?limit=4");
+        if (!cancelled) {
+          setTestimonials((res as { data?: Testimonial[] }).data || []);
+        }
+      } catch {
+        if (!cancelled) setTestimonials([]);
       }
     };
 
-    fetchProfiles();
+    fetchTestimonials();
 
     return () => {
       cancelled = true;
@@ -146,30 +139,31 @@ const Hero = () => {
 
       <div className={styles.heroSocialProof}>
         <div className={styles.socialProofAvatars}>
-          {SOCIAL_PROOF_USERS.map(({ id, initials, bg }) => {
-            const profile = profiles[id];
+          {testimonials.map((t, index) => {
+            const initials = getInitials(t.author?.name);
+            const bg = AVATAR_BGS[index % AVATAR_BGS.length];
 
             return (
               <Link
-                key={id}
-                href={`/user/${id}`}
-                aria-label={`View ${profile?.name || initials}'s public profile`}
-                title={profile?.name || `View ${initials}'s profile`}
+                key={t.id}
+                href={`/reviews/${t.slug}`}
+                aria-label={`Read ${t.author?.name || "user"}'s review`}
+                title={t.author?.name || "Read review"}
               >
                 <Avatar
-                  src={profile?.photo || undefined}
-                  alt={profile?.name || initials}
+                  src={t.author?.photo || undefined}
+                  alt={t.author?.name || initials}
                   imgProps={{ loading: "lazy" }}
                   sx={{
                     width: 34,
                     height: 34,
-                    borderRadius: '50%',
-                    display: 'grid',
-                    marginLeft: '-5px',
-                    fontSize: '12px',
+                    borderRadius: "50%",
+                    display: "grid",
+                    marginLeft: "-5px",
+                    fontSize: "12px",
                     fontWeight: 600,
-                    color: 'black',
-                    border: '1px solid var(--background)',
+                    color: "black",
+                    border: "1px solid var(--background)",
                     backgroundColor: `color-mix(in srgb, ${bg} 93%, transparent)`,
                     transition: "transform 180ms ease",
                     "&:hover": {
@@ -183,7 +177,9 @@ const Hero = () => {
             );
           })}
 
-          <Link href={'/reviews/create'} className={styles.avatarMore}>+</Link>
+          <Link href="/reviews/create" className={styles.avatarMore}>
+            +
+          </Link>
         </div>
 
         <div className={styles.socialProofText}>

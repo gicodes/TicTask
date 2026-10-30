@@ -57,7 +57,6 @@ export const ResourceGrid = () => {
           overflow: "hidden",
         }}
       >
-        {/* Navigation Arrows */}
         <Box
           sx={{
             display: { xs: "none", md: "flex" },
@@ -130,118 +129,93 @@ export const ResourceGrid = () => {
           }}
         >
           {RESOURCES.map((r) => (
-            <Card
+            <Box 
               key={r.title}
-              elevation={0}
-              sx={{
-                position: "relative",
-                flex: "0 0 auto",
-                width: { xs: "85vw", sm: 320, md: 340 },
-                minHeight: 300,
-                borderRadius: 3.5,
-                overflow: "hidden",
-                cursor: "pointer",
-                scrollSnapAlign: "center",
-                backgroundImage: `url(${r.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                boxShadow: "0 12px 32px rgba(0,0,0,0.18)",
-
-                "&:hover": {
-                  transform: "translateY(-10px) scale(1.02)",
-                  boxShadow: "0 24px 48px rgba(0,0,0,0.28)",
-                  "& .overlay": {
-                    background:
-                      "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.2) 100%)",
-                  },
+              href={r.link}
+              component={Link}
+              height={'auto'}
+            >
+              <Card
+                elevation={1}
+                sx={{
+                  position: "relative",
+                  flex: "0 0 auto",
+                  width: { xs: "85vw", sm: 320, md: 340 },
+                  minHeight: 300,
+                  borderRadius: 3.5,
+                  overflow: "hidden",
+                  cursor: "pointer",
+                  scrollSnapAlign: "center",
+                  backgroundImage: `url(${r.image})`,
+                  backgroundSize: "cover",
+                  display: 'grid',
+                  backgroundPosition: "center",
+                  boxShadow: "0 12px 32px rgba(0,0,0,0.18)",
+                  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                   "& .content": {
                     transform: "translateY(0)",
                   },
-                },
-              }}
-            >
-              {/* Gradient Overlay */}
-              <Box
-                className="overlay"
-                sx={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.38) 55%, rgba(0,0,0,0.18) 100%)",
-                  transition: "background 0.4s ease",
-                }}
-              />
-
-              <CardContent
-                className="content"
-                sx={{
-                  position: "relative",
-                  zIndex: 1,
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-end",
-                  p: 3.5,
-                  color: "white",
-                  transform: "translateY(6px)",
-                  transition: "transform 0.4s ease",
+                  "&:hover": {
+                    transform: "translateY(-10px) scale(1.02)",
+                    boxShadow: "0 24px 48px rgba(0,0,0,0.28)",
+                    "& .overlay": {
+                      background:
+                        "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.2) 100%)",
+                    },
+                  },
                 }}
               >
-                <Typography
-                  variant="h5"
-                  fontWeight={700}
-                  sx={{
-                    mb: 1,
-                    letterSpacing: "-0.025em",
-                    textShadow: "0 2px 10px rgba(0,0,0,0.45)",
-                  }}
-                >
-                  {r.title}
-                </Typography>
-
-                <Typography
-                  variant="body2"
-                  sx={{
-                    mb: 2.5,
-                    opacity: 0.92,
-                    lineHeight: 1.55,
-                    textShadow: "0 1px 6px rgba(0,0,0,0.35)",
-                  }}
-                >
-                  {r.desc}
-                </Typography>
-
                 <Box
-                  component={Link}
-                  href={r.link}
+                  className="overlay"
                   sx={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "100%",
-                    py: 1.25,
-                    borderRadius: 2,
-                    bgcolor: "rgba(255,255,255,0.14)",
-                    backdropFilter: "blur(10px)",
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.38) 55%, rgba(0,0,0,0.18) 100%)",
+                    transition: "background 0.4s ease",
+                  }}
+                />
+
+                <CardContent
+                  className="content"
+                  sx={{
+                    position: "relative",
+                    zIndex: 1,
+                    height: "100%",
+                    p: 3.5,
                     color: "white",
-                    border: "1px solid rgba(255,255,255,0.28)",
-                    fontWeight: 600,
-                    fontSize: "0.9rem",
-                    letterSpacing: "0.02em",
-                    textDecoration: "none",
-                    transition: "all 0.25s ease",
-                    "&:hover": {
-                      bgcolor: "rgba(255,255,255,0.26)",
-                      borderColor: "rgba(255,255,255,0.55)",
-                      transform: "scale(1.03)",
-                    },
+                    alignContent: 'flex-end',
+                    bgcolor: 'rgba(0,0,0,0.5)',
+                    transform: "translateY(6px)",
+                    transition: "transform 0.4s ease",
                   }}
                 >
-                  Explore →
-                </Box>
-              </CardContent>
-            </Card>
+                  <Typography
+                    variant="h4"
+                    fontWeight={700}
+                    sx={{
+                      mb: 1,
+                      letterSpacing: "-0.025em",
+                      textShadow: "0 2px 10px rgba(0,0,0,0.45)",
+                    }}
+                  >
+                    {r.title}
+                  </Typography>
+
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      mb: 2.5,
+                      opacity: 0.92,
+                      lineHeight: 1.55,
+                      textShadow: "0 1px 6px rgba(0,0,0,0.35)",
+                    }}
+                  >
+                    {r.desc}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Box>
           ))}
         </Box>
       </Box>
@@ -249,7 +223,7 @@ export const ResourceGrid = () => {
   );
 };
 
-export default function ResourcePage () {
+export default function ResourcesPage () {
   return (
     <Box>
       <ResourceHero />

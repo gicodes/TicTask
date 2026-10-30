@@ -90,7 +90,7 @@ export default function OnboardingUI(props: OnboardingProps) {
           </Button>
         </Stack> 
       ) : (
-        <Typography>Building your profile...</Typography>
+        <Typography>Building your profile ...</Typography>
     )}
   </>
 
@@ -235,7 +235,7 @@ export default function OnboardingUI(props: OnboardingProps) {
               </RadioGroup>
 
               <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}> 
-                {userType === 'BUSINESS' ? 'Organizations can manage multiple users and projects' : 'Individual accounts are for personal use'} 
+                {userType === 'BUSINESS' ? 'Organizations can manage teams' : 'Individual account is for personal use'} 
               </Typography> 
               <Card 
                 sx={{
@@ -248,14 +248,14 @@ export default function OnboardingUI(props: OnboardingProps) {
                     <CountrySelect accountType='PERSONAL' />
                     <TextField
                       fullWidth
-                      placeholder="Phone Number"
+                      placeholder="Phone"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
                     />
                     <TextField
                       fullWidth
-                      placeholder="Full Name(s)"
+                      placeholder="Full Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
@@ -272,7 +272,7 @@ export default function OnboardingUI(props: OnboardingProps) {
                     />
                     <TextField
                       fullWidth
-                      placeholder="Your Name"
+                      placeholder="Full Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
@@ -292,21 +292,21 @@ export default function OnboardingUI(props: OnboardingProps) {
                     </TextField>
                     <TextField
                       fullWidth
-                      placeholder="Number of Team Members"
+                      placeholder="Number of staff"
                       value={teamSize}
                       onChange={(e) => setTeamSize(e.target.value)}
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
                     />
                     <TextField
                       fullWidth
-                      placeholder="Business / Company Website"
+                      placeholder="Website URL"
                       value={website}
                       onChange={(e) => setWebsite(e.target.value)}
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
                     />
                     <TextField
                       fullWidth
-                      placeholder="Short Bio / Description"
+                      placeholder="Short Bio"
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
                       sx={{ bgcolor: 'whitesmoke', borderRadius: 2, my: 1}}
@@ -334,12 +334,12 @@ export default function OnboardingUI(props: OnboardingProps) {
                   </Typography>
                   <Divider />
                   
-                  <Typography variant='subtitle2'><strong>Name:</strong>&nbsp;{name}</Typography>
-                  {orgName && <Typography variant='subtitle2'><strong>Company:</strong> {orgName}</Typography>}
+                  <Typography variant='subtitle2'><strong>Full Name:</strong>&nbsp;{name}</Typography>
+                  {orgName && <Typography variant='subtitle2'><strong>Organization:</strong> {orgName}</Typography>}
                   <Typography variant='subtitle2'><strong>Country:</strong> {country || hqCountry}</Typography>
                   {phone && <Typography variant='subtitle2'><strong>Phone:</strong> {phone}</Typography>}
                   {industry && <Typography variant='subtitle2'><strong>Industry:</strong> {industry}</Typography>}
-                  {teamSize && <Typography variant='subtitle2'><strong>Team Size:</strong> {teamSize}</Typography>}
+                  {teamSize && <Typography variant='subtitle2'><strong>Staff size:</strong> {teamSize}</Typography>}
                   {website && <Typography variant='subtitle2'><strong>Website:</strong> {website}</Typography>}
                   {bio && <Typography variant='subtitle2'><strong>Bio:</strong> {bio}</Typography>}
                 </Box>

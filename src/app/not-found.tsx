@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Box, Typography, Stack } from '@mui/material';
 import { Button } from '@/assets/buttons';
+import { ArrowRight } from 'lucide-react';
 
 function NotFound() {
   return (
@@ -23,15 +24,28 @@ function NotFound() {
         <Typography color="var(--secondary)">
           The link may be outdated or the page may have moved. You can return home or continue from a public section.
         </Typography>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="center">
+        <Box py={3}>
           <Button tone='retreat' component={Link} href="/">
             Back to home
           </Button>
-          <br /><br/>
-          <Button component={Link} href="/product" variant="outlined">
+        </Box>
+          
+        <Stack 
+          direction={{ xs: 'column', sm: 'row' }}  
+          justifyContent="center"
+          spacing={1.5}
+        >
+          <Button 
+            component={Link} href="/product" variant="outlined">
             Explore product
           </Button>
-          <Button tone='secondary' component={Link} href="/resources" variant="contained">
+          <Button 
+            tone='secondary' 
+            component={Link} 
+            href="/resources" 
+            variant="contained"
+            endIcon={<ArrowRight />}
+          >
             Resources
           </Button>
         </Stack>

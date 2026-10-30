@@ -1,6 +1,5 @@
-import ResourcePage from '@/app/resources/_level_3'
+import ResourcesPage from '@/app/resources/_level_3'
 import type { Metadata } from 'next';
-import React from 'react';
 
 export const metadata: Metadata = {
   title: "TicTask Resources — Learn, Build, and Grow",
@@ -34,7 +33,7 @@ export const metadata: Metadata = {
 
 const Page = () => {
   return (
-    <ResourcePage />
+    <ResourcesPage />
   )
 }
 

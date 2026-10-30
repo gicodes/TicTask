@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   title: "TicTask",
-  description: "A simple Ticket and Task Management System built with Next.js and TypeScript",
+  description: "A simple collaborative ticket and task management system built for fast and agile teamwork and workflow tracking. No credit card required.",
 };
 
 export default function RootLayout({ 
