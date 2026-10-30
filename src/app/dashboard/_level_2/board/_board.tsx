@@ -91,10 +91,8 @@ export default function Board({
         width: '100%', 
         overflow: 'hidden', 
         maxWidth: { xs: '96vw', sm: 'none'}, 
-        border: '0.1px solid var(--surface-1)',
         borderRadius: 3,
         minHeight: '50vh',
-        boxShadow: 2
       }}
     >
       {isXs && (

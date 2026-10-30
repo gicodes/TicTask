@@ -3,10 +3,10 @@ import { AvatarProps } from "@/types/users";
 import { CgMenuGridR, CgOrganisation } from "react-icons/cg";
 import { FaUserGroup } from "react-icons/fa6";
 import { LinkItem } from "../_level_0/constants";
+import { GrResources, GrTasks } from "react-icons/gr";
 import { GiHelp, GiThreeFriends } from 'react-icons/gi';
 import { RiBloggerLine, RiRobot2Fill } from "react-icons/ri";
 import { Avatar, Box, Typography, Badge } from '@mui/material';
-import { GrResources, GrUpdate, GrTasks } from "react-icons/gr";
 import { BsFillCreditCard2BackFill, BsCalendar2Date } from "react-icons/bs";
 import { FaUsers, FaDonate, FaVideo, FaHome, FaCircle, FaPeopleCarry } from 'react-icons/fa';
 import { 
@@ -36,12 +36,12 @@ import {
 
 export const NAV_ITEMS = [
   { label: 'Console', path: '/dashboard/admin', icon: <GrTasks/>},
+  { label: 'Teams', path: '/dashboard/teams', icon: <FaUsers />},
   { label: 'Ticket Hub', path: '/dashboard/tickets', icon: <FcSerialTasks/> },
   { label: 'Task Manager', path: '/dashboard/tasks', icon: <BsCalendar2Date/>},
   { label: 'AI assistant', path: '/dashboard/ai', icon: <RiRobot2Fill />, released: false, premium: true}, // new
   { label: 'Subscription', path: '/dashboard/subscription', icon: <BsFillCreditCard2BackFill /> },
   { label: 'Settings', path: '/dashboard/settings', icon: <MdSettings /> }, 
-  { label: 'Teams', path: '/dashboard/teams', icon: <FaUsers />},
   { label: 'Invite', path: '/dashboard/invite', icon: <FcInvite /> },
   { label: 'All Tickets', path: '/dashboard/admin/tickets', icon: <FcParallelTasks /> },
   { label: 'All Users', path: '/dashboard/admin/users', icon: <FaUserGroup /> },
@@ -100,10 +100,10 @@ export const getFilteredNav = (user: AuthUser | null) => {
   }
 
   if (
-    // user.subscription?.active ||
+    // user.subscription?.active || // includes personal userType
     user.userType === 'BUSINESS' ||
-    user.teamMembership ||
-    user.data?.approved
+    user.teamMembership
+    // || user.data?.approved // includes partners
   ) {
     allowed.unshift('Teams');
   }
