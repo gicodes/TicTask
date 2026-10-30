@@ -30,7 +30,7 @@
 }
 
 .page2b {
-  background-color: 'black';
+  background-color: none;
   width: 100%;
   padding: 40px 20px;
   font-family: var(--font-geist-sans);

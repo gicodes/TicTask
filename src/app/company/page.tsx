@@ -27,7 +27,7 @@ export const metadata = {
     title: "About TicTask — The Future of Flow",
     description:
       "TicTask exists to help people and teams collaborate with clarity and calm.",
-    images: ["https://tictask.org/og/company.png"],
+    images: ["https://tictask.org/og/company.jpg"],
   },
 };
 

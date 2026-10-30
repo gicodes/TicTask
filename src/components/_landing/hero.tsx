@@ -26,7 +26,7 @@ const Hero = () => {
   const router = useRouter();
   const { user } = useAuth();
 
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[] | null>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -34,8 +34,9 @@ const Hero = () => {
     const fetchTestimonials = async () => {
       try {
         const res = await apiGet("/reviews/testimonials?limit=4");
+        const data = (res as { data?: Testimonial[] } | null)?.data;
         if (!cancelled) {
-          setTestimonials((res as { data?: Testimonial[] }).data || []);
+          setTestimonials(Array.isArray(data) ? data : []);
         }
       } catch {
         if (!cancelled) setTestimonials([]);
@@ -139,7 +140,7 @@ const Hero = () => {
 
       <div className={styles.heroSocialProof}>
         <div className={styles.socialProofAvatars}>
-          {testimonials.map((t, index) => {
+          {testimonials?.map((t, index) => {
             const initials = getInitials(t.author?.name);
             const bg = AVATAR_BGS[index % AVATAR_BGS.length];
 

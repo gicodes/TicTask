@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     siteName: "TicTask",
     images: [
       {
-        url: "https://tictask.org/product/product.jpg",
+        url: "https://tictask.org/product/tictask_imagine.jpg",
         width: 1200,
         height: 630,
         alt: "TicTask Home",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: "TicTask Home: All-in-one professional workspace",
     description:
       "Articles, documentation, and updates to help you master TicTask.",
-    images: ["https://tictask.org/product/product.jpg"],
+    images: ["https://tictask.org/product/tictask_imagine.jpg"],
   },
 };
 
