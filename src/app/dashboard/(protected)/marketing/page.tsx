@@ -64,7 +64,7 @@ const Page = () => {
           </Stack>
         </Box>
 
-        <Box borderTop={'2px dotted var(--disabled)'} py={5}>
+        <Box borderTop={'2px dotted var(--disabled)'} py={5} >
           <Button 
             component={Link} 
             href={'/reviews'} 
@@ -72,7 +72,7 @@ const Page = () => {
             variant='contained'
           >
             Go to reviews
-          </Button>
+          </Button> <br/>
 
           {isAdmin && (
             <Button 
@@ -85,7 +85,6 @@ const Page = () => {
           )}
         </Box>
       </Stack>
-      
     </GenericGridPageLayout>
   )
 }

@@ -12,12 +12,11 @@ import {
   useTheme,
   IconButton,
   useMediaQuery,
-  Pagination,
 } from '@mui/material';
 import { KANBAN_BOARD_PROPS } from '../../_level_1/tSchema';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 
-const COLUMN_PAGE_SIZE = 5;
+const PAGE_SIZE = 5;
 
 export default function Board({
   loading,
@@ -33,8 +32,9 @@ export default function Board({
 
   const STATUSES = Object.keys(grouped);
 
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const [startIndex, setStartIndex] = React.useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [startIndex, setStartIndex] = useState(0);
+  const [columnPages, setColumnPages] = useState<Record<string, number>>({});
 
   const visibleCount = isXs ? 1 : isSmxMd ? 2 : 3;
   const visibleStatusesRaw = isSearching
@@ -47,6 +47,11 @@ export default function Board({
     }
     return visibleStatusesRaw.slice(startIndex, startIndex + visibleCount);
   }, [isXs, visibleStatusesRaw, activeIndex, startIndex, visibleCount]);
+
+  const getPage = (status: string) => columnPages[status] ?? 1;
+
+  const setPage = (status: string, page: number) =>
+    setColumnPages((prev) => ({ ...prev, [status]: page }));
 
   const handlePrevColumns = () =>
     setStartIndex((prev) => Math.max(prev - visibleCount, 0));
@@ -65,7 +70,14 @@ export default function Board({
     const sourceStatus = source.droppableId;
     const destStatus = destination.droppableId;
 
-    if (sourceStatus === destStatus && source.index === destination.index) return;
+    // Convert page-local indices → real indices in the full column arrays
+    const sourceOffset = (getPage(sourceStatus) - 1) * PAGE_SIZE;
+    const destOffset = (getPage(destStatus) - 1) * PAGE_SIZE;
+
+    const realSourceIndex = source.index + sourceOffset;
+    const realDestIndex = destination.index + destOffset;
+
+    if (sourceStatus === destStatus && realSourceIndex === realDestIndex) return;
 
     setGrouped((prev) => {
       const newGrouped = structuredClone(prev);
@@ -73,24 +85,17 @@ export default function Board({
       newGrouped[sourceStatus] ??= [];
       newGrouped[destStatus] ??= [];
 
-      const [movedTicket] = newGrouped[sourceStatus].splice(source.index, 1);
+      const [movedTicket] = newGrouped[sourceStatus].splice(realSourceIndex, 1);
 
       if (movedTicket.status !== destStatus) {
         updateTicket(movedTicket.id, { status: destStatus as Ticket['status'] });
       }
 
-      newGrouped[destStatus].splice(destination.index, 0, movedTicket);
+      newGrouped[destStatus].splice(realDestIndex, 0, movedTicket);
 
       return newGrouped;
     });
   };
-
-  const [columnPages, setColumnPages] = useState<Record<string, number>>({});
-
-  const getColumnPage = (status: string) => columnPages[status] ?? 1;
-
-  const setColumnPage = (status: string, page: number) =>
-    setColumnPages((prev: any) => ({ ...prev, [status]: page }));
 
   const prevStatuses = STATUSES.slice(Math.max(0, startIndex - visibleCount), startIndex);
   const nextStatuses = STATUSES.slice(startIndex + visibleCount);
@@ -100,7 +105,7 @@ export default function Board({
       sx={{ 
         width: '100%', 
         overflow: 'hidden', 
-        maxWidth: { xs: '96vw', sm: 'none'}, 
+        maxWidth: { xs: '96vw', sm: 'none' }, 
         borderRadius: 3,
         minHeight: '50vh',
       }}
@@ -148,55 +153,31 @@ export default function Board({
             </Box>
           )}
 
-          {visibleStatuses.map((status) => {
-            const allTickets = grouped[status] || [];
-            const page = getColumnPage(status);
-            const pageCount = Math.ceil(allTickets.length / COLUMN_PAGE_SIZE);
-            const paginatedTickets = allTickets.slice(
-              (page - 1) * COLUMN_PAGE_SIZE,
-              page * COLUMN_PAGE_SIZE
-            );
-
-            return (
-              <Droppable key={status} droppableId={status}>
-                {(provided) => (
-                  <Box
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    sx={{
-                      flex: isXs ? 1 : '1 0 0',
-                      mx: isXs ? 2 : 1,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      maxHeight: 640,
-                      minHeight: 480,
-                    }}
-                  >
-                    <BoardColumn
-                      loading={loading}
-                      title={status}
-                      tickets={paginatedTickets} 
-                      onOpen={openDetail}
-                      isDragDisabled={isXs}
-                    />
-                    {provided.placeholder}
-
-                    {pageCount > 1 && (
-                      <Box sx={{ display: 'flex', justifyContent: 'center', py: 1 }}>
-                        <Pagination
-                          count={pageCount}
-                          page={page}
-                          onChange={(_, value) => setColumnPage(status, value)}
-                          size="small"
-                          color="primary"
-                        />
-                      </Box>
-                    )}
-                  </Box>
-                )}
-              </Droppable>
-            );
-          })}
+          {visibleStatuses.map((status) => (
+            <Droppable key={status} droppableId={status}>
+              {(provided) => (
+                <Box
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  sx={{
+                    flex: isXs ? 1 : '1 0 0',
+                    mx: isXs ? 2 : 1,
+                  }}
+                >
+                  <BoardColumn
+                    isDragDisabled={isXs}
+                    loading={loading}
+                    title={status}
+                    tickets={grouped[status] || []}
+                    onOpen={openDetail}
+                    page={getPage(status)}
+                    onPageChange={(p) => setPage(status, p)}
+                  />
+                  {provided.placeholder}
+                </Box>
+              )}
+            </Droppable>
+          ))}
 
           {!isXs && startIndex + visibleCount < STATUSES.length && (
             <Box sx={{ position: 'absolute', right: 0, top: 16, zIndex: 10 }}>

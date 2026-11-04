@@ -143,7 +143,7 @@ export default function TWSExtDrawer({
             severity="info" 
             color="warning" sx={{ opacity: 0.75, mb: 2, width: 'max-content' }}
           >
-            Modifying this ticket will irreversibly update the details
+            Modifying this ticket will irreversibly update the key fields.
           </Alert>
 
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -161,12 +161,17 @@ export default function TWSExtDrawer({
               >
                 <TextField
                   label="Type"
+                  
                   value={ticket?.type ?? ''}
                   disabled
                   sx={{ 
                     minWidth: 100, 
                     width: '100%',
-                    maxWidth: 125,
+                    maxWidth: 120,
+                    '& .MuiInputBase-input': {
+                      padding: 1.5,
+                      fontSize: 12,
+                    },
                   }}
                 />
               </Box>
