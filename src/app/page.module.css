@@ -280,12 +280,24 @@ a.secondary {
   height: 55px;
   padding: 10px 22px;
   font-size: 20px;
+
+  @media screen and (max-width: 600px) {
+    height: 50px;
+    padding: 9px 20px;
+    font-size: 19px;
+  }
 }
 
 .btnXLarge {
   height: 69px;
   padding: 10px 22px;
   font-size: 25px;
+
+  @media screen and (max-width: 600px) {
+    height: 60px;
+    padding: 9px 20px;
+    font-size: 22px;
+  }
 }
 
 .btnFullWidth { width: 100%; }
