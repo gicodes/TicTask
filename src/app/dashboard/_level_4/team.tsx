@@ -1,10 +1,12 @@
 "use client";
 
+import React, { useMemo, useState } from "react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/assets/buttons";
+import { useAlert } from "@/providers/alert";
 import { useMyTeams } from "@/hooks/useMyTeams";
+import TeamsSkeleton from "../_level_2/teamsSkeleton";
 import GenericGridPageLayout from "../_level_1/genGridPageLayout";
 import GenericDashboardPagesHeader from "../_level_1/genDashPagesHeader";
 import { 
@@ -19,23 +21,27 @@ import {
   TextField, 
   DialogActions,
   Divider,
-  Drawer
+  Drawer,
+  Pagination,
 } from "@mui/material";
 import { Add, CloseSharp, Group } from "@mui/icons-material";
-import TeamsSkeleton from "../_level_2/teamsSkeleton";
 
 export default function TeamsPage() {
   const { teams, createTeam, loading } = useMyTeams();
 
+  const { showAlert } = useAlert();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [readAboutTeam, setReadAboutTeam] = useState(false);
 
+  const [page, setPage] = useState(1);
+  const pageSize = 5;
+
   const handleCreate = async () => {
     if (!name.trim()) return;
-    setSubmitting((true));
+    setSubmitting(true);
 
     try {
       const success = await createTeam({
@@ -46,13 +52,13 @@ export default function TeamsPage() {
       if (success) {
         setOpen(false);
         setName("");
-        setSubmitting(false)
         setDescription("");
+        showAlert("Team created successfully", "success");
       }
     } catch {
-      setSubmitting(false);
+      showAlert("Failed to create team", "error");
     } finally { 
-      setSubmitting(false)
+      setSubmitting(false);
     }
   };
 
@@ -63,6 +69,9 @@ export default function TeamsPage() {
         new Date(a.updatedAt).getTime()
     );
   }, [teams]);
+
+  const pageCount = Math.ceil(sortedTeams.length / pageSize);
+  const paginatedTeams = sortedTeams.slice((page - 1) * pageSize, page * pageSize);
 
   return (
     <GenericGridPageLayout> 
@@ -92,9 +101,8 @@ export default function TeamsPage() {
         <Card sx={{ borderRadius: 4 }}>
           <CardContent>
             <Stack spacing={2}>
-              { loading && 
-                <TeamsSkeleton />
-              }
+              {loading && <TeamsSkeleton />}
+
               {teams.length === 0 && !loading && (
                 <Typography textAlign="center" py={12}>
                   No team yet
@@ -111,9 +119,9 @@ export default function TeamsPage() {
                       Click to go into team workspace
                     </Typography>
                   </Stack>
-                  <Divider/>
+                  <Divider />
 
-                  {sortedTeams.map(team => (
+                  {paginatedTeams.map(team => (
                     <Link key={team.id} href={`/dashboard/teams/${team.id}`}>
                       <Box
                         sx={{
@@ -143,8 +151,8 @@ export default function TeamsPage() {
                             {team.description}
                           </Typography>
                         </Stack>
-                        <Stack display={'flex'} alignItems={'end'} gap={0.5}>
-                          <Typography variant="caption"><Group/> {team.members.length}</Typography>
+                        <Stack display="flex" alignItems="end" gap={0.5}>
+                          <Typography variant="caption"><Group /> {team.members.length}</Typography>
                           <Typography 
                             variant="caption" 
                             sx={{ opacity: 0.7 }}
@@ -155,6 +163,18 @@ export default function TeamsPage() {
                       </Box>
                     </Link>
                   ))}
+
+                  {pageCount > 1 && (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', pt: 2 }}>
+                      <Pagination
+                        count={pageCount}
+                        page={page}
+                        onChange={(_, value) => setPage(value)}
+                        color="primary"
+                        size="small"
+                      />
+                    </Box>
+                  )}
                 </>
               )}
 
@@ -269,11 +289,12 @@ export default function TeamsPage() {
             </Typography>
             <ul style={{ padding: 10}}>
               <li>Internal company departments</li>
-              <li>Client management groups</li>
+              <li>Startup teams</li>
+              <li>Event planning and coordination</li>
               <li>Project-based collaboration</li>
-              <li>Shared ticket playground</li>
-              <li>Open-source collaboration</li>
-              
+              <li>Community or interest groups</li>
+              <li>Research teams</li>
+              <li>Sports teams</li>
             </ul>
             <Typography my={5} p={1} variant="body2" className="highlight-glow">
               Teams unlock advanced ticket collaboration 

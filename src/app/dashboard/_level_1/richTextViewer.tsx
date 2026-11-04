@@ -26,8 +26,8 @@ export function RichTextViewer({ html }: Props) {
         border: "1px solid",
         borderColor: "divider",
 
-        bgcolor: "white",
-        color: "black",
+        bgcolor: "paper.background",
+        color: "inherit",
 
         fontSize: {
           xs: "0.875rem",

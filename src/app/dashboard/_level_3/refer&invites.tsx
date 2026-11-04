@@ -9,12 +9,12 @@ import GenericGridPageLayout from '../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../_level_1/genDashPagesHeader';
 import { 
   Share, 
+  Group,
   PersonAdd, 
   ContentCopy, 
-  CheckCircle, 
-  People,
+  CheckCircle,
+  Diversity3, 
   MonetizationOn,
-  BuildCircle
 } from '@mui/icons-material';
 import { 
   Stack, 
@@ -137,6 +137,8 @@ export default function ReferPage() {
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
 
+  const isCommunityBuilder = stats?.totalCreditsEarned > 25;
+
   return (
     <GenericGridPageLayout>
       <Stack spacing={4} maxWidth="800px" mx="auto">
@@ -209,7 +211,7 @@ export default function ReferPage() {
               <Card sx={{ bgcolor: '#e3f2fd', color: 'black', borderRadius: 4 }}>
                 <CardContent>
                   <Stack alignItems="center" spacing={1}>
-                    <People color="primary" sx={{ fontSize: 40 }} />
+                    <Group color="primary" sx={{ fontSize: 40 }} />
                     <Typography variant="h4" fontWeight="bold">{stats.totalReferrals || "0"}</Typography>
                     <Typography>Total Invites</Typography>
                   </Stack>
@@ -247,8 +249,8 @@ export default function ReferPage() {
               <Card sx={{ bgcolor: 'whitesmoke', color: 'black', borderRadius: 4, }}>
                 <CardContent>
                   <Stack alignItems="center" spacing={1}>
-                    <BuildCircle color="secondary" sx={{ fontSize: 40 }} />
-                    <Typography variant="h4" fontWeight="bold"> {stats.totalCreditsEarned > 5 ? "100%" : "N/A"} </Typography>
+                    <Diversity3 color="secondary" sx={{ fontSize: 40 }} />
+                    <Typography variant="h6" pt={1.25} fontWeight="bold"> {isCommunityBuilder ? "Yes" : "Low"} </Typography>
                     <Typography>Community Builder</Typography>
                   </Stack>
                 </CardContent>
@@ -285,44 +287,44 @@ export default function ReferPage() {
       </Stack>
 
       {!pendingInvitesLoading && pendingTeamInvites.length > 0 && (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.3 }}
-  >
-    <Card
-      sx={{
-        borderRadius: 4,
-        boxShadow: '0 6px 20px rgba(0,0,0,0.08)',
-      }}
-    >
-      <CardContent>
-        <Stack spacing={2}>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <Card
+            sx={{
+              borderRadius: 4,
+              boxShadow: '0 6px 20px rgba(0,0,0,0.08)',
+            }}
           >
-            <Stack>
-              <Typography variant="h6" fontWeight={700}>
-                Pending Team Invites
-              </Typography>
+            <CardContent>
+              <Stack spacing={2}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Stack>
+                    <Typography variant="h6" fontWeight={700}>
+                      Pending Team Invites
+                    </Typography>
 
-              <Typography variant="body2" color="text.secondary">
-                Teams that have invited you to join
-              </Typography>
-            </Stack>
+                    <Typography variant="body2" color="text.secondary">
+                      Teams that have invited you to join
+                    </Typography>
+                  </Stack>
 
-            <Chip
-              label={pendingTeamInvites.length}
-              color="primary"
-              size="small"
-            />
-          </Stack>
+                  <Chip
+                    label={pendingTeamInvites.length}
+                    color="primary"
+                    size="small"
+                  />
+                </Stack>
 
-          <Divider />
+                <Divider />
 
-          <Stack spacing={1.5}>
+                <Stack spacing={1.5}>
                   {paginatedPendingInvites.map((invite: Invitation) => (
                     <Stack
                       key={invite.id}
@@ -343,9 +345,9 @@ export default function ReferPage() {
 
                         <Typography variant="body2" color="text.secondary">
                           Invited by{' '}
-                          {invite.invitedBy?.name ||
+                            {invite.invitedBy?.name ||
                             invite.invitedBy?.email ||
-                            'Team owner'}
+                          'Team owner'}
                         </Typography>
 
                         <Typography variant="caption" color="text.secondary">

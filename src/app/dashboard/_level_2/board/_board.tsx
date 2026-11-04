@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Ticket } from '@/types/ticket';
 import BoardColumn from './boardColumn';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
@@ -12,9 +12,12 @@ import {
   useTheme,
   IconButton,
   useMediaQuery,
+  Pagination,
 } from '@mui/material';
 import { KANBAN_BOARD_PROPS } from '../../_level_1/tSchema';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
+
+const COLUMN_PAGE_SIZE = 5;
 
 export default function Board({
   loading,
@@ -82,6 +85,13 @@ export default function Board({
     });
   };
 
+  const [columnPages, setColumnPages] = useState<Record<string, number>>({});
+
+  const getColumnPage = (status: string) => columnPages[status] ?? 1;
+
+  const setColumnPage = (status: string, page: number) =>
+    setColumnPages((prev: any) => ({ ...prev, [status]: page }));
+
   const prevStatuses = STATUSES.slice(Math.max(0, startIndex - visibleCount), startIndex);
   const nextStatuses = STATUSES.slice(startIndex + visibleCount);
 
@@ -138,29 +148,55 @@ export default function Board({
             </Box>
           )}
 
-          {visibleStatuses.map((status) => (
-            <Droppable key={status} droppableId={status}>
-              {(provided) => (
-                <Box
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  sx={{
-                    flex: isXs ? 1 : '1 0 0',
-                    mx: isXs ? 2 : 1,
-                  }}
-                >
-                  <BoardColumn
-                    loading={loading}
-                    title={status}
-                    tickets={grouped[status] || []}
-                    onOpen={openDetail}
-                    isDragDisabled={isXs}
-                  />
-                  {provided.placeholder}
-                </Box>
-              )}
-            </Droppable>
-          ))}
+          {visibleStatuses.map((status) => {
+            const allTickets = grouped[status] || [];
+            const page = getColumnPage(status);
+            const pageCount = Math.ceil(allTickets.length / COLUMN_PAGE_SIZE);
+            const paginatedTickets = allTickets.slice(
+              (page - 1) * COLUMN_PAGE_SIZE,
+              page * COLUMN_PAGE_SIZE
+            );
+
+            return (
+              <Droppable key={status} droppableId={status}>
+                {(provided) => (
+                  <Box
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    sx={{
+                      flex: isXs ? 1 : '1 0 0',
+                      mx: isXs ? 2 : 1,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      maxHeight: 640,
+                      minHeight: 480,
+                    }}
+                  >
+                    <BoardColumn
+                      loading={loading}
+                      title={status}
+                      tickets={paginatedTickets} 
+                      onOpen={openDetail}
+                      isDragDisabled={isXs}
+                    />
+                    {provided.placeholder}
+
+                    {pageCount > 1 && (
+                      <Box sx={{ display: 'flex', justifyContent: 'center', py: 1 }}>
+                        <Pagination
+                          count={pageCount}
+                          page={page}
+                          onChange={(_, value) => setColumnPage(status, value)}
+                          size="small"
+                          color="primary"
+                        />
+                      </Box>
+                    )}
+                  </Box>
+                )}
+              </Droppable>
+            );
+          })}
 
           {!isXs && startIndex + visibleCount < STATUSES.length && (
             <Box sx={{ position: 'absolute', right: 0, top: 16, zIndex: 10 }}>

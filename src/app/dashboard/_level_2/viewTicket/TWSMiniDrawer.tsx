@@ -167,7 +167,17 @@ export default function TicketDetailDrawer({
                     <strong>{ticket.type === 'FEATURE_REQUEST' ? 'FEATURE' : ticket.type}</strong>
                 </Typography>
                 <Tooltip title={`Ticket ${statusRender.toLowerCase()}`}>
-                  <Chip label={statusRender} size="small" sx={{ px: 1, maxWidth: 'max-content', mx: 'auto' }} />
+                  <Chip 
+                    label={statusRender} 
+                    size="small" 
+                    sx={{ 
+                      px: 1, 
+                      mx: 'auto', 
+                      boxShadow: 1,
+                      bgcolor: 'transparent', 
+                      maxWidth: 'max-content', 
+                    }} 
+                  />
                 </Tooltip>
               </Box>
             </Stack>
@@ -275,7 +285,7 @@ export default function TicketDetailDrawer({
                     width: 34,
                     height: 34,
                     borderRadius: 1.5,
-                    bgcolor: ticket.dueDate ? 'rgba(99, 102, 241, 0.10)' : 'action.hover',
+                    bgcolor: ticket.dueDate ? 'rgba(99, 102, 241, 0.10)' : 'var(--disabled)',
                     color: ticket.dueDate ? 'rgb(99, 102, 241)' : 'text.secondary',
                     flexShrink: 0,
                     fontSize: 18,
@@ -312,46 +322,56 @@ export default function TicketDetailDrawer({
               </Box>
 
               <TicketActivityTimeline ticket={ticket} userId={user!.id} />
+            </Stack>
 
+            <Box width="100%" display="grid" gap={1} mt={5}>
               <Button 
                 onClick={() => setExtDrawerOpen(true)} 
-                tone="secondary" 
-                sx={{ margin: '20px 0 0' }}
               >
-                View Details & Activities
+                Open Extended Workspace
               </Button>
-            </Stack>
-            <Card
-              sx={{
-                p: { xs: 1, sm: 1.5 },
-                mb: 3,
-                mx: 'auto',
-                boxShadow: 4,
-                borderRadius: 999,
-                maxWidth: 'fit-content',
-                background: 'transparent',
-              }}
-            >
-              <Stack 
-                direction="row" 
-                justifyContent="center" 
-                gap={{ xs: 1, sm: 2, md: 3 }} 
-                maxWidth={{ xs: 282, sm: 'none' }}
+
+              <Box py={1} display="flex" justifyContent="center" alignItems="center" gap={2}>
+                <Divider orientation="horizontal" sx={{ width: '100%' }} color="gray" />
+                <Typography fontWeight={600} color="text.secondary">
+                  OR
+                </Typography>
+                <Divider orientation="horizontal" sx={{ width: '100%' }} color="gray" />
+              </Box>
+
+              <Card
+                sx={{
+                  p: { xs: 1, sm: 1.5 },
+                  mb: 3,
+                  mx: 'auto',
+                  boxShadow: 4,
+                  borderRadius: 999,
+                  maxWidth: 'fit-content',
+                  background: 'transparent',
+                }}
               >
-                {TICTASK_QUICK_ACTIONS.map((qa, i) => (
-                  <QA_Btn
-                    key={i}
-                    color={qa.color}
-                    title={qa.title}
-                    ticketID={ticket.id}
-                    status={qa.status}
-                    disabled={!isActive}
-                    onUpdate={onUpdate!}
-                    onClose={onClose}
-                  />
-                ))}
-              </Stack>
-            </Card>
+                <Stack 
+                  direction="row" 
+                  justifyContent="center" 
+                  gap={{ xs: 1, sm: 2, md: 3 }} 
+                  maxWidth={{ xs: 282, sm: 'none' }}
+                >
+                  {TICTASK_QUICK_ACTIONS.map((qa, i) => (
+                    <QA_Btn
+                      key={i}
+                      color={qa.color}
+                      title={qa.title}
+                      ticketID={ticket.id}
+                      status={qa.status}
+                      disabled={!isActive}
+                      onUpdate={onUpdate!}
+                      onClose={onClose}
+                    />
+                  ))}
+                </Stack>
+              </Card>
+            </Box>
+              
 
             {isActive && (
               <Box mt={2} display="grid" gap={1}>

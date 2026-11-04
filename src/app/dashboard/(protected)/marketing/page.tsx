@@ -1,12 +1,29 @@
 'use client';
 
 import Link from 'next/link';
+import { useAuth } from '@/providers/auth';
 import { Button } from '@/assets/buttons';
 import { Box, Chip, Stack, Typography } from '@mui/material';
 import GenericGridPageLayout from '../../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../../_level_1/genDashPagesHeader';
 
 const Page = () => {
+  const { user, loading, isAuthenticated, isAdmin } = useAuth();
+
+  if (loading) return (
+    <Box textAlign="center" p={4}>
+      Loading Marketing View...
+    </Box>
+  );
+
+  if (!isAuthenticated) return (
+    <Box textAlign="center" px={2} display="grid" gap={10} py={10}>
+      <Typography>
+        Please <Button component={Link} href={'/login'} tone='action' variant='contained'>Login</Button> to access dashboard
+      </Typography>
+    </Box>
+  );
+
   return (
     <GenericGridPageLayout>
       <GenericDashboardPagesHeader 
@@ -56,6 +73,16 @@ const Page = () => {
           >
             Go to reviews
           </Button>
+
+          {isAdmin && (
+            <Button 
+              component={Link} 
+              href={'/dashboard/admin/reviews'} 
+              variant='contained'
+            >
+              Manage reviews
+            </Button>
+          )}
         </Box>
       </Stack>
       

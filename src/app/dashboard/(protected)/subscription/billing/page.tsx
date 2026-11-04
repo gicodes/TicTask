@@ -309,8 +309,8 @@ export default function ManageBillingPage() {
                       <Box mt={{ xs: 1 }} width={'100%'} maxWidth={600}>
                         <Typography variant='caption' color='var(--secondary)'>
                           {/* <span>If we cannot charge your account within 48 hours of expiry, subscription disconnects.</span> */}
-                          Extend your subscription to keep your <b>{(sub?.plan ?? '').toLowerCase()}</b> plan running. <br/> 
-                          Current cycle is used for extending. You can change it via <Link href={'/product/pricing'} className='custom-bw opac-2'>{" "}<b>pricing</b></Link> 
+                          Extend subscription to keep your <b>{(sub?.plan ?? '').toLowerCase()}</b> plan running. <br/> 
+                          Current cycle is default for extending. You can change it via <Link href={'/product/pricing'} className='custom-bw opac-2'>{" "}<b>pricing</b></Link> 
                         </Typography>
                       </Box>
                       

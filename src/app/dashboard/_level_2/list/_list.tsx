@@ -1,3 +1,6 @@
+'use client';
+
+import React from 'react';
 import {
   Box,
   Chip,
@@ -7,6 +10,7 @@ import {
   Tooltip,
   useTheme,
   Typography,
+  Pagination,
 } from '@mui/material';
 import {
   Bug,
@@ -30,8 +34,13 @@ export default function TicketsList({
   onOpen,
 }: TICKET_LIST_PROPS) {
   const theme = useTheme();
+  const pageSize = 20;
+  const [page, setPage] = React.useState(1);
 
   if (!tickets || tickets.length === 0) return <NoTickets />;
+
+  const pageCount = Math.ceil(tickets.length / pageSize);
+  const paginatedTickets = tickets.slice((page - 1) * pageSize, page * pageSize);
 
   const formatDate = (dateStr: string | null, isDisabled: boolean) => {
     if (!dateStr) {
@@ -51,14 +60,8 @@ export default function TicketsList({
       return (
         <Typography variant="body2" fontWeight={600} sx={{ lineHeight: 1.3 }}>
           Today{' '}
-          <Box
-            component="span"
-            sx={{ color: 'warning.main', fontWeight: 700 }}
-          >
-            {date.toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
+          <Box component="span" sx={{ color: 'warning.main', fontWeight: 700 }}>
+            {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </Box>
         </Typography>
       );
@@ -80,6 +83,27 @@ export default function TicketsList({
         {date.toLocaleDateString([], { month: 'short', day: 'numeric' })}
         {isOverdue && ' · OVERDUE'}
       </Typography>
+    );
+  };
+
+  const renderPerson = (person: any, fallbackLabel: string) => {
+    if (!person) return null;
+    const name = person.name || person.email || fallbackLabel;
+    return (
+      <Tooltip title={`${fallbackLabel}: ${name}`} arrow placement="top">
+        <Avatar
+          sx={{
+            width: 22,
+            height: 22,
+            fontSize: 10,
+            fontWeight: 700,
+            bgcolor: 'secondary.main',
+            color: 'secondary.contrastText',
+          }}
+        >
+          {name[0].toUpperCase()}
+        </Avatar>
+      </Tooltip>
     );
   };
 
@@ -114,7 +138,7 @@ export default function TicketsList({
           borderRadius: 1.5,
           '& .MuiChip-label': { px: 1 },
         }}
-      /> 
+      />
     );
   };
 
@@ -298,6 +322,12 @@ export default function TicketsList({
         />
       );
 
+    // Conditional people fields
+    if (ticket.createdBy) items.push(renderPerson(ticket.createdBy, 'Created by'));
+    if (ticket.startedBy) items.push(renderPerson(ticket.startedBy, 'Started by'));
+    if (ticket.resolvedBy) items.push(renderPerson(ticket.resolvedBy, 'Resolved by'));
+    if (ticket.closedBy) items.push(renderPerson(ticket.closedBy, 'Closed by'));
+
     if (!items.length) {
       return (
         <Typography variant="caption" color="text.disabled">
@@ -307,14 +337,14 @@ export default function TicketsList({
     }
 
     return (
-      <Stack direction="row" gap={0.6} flexWrap="wrap" useFlexGap>
+      <Stack direction="row" gap={0.6} flexWrap="wrap" useFlexGap alignItems="center">
         {items}
       </Stack>
     );
   };
 
   const gridTemplate = {
-    md: 'minmax(240px, 2.4fr) 90px 100px 110px 110px minmax(110px, 1fr) 60px 90px minmax(130px, 1.2fr)',
+    md: 'minmax(240px, 2.4fr) 90px 100px 110px 110px minmax(110px, 1fr) 60px 90px 90px minmax(130px, 1.2fr)',
   };
 
   return (
@@ -386,6 +416,11 @@ export default function TicketsList({
             Updated
           </Typography>
         )}
+        {columns?.includes('Created') && (
+          <Typography variant="body2" fontWeight={700} color="text.secondary">
+            Created
+          </Typography>
+        )}
         {columns?.includes('Extra') && (
           <Typography variant="body2" fontWeight={700} color="text.secondary">
             Extra
@@ -394,7 +429,7 @@ export default function TicketsList({
       </Stack>
 
       <Stack spacing={1}>
-        {tickets.map((ticket, index) => {
+        {paginatedTickets.map((ticket, index) => {
           const isClosed =
             ticket.status === 'CANCELLED' ||
             ticket.status === 'CLOSED' ||
@@ -505,6 +540,15 @@ export default function TicketsList({
                         {formatDate(ticket.dueDate, isClosed)}
                       </Stack>
                     )}
+                    {columns?.includes('Created') && ticket.createdAt && (
+                      <Typography variant="caption" color="text.secondary">
+                        Created{' '}
+                        {new Date(ticket.createdAt).toLocaleDateString([], {
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </Typography>
+                    )}
                   </Stack>
                 </Box>
               </Stack>
@@ -538,9 +582,7 @@ export default function TicketsList({
                 </Box>
               )}
               {columns?.includes('Tags') && (
-                <Box
-                  sx={{ display: { xs: 'none', md: 'block' }, minWidth: 0 }}
-                >
+                <Box sx={{ display: { xs: 'none', md: 'block' }, minWidth: 0 }}>
                   {renderTags(ticket)}
                 </Box>
               )}
@@ -565,6 +607,23 @@ export default function TicketsList({
                 >
                   {ticket.updatedAt
                     ? new Date(ticket.updatedAt).toLocaleDateString([], {
+                        month: 'short',
+                        day: 'numeric',
+                      })
+                    : '—'}
+                </Typography>
+              )}
+              {columns?.includes('Created') && (
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{
+                    display: { xs: 'none', md: 'block' },
+                    fontWeight: 500,
+                  }}
+                >
+                  {ticket.createdAt
+                    ? new Date(ticket.createdAt).toLocaleDateString([], {
                         month: 'short',
                         day: 'numeric',
                       })
@@ -612,6 +671,18 @@ export default function TicketsList({
             </Box>
           );
         })}
+
+        {pageCount > 1 && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+            <Pagination
+              count={pageCount}
+              page={page}
+              onChange={(_, value) => setPage(value)}
+              color="primary"
+              size="small"
+            />
+          </Box>
+        )}
       </Stack>
     </Box>
   );
