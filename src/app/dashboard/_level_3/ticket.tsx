@@ -12,7 +12,7 @@ import TicketsList from '../_level_2/list/_list';
 import { CloseSharp } from '@mui/icons-material';
 import TicketBoard from '../_level_2/board/_board';
 import Toolbar from '../_level_2/ticketsPageToolbar';
-import { Box, Divider, Drawer, Typography } from '@mui/material';
+import { Box, Divider, Drawer, IconButton, Typography } from '@mui/material';
 import TicketDetailDrawer from '../_level_2/viewTicket/TWSMiniDrawer';
 import TicketFormDrawer from '../_level_2/createTicket/CNTFormsDrawer';
 import { PLANNER_TASK_TYPES, TICKET_LIST_HEADERS, TICKET_STATUSES, TICKET_TYPES } from '../_level_0/constants';
@@ -201,7 +201,7 @@ const TicketsPage: React.FC = () => {
           <Typography variant="body1">
             Similarly, you can manage more (event-based or timeline) tickets via Calendar and List view.
             <br/>
-            To manually create a ticket, find and click<button className='btn'><span className='flex items-center gap-1'>
+            To manually create a ticket, find and click<button className='btn bg-secondary'><span className='flex items-center gap-1'>
               <FaPlusCircle/> NEW TICKET</span>
             </button>
           </Typography>
@@ -212,7 +212,7 @@ const TicketsPage: React.FC = () => {
             display={'grid'} 
           >
             <Typography variant="subtitle2" sx={{ opacity: 0.75}}>Can&apos;t find it on your a mobile device?</Typography>
-            <Typography variant="body1">♺ &nbsp; Expand toolbar <PenTool size={14} color='var(--accent)'/> to see action buttons </Typography>
+            <Typography variant="body1">♺ &nbsp; Expand the <IconButton><PenTool size={14} color='var(--accent)'/></IconButton> icon to see action buttons </Typography>
           </Box>
 
           <Divider sx={{ my: 5 }} />

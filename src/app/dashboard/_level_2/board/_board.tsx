@@ -136,6 +136,7 @@ export default function Board({
         <Box
           sx={{
             width: '100%',
+            height: '100%',
             display: 'flex',
             position: 'relative',
             alignItems: 'flex-start',
@@ -162,16 +163,17 @@ export default function Board({
                   sx={{
                     flex: isXs ? 1 : '1 0 0',
                     mx: isXs ? 2 : 1,
+                    height: '100%',
                   }}
                 >
                   <BoardColumn
-                    isDragDisabled={isXs}
                     loading={loading}
                     title={status}
                     tickets={grouped[status] || []}
                     onOpen={openDetail}
                     page={getPage(status)}
                     onPageChange={(p) => setPage(status, p)}
+                    isDragDisabled={isXs} 
                   />
                   {provided.placeholder}
                 </Box>

@@ -59,7 +59,7 @@ export const BoardColumn: React.FC<BOARD_COLUMN & {
         <Draggable
           key={ticket.id}
           draggableId={String(ticket.id)}
-          index={index} // page-local index — Board adjusts with offset
+          index={index}
           isDragDisabled={false}
         >
           {(provided, snapshot) => (
@@ -67,7 +67,7 @@ export const BoardColumn: React.FC<BOARD_COLUMN & {
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
-              my={{ xs: 3, sm: 4, lg: 5 }}
+              my={{ xs: 1, lg: 2 }}
               sx={{
                 opacity: snapshot.isDragging ? 0.9 : 1,
                 transform: snapshot.isDragging ? 'rotate(2deg)' : 'none',
@@ -88,7 +88,7 @@ export const BoardColumn: React.FC<BOARD_COLUMN & {
             page={page}
             onChange={(_, value) => onPageChange(value)}
             size="small"
-            color="primary"
+            color="standard"
           />
         </Box>
       )}

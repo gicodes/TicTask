@@ -169,7 +169,7 @@ const PlannerToolbar: React.FC<PLANNER_TOOLBAR_PROPS> = ({
             {open ? (
               <Close sx={{ border: '1px solid tomato', borderRadius: '50%'}} />
             ) : (
-              <PenTool />
+              <PenTool color='var(--accent)' />
             )}
           </IconButton>
         </Tooltip>
