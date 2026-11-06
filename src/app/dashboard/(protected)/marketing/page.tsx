@@ -64,7 +64,7 @@ const Page = () => {
           </Stack>
         </Box>
 
-        <Box borderTop={'2px dotted var(--disabled)'} py={5} >
+        <Box borderTop={'2px dotted var(--disabled)'} py={5} gap={2} display={'grid'} >
           <Button 
             component={Link} 
             href={'/reviews'} 

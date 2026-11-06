@@ -129,6 +129,8 @@ export default function TeamTicketCreatePage() {
   )
 
   const onSubmit = async (data: FieldValues) => {
+    setIsSubmitting(true);
+
     const payload = {
       ...data,
       teamId: Number(teamId),
@@ -145,8 +147,6 @@ export default function TeamTicketCreatePage() {
       assignees: data.assignees,
       assignTo: data.assignTo,
     } as unknown as Create_Ticket
-
-    setIsSubmitting(true);
 
     try {
       const result = await createTicket(payload)

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Ticket } from '@/types/ticket';
+import { TicketCardProps } from '@/types/ticket';
 import { TICKET_TYPE_ICONS } from '../../_level_1/tSchema';
 import { extractTicketData, formatAmount } from '../../_level_1/tFieldExtract';
 import { priorityColor, getTypeColor, TYPE_COLORS } from '../../_level_1/tColorVariants';
@@ -25,11 +25,6 @@ import {
   TicketCheck,
 } from 'lucide-react';
 import { FaMoneyBill } from 'react-icons/fa';
-
-interface TicketCardProps {
-  ticket: Ticket;
-  onOpen?: (id: number) => void;
-}
 
 export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
   const fields = extractTicketData(ticket);
@@ -76,8 +71,9 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onOpen }) => {
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" alignItems="flex-start" gap={0.5} flex={1}>
             <IconButton size="small" sx={{ p: 0.5, color: TYPE_COLORS[ticket.type]}}>
-              {IconComponent ? <IconComponent size={18} /> : <TicketCheck size={18} />}
+              {IconComponent ? <IconComponent size={15} /> : <TicketCheck size={15} />}
             </IconButton>
+
             <Typography
               variant="subtitle2"
               fontWeight={600}

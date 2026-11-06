@@ -113,12 +113,12 @@ a {
 }
 
 .bg-primary { 
-  background: var(--background); 
-  color: var(--foreground);
-}
-.bg-secondary { 
   background: var(--foreground); 
   color: var(--background);
+}
+.bg-secondary { 
+  background: var(--background); 
+  color: var(--foreground);
 }
 
 .secondary { 

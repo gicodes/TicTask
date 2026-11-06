@@ -201,7 +201,7 @@ const TicketsPage: React.FC = () => {
           <Typography variant="body1">
             Similarly, you can manage more (event-based or timeline) tickets via Calendar and List view.
             <br/>
-            To manually create a ticket, find and click<button className='btn bg-secondary'><span className='flex items-center gap-1'>
+            To manually create a ticket, find and click<button className='btn bg-primary'><span className='flex items-center gap-1'>
               <FaPlusCircle/> NEW TICKET</span>
             </button>
           </Typography>

@@ -44,6 +44,11 @@ export interface Ticket {
   data: Data;
 }
 
+export interface TicketCardProps {
+  ticket: Ticket;
+  onOpen?: (id: number) => void;
+}
+
 export type Data = {
   severity?: TicketSeverity, // bug
   impact?: TicketImpact, // feature

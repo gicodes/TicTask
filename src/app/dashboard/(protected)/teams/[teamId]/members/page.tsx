@@ -1,12 +1,12 @@
 "use client";
 
 import api from "@/lib/axios";
-import { useState, useEffect } from "react";
 import { TeamMember } from "@/types/team";
 import { Button } from "@/assets/buttons";
 import { useTeam } from "@/hooks/useTeam";
 import { useAuth } from "@/providers/auth";
 import { useAlert } from "@/providers/alert";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -77,7 +77,7 @@ export default function MembersPage() {
   const handleInvite = async () => {
     if (!user) return;
     const email = await prompt(
-      "Enter email to invite:",
+      "Enter user registered emailto invite to team",
       "Invite User", "",
       "Send Invite"
     );
@@ -139,7 +139,6 @@ export default function MembersPage() {
             </Typography>
             <Button
               startIcon={<Add />}
-              tone="primary"
               variant="filled"
               onClick={handleInvite}
             >
@@ -193,8 +192,8 @@ export default function MembersPage() {
           {isOwner && !pendingInvitesLoading && pendingInvites.length > 0 && (
             <Card
               sx={{
-                borderRadius: 4,
                 mt: 3,
+                borderRadius: 4,
                 bgcolor: "rgba(0,0,0,0.02)",
               }}
             >
@@ -284,7 +283,6 @@ export default function MembersPage() {
                   {invitePageCount > 1 && (
                     <>
                       <Divider />
-
                       <Stack alignItems="center">
                         <Pagination
                           count={invitePageCount}
@@ -354,6 +352,7 @@ export default function MembersPage() {
                     </Typography>
                   </Stack>
                 }
+
                 {selectedMember.bio && (
                   <Stack direction="row" gap={2} justifyContent="space-between">
                     <Typography variant="body2" color="text.secondary">
@@ -364,6 +363,7 @@ export default function MembersPage() {
                     </Typography>
                   </Stack>
                 )}
+
                 {selectedMember.email && (
                   <Stack direction="row" justifyContent="space-between">
                     <Typography variant="body2" color="text.secondary">
@@ -374,6 +374,7 @@ export default function MembersPage() {
                     </Typography>
                   </Stack>
                 )}
+
                 {selectedMember.country && (
                   <Stack direction="row" justifyContent="space-between">
                     <Typography variant="body2" color="text.secondary">
@@ -384,28 +385,31 @@ export default function MembersPage() {
                     </Typography>
                   </Stack>
                 )}
-                {isOwner && 
+
+                { isOwner && 
                   <Stack direction="row" justifyContent="space-between">
                     <Typography variant="body2" color="text.secondary">
                       Joined
                     </Typography>
-                  <Stack direction="column" alignItems="flex-end" gap={0.5}>
-                    <Typography color="text.secondary" variant="caption">
-                      { new Date(selectedMember.teamMemberships[0]?.
-                        createdAt).toLocaleDateString('en-US', { 
-                          year: 'numeric', 
-                          month: 'short', 
-                          day: 'numeric'
-                        })
-                      }, { new Date(selectedMember.teamMemberships[0]?.
-                        createdAt).toLocaleTimeString('en-US', { 
-                          hour: '2-digit', 
-                          minute: '2-digit',
-                          timeZone: 'UTC'
-                        })} UTC
-                    </Typography>
+                    
+                    <Stack direction="column" alignItems="flex-end" gap={0.5}>
+                      <Typography color="text.secondary" variant="caption">
+                        { new Date(selectedMember.teamMemberships[0]?.
+                          createdAt).toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric'
+                          })
+                        }, { new Date(selectedMember.teamMemberships[0]?.
+                          createdAt).toLocaleTimeString('en-US', { 
+                            hour: '2-digit', 
+                            minute: '2-digit',
+                            timeZone: 'UTC'
+                          })} UTC
+                      </Typography>
+                    </Stack>
                   </Stack>
-                </Stack>}
+                }
               </Stack>
             </Stack>
           )}
@@ -427,6 +431,7 @@ export default function MembersPage() {
                 Remove from team
               </Button>
             )}
+
             <Button tone="retreat" variant="filled" onClick={closeProfile}>
               Close
             </Button>

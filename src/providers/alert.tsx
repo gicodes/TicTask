@@ -163,7 +163,12 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
         </DialogActions>
       </Dialog>
 
-      <Dialog open={promptOpen} onClose={handlePromptCancel}>
+      
+      <Dialog 
+        open={promptOpen} 
+        onClose={handlePromptCancel}
+        sx={{ '& .MuiDialog-paper': { borderRadius: 3 } }}
+      >
         <DialogTitle>
           <strong>{promptTitle}</strong>
         </DialogTitle>
@@ -188,7 +193,7 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
               Cancel
             </Button>
 
-            <Button tone="primary" variant="contained" onClick={handlePromptConfirm}>
+            <Button tone="action" variant="contained" onClick={handlePromptConfirm}>
               {promptConfirmText}
             </Button>
           </Box>
