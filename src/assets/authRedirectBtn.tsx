@@ -5,7 +5,7 @@ const AuthRedirectBtn = () => {
   const { getLoginUrl } = useAuthRedirect();
 
   return (
-    <Link href={getLoginUrl()} className='custom-link'> Login </Link>
+    <Link href={getLoginUrl()} className='btn'> Login </Link>
   )
 }
 

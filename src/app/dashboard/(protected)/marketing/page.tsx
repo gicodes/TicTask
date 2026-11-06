@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useAuth } from '@/providers/auth';
 import { Button } from '@/assets/buttons';
+import AuthRedirectBtn from '@/assets/authRedirectBtn';
 import { Box, Chip, Stack, Typography } from '@mui/material';
 import GenericGridPageLayout from '../../_level_1/genGridPageLayout';
 import GenericDashboardPagesHeader from '../../_level_1/genDashPagesHeader';
@@ -19,7 +20,7 @@ const Page = () => {
   if (!isAuthenticated) return (
     <Box textAlign="center" px={2} display="grid" gap={10} py={10}>
       <Typography>
-        Please <Button component={Link} href={'/login'} tone='action' variant='contained'>Login</Button> to access dashboard
+        Please <AuthRedirectBtn /> to access dashboard
       </Typography>
     </Box>
   );
@@ -31,7 +32,18 @@ const Page = () => {
         description={'Manage Advertisements, PR and Marketing Campaigns under one house'}
       />
 
-      <Stack spacing={5} py={2.5}>
+      <Box 
+        py={5} 
+        gap={5} 
+        maxWidth={600}
+        display={'flex'}
+        flexDirection={'column'}
+        borderTop={'2px dotted var(--disabled)'} 
+      >
+        <Typography variant='caption' color={'var(--disabled)'}>
+          Note: Marketing features are currently in beta. Some features may be limited or unavailable. We appreciate your understanding and feedback as we continue to improve our marketing tools.
+        </Typography>        
+        
         <Box maxWidth={600}>
           <Button disabled>
             Social Media Marketing
@@ -64,7 +76,12 @@ const Page = () => {
           </Stack>
         </Box>
 
-        <Box borderTop={'2px dotted var(--disabled)'} py={5} gap={2} display={'grid'} >
+        <Stack 
+          gap={2} 
+          mt={5} 
+          alignItems={'center'}
+          direction={{ xs: 'column', sm: 'row' }} 
+        >
           <Button 
             component={Link} 
             href={'/reviews'} 
@@ -72,7 +89,7 @@ const Page = () => {
             variant='contained'
           >
             Go to reviews
-          </Button> <br/>
+          </Button>
 
           {isAdmin && (
             <Button 
@@ -83,8 +100,8 @@ const Page = () => {
               Manage reviews
             </Button>
           )}
-        </Box>
-      </Stack>
+        </Stack>
+      </Box>
     </GenericGridPageLayout>
   )
 }
