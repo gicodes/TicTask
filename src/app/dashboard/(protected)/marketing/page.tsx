@@ -35,12 +35,12 @@ const Page = () => {
       <Box 
         py={5} 
         gap={5} 
-        maxWidth={600}
+        maxWidth={720}
         display={'flex'}
         flexDirection={'column'}
         borderTop={'2px dotted var(--disabled)'} 
       >
-        <Typography variant='caption' color={'var(--disabled)'}>
+        <Typography variant='body2' color={'var(--secondary)'}>
           Note: Marketing features are currently in beta. Some features may be limited or unavailable. We appreciate your understanding and feedback as we continue to improve our marketing tools.
         </Typography>        
         

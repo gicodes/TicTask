@@ -9,7 +9,7 @@ const Page = () => {
     <GenericGridPageLayout>
       <GenericDashboardPagesHeader 
         title={'Organizations'} 
-        description={'Manage Standard, Pro and Enterprise-level teams as organizations'} 
+        description={'View and manage all organizations on TicTask.'} 
       />
       <Organizations />
     </GenericGridPageLayout>
