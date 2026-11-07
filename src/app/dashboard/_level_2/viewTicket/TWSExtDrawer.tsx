@@ -141,7 +141,13 @@ export default function TWSExtDrawer({
         >
           <Alert 
             severity="info" 
-            color="warning" sx={{ opacity: 0.75, mb: 2, width: 'max-content' }}
+            color="warning" 
+            sx={{ 
+              opacity: 0.75, 
+              mb: 2, 
+              width: '100%', 
+              maxWidth: 'fit-content', 
+            }}
           >
             Modifying this ticket will irreversibly update the key fields.
           </Alert>

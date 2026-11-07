@@ -322,10 +322,9 @@ export default function TicketsList({
         />
       );
 
-    // Conditional people fields
+    // Conditional teams-specific fields
     if (ticket.createdBy) items.push(renderPerson(ticket.createdBy, 'Created by'));
     if (ticket.startedBy) items.push(renderPerson(ticket.startedBy, 'Started by'));
-    if (ticket.resolvedBy) items.push(renderPerson(ticket.resolvedBy, 'Resolved by'));
     if (ticket.closedBy) items.push(renderPerson(ticket.closedBy, 'Closed by'));
 
     if (!items.length) {

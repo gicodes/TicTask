@@ -114,7 +114,7 @@ const Page = () => {
 
         <Typography component={'button'} sx={{ bgcolor: 'inherit', borderRadius: 999, color: 'inherit'}} px={1} my={1} fontWeight={501}>Board View</Typography>
         <Typography>
-          The <strong>Board</strong> gives you a visual, Kanban-style workflow. Tickets are organized into status columns, and you can drag-and-drop cards to update their status.
+          The <strong>Board</strong> gives you a visual, kanban-style workflow. Tickets are organized into status columns, and you can drag-and-drop cards to update their status.
         </Typography>
 
         <Typography mt={3}>Default workflow columns:</Typography>
@@ -143,7 +143,11 @@ const Page = () => {
           <li>Due Date</li>
           <li>Status</li>
           <li>Assignee</li>
-          <li>Created / Updated</li>
+          <li>Created (Created at)</li>
+          <li>Created By</li>
+          <li> Updated (updated at) </li>
+          <li>Started By (Teams-specific field)</li>
+          <li>Closed By (Teams-specific field)</li>
         </ul>
 
         {/* ============================= */}
@@ -168,7 +172,7 @@ const Page = () => {
         {/* ============================= */}
         <Typography alignItems={'center'} gap={2} display={'flex'} variant="h6" fontWeight={501} mt={4} mb={1}><BsCalendar2Date/> Planner</Typography>
         <Typography>
-          The <strong>Planner</strong> provides a timeline-based scheduling view.  
+          The <strong>Planner/ Task Manager</strong> provides a timeline-based scheduling view.  
           It&apos;s perfect for arranging work across days, weeks, or months.
         </Typography>
         <ul style={{ margin: '10px 15px 0', lineHeight: 2}}>
@@ -179,7 +183,7 @@ const Page = () => {
         </ul>
 
         {/* ============================= */}
-        {/*    TEAM PAGE                 */}
+        {/*    TEAMS PAGE                 */}
         {/* ============================= */}
         <Typography alignItems={'center'} gap={2} display={'flex'} variant="h6" fontWeight={501} mt={4} mb={1}><FcOrganization /> Teams</Typography>
         <Typography>

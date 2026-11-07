@@ -54,7 +54,7 @@ export function useTeam() {
         invitedById: Number(userId)
       });
 
-      showAlert("Invitation sent!", "success");
+      showAlert("If this email is registered on TicTask, an email will be sent!", "success");
       await fetchTeam();
       return true;
     } catch {

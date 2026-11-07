@@ -30,8 +30,6 @@ export interface Ticket {
   closedAt: string | null;
   startedBy: User;
   startedById: number;
-  resolvedBy: User;
-  resolvedById: number;
   closedBy: User;
   closedById: number;
 
