@@ -7,7 +7,6 @@ import { useAuth } from '@/providers/auth';
 import AuthRedirectBtn from '@/assets/authRedirectBtn';
 import { FeatureSection, TourSidebar } from '../../_level_2/tourResources';
 import AccordionDisplay, { BannerDisplay } from '../../_level_2/tourAccordion';
-
 import {
   Box,
   Card,
@@ -32,10 +31,10 @@ function Page() {
 
   return (
     <Box
-      maxWidth={1400}
       mx="auto"
-      px={{ xs: 1.5, sm: 2, md: 3 }}
+      maxWidth={1400}
       py={{ xs: 2, md: 4 }}
+      px={{ xs: 1.5, sm: 2, md: 3 }}
     >
       <Box
         display="grid"
@@ -53,6 +52,7 @@ function Page() {
             minWidth: 0,
             p: { xs: 1.5, sm: 2.5, md: 3 },
             borderRadius: 3,
+            color: 'var(--foreground)',
             bgcolor: 'var(--background)',
           }}
         >
