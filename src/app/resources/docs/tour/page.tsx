@@ -105,7 +105,7 @@ function Page() {
                   <>
                     <Typography>
                       On the top-right corner, you will find two key
-                      elements: the <strong>User Profile block</strong>
+                      elements: the <strong>User Profile block</strong>{" "}
                       and the <strong>Notification bell</strong>.
                     </Typography>
 
