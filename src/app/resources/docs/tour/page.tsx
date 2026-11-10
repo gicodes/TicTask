@@ -68,7 +68,7 @@ function Page() {
 
               <Divider sx={{ my: 2 }} />
 
-              <Typography color="text.secondary" lineHeight={1.9}>
+              <Typography sx={{ opacity: 0.75 }} lineHeight={1.9}>
                 The TicTask Dashboard is the command center of your
                 workspace, where you manage tickets, collaborate with
                 your team, and access core product features.
