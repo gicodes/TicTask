@@ -121,7 +121,7 @@ export function TicketDetailPane({
                   }}
                 />
                 <Box sx={{ minWidth: 0, display: 'grid' }}>
-                  <Typography variant="caption" color="text.secondary" display="block" lineHeight={1.1}>
+                  <Typography fontSize={11} color="text.secondary" letterSpacing={0.5} noWrap>
                     Priority
                   </Typography>
                   <Typography

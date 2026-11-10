@@ -152,14 +152,15 @@ h4 { font-size: 2rem; }
 h5 { font-size: 1.75rem; }
 h6 { font-size: 1.5rem; }
 
-.font-xxs { font-size: 0.75rem; }
+.font-3xs { font-size: 0.75rem; }
+.font-2xs { font-size: 0.875rem; }
 .font-xs { font-size: 1rem; }
 .font-sm { font-size: 1.25rem; }
 .font-md { font-size: 1.5rem; }
 .font-lg { font-size: 2rem; }
 .font-xl { font-size: 2.5rem; }
-.font-xxl { font-size: 2.75rem; }
-.font-sxl { font-size: 3rem; }
+.font-2xl { font-size: 2.75rem; }
+.font-3xl { font-size: 3rem; }
 
 .bold { font-weight: 700; }
 .semi-bold { font-weight: 501; }
@@ -235,6 +236,10 @@ h6 { font-size: 1.5rem; }
   padding: 6px 12px;
   font-weight: 600;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
   border: 0.9px solid var(--secondary);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   

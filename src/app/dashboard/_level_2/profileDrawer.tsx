@@ -6,12 +6,13 @@ import { useAlert } from '@/providers/alert';
 import { apiGet, apiPatch } from '@/lib/axios';
 import { UserProfileRes } from '@/types/axios';
 import React, { useEffect, useState } from 'react';
-import { PersonalSection } from './profileSections/perFields';
-import { BusinessSection } from './profileSections/busFields';
 import { ModeratorSection } from './profileSections/modFields';
+import { ProfileDetailsSection } from './profileSections/PersonalVBusiness';
 import {
   Drawer,
   Box,
+  Fab,
+  Divider,
   Typography,
   Stack,
   Toolbar,
@@ -24,28 +25,30 @@ import {
   Skeleton,
   CircularProgress,
   TextField,
-  Divider,
-  Fab,
 } from '@mui/material';
 import Link from 'next/link';
 import { Button } from '@/assets/buttons';
 import { MdEmail, } from 'react-icons/md';
-import { Check, Download, Share2, UserCog2Icon,} from 'lucide-react';
+import { EllipsisTypography } from '../_level_1/elipsisTypography';
+import { Check, Copy, Download, Share2, UserCog2Icon,} from 'lucide-react';
 import { CloseSharp, EditOutlined, ArrowBack } from '@mui/icons-material';
 import { ProfileActivitySection } from './profileSections/profileActivity';
 import { FaLocationDot, FaPhone, FaEllipsisVertical } from 'react-icons/fa6';
 
 export default function ProfileDetailDrawer() {
+  const theme = useTheme();
   const { user } = useAuth();
   const { showAlert } = useAlert();
-  const [profile, setProfile] = useState<User | null>(null);
+
   const [loading, setLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [profile, setProfile] = useState<User | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
   const [moreOptions, setMoreOptions] = useState(false);
   const [closeDrawer, setCloseDrawer] = useState(false);
-  
-  const theme = useTheme();
+
+  const [copiedRefCode, setCopiedRefCode] = useState(false);
 
   useEffect(() => {
     async function fetchProfile() {
@@ -112,6 +115,21 @@ export default function ProfileDetailDrawer() {
       }
     } catch (err) {
       console.error('Error sharing profile:', err);
+    }
+  };
+
+  const copyReferralCode = async () => {
+    if (!profile?.referralCode) return;
+
+    try {
+      await navigator.clipboard.writeText(profile?.referralCode);
+      setCopiedRefCode(true);
+
+      setTimeout(() => {
+        setCopiedRefCode(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Failed to copy referral code:', error);
     }
   };
 
@@ -360,6 +378,12 @@ export default function ProfileDetailDrawer() {
                   </Stack>
                 </Paper>
 
+                <ProfileDetailsSection
+                  profile={profile}
+                  isEditing={isEditing}
+                  handleChange={handleChange}
+                />
+
                 <Paper variant="outlined" sx={{ borderRadius: 3}}>
                   <Box sx={{ bgcolor: 'rgba(0,0,0,0.09)'}} p={2}>
                     <Typography variant="subtitle2" color="text.secondary">
@@ -391,6 +415,50 @@ export default function ProfileDetailDrawer() {
                         {profile?.emailVerifiedAt ? 'Verified' : 'Not verified'}
                       </Typography>
                     </Stack>
+                    <Divider />
+
+                    {profile?.referralCode && (
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="space-between"
+                          gap={2}
+                          width={'100%'}
+                        >
+                          <Stack>
+                            <Typography variant="body2">
+                              Referral code
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              Share this link to earn referrals
+                            </Typography>
+                          </Stack>
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={0.5}
+                          >
+                            <EllipsisTypography 
+                              sx={{ fontFamily: 'monospace', letterSpacing: 0.5 }}
+                            >
+                              {`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/auth/join/${profile?.referralCode}`}
+                            </EllipsisTypography>
+
+                            <Tooltip title={copiedRefCode ? 'Copied!' : 'Copy referral code'}>
+                              <IconButton
+                                size="small"
+                                onClick={copyReferralCode}
+                                color={copiedRefCode ? 'success' : 'default'}
+                              >
+                                { copiedRefCode ? <Check size={16} /> : <Copy size={16} />}
+                              </IconButton>
+                            </Tooltip>
+                          </Stack>
+                        </Stack>
+                    )}
                     <Divider />
 
                     <Stack
@@ -465,7 +533,7 @@ export default function ProfileDetailDrawer() {
                     >
                       <Box>
                         <Typography variant="body2" fontWeight={500}>
-                          Last login
+                          Active since
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
                           Most recent sign in
@@ -478,20 +546,6 @@ export default function ProfileDetailDrawer() {
                     </Stack>
                   </Stack>
                 </Paper>
-
-                {isBusiness ? (
-                  <BusinessSection
-                    profile={profile}
-                    isEditing={isEditing}
-                    handleChange={handleChange}
-                  />
-                ) : (
-                  <PersonalSection 
-                    profile={profile}
-                    isEditing={isEditing}
-                    handleChange={handleChange}
-                  />
-                )}
 
                 <ProfileActivitySection
                   tickets={profile?.tickets}

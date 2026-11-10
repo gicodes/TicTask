@@ -162,3 +162,9 @@ export type ProfileActivityProps = {
   teamMemberships?: TeamMember[];
   teamMembership?: boolean | null;
 };
+
+export interface ProfileProps {
+  profile: User | null;
+  isEditing: boolean;
+  handleChange: (field: keyof User, value: string | unknown) => void;
+}

@@ -92,7 +92,7 @@ export const DocSection = ({
               case 'inline': // like default, but inline with spacing around for readability
                 return <span key={i} style={{ lineHeight: 2, marginBottom: 2}}>{b.content}</span>
               case 'disabled':
-                return <span key={i} className="custom-dull font-xxs">{b.content}</span>
+                return <span key={i} className="custom-dull font-3xs">{b.content}</span>
               case 'outline':
                 return <span key={i} className={`btn ${b.color}`}>{b.content}</span>
               case 'italic':

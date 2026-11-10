@@ -332,6 +332,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                 />
                 {item?.released===false && <NewFeatureBadge />}
                 {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
+                {item?.label==="More" && (moreMenuList ? "▴" : "▾" )}
               </ListItemButton>
             </Link>
           ))}
@@ -386,6 +387,7 @@ export default function DashboardIndex({ children }: { children: ReactNode }) {
                 <ListItemText primary={item.label} style={{ marginLeft: -10}} />
                 {item?.released===false && <NewFeatureBadge />}
                 {item?.external && <FaExternalLinkAlt size={15} color='var(--secondary)' />}
+                {item?.label==="More" && (moreMenuList ? "▴" : "▾" )}
               </ListItemButton>
             </Link>
           ))}
