@@ -107,7 +107,13 @@ export default function AdminOverviewPage() {
         </Stack>
 
         <Box display="flex" alignItems="end" gap={2}>
-          <Chip label="Admin" sx={{ px: 2, fontWeight: 600, bgcolor: 'var(--bg-haze)' }} />
+          <Chip 
+            label="Admin" 
+            sx={{ 
+              px: 2, 
+              bgcolor: 'var(--bg-haze)' 
+            }} 
+          />
           <Tooltip title="Open admin settings">
             <div>
               <Button 
