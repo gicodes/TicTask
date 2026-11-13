@@ -17,7 +17,6 @@ export type Testimonial = {
   author?: { id: number; name: string; photo?: string | null } | null;
 };
 
-
 export const AVATAR_BGS = [
   "var(--bg-clear)",
   "var(--bg-frost)",

@@ -163,7 +163,6 @@ const Hero = () => {
                     marginLeft: "-5px",
                     fontSize: "12px",
                     fontWeight: 600,
-                    color: "black",
                     border: "1px solid var(--background)",
                     backgroundColor: `color-mix(in srgb, ${bg} 93%, transparent)`,
                     transition: "transform 180ms ease",
