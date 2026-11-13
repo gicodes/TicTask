@@ -843,7 +843,7 @@ function Page() {
 
             <Typography
               textAlign="center"
-              color="text.secondary"
+              color="va(--secondary)"
               lineHeight={1.8}
               fontSize={14}
             >
