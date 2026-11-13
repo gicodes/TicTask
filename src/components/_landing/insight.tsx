@@ -213,7 +213,7 @@ const IndexInsight = () => {
               sx={{
                 fontSize: 12,
                 letterSpacing: "0.02em",
-                color: "var(--disabled)",
+                color: "var(--secondary)",
               }}
             >
               <Box component="span" sx={{ color: "var(--flair)", fontWeight: 700 }}>

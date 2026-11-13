@@ -23,20 +23,22 @@
   --btn-secondary-bg: var(--surface-1);
   --btn-secondary-color: var(--foreground);
 
+  --bg-clear: rgba(59, 130, 246, 0.12);
+  --bg-spring: rgba(34, 197, 94, 0.12);
+  --bg-haze: rgba(139, 92, 246, 0.13);
+  --bg-summer: rgba(249, 115, 22, 0.13);
+  --bg-hail: rgba(239, 68, 68, 0.12);
+  --bg-frost: rgba(20, 184, 166, 0.13);
+  --bg-chill: rgba(100, 116, 139, 0.16);
+
+  --bg-neautral: gba(59, 130, 246, 0.15);
+
+  --spring: #8FBC8F;
+
+  --chill: #D8BFD8; /* light mode supported as opacity */
   --stormy: #902e90; /* light mode supported as opacity */
   --frost: #416573; /* dark mode supported as opacity */
   --hail: #904e14; /* dark mode supported as opacity */
-
-  --happy: #FAFAD2; /* light mode bg not supported */
-  --chill: #D8BFD8; /* light mode supported as opacity */
-
-  --autumn: #FFEBCD; /* light mode bg not supported */
-  --spring: #8FBC8F;
-  --summer: #FFDEAD; /* light mode bg not supported */
-  --winter: #F8F8FF; /* light mode bg not supported */
-
-  --harmattan: #FFFAF0; /* light mode bg not supported */
-  --clear: #E0FFFF; /* light mode bg not supported */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -293,3 +295,4 @@ h6 { font-size: 1.5rem; }
     transform: scale(1);
   }
 }
+

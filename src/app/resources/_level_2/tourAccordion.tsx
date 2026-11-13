@@ -58,7 +58,7 @@ export const BannerDisplay = ({
       px={{ xs: 2, md: 4}}
       width={'fit-content'}
       borderRadius={1}
-      bgcolor={'rgba(0,0,0,0.09)'}
+      bgcolor={'var(--bg-frost)'}
       border={'0.1px solid rgba(0,0,0,0.05)'}
     >
       {children}

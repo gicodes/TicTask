@@ -19,10 +19,10 @@ export type Testimonial = {
 
 
 export const AVATAR_BGS = [
-  "var(--happy)",
-  "var(--clear)",
-  "var(--autumn)",
-  "var(--summer)",
-  "var(--spring)",
-  "var(--chill)",
+  "var(--bg-clear)",
+  "var(--bg-frost)",
+  "var(--bg-hail)",
+  "var(--bg-spring)",
+  "var(--bg-haze)",
+  "var(--bg-summer)",
 ];
