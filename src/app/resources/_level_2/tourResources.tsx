@@ -65,12 +65,20 @@ export const TourSidebar = () => (
         },
       }}
     >
-      {navigationGroups.map((group) => (
-        <Box key={group.title} sx={{ minWidth: { xs: 'max-content', lg: 0 } }}>
+      { navigationGroups.map((group) => (
+        <Box 
+          key={group.title} 
+          sx={{ 
+            minWidth: { 
+              xs: 'max-content', 
+              lg: 0 
+            }
+          }}
+        >
           <Typography
             variant="caption"
             fontWeight={700}
-            color="text.secondary"
+            color="var(--secondary)"
             sx={{
               display: { xs: 'none', lg: 'block' },
               letterSpacing: 1,

@@ -21,10 +21,10 @@ const getInitials = (name?: string | null) => {
 };
 
 const Hero = () => {
-  const { startFreeTrial } = useSubscription();
-  const { showAlert } = useAlert();
-  const router = useRouter();
   const { user } = useAuth();
+  const router = useRouter();
+  const { showAlert } = useAlert();
+  const { startFreeTrial } = useSubscription();
 
   const [testimonials, setTestimonials] = useState<Testimonial[] | null>([]);
 
@@ -35,6 +35,7 @@ const Hero = () => {
       try {
         const res = await apiGet("/reviews/testimonials?limit=4");
         const data = (res as { data?: Testimonial[] } | null)?.data;
+
         if (!cancelled) {
           setTestimonials(Array.isArray(data) ? data : []);
         }
@@ -116,7 +117,7 @@ const Hero = () => {
         </Typography>
 
         <p className={styles.heroLead}>
-          For individuals &amp; teams who want to get things done without the clutter.
+          For individuals &amp; teams who want to get things done without the clutter
         </p>
       </div>
 

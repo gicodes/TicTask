@@ -7,6 +7,7 @@ import { apiGet, apiPatch } from '@/lib/axios';
 import { UserProfileRes } from '@/types/axios';
 import React, { useEffect, useState } from 'react';
 import { ModeratorSection } from './profileSections/modFields';
+import { EllipsisTypography } from '../_level_1/elipsisTypography';
 import { ProfileDetailsSection } from './profileSections/PersonalVBusiness';
 import {
   Drawer,
@@ -29,7 +30,7 @@ import {
 import Link from 'next/link';
 import { Button } from '@/assets/buttons';
 import { MdEmail, } from 'react-icons/md';
-import { EllipsisTypography } from '../_level_1/elipsisTypography';
+import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { Check, Copy, Download, Share2, UserCog2Icon,} from 'lucide-react';
 import { CloseSharp, EditOutlined, ArrowBack } from '@mui/icons-material';
 import { ProfileActivitySection } from './profileSections/profileActivity';
@@ -44,10 +45,9 @@ export default function ProfileDetailDrawer() {
   const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-
   const [moreOptions, setMoreOptions] = useState(false);
   const [closeDrawer, setCloseDrawer] = useState(false);
-
+  const [showInfo, setShowInfo] = useState(true);
   const [copiedRefCode, setCopiedRefCode] = useState(false);
 
   useEffect(() => {
@@ -87,8 +87,8 @@ export default function ProfileDetailDrawer() {
 
   const handleSave = async () => {
     if (!profile) return;
+    
     setSaving(true);
-
     try {
       await apiPatch(`/user/${profile.id}`, profile);
       setIsEditing(false);
@@ -133,6 +133,8 @@ export default function ProfileDetailDrawer() {
     }
   };
 
+  const handleHideInfo = () => setShowInfo(!showInfo);
+
   const isBusiness = profile?.userType === 'BUSINESS';
   const isModerator = profile?.collab || profile?.partner || profile?.role === 'ADMIN';
 
@@ -142,7 +144,12 @@ export default function ProfileDetailDrawer() {
         anchor="right"
         open={!closeDrawer}
         onClose={closeDetail}
-        sx={{ '& .MuiDrawer-paper': { width: { xs: '100%', md: 500 }, px: 3 } }}
+        sx={{ 
+          '& .MuiDrawer-paper': { 
+            width: { xs: '100%', md: 500 }, 
+            px: 3 
+          } 
+        }}
       >
         <Toolbar />
         <Stack p={3} spacing={2}>
@@ -191,7 +198,6 @@ export default function ProfileDetailDrawer() {
           <Toolbar />
           <Fade in>
             <Box>
-
               <Stack
                 px={1}
                 zIndex={99}
@@ -267,7 +273,7 @@ export default function ProfileDetailDrawer() {
                     <Tooltip title={!moreOptions ? 'More Options' : 'Close'}>
                       <IconButton onClick={toggleMoreOptions}>
                         { !moreOptions ? (<FaEllipsisVertical size={18} />) 
-                          : (<CloseSharp sx={{ fontSize: 20 }} />)
+                          : <CloseSharp sx={{ fontSize: 20 }} />
                         }
                       </IconButton>
                     </Tooltip>
@@ -286,10 +292,8 @@ export default function ProfileDetailDrawer() {
                       width: 96,
                       height: 96,
                       fontSize: 32,
-                      color: 'var(--foreground)',
-                      background: 'var(--background)',
                       border: `2.5px solid ${
-                        isBusiness ? theme.palette.primary.main
+                        isBusiness ? 'var(--stormy)'
                         : isModerator ? `var(--special)`
                         : theme.palette.success.main
                       }`,
@@ -298,24 +302,35 @@ export default function ProfileDetailDrawer() {
 
                   {isEditing ? (
                     <TextField
+                      fullWidth
+                      variant="standard"
                       value={profile?.name || ''}
                       onChange={(e) => handleChange('name', e.target.value)}
-                      variant="standard"
-                      fullWidth
-                      sx={{ maxWidth: 260, textAlign: 'center', border: '1px solid var(--disabled)', px: 2, borderRadius: 2 }}
+                      sx={{ 
+                        px: 2, 
+                        maxWidth: 260, 
+                        borderRadius: 2,
+                        textAlign: 'center', 
+                        border: '1px solid var(--disabled)', 
+                      }}
                     />
                   ) : (
                     <Typography variant="h6" fontWeight={600}>{profile?.name}</Typography>
                   )}
                   
                   {profile?.position && 
-                    <Typography variant="body2" color="text.secondary" fontFamily={'monospace'}>
-                        {profile?.position}
+                    <Typography color="var(--secondary)" fontFamily={'monospace'}>
+                      {profile?.position}
                     </Typography>
                   }
-                  <Typography px={2.5} py={0.5} borderRadius={3} bgcolor={'rgba(0,0,0,0.1)'} variant="caption" fontSize={10} sx={{ opacity: 0.7}}>
-                    {isBusiness ? 'Organization' : 'Personal'} Account
-                  </Typography>
+                  <Box 
+                    px={2.5} 
+                    py={0.5} 
+                    borderRadius={3} 
+                    bgcolor={isBusiness ? 'var(--bg-haze)': isModerator ? `var(--special)` : 'var(--bg-spring)'}
+                  >
+                  <Typography fontSize={10}>{isBusiness ? 'Organization' : 'Personal'} Account</Typography>
+                  </Box>
                   
                   {isEditing ? (
                     <TextField
@@ -336,19 +351,32 @@ export default function ProfileDetailDrawer() {
                 </Stack>
 
                 <Paper variant="outlined" sx={{ borderRadius: 3}}>
-                  <Box sx={{ bgcolor: 'rgba(0,0,0,0.09)'}} p={2}>
+                  <Box 
+                    sx={{ 
+                      p: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      bgcolor: 'rgba(0,0,0,0.09)',
+                      justifyContent: 'space-between'
+                    }} 
+                    >
                     <Typography variant="subtitle2" color="text.secondary">
                       Contact Information
                     </Typography>
+                    <IconButton size='small' onClick={handleHideInfo}>
+                      <Tooltip title={showInfo ? 'Hide info' : 'Show info'}>
+                        {showInfo ? <BsEyeSlash /> : <BsEye />}
+                        </Tooltip>
+                      </IconButton>
                   </Box>
 
                   <Stack spacing={1} sx={{ p: 1.5, borderRadius: 3 }}>
                     {(['email', 'phone', 'country'] as const).map((field, i, arr) => (
                       <Box key={i}>
                         <Stack
+                          spacing={1}
                           direction="row"
                           alignItems="center"
-                          spacing={1}
                         >
                           <IconButton color='info' sx={{ bgcolor: 'var(--divider)'}}>
                             { field === 'email' ? <MdEmail size={16} />
@@ -370,7 +398,13 @@ export default function ProfileDetailDrawer() {
                                 borderRadius: 2,
                               }}
                             />
-                          ) : <Typography variant="body2"> {profile?.[field] || 'Not provided'} </Typography>}
+                          ) : (
+                            <Typography variant="body2"> 
+                              {showInfo ? profile?.[field] || 'Not provided' : 
+                                <span className='font-sm'>**********</span>
+                              } 
+                            </Typography>
+                          )}
                         </Stack>
                         {i < arr.length - 1 && <Divider />}
                       </Box>
@@ -417,50 +451,49 @@ export default function ProfileDetailDrawer() {
                     </Stack>
                     <Divider />
 
-                    {profile?.referralCode && (
+                    { profile?.referralCode && (
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        gap={2}
+                        width={'100%'}
+                      >
+                        <Stack>
+                          <Typography variant="body2">
+                            Referral code
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            color="text.secondary"
+                          >
+                            Share this link to earn referrals
+                          </Typography>
+                        </Stack>
                         <Stack
                           direction="row"
                           alignItems="center"
-                          justifyContent="space-between"
-                          gap={2}
-                          width={'100%'}
+                          spacing={0.5}
                         >
-                          <Stack>
-                            <Typography variant="body2">
-                              Referral code
-                            </Typography>
-                            <Typography
-                              variant="caption"
-                              color="text.secondary"
-                            >
-                              Share this link to earn referrals
-                            </Typography>
-                          </Stack>
-                          <Stack
-                            direction="row"
-                            alignItems="center"
-                            spacing={0.5}
+                          <EllipsisTypography 
+                            sx={{ fontFamily: 'monospace', letterSpacing: 0.5 }}
                           >
-                            <EllipsisTypography 
-                              sx={{ fontFamily: 'monospace', letterSpacing: 0.5 }}
+                            {`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/auth/join/${profile?.referralCode}`}
+                          </EllipsisTypography>
+
+                          <Tooltip title={copiedRefCode ? 'Copied!' : 'Copy referral code'}>
+                            <IconButton
+                              size="small"
+                              onClick={copyReferralCode}
+                              color={copiedRefCode ? 'success' : 'default'}
                             >
-                              {`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/auth/join/${profile?.referralCode}`}
-                            </EllipsisTypography>
-
-                            <Tooltip title={copiedRefCode ? 'Copied!' : 'Copy referral code'}>
-                              <IconButton
-                                size="small"
-                                onClick={copyReferralCode}
-                                color={copiedRefCode ? 'success' : 'default'}
-                              >
-                                { copiedRefCode ? <Check size={16} /> : <Copy size={16} />}
-                              </IconButton>
-                            </Tooltip>
-                          </Stack>
+                              { copiedRefCode ? <Check size={16} /> : <Copy size={16} />}
+                            </IconButton>
+                          </Tooltip>
                         </Stack>
-                    )}
+                      </Stack>
+                    )} 
                     <Divider />
-
                     <Stack
                       direction="row"
                       alignItems="center"
@@ -482,10 +515,10 @@ export default function ProfileDetailDrawer() {
                     <Divider />
 
                     <Stack
+                      gap={2}
                       direction="row"
                       alignItems="center"
                       justifyContent="space-between"
-                      gap={2}
                     >
                       <Box>
                         <Typography variant="body2" fontWeight={500}>
@@ -549,12 +582,12 @@ export default function ProfileDetailDrawer() {
 
                 <ProfileActivitySection
                   tickets={profile?.tickets}
+                  createdTeams={profile?.createdTeams}
                   closedTickets={profile?.closedTickets}
+                  teamMembership={profile?.teamMembership}
                   startedTickets={profile?.startedTickets}
                   assignedTickets={profile?.assignedTickets}
-                  createdTeams={profile?.createdTeams}
                   teamMemberships={profile?.teamMemberships}
-                  teamMembership={profile?.teamMembership}
                 />
 
                 {isModerator && <ModeratorSection profile={profile} />}
@@ -562,7 +595,12 @@ export default function ProfileDetailDrawer() {
             </Box>  
           </Fade>
 
-          <Divider sx={{ width: '100%', border: '5px solid var(--disabled)'}} />
+          <Divider 
+            sx={{ 
+              width: '100%', 
+              border: '5px solid var(--disabled)'
+            }} 
+          />
           <Box p={3}>
             <Button 
               onClick={closeDetail} 
