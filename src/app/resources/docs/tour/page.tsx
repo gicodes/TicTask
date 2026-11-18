@@ -134,6 +134,9 @@ function Page() {
                         page, and support.
                       </li>
                       <li>
+                        <strong>Go to main page:</strong> This takes a user away from the dashboard to the Tictask landing page
+                      </li>
+                      <li>
                         <strong>Logout:</strong> Sign out of your account.
                       </li>
                     </ul>
