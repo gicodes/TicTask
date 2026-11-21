@@ -258,6 +258,9 @@ function Page() {
                     <br />— Efficiency and Productivity
                     <br />— Teamwork and Collaboration
                     <br />— Bookkeeping, History, and Reporting
+
+                    <br/><br/>
+                    <span> If you need a reason beyond these, then we simply implore you support the journey!</span>
                   </Typography>
                 }
               />
@@ -267,8 +270,8 @@ function Page() {
                 content={
                   <>
                     <ul style={{ margin: '8px 15px', lineHeight: 2 }}>
-                      <li>Individual / Personal accounts</li>
-                      <li>Organizations / Business accounts</li>
+                      <li>Individual / Personal use</li>
+                      <li>Organizations / Business use</li>
                     </ul>
 
                     <Typography>
@@ -691,16 +694,26 @@ function Page() {
               content={
                 <>
                   <Typography>
-                    The Invite page provides access to member
-                    invitations and pending team invitations.
-                    It helps you bring new users into TicTask.
+                    The Invite page lets you directly invite someone to TicTask
+                    and also shows your pending team invitations.
                   </Typography>
 
-                  <Typography mt={1}>
+                  <Typography> 
+                    Inviting a new user to TicTask requires inputing the user&apos;s email. The system sends a token-secure link to the email provided, the user can copy/ paste or navigate to the link and continue sign-up.
+                  </Typography> 
+
+                  <Typography> 
+                    Additionally, if you have been invited to a team/ organization, you will see the invite at the buttom of the invite page.
+                    <br/>                
                     To invite someone to a specific team, navigate
                     to the Teams page, select the relevant team,
                     and use its Invite Member section.
                   </Typography>
+
+                  <Box my={1}>
+                    <Typography fontSize={16} fontWeight={501}>Referral & Rewards</Typography>
+
+                  </Box>
                 </>
               }
             />

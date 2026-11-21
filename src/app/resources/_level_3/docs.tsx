@@ -8,6 +8,7 @@
 */
 
 import { DocTextBlock } from "@/types/resources";
+import { IconButton } from "@mui/material";
 import { BsSlack } from "react-icons/bs";
 import { SiGoogle, SiX } from "react-icons/si";
 
@@ -106,9 +107,9 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
     { type: "point", content: "Email and password" },
     "You should store your password safely, as is the primary means of signing in ",
     { type: "point", content: "SSO/ Auth providers" },
-    { type: "icon", content: <SiGoogle color="lightblue" />},
-    { type: "icon", content: <BsSlack color="violet" /> },
-    { type: "icon", content: <SiX  color="white"/> }, 
+    { type: "icon", content: <IconButton><SiGoogle /></IconButton>},
+    { type: "icon", content: <IconButton><BsSlack /></IconButton> },
+    { type: "icon", content: <IconButton><SiX /></IconButton> }, 
     "",
     { type: "point", content: "Two-factor authentication (optional)" },
     { type: "inline", content: "Enables extra security for sensitive workspaces." },
@@ -119,7 +120,7 @@ export const CONTENTS: Record<string, DocTextBlock[]> = {
 
   "Quick Tour — Dashboard": [
     "The dashboard structures your workspace into a simple and user-friendly layout, comprising of dashboard header, menu pages and an overview page i.e. Ticket Hub, Task Manager, Settings, etc.", 
-    "Tickets offer two (2) standard workspace views: Board and List.", 
+    "Tickets Hub offer two (2) standard workspace views: Board and List.", 
     { type: "outline", content: "BOARD"}, { type: 'inline', content: ' organizes your tickets in rows of ticket status. Each status column showing tickets in detailed card'}, '',
     { type: "badge", content: "Upcoming"}, 
     { type: "badge", content: "In progress", color: 'success'},
